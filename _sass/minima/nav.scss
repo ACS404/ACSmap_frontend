@@ -1,14 +1,28 @@
-// Navigation and logo styles for site header
+// ============================================================
+// ACS NAV STYLES
+// _sass/minima/nav.scss
+// ============================================================
 
+// Mobile nav dropdown
 .site-nav .trigger {
   display: none;
   flex-direction: column;
   position: absolute;
   right: 0;
-  top: 60px; /* adjust as needed */
-  width: 200px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  top: 64px;
+  width: 220px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(61, 44, 36, 0.12);
   z-index: 1000;
+  padding: 8px;
+
+  .page-link {
+    display: block;
+    border-radius: 8px !important;
+    margin: 2px 0 !important;
+  }
 }
 
 .site-nav .nav-trigger:checked ~ label + .trigger,
@@ -16,6 +30,7 @@
   display: flex;
 }
 
+// Desktop — inline
 @media (min-width: 600px) {
   .site-nav .trigger {
     display: flex !important;
@@ -23,17 +38,27 @@
     flex-direction: row;
     background: none;
     box-shadow: none;
+    border: none;
     width: auto;
+    padding: 0;
+    border-radius: 0;
   }
 }
 
+// Login area
 #loginArea.page-link {
-  /* Add any custom login link styles here */
   opacity: 1;
 }
 
+// Logo image if present
 #site-logo {
-  height: 40px;
+  height: 36px;
   vertical-align: middle;
   margin-right: 10px;
+  border-radius: 50%;
+}
+
+// Hamburger icon fill
+.site-nav .menu-icon svg path {
+  fill: var(--text-main) !important;
 }
