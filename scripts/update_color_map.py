@@ -165,8 +165,12 @@ class ColorMapUpdater:
         colors = {}
         
         # Strip comments to avoid extracting variables from commented code
-        scss_content = re.sub(r'//.*$', '', scss_content, flags=re.MULTILINE)
-        scss_content = re.sub(r'/\*.*?\*/', '', scss_content, flags=re.DOTALL)
+        scss_content = re.sub(
+            r'@(?:mixin|function|include)\s+[^(]*\([^)]*\)',
+            '',
+            scss_content,
+            flags=re.DOTALL
+        )
         
         # Find all variable definitions in the content
         # Pattern matches: $variable-name: value;
@@ -177,7 +181,7 @@ class ColorMapUpdater:
         #   - Optional whitespace
         #   - Capture group for value
         #   - Semicolon terminator
-        pattern = r'\$([a-zA-Z_][a-zA-Z0-9_-]*)\s*:=?\s*([^;]+);'
+        pattern = r'\$([a-zA-Z_][a-zA-Z0-9_-]*)\s*:=?\s*([^;{}\n]+);'
         matches = re.findall(pattern, scss_content)
         
         # Get relative path for tracking where variables are defined

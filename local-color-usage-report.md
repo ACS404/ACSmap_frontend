@@ -2,8 +2,8 @@
 
 ## Summary
 
-- Total unique colors found: 74
-- Files with colors: 6
+- Total unique colors found: 72
+- Files with colors: 4
 
 ## Colors by File
 
@@ -30,15 +30,6 @@
 - `$status-indicator-success-bg`: `rgba(138, 170, 140, 0.15)`
 - `$status-indicator-success-border`: `rgba(138, 170, 140, 0.3)`
 - `$status-indicator-success-color`: `#8aaa8c`
-
-### game-builder.scss (1 colors)
-
-- `$bg`: `rgba(0,0,0,0.3), $blur: 20px, $border-radius: 12px) {
-  background: $bg`
-
-### platformer-game.scss (1 colors)
-
-- `$dt-leaderboard`: `#e85252`
 
 ### user-colors.scss (73 colors)
 
@@ -220,8 +211,6 @@
 - **$accent-700**: `#c45e4a`
 - **$accent-700-hover**: `#a84838`
 - **$background**: `#fdf6ee`
-- **$bg**: `rgba(0,0,0,0.3), $blur: 20px, $border-radius: 12px) {
-  background: $bg`
 - **$bg-0**: `#fdf6ee`
 - **$bg-1**: `#fff9f3`
 - **$bg-2**: `#f5ede3`
@@ -232,7 +221,6 @@
 - **$blueShadow1**: `rgba(224, 122, 106, 0.35)`
 - **$brown**: `#6b4c3b`
 - **$cream-warm**: `#fff9f3`
-- **$dt-leaderboard**: `#e85252`
 - **$gradient1**: `linear-gradient(120deg, #fff9f3 45%, #fce9e6)`
 - **$gray1**: `rgba(147, 116, 104, 1)`
 - **$gray2**: `rgba(120, 90, 76, 1)`

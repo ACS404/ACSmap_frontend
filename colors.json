@@ -1,6 +1,6 @@
 {
   "generated_by": "scripts/update_color_map.py",
-  "total_colors": 74,
+  "total_colors": 72,
   "colors": {
     "login-container-bg": {
       "value": "#fff9f3",
@@ -105,18 +105,6 @@
       "source_files": [
         "_sass/open-coding/elements/status-indicators/common.scss",
         "_sass/user-colors.scss"
-      ]
-    },
-    "bg": {
-      "value": "rgba(0,0,0,0.3), $blur: 20px, $border-radius: 12px) {\n  background: $bg",
-      "source_files": [
-        "_sass/open-coding/game-builder.scss"
-      ]
-    },
-    "dt-leaderboard": {
-      "value": "#e85252",
-      "source_files": [
-        "_sass/open-coding/platformer-game.scss"
       ]
     },
     "background": {

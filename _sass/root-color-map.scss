@@ -32,17 +32,6 @@ $status-indicator-success-bg: rgba(138, 170, 140, 0.15);
 $status-indicator-success-border: rgba(138, 170, 140, 0.3);
 $status-indicator-success-color: #8aaa8c;
 
-// GAME-BUILDER.SCSS
-// -----------------------------------------------------------------------------
-
-$bg: rgba(0,0,0,0.3), $blur: 20px, $border-radius: 12px) {
-  background: $bg;
-
-// PLATFORMER-GAME.SCSS
-// -----------------------------------------------------------------------------
-
-$dt-leaderboard: #e85252;
-
 // USER-COLORS.SCSS
 // -----------------------------------------------------------------------------
 
@@ -129,7 +118,6 @@ $white3: rgba(61, 44, 36, 0.7);
   --accent-700: #{$accent-700};
   --accent-700-hover: #{$accent-700-hover};
   --background: #{$background};
-  --bg: #{$bg};
   --bg-0: #{$bg-0};
   --bg-1: #{$bg-1};
   --bg-2: #{$bg-2};
@@ -140,7 +128,6 @@ $white3: rgba(61, 44, 36, 0.7);
   --blueShadow1: #{$blueShadow1};
   --brown: #{$brown};
   --cream-warm: #{$cream-warm};
-  --dt-leaderboard: #{$dt-leaderboard};
   --gradient1: #{$gradient1};
   --gray1: #{$gray1};
   --gray2: #{$gray2};
