@@ -106,7 +106,7 @@ plugins:
 #   hide_site_feed_link: false
 
 minima:
-  skin: dark
+  skin: classic
   social_links:
     - { platform: github, user_url: "https://github.com/open-coding-society" }
     - { platform: x, user_url: "https://x.com/Open_Coding" }
