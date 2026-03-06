@@ -19,7 +19,7 @@ description: "Class of 2026"
 owner_name: John Mortensen
 github_username: jm1021 
 github_repo: "portfolio" 
-baseurl: "/ACSmap" 
+baseurl: "/ACSmap_frontend" 
 url: https://ACS404.github.io
 future: true
 
