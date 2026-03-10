@@ -511,15 +511,15 @@ const BM_CANCERS = {
   bladder:            { name:'Bladder Cancer',                        link:'https://www.cancer.org/cancer/bladder-cancer.html',                             tags:['Blood in urine','Urinary frequency','Pelvic pain'], desc:'Common urologic cancer. Smoking is the leading risk factor.' },
   kidney:             { name:'Kidney Cancer',                         link:'https://www.cancer.org/cancer/kidney-cancer.html',                              tags:['Blood in urine','Flank pain','Lump in side'],       desc:'Renal cell carcinoma is the most common type.' },
   wilms:              { name:'Wilms Tumor',                           link:'https://www.cancer.org/cancer/wilms-tumor.html',                                tags:['Abdominal swelling','Flank pain','Fever'],          desc:'Rare kidney cancer primarily affecting children.' },
-  cervical:           { name:'Cervical Cancer',                       link:'https://www.cancer.org/cancer/cervical-cancer.html',                            tags:['Irregular bleeding','Pelvic pain','Discharge'],     desc:'Almost all caused by HPV. Pap smears and HPV vaccines are highly effective prevention.' },
-  endometrial:        { name:'Endometrial Cancer',                    link:'https://www.cancer.org/cancer/endometrial-cancer.html',                         tags:['Abnormal bleeding','Pelvic pain','Weight loss'],    desc:'Most common gynecologic cancer in the US.' },
-  ovarian:            { name:'Ovarian Cancer',                        link:'https://www.cancer.org/cancer/ovarian-cancer.html',                             tags:['Bloating','Pelvic pain','Early fullness'],          desc:'Called the "silent killer" due to vague early symptoms.' },
-  penile:             { name:'Penile Cancer',                         link:'https://www.cancer.org/cancer/penile-cancer.html',                              tags:['Skin changes','Sores','Discharge'],                 desc:'A rare cancer of the penis, often linked to HPV.' },
-  prostate:           { name:'Prostate Cancer',                       link:'https://www.cancer.org/cancer/prostate-cancer.html',                            tags:['Urinary changes','Pelvic discomfort','Bone pain'],  desc:'Most common cancer in American men. PSA screening recommended starting at age 50.' },
-  testicular:         { name:'Testicular Cancer',                     link:'https://www.cancer.org/cancer/testicular-cancer.html',                          tags:['Testicular lump','Swelling','Dull ache'],           desc:'Most common in men aged 15–35. Highly treatable.' },
-  uterine_sarcoma:    { name:'Uterine Sarcoma',                       link:'https://www.cancer.org/cancer/uterine-sarcoma.html',                            tags:['Abnormal bleeding','Pelvic pain','Uterine mass'],   desc:'Rare, aggressive cancer from the muscle/connective tissue of the uterus.' },
-  vaginal:            { name:'Vaginal Cancer',                        link:'https://www.cancer.org/cancer/vaginal-cancer.html',                             tags:['Vaginal bleeding','Discharge','Pelvic pain'],       desc:'Rare cancer of the vaginal lining. HPV is the primary risk factor.' },
-  vulvar:             { name:'Vulvar Cancer',                         link:'https://www.cancer.org/cancer/vulvar-cancer.html',                              tags:['Itching','Skin changes','Lump'],                    desc:'Cancer of the external female genitalia.' },
+  cervical:           { name:'Cervical Cancer',                       link:'https://www.cancer.org/cancer/cervical-cancer.html',                            tags:['Irregular bleeding','Pelvic pain','Discharge'],     desc:'Almost all caused by HPV. Pap smears and HPV vaccines are highly effective prevention.',  reproGender:'female' },
+  endometrial:        { name:'Endometrial Cancer',                    link:'https://www.cancer.org/cancer/endometrial-cancer.html',                         tags:['Abnormal bleeding','Pelvic pain','Weight loss'],    desc:'Most common gynecologic cancer in the US.',                                               reproGender:'female' },
+  ovarian:            { name:'Ovarian Cancer',                        link:'https://www.cancer.org/cancer/ovarian-cancer.html',                             tags:['Bloating','Pelvic pain','Early fullness'],          desc:'Called the "silent killer" due to vague early symptoms.',                                 reproGender:'female' },
+  uterine_sarcoma:    { name:'Uterine Sarcoma',                       link:'https://www.cancer.org/cancer/uterine-sarcoma.html',                            tags:['Abnormal bleeding','Pelvic pain','Uterine mass'],   desc:'Rare, aggressive cancer from the muscle/connective tissue of the uterus.',                reproGender:'female' },
+  vaginal:            { name:'Vaginal Cancer',                        link:'https://www.cancer.org/cancer/vaginal-cancer.html',                             tags:['Vaginal bleeding','Discharge','Pelvic pain'],       desc:'Rare cancer of the vaginal lining. HPV is the primary risk factor.',                      reproGender:'female' },
+  vulvar:             { name:'Vulvar Cancer',                         link:'https://www.cancer.org/cancer/vulvar-cancer.html',                              tags:['Itching','Skin changes','Lump'],                    desc:'Cancer of the external female genitalia.',                                                reproGender:'female' },
+  penile:             { name:'Penile Cancer',                         link:'https://www.cancer.org/cancer/penile-cancer.html',                              tags:['Skin changes','Sores','Discharge'],                 desc:'A rare cancer of the penis, often linked to HPV.',                                        reproGender:'male' },
+  prostate:           { name:'Prostate Cancer',                       link:'https://www.cancer.org/cancer/prostate-cancer.html',                            tags:['Urinary changes','Pelvic discomfort','Bone pain'],  desc:'Most common cancer in American men. PSA screening recommended starting at age 50.',       reproGender:'male' },
+  testicular:         { name:'Testicular Cancer',                     link:'https://www.cancer.org/cancer/testicular-cancer.html',                          tags:['Testicular lump','Swelling','Dull ache'],           desc:'Most common in men aged 15–35. Highly treatable.',                                        reproGender:'male' },
   neuroendocrine:     { name:'Neuroendocrine Tumors',                 link:'https://www.cancer.org/cancer/gastrointestinal-carcinoid-tumor.html',           tags:['Flushing','Diarrhea','Wheezing'],                   desc:'Tumors from neuroendocrine cells throughout the body.' },
   adrenal:            { name:'Adrenal Cancer',                        link:'https://www.cancer.org/cancer/adrenal-cancer.html',                             tags:['Abdominal pain','Hormonal changes','Weight gain'],  desc:'Rare cancer of the adrenal glands. May produce excess hormones.' },
   pituitary:          { name:'Pituitary Tumors',                      link:'https://www.cancer.org/cancer/pituitary-tumors.html',                           tags:['Headaches','Vision changes','Hormonal imbalance'],  desc:'Most are benign adenomas but cause significant hormonal and neurological effects.' },
@@ -667,7 +667,11 @@ function bmActivateHotspot(id) {
   panel.classList.add('active');
   panel.style.setProperty('--panel-accent', sys.color);
 
-  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(Boolean);
+  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
+    if (!c) return false;
+    if (c.reproGender) return c.reproGender === bmGender;
+    return true;
+  });
 
   document.getElementById('bmPanelContent').innerHTML = `
     <div class="panel-top">
@@ -734,3 +738,5 @@ function bmBuildSysGrid() {
   }
 })();
 </script>
+
+<script src="{{ site.baseurl }}/ACSstuff/search.js"></script>
