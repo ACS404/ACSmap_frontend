@@ -1,4 +1,5 @@
 ---
+layout: opencs
 hide: true
 show_reading_time: false
 ---
@@ -366,6 +367,30 @@ show_reading_time: false
   #body-map-root .body-wrap { margin: 0 auto; }
   #body-map-root .info-panel { position: static; }
   #body-map-root .categories-section { padding: 40px 24px 60px; }
+}
+
+/* ── BREAK OUT OF JEKYLL .WRAPPER PADDING ──────────────── */
+/* The layout wraps content in .wrapper with padding. These rules
+   let our full-bleed hero and categories sections escape it.    */
+#body-map-root .acs-hero,
+#body-map-root .categories-section {
+  margin-left: -48px;
+  margin-right: -48px;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+@media (max-width: 768px) {
+  #body-map-root .acs-hero,
+  #body-map-root .categories-section {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+/* Remove the extra top padding from .page-content since hero handles its own spacing */
+.page-content {
+  padding-top: 64px !important;
 }
 </style>
 
