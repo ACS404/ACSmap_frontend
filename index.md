@@ -474,7 +474,7 @@ const BM_SYSTEMS = {
   urinary:      { label:'Urinary System',         color:'#7a9e7e', icon:'🫘' },
   reproductive: { label:'Reproductive System',    color:'#a07cc5', icon:'🌸' },
   endocrine:    { label:'Endocrine System',       color:'#d4845a', icon:'⚗️' },
-  skin:         { label:'Skin',                   color:'#c4a35a', icon:'☀️' },
+  skin:         { label:'Skin',                   color:'#bca36d', icon:'☀️' },
   bone_soft:    { label:'Bone & Soft Tissue',     color:'#7a8fa6', icon:'🦴' },
   eye:          { label:'Eye',                    color:'#5aabb5', icon:'👁️' },
   brain_ns:     { label:'Brain & Nervous System', color:'#9b7ec8', icon:'🧠' },
