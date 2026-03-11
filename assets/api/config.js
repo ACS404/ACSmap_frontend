@@ -1,31 +1,21 @@
 ---
 ---
 
-// ^^ Do not remove the above front matter, it is required for Jekyll processing
-
 export const baseurl = "{{ site.baseurl }}";
 
 export var pythonURI;
 if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-    pythonURI = "http://localhost:8587";  // Same URI for localhost or 127.0.0.1
+    pythonURI = "http://localhost:8404";  // Same URI for localhost or 127.0.0.1
 } else {
     pythonURI = "https://flask.opencodingsociety.com";
 
-}
-
-export var javaURI;
-// 127.0.0.1:8585 does not work for some machines
-if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-        javaURI = "http://localhost:8585";
-} else {
-    javaURI = "https://spring.opencodingsociety.com";
 }
 
 export const fetchOptions = {
     method: 'GET',  // Default method is GET
     mode: 'cors', // Enable CORS (Cross-Origin Resource Sharing)
     cache: 'default', // Default caching behavior
-    credentials: 'include', // Include credentials (cookies, etc.)
+    credentials: "include", // Include cookies in requests
     headers: {
         'Content-Type': 'application/json',
         'X-Origin': 'client' // Custom header to identify source
