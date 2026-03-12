@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: opencs
 title: Login
 permalink: /login
 search_exclude: true
