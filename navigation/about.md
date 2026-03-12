@@ -64,7 +64,7 @@ comments: true
     font-family: 'Playfair Display', serif;
     font-size: clamp(28px,4.5vw,56px); font-weight: 900;
     line-height: 1.08; letter-spacing: -.02em; max-width: 680px;
-    color: #fff9f3; opacity: 0; animation: fadeUp .8s .25s forwards;
+    color: #fff9f3 !important;; opacity: 0; animation: fadeUp .8s .25s forwards;
   }
   .cf-hero h1 em { font-style: normal; color: var(--rose); }
   .cf-hero-sub {
@@ -199,7 +199,7 @@ comments: true
   .cf-disparity-headline {
     font-family: 'Playfair Display', serif;
     font-size: clamp(26px,4vw,42px); font-weight: 700;
-    line-height: 1.2; margin-bottom: 12px; color: var(--paper);
+    line-height: 1.2; margin-bottom: 12px; color: var(--paper) !important;
   }
   .cf-disparity-headline span { color: var(--rose); }
   .cf-disparity-text { font-size: 15px; color: var(--tan); font-weight: 300; line-height: 1.8; }
@@ -349,7 +349,7 @@ comments: true
         <p class="cf-prevention-big-label" id="prevention-heading">of new diagnoses are<br><strong>potentially preventable</strong></p>
       </div>
       <div class="cf-prevention-text-col cf-animate">
-        <p>About 850,000 cases in 2026 could have been avoided through changes in known risk factors — smoking, diet, body weight, and alcohol.</p>
+        <p>About 850,000 cases in 2026 could have been avoided through changes in known risk factors: smoking, diet, body weight, and alcohol.</p>
         <p>Routine screening can prevent many colorectal and most cervical cancers entirely by catching precancerous lesions before they progress.</p>
       </div>
     </div>
