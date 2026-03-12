@@ -952,20 +952,12 @@ function bmAddRiskTerm(term) {
 function bmAddRiskFromInput() {
   const input = document.getElementById('bmRiskInput');
   if (!input || !input.value.trim()) return;
-  const parsed = bmParseRiskTerm(input.value);
-  if (parsed) {
-    bmActiveRisk.set(parsed.key, parsed.label);
-    bmRenderTags();
-    bmUpdateRisk();
-    input.value = '';
-  } else {
-    input.style.borderColor = 'var(--rose)';
-    input.placeholder = 'Not recognised — try: smoker, BRCA, obesity...';
-    setTimeout(() => {
-      input.style.borderColor = '';
-      input.placeholder = 'e.g. smoker, BRCA mutation, over 50, obesity...';
-    }, 2000);
-  }
+  const raw = input.value.trim();
+  const parsed = bmParseRiskTerm(raw) || { key: raw.toLowerCase().replace(/\s+/g, '_'), label: raw };
+  bmActiveRisk.set(parsed.key, parsed.label);
+  bmRenderTags();
+  bmUpdateRisk();
+  input.value = '';
 }
 
 function bmRemoveRisk(key) {
