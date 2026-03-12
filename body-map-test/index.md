@@ -358,19 +358,64 @@ show_reading_time: false
 }
 #body-map-root .fade-in { animation: fadeUp 0.5s ease both; }
 
+
 /* ── RISK PANEL ──────────────────────────────────────────── */
+#body-map-root .risk-trigger-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+#body-map-root .risk-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.04em;
+}
+#body-map-root .risk-trigger-btn:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .risk-trigger-btn.open {
+  background: var(--rose-pale);
+  border-color: var(--rose);
+  color: var(--terra);
+}
+#body-map-root .risk-trigger-btn .rtb-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--muted);
+  transition: background 0.2s;
+}
+#body-map-root .risk-trigger-btn.open .rtb-dot {
+  background: var(--rose);
+}
 #body-map-root .risk-panel {
   background: var(--warm-white);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 20px 24px;
   margin-bottom: 28px;
+  display: none;
+}
+#body-map-root .risk-panel.open {
+  display: block;
 }
 #body-map-root .risk-panel-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
   gap: 8px;
 }
@@ -401,46 +446,101 @@ show_reading_time: false
   color: var(--rose);
   border-color: var(--rose-light);
 }
-#body-map-root .risk-factors {
+#body-map-root .risk-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+#body-map-root .risk-input {
+  flex: 1;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--text);
+  background: var(--cream);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#body-map-root .risk-input:focus {
+  border-color: var(--rose-light);
+}
+#body-map-root .risk-input::placeholder {
+  color: var(--muted);
+}
+#body-map-root .risk-submit {
+  padding: 9px 18px;
+  background: var(--rose);
+  border: none;
+  border-radius: 8px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+#body-map-root .risk-submit:hover {
+  background: var(--terra);
+}
+#body-map-root .risk-tags-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
+  min-height: 28px;
 }
-#body-map-root .risk-chip {
+#body-map-root .risk-tag {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 7px 14px;
+  padding: 5px 12px;
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
   border-radius: 20px;
-  border: 1px solid var(--border);
-  background: var(--cream);
-  font-family: var(--sans);
   font-size: 12px;
   font-weight: 600;
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.18s;
-  user-select: none;
-}
-#body-map-root .risk-chip:hover {
-  border-color: var(--tan);
-  color: var(--text);
-}
-#body-map-root .risk-chip.on {
-  background: var(--rose-pale);
-  border-color: var(--rose);
   color: var(--terra);
 }
-#body-map-root .risk-chip .chip-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: background 0.18s;
-  flex-shrink: 0;
+#body-map-root .risk-tag-remove {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--rose);
+  transition: color 0.15s;
 }
-#body-map-root .risk-chip.on .chip-dot {
-  background: var(--rose);
+#body-map-root .risk-tag-remove:hover {
+  color: var(--terra);
+}
+#body-map-root .risk-hint {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+  line-height: 1.6;
+}
+#body-map-root .risk-hint span {
+  cursor: pointer;
+  text-decoration: underline;
+  color: var(--tan);
+  margin-right: 6px;
+}
+#body-map-root .risk-hint span:hover {
+  color: var(--rose);
+}
+#body-map-root .panel-elevated {
+  background: var(--rose-pale);
+  border-left: 3px solid var(--rose);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 0 24px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--terra);
+  display: none;
+}
+#body-map-root .panel-elevated.visible {
+  display: block;
 }
 
 /* ── RESPONSIVE ───────────────────────────────────────── */
