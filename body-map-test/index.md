@@ -842,10 +842,22 @@ let bmGender = 'female';
 let bmActiveId = null;
 
 
+
 // ─── RISK HEATMAP ──────────────────────────────────────────────────────────
 const bmActiveRisk = new Set();
 
-// How much each factor contributes to each hotspot (0–100 scale)
+const BM_RISK_MAP = {
+  smoke:   ['smoke','smok','tobacco','cigarette','cigar'],
+  alcohol: ['alcohol','drink','drinker','drinking','booze'],
+  brca:    ['brca','breast gene','ovarian gene','genetic'],
+  hpv:     ['hpv','human papilloma','papillomavirus'],
+  obesity: ['obese','obesity','overweight','high bmi','bmi'],
+  sun:     ['sun','uv','tanning','outdoor','sunburn'],
+  hep:     ['hepatitis','hep b','hep c','liver disease'],
+  family:  ['family history','hereditary','inherited','parent had','relative had'],
+  age:     ['over 50','age 50','50+','older','elderly','senior','age 60','age 70'],
+};
+
 const BM_RISK_WEIGHTS = {
   brain:     { age:30, family:20 },
   eye:       { age:20, sun:15 },
@@ -867,8 +879,13 @@ const BM_RISK_WEIGHTS = {
   other:     { age:20, family:15 },
 };
 
-// Base dot size and glow — no risk factors selected
-const BM_DOT_BASE = { size: 12, glow: 6 };
+function bmParseRiskTerm(raw) {
+  const lower = raw.toLowerCase().trim();
+  for (const [key, keywords] of Object.entries(BM_RISK_MAP)) {
+    if (keywords.some(k => lower.includes(k))) return { key, label: raw.trim() };
+  }
+  return null;
+}
 
 function bmGetRiskScore(hotspotId) {
   const weights = BM_RISK_WEIGHTS[hotspotId] || {};
@@ -877,69 +894,102 @@ function bmGetRiskScore(hotspotId) {
   return Math.min(score, 100);
 }
 
-function bmApplyRiskToDot(hs, score) {
-  const dot = document.getElementById('bm-hsdot-' + hs.id);
-  if (!dot) return;
-  const core = dot.querySelector('.hs-dot-core');
-  const pulse = dot.querySelector('.hs-dot-pulse');
-  const sys = BM_SYSTEMS[hs.system];
-
-  if (score === 0) {
-    // Reset to default
-    core.style.width  = BM_DOT_BASE.size + 'px';
-    core.style.height = BM_DOT_BASE.size + 'px';
-    core.style.top    = '5px';
-    core.style.left   = '5px';
-    core.style.boxShadow = '0 0 6px ' + sys.color;
-    pulse.style.animationDuration = '2.2s';
-    pulse.style.borderWidth = '2px';
-    pulse.style.opacity = '0.5';
-    dot.style.zIndex = '10';
-  } else {
-    // Scale size 12→22px, glow 6→28px, pulse speed 2.2s→0.8s
-    const t = score / 100;
-    const size  = Math.round(BM_DOT_BASE.size + t * 10);
-    const offset = Math.round((22 - size) / 2);
-    const glowR = Math.round(BM_DOT_BASE.glow + t * 22);
-    const dur   = (2.2 - t * 1.4).toFixed(2) + 's';
-    const bw    = (2 + t * 2).toFixed(1) + 'px';
-
-    core.style.width  = size + 'px';
-    core.style.height = size + 'px';
-    core.style.top    = offset + 'px';
-    core.style.left   = offset + 'px';
-    core.style.boxShadow = `0 0 ${glowR}px ${sys.color}, 0 0 ${glowR * 2}px ${sys.color}`;
-    pulse.style.animationDuration = dur;
-    pulse.style.borderWidth = bw;
-    pulse.style.opacity = (0.5 + t * 0.5).toFixed(2);
-    dot.style.zIndex = Math.round(10 + t * 20).toString();
-  }
-}
-
 function bmUpdateRisk() {
   BM_HOTSPOTS.forEach(hs => {
     const score = bmGetRiskScore(hs.id);
-    bmApplyRiskToDot(hs, score);
+    const dot = document.getElementById('bm-hsdot-' + hs.id);
+    if (!dot) return;
+    const core = dot.querySelector('.hs-dot-core');
+    const pulse = dot.querySelector('.hs-dot-pulse');
+    const sys = BM_SYSTEMS[hs.system];
+    if (score === 0) {
+      core.style.width = '12px'; core.style.height = '12px';
+      core.style.top = '5px'; core.style.left = '5px';
+      core.style.boxShadow = '0 0 6px ' + sys.color;
+      pulse.style.animationDuration = '2.2s';
+      pulse.style.borderWidth = '2px';
+      dot.style.zIndex = '10';
+    } else {
+      const t = score / 100;
+      const size = Math.round(12 + t * 10);
+      const offset = Math.round((22 - size) / 2);
+      const glowR = Math.round(6 + t * 22);
+      core.style.width = size + 'px'; core.style.height = size + 'px';
+      core.style.top = offset + 'px'; core.style.left = offset + 'px';
+      core.style.boxShadow = `0 0 ${glowR}px ${sys.color}, 0 0 ${glowR * 2}px ${sys.color}`;
+      pulse.style.animationDuration = (2.2 - t * 1.4).toFixed(2) + 's';
+      pulse.style.borderWidth = (2 + t * 2).toFixed(1) + 'px';
+      dot.style.zIndex = Math.round(10 + t * 20).toString();
+    }
+  });
+  if (bmActiveId) {
+    const score = bmGetRiskScore(bmActiveId);
+    const el = document.getElementById('bmPanelElevated');
+    if (el) el.classList.toggle('visible', score > 20);
+  }
+}
+
+function bmRenderTags() {
+  const row = document.getElementById('bmRiskTags');
+  if (!row) return;
+  row.innerHTML = '';
+  bmActiveRisk.forEach((val, key) => {
+    const tag = document.createElement('div');
+    tag.className = 'risk-tag';
+    tag.innerHTML = `${val} <span class="risk-tag-remove" onclick="bmRemoveRisk('${key}')">×</span>`;
+    row.appendChild(tag);
   });
 }
 
-function bmToggleRisk(el) {
-  const rf = el.dataset.rf;
-  if (bmActiveRisk.has(rf)) {
-    bmActiveRisk.delete(rf);
-    el.classList.remove('on');
+function bmAddRiskTerm(term) {
+  const parsed = bmParseRiskTerm(term);
+  if (!parsed) return;
+  bmActiveRisk.set(parsed.key, parsed.label);
+  bmRenderTags();
+  bmUpdateRisk();
+}
+
+function bmAddRiskFromInput() {
+  const input = document.getElementById('bmRiskInput');
+  if (!input || !input.value.trim()) return;
+  const parsed = bmParseRiskTerm(input.value);
+  if (parsed) {
+    bmActiveRisk.set(parsed.key, parsed.label);
+    bmRenderTags();
+    bmUpdateRisk();
+    input.value = '';
   } else {
-    bmActiveRisk.add(rf);
-    el.classList.add('on');
+    input.style.borderColor = 'var(--rose)';
+    input.placeholder = 'Not recognised — try: smoker, BRCA, obesity...';
+    setTimeout(() => {
+      input.style.borderColor = '';
+      input.placeholder = 'e.g. smoker, BRCA mutation, over 50, obesity...';
+    }, 2000);
   }
+}
+
+function bmRemoveRisk(key) {
+  bmActiveRisk.delete(key);
+  bmRenderTags();
   bmUpdateRisk();
 }
 
 function bmClearRisk() {
   bmActiveRisk.clear();
-  document.querySelectorAll('.risk-chip.on').forEach(c => c.classList.remove('on'));
+  bmRenderTags();
   bmUpdateRisk();
 }
+
+function bmToggleRiskPanel() {
+  const panel = document.getElementById('bmRiskPanel');
+  const btn = document.getElementById('bmRiskTrigger');
+  const arrow = document.getElementById('bmRiskArrow');
+  const isOpen = panel.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  arrow.textContent = isOpen ? '▴' : '▾';
+}
+
+
 
 
 function bmSwitchGender(g) {
@@ -1002,7 +1052,9 @@ function bmActivateHotspot(id) {
       <div class="panel-region">${hs.label}</div>
       <div class="panel-count">${cancers.length} cancer type${cancers.length!==1?'s':''} in this region</div>
     </div>
+    <div class="panel-elevated" id="bmPanelElevated">⚠ Elevated risk based on your profile</div>
     <div class="panel-body">
+
       ${cancers.map((c,i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
