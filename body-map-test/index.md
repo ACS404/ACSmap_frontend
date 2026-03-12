@@ -611,25 +611,38 @@ show_reading_time: false
     </div>
   </div>
 
+
 <!-- Risk Heatmap Panel -->
-<div class="risk-panel">
+<div class="risk-trigger-row">
+  <button class="risk-trigger-btn" id="bmRiskTrigger" onclick="bmToggleRiskPanel()">
+    <span class="rtb-dot"></span>
+    Personalise your map
+    <span id="bmRiskArrow">▾</span>
+  </button>
+</div>
+<div class="risk-panel" id="bmRiskPanel">
   <div class="risk-panel-top">
     <div>
       <div class="risk-title">Personalise your map</div>
-      <div class="risk-subtitle">Select your risk factors — hotspots will glow brighter for your elevated regions.</div>
+      <div class="risk-subtitle">Type a risk factor, symptom, or condition — we'll highlight relevant regions.</div>
     </div>
     <button class="risk-clear" onclick="bmClearRisk()">Clear all</button>
   </div>
-  <div class="risk-factors" id="bmRiskFactors">
-    <div class="risk-chip" data-rf="smoke"   onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Tobacco use</div>
-    <div class="risk-chip" data-rf="alcohol" onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Heavy alcohol use</div>
-    <div class="risk-chip" data-rf="brca"    onclick="bmToggleRisk(this)"><span class="chip-dot"></span>BRCA mutation</div>
-    <div class="risk-chip" data-rf="hpv"     onclick="bmToggleRisk(this)"><span class="chip-dot"></span>HPV positive</div>
-    <div class="risk-chip" data-rf="obesity" onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Obesity</div>
-    <div class="risk-chip" data-rf="sun"     onclick="bmToggleRisk(this)"><span class="chip-dot"></span>High UV exposure</div>
-    <div class="risk-chip" data-rf="hep"     onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Hepatitis B or C</div>
-    <div class="risk-chip" data-rf="family"  onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Family history</div>
-    <div class="risk-chip" data-rf="age"     onclick="bmToggleRisk(this)"><span class="chip-dot"></span>Age 50+</div>
+  <div class="risk-input-row">
+    <input class="risk-input" id="bmRiskInput" type="text"
+      placeholder="e.g. smoker, BRCA mutation, over 50, obesity..."
+      onkeydown="if(event.key==='Enter')bmAddRiskFromInput()" />
+    <button class="risk-submit" onclick="bmAddRiskFromInput()">Add</button>
+  </div>
+  <div class="risk-tags-row" id="bmRiskTags"></div>
+  <div class="risk-hint">
+    Try: <span onclick="bmAddRiskTerm('smoker')">smoker</span>
+    <span onclick="bmAddRiskTerm('BRCA mutation')">BRCA mutation</span>
+    <span onclick="bmAddRiskTerm('obesity')">obesity</span>
+    <span onclick="bmAddRiskTerm('HPV')">HPV</span>
+    <span onclick="bmAddRiskTerm('over 50')">over 50</span>
+    <span onclick="bmAddRiskTerm('heavy drinker')">heavy drinker</span>
+    <span onclick="bmAddRiskTerm('sun exposure')">sun exposure</span>
   </div>
 </div>
 
