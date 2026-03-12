@@ -844,7 +844,7 @@ let bmActiveId = null;
 
 
 // ─── RISK HEATMAP ──────────────────────────────────────────────────────────
-const bmActiveRisk = new Set();
+const bmActiveRisk = new Map();
 
 const BM_RISK_MAP = {
   smoke:   ['smoke','smok','tobacco','cigarette','cigar'],
