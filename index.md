@@ -458,9 +458,8 @@ show_reading_time: false
   <div class="acs-chat-section" id="acsChatSection">
     <div class="acs-chat-inner">
       <div class="acs-chat-header">
-        <div class="acs-chat-eyebrow">American Cancer Society · AI Assistant</div>
-        <h2 class="acs-chat-title">Ask About Any Cancer Type</h2>
-        <p class="acs-chat-sub">Get plain-English answers about symptoms, risk factors, and ACS resources — or ask about anything from the body map above.</p>
+        <h2 class="acs-chat-title">American Cancer Society · AI Assistant</h2>
+        <p class="acs-chat-sub">Recieve answers about symptoms, risk factors, and ACS resources — or seek clarifications about the body map above.</p>
       </div>
 
       <div class="acs-chat-card">
