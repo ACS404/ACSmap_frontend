@@ -1,6 +1,6 @@
 ---
 layout: opencs
-title: Cancer Facts & Figures 2026
+title: Cancer Facts
 permalink: /about/
 comments: true
 ---
