@@ -462,7 +462,282 @@ show_reading_time: false
   <div class="sys-grid" id="bmSysGrid"></div>
 </div>
 
+<!-- ── ACS CANCER CHAT ─────────────────────────────────── -->
+  <div class="acs-chat-section" id="acsChatSection">
+    <div class="acs-chat-inner">
+      <div class="acs-chat-header">
+        <div class="acs-chat-eyebrow">American Cancer Society · AI Assistant</div>
+        <h2 class="acs-chat-title">Ask About Any Cancer Type</h2>
+        <p class="acs-chat-sub">Get plain-English answers about symptoms, risk factors, and ACS resources — or ask about anything from the body map above.</p>
+      </div>
+
+      <div class="acs-chat-card">
+        <div class="acs-chat-mode-row">
+          <label class="acs-chat-label">Response type</label>
+          <div class="acs-mode-toggle">
+            <button class="acs-mode-btn active" id="acsModeHint" onclick="acsChatSetMode('hint')">💡 Hint</button>
+            <button class="acs-mode-btn" id="acsModeInfo" onclick="acsChatSetMode('information')">📚 Full Info</button>
+          </div>
+        </div>
+
+        <label class="acs-chat-label" for="acsChatInput">Your question</label>
+        <textarea id="acsChatInput" class="acs-chat-textarea"
+          placeholder="e.g. What are the early signs of pancreatic cancer? What causes melanoma? How is leukemia treated?"></textarea>
+
+        <div class="acs-chat-actions">
+          <button class="acs-send-btn" id="acsSendBtn" onclick="acsChatSend()">
+            Ask ACS Assistant
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 3l5 4-5 4"/></svg>
+          </button>
+          <button class="acs-clear-btn" id="acsClearBtn" onclick="acsChatClear()">Clear</button>
+        </div>
+
+        <div id="acsChatStatus" class="acs-chat-status" style="display:none;"></div>
+      </div>
+
+      <div id="acsChatLog" class="acs-chat-log" style="display:none;"></div>
+    </div>
+  </div>
+
 </div><!-- #body-map-root -->
+
+<style>
+/* ── ACS CHAT SECTION ──────────────────────────────────── */
+#body-map-root .acs-chat-section {
+  background: var(--cream);
+  padding: 0 48px 64px;
+}
+#body-map-root .acs-chat-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#body-map-root .acs-chat-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px;
+}
+#body-map-root .acs-chat-title {
+  font-family: var(--serif); font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700; color: var(--text); margin-bottom: 8px;
+  line-height: 1.15;
+}
+#body-map-root .acs-chat-sub {
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+  max-width: 600px; margin-bottom: 28px;
+}
+#body-map-root .acs-chat-header {
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+/* Card */
+#body-map-root .acs-chat-card {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(61,44,36,0.06);
+}
+#body-map-root .acs-chat-mode-row {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  margin-bottom: 20px;
+}
+#body-map-root .acs-chat-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 8px;
+}
+#body-map-root .acs-mode-toggle {
+  display: flex;
+  background: var(--tan-light);
+  border-radius: 8px; padding: 3px;
+  border: 1px solid var(--border);
+}
+#body-map-root .acs-mode-btn {
+  padding: 7px 18px; border: none; background: transparent;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--muted); border-radius: 6px; cursor: pointer;
+  transition: all 0.2s;
+}
+#body-map-root .acs-mode-btn.active {
+  background: var(--warm-white); color: var(--text);
+  box-shadow: 0 2px 8px rgba(61,44,36,0.1);
+}
+
+/* Textarea */
+#body-map-root .acs-chat-textarea {
+  width: 100%; min-height: 90px; resize: vertical;
+  padding: 14px 16px; font-size: 14px; font-family: var(--sans);
+  border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--cream); color: var(--text);
+  box-sizing: border-box; margin-bottom: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  line-height: 1.6;
+}
+#body-map-root .acs-chat-textarea::placeholder { color: var(--muted); }
+#body-map-root .acs-chat-textarea:focus {
+  outline: none; border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
+}
+
+/* Action buttons */
+#body-map-root .acs-chat-actions {
+  display: flex; gap: 12px; align-items: center;
+}
+#body-map-root .acs-send-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 24px; background: var(--rose); color: #fff;
+  font-family: var(--sans); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(224,122,106,0.3);
+}
+#body-map-root .acs-send-btn svg { width: 13px; height: 13px; }
+#body-map-root .acs-send-btn:hover:not(:disabled) {
+  background: var(--terra); transform: translateY(-2px);
+}
+#body-map-root .acs-send-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+#body-map-root .acs-clear-btn {
+  padding: 13px 20px; background: transparent;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+#body-map-root .acs-clear-btn:hover { border-color: var(--rose); color: var(--rose); }
+
+/* Status */
+#body-map-root .acs-chat-status {
+  margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  background: var(--sage-pale); border: 1px solid rgba(138,170,140,0.3);
+}
+#body-map-root .acs-chat-status.error {
+  background: var(--rose-pale); border-color: var(--rose-light);
+  color: var(--terra);
+}
+
+/* Chat log */
+#body-map-root .acs-chat-log {
+  margin-top: 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+#body-map-root .acs-bubble {
+  padding: 16px 20px; border-radius: 12px;
+  font-size: 14px; line-height: 1.7; max-width: 85%;
+}
+#body-map-root .acs-bubble-user {
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  color: var(--brown); align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+#body-map-root .acs-bubble-ai {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  color: var(--text); align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 12px rgba(61,44,36,0.05);
+}
+#body-map-root .acs-bubble-ai strong {
+  display: block; margin-bottom: 6px;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rose);
+}
+
+@media (max-width: 820px) {
+  #body-map-root .acs-chat-section { padding: 0 24px 48px; }
+  #body-map-root .acs-chat-actions { flex-wrap: wrap; }
+  #body-map-root .acs-send-btn, #body-map-root .acs-clear-btn { flex: 1; justify-content: center; }
+}
+</style>
+
+<script>
+let acsChatMode = 'hint';
+
+function acsChatSetMode(mode) {
+  acsChatMode = mode;
+  document.getElementById('acsModeHint').classList.toggle('active', mode === 'hint');
+  document.getElementById('acsModeInfo').classList.toggle('active', mode === 'information');
+}
+
+async function acsChatSend() {
+  const input = document.getElementById('acsChatInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  const sendBtn = document.getElementById('acsSendBtn');
+  const statusEl = document.getElementById('acsChatStatus');
+  const logEl = document.getElementById('acsChatLog');
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Thinking…';
+  statusEl.textContent = 'Processing your question…';
+  statusEl.className = 'acs-chat-status';
+  statusEl.style.display = 'block';
+
+  try {
+    const response = await fetch('http://localhost:8009/api/acs-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: acsChatMode, message })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // User bubble
+    const userBubble = document.createElement('div');
+    userBubble.className = 'acs-bubble acs-bubble-user';
+    userBubble.textContent = message;
+
+    // AI bubble
+    const aiBubble = document.createElement('div');
+    aiBubble.className = 'acs-bubble acs-bubble-ai';
+    aiBubble.innerHTML = `<strong>${data.type === 'hint' ? '💡 Hint' : '📚 ACS Info'}</strong>${data.answer}`;
+
+    logEl.appendChild(userBubble);
+    logEl.appendChild(aiBubble);
+    logEl.style.display = 'flex';
+    logEl.scrollTop = logEl.scrollHeight;
+
+    statusEl.style.display = 'none';
+    input.value = '';
+
+  } catch (err) {
+    statusEl.textContent = 'Error: ' + err.message;
+    statusEl.className = 'acs-chat-status error';
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = 'Ask ACS Assistant <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 3l5 4-5 4"/></svg>';
+  }
+}
+
+function acsChatClear() {
+  const logEl = document.getElementById('acsChatLog');
+  logEl.innerHTML = '';
+  logEl.style.display = 'none';
+  document.getElementById('acsChatInput').value = '';
+  document.getElementById('acsChatStatus').style.display = 'none';
+}
+
+// Allow Enter to send (Shift+Enter for newline)
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('acsChatInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      acsChatSend();
+    }
+  });
+});
+</script>
 
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
