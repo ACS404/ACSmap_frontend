@@ -454,14 +454,6 @@ show_reading_time: false
   </div>
 </div>
 
-<!-- ── CATEGORIES GRID ───────────────────────────────────── -->
-<div class="categories-section">
-  <div class="cat-divider" style="margin-top:48px"></div>
-  <h2 class="cat-heading">Browse by Body System</h2>
-  <p class="cat-sub">All 13 body systems covered — click any card to jump to that region on the diagram above.</p>
-  <div class="sys-grid" id="bmSysGrid"></div>
-</div>
-
 <!-- ── ACS CANCER CHAT ─────────────────────────────────── -->
   <div class="acs-chat-section" id="acsChatSection">
     <div class="acs-chat-inner">
@@ -472,12 +464,9 @@ show_reading_time: false
       </div>
 
       <div class="acs-chat-card">
-        <div class="acs-chat-mode-row">
-          <label class="acs-chat-label">Response type</label>
-          <div class="acs-mode-toggle">
-            <button class="acs-mode-btn active" id="acsModeHint" onclick="acsChatSetMode('hint')">💡 Hint</button>
-            <button class="acs-mode-btn" id="acsModeInfo" onclick="acsChatSetMode('information')">📚 Full Info</button>
-          </div>
+        <div class="acs-prompts-row" id="acsPromptsRow">
+          <div class="acs-prompts-label">Common questions</div>
+          <div class="acs-prompts-grid" id="acsPromptsGrid"></div>
         </div>
 
         <label class="acs-chat-label" for="acsChatInput">Your question</label>
@@ -498,8 +487,6 @@ show_reading_time: false
       <div id="acsChatLog" class="acs-chat-log" style="display:none;"></div>
     </div>
   </div>
-
-</div><!-- #body-map-root -->
 
 <style>
 /* ── ACS CHAT SECTION ──────────────────────────────────── */
@@ -530,8 +517,6 @@ show_reading_time: false
   border-top: 1px solid var(--border);
   margin-bottom: 24px;
 }
-
-/* Card */
 #body-map-root .acs-chat-card {
   background: var(--warm-white);
   border: 1.5px solid var(--border);
@@ -539,35 +524,32 @@ show_reading_time: false
   padding: 28px;
   box-shadow: 0 4px 24px rgba(61,44,36,0.06);
 }
-#body-map-root .acs-chat-mode-row {
-  display: flex; align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap; gap: 12px;
-  margin-bottom: 20px;
-}
 #body-map-root .acs-chat-label {
   font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
   text-transform: uppercase; color: var(--muted);
   display: block; margin-bottom: 8px;
 }
-#body-map-root .acs-mode-toggle {
-  display: flex;
-  background: var(--tan-light);
-  border-radius: 8px; padding: 3px;
-  border: 1px solid var(--border);
+#body-map-root .acs-prompts-row {
+  margin-bottom: 16px;
 }
-#body-map-root .acs-mode-btn {
-  padding: 7px 18px; border: none; background: transparent;
-  font-family: var(--sans); font-size: 13px; font-weight: 600;
-  color: var(--muted); border-radius: 6px; cursor: pointer;
-  transition: all 0.2s;
+#body-map-root .acs-prompts-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
 }
-#body-map-root .acs-mode-btn.active {
-  background: var(--warm-white); color: var(--text);
-  box-shadow: 0 2px 8px rgba(61,44,36,0.1);
+#body-map-root .acs-prompts-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
 }
-
-/* Textarea */
+#body-map-root .acs-prompt-btn {
+  padding: 6px 14px; background: var(--sage-pale);
+  border: 1px solid rgba(138,170,140,0.35);
+  border-radius: 20px; cursor: pointer; font-family: var(--sans);
+  font-size: 12px; font-weight: 500; color: var(--text);
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+#body-map-root .acs-prompt-btn:hover {
+  background: var(--tan-light); border-color: var(--tan);
+}
 #body-map-root .acs-chat-textarea {
   width: 100%; min-height: 90px; resize: vertical;
   padding: 14px 16px; font-size: 14px; font-family: var(--sans);
@@ -582,8 +564,6 @@ show_reading_time: false
   outline: none; border-color: var(--rose);
   box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
 }
-
-/* Action buttons */
 #body-map-root .acs-chat-actions {
   display: flex; gap: 12px; align-items: center;
 }
@@ -608,8 +588,6 @@ show_reading_time: false
   color: var(--muted); cursor: pointer; transition: all 0.2s;
 }
 #body-map-root .acs-clear-btn:hover { border-color: var(--rose); color: var(--rose); }
-
-/* Status */
 #body-map-root .acs-chat-status {
   margin-top: 14px; padding: 10px 14px; border-radius: 8px;
   font-size: 13px; font-weight: 500; color: var(--muted);
@@ -619,8 +597,6 @@ show_reading_time: false
   background: var(--rose-pale); border-color: var(--rose-light);
   color: var(--terra);
 }
-
-/* Chat log */
 #body-map-root .acs-chat-log {
   margin-top: 24px;
   display: flex; flex-direction: column; gap: 16px;
@@ -647,7 +623,6 @@ show_reading_time: false
   font-size: 11px; letter-spacing: 0.1em;
   text-transform: uppercase; color: var(--rose);
 }
-
 @media (max-width: 820px) {
   #body-map-root .acs-chat-section { padding: 0 24px 48px; }
   #body-map-root .acs-chat-actions { flex-wrap: wrap; }
@@ -656,12 +631,59 @@ show_reading_time: false
 </style>
 
 <script>
-let acsChatMode = 'hint';
+const ACS_PROMPTS = [
+  { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
+  { text: "What causes lung cancer?",                             keywords: ["lung"] },
+  { text: "How is leukemia treated?",                             keywords: ["leukemia","blood","lymph"] },
+  { text: "What are the risk factors for skin cancer?",           keywords: ["skin","melanoma"] },
+  { text: "What are symptoms of colon cancer?",                   keywords: ["colon","colorectal","bowel"] },
+  { text: "Can cervical cancer be prevented?",                    keywords: ["cervical","hpv","ovarian"] },
+  { text: "What is the survival rate for pancreatic cancer?",     keywords: ["pancreatic","pancreas"] },
+  { text: "How is prostate cancer diagnosed?",                    keywords: ["prostate"] },
+  { text: "What are warning signs of thyroid cancer?",            keywords: ["thyroid","endocrine"] },
+  { text: "How does chemotherapy work?",                          keywords: ["chemo","treatment"] },
+  { text: "What does a cancer screening involve?",                keywords: ["screening","early","detect"] },
+  { text: "What is immunotherapy for cancer?",                    keywords: ["immuno","therapy","treatment"] },
+  { text: "What are common symptoms of brain tumors?",            keywords: ["brain","tumor","glioblastoma"] },
+  { text: "How is bladder cancer treated?",                       keywords: ["bladder","urinary"] },
+  { text: "What causes kidney cancer?",                           keywords: ["kidney","renal"] },
+];
 
-function acsChatSetMode(mode) {
-  acsChatMode = mode;
-  document.getElementById('acsModeHint').classList.toggle('active', mode === 'hint');
-  document.getElementById('acsModeInfo').classList.toggle('active', mode === 'information');
+const ACS_DEFAULT_PROMPTS = [
+  "What are early warning signs of cancer?",
+  "How does cancer spread in the body?",
+  "What does cancer.org recommend for prevention?",
+  "What is the difference between benign and malignant tumors?",
+  "How is cancer staging determined?",
+];
+
+function acsRenderPrompts(query) {
+  const grid = document.getElementById('acsPromptsGrid');
+  if (!grid) return;
+  const q = (query || '').toLowerCase().trim();
+
+  let prompts;
+  if (q.length >= 3) {
+    const matched = ACS_PROMPTS.filter(p =>
+      p.keywords.some(k => q.includes(k) || k.includes(q)) ||
+      p.text.toLowerCase().includes(q)
+    );
+    prompts = matched.length ? matched.map(p => p.text) : ACS_DEFAULT_PROMPTS;
+  } else {
+    prompts = ACS_DEFAULT_PROMPTS;
+  }
+
+  grid.innerHTML = '';
+  prompts.slice(0, 5).forEach(text => {
+    const btn = document.createElement('button');
+    btn.className = 'acs-prompt-btn';
+    btn.textContent = text;
+    btn.addEventListener('click', () => {
+      document.getElementById('acsChatInput').value = text;
+      document.getElementById('acsChatInput').focus();
+    });
+    grid.appendChild(btn);
+  });
 }
 
 async function acsChatSend() {
@@ -683,7 +705,7 @@ async function acsChatSend() {
     const response = await fetch('http://localhost:8009/api/acs-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: acsChatMode, message })
+      body: JSON.stringify({ type: 'information', message })
     });
 
     if (!response.ok) {
@@ -693,15 +715,13 @@ async function acsChatSend() {
 
     const data = await response.json();
 
-    // User bubble
     const userBubble = document.createElement('div');
     userBubble.className = 'acs-bubble acs-bubble-user';
     userBubble.textContent = message;
 
-    // AI bubble
     const aiBubble = document.createElement('div');
     aiBubble.className = 'acs-bubble acs-bubble-ai';
-    aiBubble.innerHTML = `<strong>${data.type === 'hint' ? '💡 Hint' : '📚 ACS Info'}</strong>${data.answer}`;
+    aiBubble.innerHTML = `<strong>📚 ACS Info</strong>${data.answer}`;
 
     logEl.appendChild(userBubble);
     logEl.appendChild(aiBubble);
@@ -710,6 +730,7 @@ async function acsChatSend() {
 
     statusEl.style.display = 'none';
     input.value = '';
+    acsRenderPrompts('');
 
   } catch (err) {
     statusEl.textContent = 'Error: ' + err.message;
@@ -726,11 +747,14 @@ function acsChatClear() {
   logEl.style.display = 'none';
   document.getElementById('acsChatInput').value = '';
   document.getElementById('acsChatStatus').style.display = 'none';
+  acsRenderPrompts('');
 }
 
-// Allow Enter to send (Shift+Enter for newline)
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('acsChatInput').addEventListener('keydown', (e) => {
+  acsRenderPrompts('');
+  const inp = document.getElementById('acsChatInput');
+  inp.addEventListener('input', () => acsRenderPrompts(inp.value));
+  inp.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       acsChatSend();
@@ -738,6 +762,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+<!-- ── CATEGORIES GRID ───────────────────────────────────── -->
+<div class="categories-section">
+  <div class="cat-divider" style="margin-top:48px"></div>
+  <h2 class="cat-heading">Browse by Body System</h2>
+  <p class="cat-sub">All 13 body systems covered — click any card to jump to that region on the diagram above.</p>
+  <div class="sys-grid" id="bmSysGrid"></div>
+</div>
+
 
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
