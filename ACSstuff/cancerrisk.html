@@ -789,7 +789,8 @@ title: Risk Calculator
 
 </div>
 
-<script>
+<script type="module">
+  import { pythonURI } from '/assets/js/api/config.js';
 // ── STATE ──────────────────────────────────────────────────────────────────
 const state = {
   age: null, sex: null, race: null,
@@ -1156,7 +1157,7 @@ async function callGemini(result, cLabel) {
   };
 
   try {
-    const res = await fetch('/api/cancer/risk-analysis', {
+    const res = await fetch(`${pythonURI}/api/cancer/risk-analysis`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
