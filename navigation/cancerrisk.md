@@ -435,7 +435,6 @@ title: Risk Calculator
 <div class="page">
 
   <div class="page-header">
-    <p class="eyebrow">Machine Learning · ACS 2026 Data</p>
     <h1>Cancer Risk<br><em>ML Predictor</em></h1>
     <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts & Figures 2026 epidemiological data, will predict your relative cancer risk category and identify your key modifiable risk factors.</p>
   </div>
