@@ -1,7 +1,7 @@
 ---
 layout: opencs
 title: Cancer Facts
-permalink: /about/
+permalink: /facts/
 comments: true
 ---
 
