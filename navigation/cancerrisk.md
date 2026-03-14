@@ -467,8 +467,8 @@ title: Risk Calculator
         <div class="chip" data-val="white">White</div>
         <div class="chip" data-val="black">Black / African American</div>
         <div class="chip" data-val="hispanic">Hispanic / Latino</div>
-        <div class="chip" data-val="aian">AIAN</div>
-        <div class="chip" data-val="aapi">AAPI</div>
+        <div class="chip" data-val="aian">American Indian / Alaskan Native</div>
+        <div class="chip" data-val="aapi">Asian American / Pacific Islander</div>
       </div>
     </div>
 
@@ -574,7 +574,7 @@ title: Risk Calculator
 </div>
 
 <script type="module">
-  import { pythonURI } from '/assets/js/api/config.js';
+  import { pythonURI, fetchOptions } from '/assets/js/api/config.js';
 
 // ── STATE ──────────────────────────────────────────────────────────────────
 const state = {
@@ -620,12 +620,7 @@ window.predictRisk = async function() {
 
   try {
     // Call API
-    const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(state)
-    });
+    const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, fetchOptions);
 
     if (!res.ok) {
       const err = await res.json();
