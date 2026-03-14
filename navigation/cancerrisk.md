@@ -45,6 +45,108 @@ title: Risk Calculator
     min-height: 100vh;
   }
 
+  /* ── SCROLL PROGRESS SIDEBAR ── */
+  .progress-sidebar {
+    position: fixed;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .progress-sidebar.visible { opacity: 1; }
+
+  .progress-pct {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--rose);
+    margin-bottom: 10px;
+  }
+
+  .progress-track {
+    width: 3px;
+    height: 52px;
+    background: var(--tan-light);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-fill {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 0%;
+    background: linear-gradient(to bottom, var(--rose-light), var(--rose));
+    border-radius: 2px;
+    transition: height 0.4s cubic-bezier(.22,1,.36,1);
+  }
+
+  .progress-dot-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 4px 0;
+  }
+  .progress-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--tan-light);
+    border: 2px solid var(--warm-white);
+    transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 1;
+  }
+  .progress-dot.done {
+    background: var(--rose);
+  }
+  .progress-dot.active {
+    background: var(--terracotta);
+    transform: scale(1.35);
+    box-shadow: 0 0 0 4px rgba(224,122,106,0.2);
+  }
+
+  .progress-dot-wrap .tip {
+    position: absolute;
+    left: 20px;
+    background: var(--text-main);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .progress-dot-wrap:hover .tip { opacity: 1; }
+
+  .progress-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    margin-top: 12px;
+    opacity: 0.6;
+  }
+
+  @media(max-width: 880px) { .progress-sidebar { display: none; } }
+
+  /* ── PAGE ── */
   .page {
     max-width: 900px;
     margin: 0 auto;
@@ -52,19 +154,7 @@ title: Risk Calculator
   }
 
   /* ── HEADER ── */
-  .page-header {
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  .eyebrow {
-    font-family: var(--sans);
-    font-size: 11px;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    color: var(--rose);
-    font-weight: 600;
-    margin-bottom: 12px;
-  }
+  .page-header { text-align: center; margin-bottom: 40px; }
   .page-header h1 {
     font-family: var(--serif);
     font-size: clamp(32px, 5vw, 52px);
@@ -107,10 +197,31 @@ title: Risk Calculator
     line-height: 1.6;
   }
 
-  /* ── FORM ── */
+  /* ── SECTION HEADINGS ── */
+  .section-heading {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin: 36px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-heading:first-of-type { margin-top: 0; }
+  .section-icon {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: var(--rose-pale);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+  }
+
+  /* ── FORM ELEMENTS ── */
   .field { margin-bottom: 22px; }
   .field:last-child { margin-bottom: 0; }
-
   .field label {
     display: block;
     font-size: 12px;
@@ -120,7 +231,6 @@ title: Risk Calculator
     color: var(--text-muted);
     margin-bottom: 8px;
   }
-
   .field select,
   .field input[type=number] {
     width: 100%;
@@ -137,28 +247,19 @@ title: Risk Calculator
     cursor: pointer;
   }
   .field select:focus,
-  .field input[type=number]:focus { border-color: var(--rose); box-shadow: 0 0 0 3px rgba(224,122,106,.12); }
-
-  .select-wrap {
-    position: relative;
+  .field input[type=number]:focus {
+    border-color: var(--rose);
+    box-shadow: 0 0 0 3px rgba(224,122,106,.12);
   }
+  .select-wrap { position: relative; }
   .select-wrap::after {
     content: '▾';
-    position: absolute;
-    right: 14px;
-    top: 50%;
+    position: absolute; right: 14px; top: 50%;
     transform: translateY(-50%);
-    color: var(--tan);
-    pointer-events: none;
-    font-size: 13px;
+    color: var(--tan); pointer-events: none; font-size: 13px;
   }
 
-  /* chips */
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
     padding: 7px 16px;
     border-radius: 20px;
@@ -173,13 +274,17 @@ title: Risk Calculator
   }
   .chip:hover { border-color: var(--rose-light); color: var(--text-main); }
   .chip.selected {
-    background: var(--rose);
-    border-color: var(--rose);
-    color: white;
-    font-weight: 600;
+    background: var(--rose); border-color: var(--rose);
+    color: white; font-weight: 600;
   }
 
-  /* toggle */
+  .toggles-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+  }
+  @media(max-width: 600px) { .toggles-grid { grid-template-columns: 1fr; } }
+
   .toggle-row {
     display: flex;
     align-items: center;
@@ -189,30 +294,22 @@ title: Risk Calculator
   }
   .toggle-row:last-child { border-bottom: none; }
   .toggle-label { font-size: 14px; color: var(--text-main); }
-  .toggle-note { font-size: 12px; color: var(--text-muted); }
 
   .toggle {
-    position: relative;
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-    margin-left: 16px;
+    position: relative; width: 44px; height: 24px;
+    flex-shrink: 0; margin-left: 16px;
   }
   .toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
   .toggle-track {
     position: absolute; inset: 0;
     background: var(--tan-light);
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background .2s;
+    border-radius: 12px; cursor: pointer; transition: background .2s;
   }
   .toggle-track::after {
     content: '';
-    position: absolute;
-    top: 3px; left: 3px;
+    position: absolute; top: 3px; left: 3px;
     width: 18px; height: 18px;
-    background: white;
-    border-radius: 50%;
+    background: white; border-radius: 50%;
     transition: transform .2s;
     box-shadow: 0 1px 4px rgba(0,0,0,.15);
   }
@@ -220,39 +317,25 @@ title: Risk Calculator
   .toggle input:checked + .toggle-track::after { transform: translateX(20px); }
 
   .field-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
   }
   @media(max-width:520px){ .field-grid { grid-template-columns: 1fr; } }
 
-  /* ── BUTTONS ── */
   .btn-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 28px;
-    justify-content: flex-end;
+    display: flex; gap: 12px;
+    margin-top: 28px; justify-content: flex-end;
   }
   .btn {
-    font-family: var(--sans);
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 10px;
-    padding: 11px 24px;
-    cursor: pointer;
-    border: none;
-    transition: all .2s;
+    font-family: var(--sans); font-size: 14px; font-weight: 600;
+    border-radius: 10px; padding: 11px 24px;
+    cursor: pointer; border: none; transition: all .2s;
   }
-  .btn-primary {
-    background: var(--rose);
-    color: white;
-  }
+  .btn-primary { background: var(--rose); color: white; }
   .btn-primary:hover { background: var(--terracotta); transform: translateY(-1px); }
   .btn-primary:disabled { background: var(--tan-light); color: var(--text-muted); transform: none; cursor: not-allowed; }
 
   /* ── RESULTS ── */
   .results-hidden { display: none; }
-
   .risk-hero {
     text-align: center;
     padding: 28px 0 20px;
@@ -260,156 +343,83 @@ title: Risk Calculator
     margin-bottom: 28px;
   }
   .risk-category-label {
-    font-family: var(--serif);
-    font-size: 13px;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
+    font-family: var(--serif); font-size: 13px;
+    letter-spacing: .15em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 8px;
   }
   .risk-number {
     font-family: var(--serif);
     font-size: clamp(52px, 10vw, 80px);
-    font-weight: 600;
-    line-height: 1;
-    margin-bottom: 6px;
+    font-weight: 600; line-height: 1; margin-bottom: 6px;
     transition: color .3s;
   }
-  .risk-label {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-bottom: 16px;
-  }
+  .risk-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
   .risk-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: .06em;
-    text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 18px; border-radius: 20px;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: .06em; text-transform: uppercase;
   }
   .risk-badge.low { background: var(--sage-pale); color: #4a7a4c; }
   .risk-badge.high { background: var(--rose-pale); color: var(--terracotta); }
 
-  /* gauge */
   .gauge-wrap { margin: 20px 0 8px; }
   .gauge-track {
-    height: 8px;
-    background: var(--tan-light);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 6px;
+    height: 8px; background: var(--tan-light);
+    border-radius: 4px; overflow: hidden; margin-bottom: 6px;
   }
   .gauge-fill {
-    height: 100%;
-    border-radius: 4px;
-    width: 0;
+    height: 100%; border-radius: 4px; width: 0;
     transition: width 1s cubic-bezier(.22,1,.36,1);
   }
   .gauge-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: .05em;
-    text-transform: uppercase;
+    display: flex; justify-content: space-between;
+    font-size: 10px; color: var(--text-muted);
+    letter-spacing: .05em; text-transform: uppercase;
   }
 
-  /* risk factors list */
-  .risk-factors-list {
-    margin-bottom: 28px;
-  }
+  .risk-factors-list { margin-bottom: 28px; }
   .risk-factor-item {
-    padding: 14px 16px;
-    background: var(--cream);
-    border-radius: 10px;
-    margin-bottom: 10px;
+    padding: 14px 16px; background: var(--cream);
+    border-radius: 10px; margin-bottom: 10px;
     border-left: 3px solid var(--tan-light);
   }
   .risk-factor-item.high { border-left-color: var(--terracotta); }
   .risk-factor-item.moderate { border-left-color: #d9a566; }
   .rf-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 4px;
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 4px;
   }
-  .rf-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-main);
-  }
+  .rf-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
   .rf-impact {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    padding: 3px 10px;
-    border-radius: 12px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .08em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 12px;
   }
   .rf-impact.high { background: var(--rose-pale); color: var(--terracotta); }
   .rf-impact.moderate { background: #fff3e0; color: #9b6a00; }
-  .rf-detail {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
+  .rf-detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
 
-  /* feature importances */
-  .importance-grid {
-    display: grid;
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .importance-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .importance-label {
-    min-width: 140px;
-    font-size: 12px;
-    color: var(--text-muted);
-  }
+  .importance-grid { display: grid; gap: 10px; margin-bottom: 24px; }
+  .importance-row { display: flex; align-items: center; gap: 12px; }
+  .importance-label { min-width: 160px; font-size: 12px; color: var(--text-muted); }
   .importance-bar-track {
-    flex: 1;
-    height: 6px;
-    background: var(--tan-light);
-    border-radius: 3px;
-    overflow: hidden;
+    flex: 1; height: 6px;
+    background: var(--tan-light); border-radius: 3px; overflow: hidden;
   }
   .importance-bar-fill {
-    height: 100%;
-    background: var(--rose);
-    border-radius: 3px;
+    height: 100%; background: var(--rose); border-radius: 3px;
     transition: width 1s cubic-bezier(.22,1,.36,1);
   }
-  .importance-val {
-    font-size: 12px;
-    font-weight: 600;
-    min-width: 40px;
-    text-align: right;
-    color: var(--text-main);
-  }
+  .importance-val { font-size: 12px; font-weight: 600; min-width: 40px; text-align: right; color: var(--text-main); }
 
-  /* loading */
   .ai-loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: var(--text-muted);
-    font-size: 13px;
-    padding: 40px 20px;
+    display: flex; align-items: center; justify-content: center;
+    gap: 10px; color: var(--text-muted); font-size: 13px; padding: 40px 20px;
   }
   .dots span {
-    display: inline-block;
-    width: 6px; height: 6px;
-    background: var(--rose);
-    border-radius: 50%;
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--rose); border-radius: 50%;
     animation: pulse 1.2s ease-in-out infinite;
   }
   .dots span:nth-child(2) { animation-delay: .2s; }
@@ -420,33 +430,66 @@ title: Risk Calculator
   }
 
   .source-note {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-align: center;
-    line-height: 1.6;
-    margin-top: 8px;
-    padding: 16px;
-    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--text-muted);
+    text-align: center; line-height: 1.6; margin-top: 8px;
+    padding: 16px; border-top: 1px solid var(--border);
   }
   .source-note strong { color: var(--text-main); }
 </style>
 </head>
 <body>
+
+<!-- ── SCROLL PROGRESS SIDEBAR ── -->
+<nav class="progress-sidebar" id="progressSidebar" aria-label="Form completion progress">
+  <div class="progress-pct" id="progressPct">0%</div>
+
+  <div class="progress-dot-wrap" id="wrap-demographics">
+    <div class="progress-dot active" id="dot-demographics"></div>
+    <span class="tip">Demographics</span>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="fill-1"></div></div>
+
+  <div class="progress-dot-wrap" id="wrap-lifestyle">
+    <div class="progress-dot" id="dot-lifestyle"></div>
+    <span class="tip">Lifestyle</span>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="fill-2"></div></div>
+
+  <div class="progress-dot-wrap" id="wrap-medical">
+    <div class="progress-dot" id="dot-medical"></div>
+    <span class="tip">Medical History</span>
+  </div>
+
+  <div class="progress-track"><div class="progress-fill" id="fill-3"></div></div>
+
+  <div class="progress-dot-wrap" id="wrap-environmental">
+    <div class="progress-dot" id="dot-environmental"></div>
+    <span class="tip">Environmental</span>
+  </div>
+
+  <div class="progress-label">Progress</div>
+</nav>
+
 <div class="page">
 
   <div class="page-header">
     <h1>Cancer Risk<br><em>ML Predictor</em></h1>
-    <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts & Figures 2026 epidemiological data, will predict your relative cancer risk category and identify your key modifiable risk factors.</p>
+    <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts &amp; Figures 2026 epidemiological data, will predict your relative cancer risk category and identify your key modifiable risk factors.</p>
   </div>
 
   <div class="card">
-    <div class="card-title">Patient Information</div>
-    <div class="card-sub">Provide your demographic and lifestyle information for ML-based risk prediction</div>
+
+    <!-- SECTION 1: DEMOGRAPHICS -->
+    <div class="section-heading" id="section-demographics">
+      <span class="section-icon">𐦂𖨆𐀪𖠋</span>Demographics
+    </div>
 
     <div class="field-grid">
       <div class="field">
         <label>Age</label>
-        <input type="number" id="age" min="18" max="100" placeholder="e.g. 55" value="">
+        <input type="number" id="age" min="18" max="100" placeholder="e.g. 55">
       </div>
       <div class="field">
         <label>Biological Sex</label>
@@ -469,6 +512,11 @@ title: Risk Calculator
         <div class="chip" data-val="aian">American Indian / Alaskan Native</div>
         <div class="chip" data-val="aapi">Asian American / Pacific Islander</div>
       </div>
+    </div>
+
+    <!-- SECTION 2: LIFESTYLE -->
+    <div class="section-heading" id="section-lifestyle">
+      <span class="section-icon">☕︎</span>Lifestyle Factors
     </div>
 
     <div class="field">
@@ -523,19 +571,65 @@ title: Risk Calculator
       </div>
     </div>
 
-    <div class="field">
-      <label>Medical History</label>
+    <!-- SECTION 3: MEDICAL HISTORY -->
+    <div class="section-heading" id="section-medical">
+      <span class="section-icon">☤</span>Medical History
+    </div>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px">Toggle any conditions that apply to you</p>
+
+    <div class="toggles-grid">
       <div class="toggle-row">
-        <div><div class="toggle-label">Family history of cancer</div></div>
+        <div class="toggle-label">Family history of cancer</div>
         <label class="toggle"><input type="checkbox" id="familyHistory"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div><div class="toggle-label">Type 2 Diabetes</div></div>
+        <div class="toggle-label">Type 2 Diabetes</div>
         <label class="toggle"><input type="checkbox" id="diabetes"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div><div class="toggle-label">Hepatitis B or C infection</div></div>
+        <div class="toggle-label">Hepatitis B or C</div>
         <label class="toggle"><input type="checkbox" id="hepatitis"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">HPV infection</div>
+        <label class="toggle"><input type="checkbox" id="hpv"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">H. pylori infection</div>
+        <label class="toggle"><input type="checkbox" id="hPylori"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Inflammatory Bowel Disease</div>
+        <label class="toggle"><input type="checkbox" id="ibd"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Prior radiation therapy</div>
+        <label class="toggle"><input type="checkbox" id="radiationHistory"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Immunosuppression</div>
+        <label class="toggle"><input type="checkbox" id="immunosuppression"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">Precancerous lesions</div>
+        <label class="toggle"><input type="checkbox" id="precancerousLesions"><div class="toggle-track"></div></label>
+      </div>
+    </div>
+
+    <!-- SECTION 4: ENVIRONMENTAL -->
+    <div class="section-heading" id="section-environmental">
+      <span class="section-icon">☀</span>Environmental Exposures
+    </div>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px">Toggle any exposures that apply to you</p>
+
+    <div class="toggles-grid">
+      <div class="toggle-row">
+        <div class="toggle-label">Occupational chemical exposure</div>
+        <label class="toggle"><input type="checkbox" id="occupationalExposure"><div class="toggle-track"></div></label>
+      </div>
+      <div class="toggle-row">
+        <div class="toggle-label">High UV / sun exposure history</div>
+        <label class="toggle"><input type="checkbox" id="uvExposure"><div class="toggle-track"></div></label>
       </div>
     </div>
 
@@ -544,31 +638,8 @@ title: Risk Calculator
     </div>
   </div>
 
-  <div class="card results-hidden" id="results">
-    <div class="card-title">Your ML Risk Prediction</div>
-    <div class="card-sub" id="results-sub">Based on machine learning analysis of your profile</div>
-
-    <div class="risk-hero">
-      <div class="risk-category-label">Predicted Risk Category</div>
-      <div class="risk-number" id="res-risk-pct">—</div>
-      <div class="risk-label" id="res-label">machine learning prediction</div>
-      <div class="gauge-wrap">
-        <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
-        <div class="gauge-labels"><span>Low Risk</span><span>High Risk</span></div>
-      </div>
-      <div class="risk-badge" id="risk-badge">—</div>
-    </div>
-
-    <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:14px;color:var(--text-main)">Your Key Risk Factors</div>
-    <div class="risk-factors-list" id="risk-factors-list"></div>
-
-    <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:14px;color:var(--text-main)">Feature Importance Analysis</div>
-    <div class="importance-grid" id="importance-grid"></div>
-
-    <div class="source-note">
-      <strong>Model:</strong> Ensemble ML (Logistic Regression + Random Forest) trained on ACS Cancer Facts & Figures 2026 data. This is for educational purposes only and does not constitute medical advice. Consult a healthcare provider for personalized screening recommendations.
-    </div>
-  </div>
+  <!-- RESULTS -->
+  <div class="card results-hidden" id="results"></div>
 
 </div>
 
@@ -581,25 +652,83 @@ const state = {
   smoking_status: null, pack_years: 0,
   bmi_category: null, alcohol_consumption: null,
   physical_activity: null, diet_quality: null,
-  family_history: false, diabetes: false, hepatitis: false
+  family_history: false, diabetes: false, hepatitis: false,
+  hpv: false, h_pylori: false, ibd: false,
+  radiation_history: false, immunosuppression: false,
+  precancerous_lesions: false,
+  occupational_exposure: false, uv_exposure: false
 };
 
-// ── HELPER FUNCTIONS ───────────────────────────────────────────────────────
+const REQUIRED = ['age','sex','race','smoking_status','bmi_category',
+                  'alcohol_consumption','physical_activity','diet_quality'];
+
+const DEMO_KEYS    = ['age','sex','race'];
+const LIFESTYLE_KEYS = ['smoking_status','bmi_category','alcohol_consumption','physical_activity','diet_quality'];
+
+// ── PROGRESS ───────────────────────────────────────────────────────────────
+function pct(keys) {
+  return keys.filter(k => state[k] !== null && state[k] !== '').length / keys.length;
+}
+
+function updateProgress() {
+  const demoPct      = pct(DEMO_KEYS);
+  const lifestylePct = pct(LIFESTYLE_KEYS);
+  const overall      = Math.round(pct(REQUIRED) * 100);
+
+  document.getElementById('progressPct').textContent = overall + '%';
+
+  // Track fills (0–100)
+  document.getElementById('fill-1').style.height = (demoPct * 100) + '%';
+  document.getElementById('fill-2').style.height = (demoPct === 1 ? lifestylePct * 100 : 0) + '%';
+  document.getElementById('fill-3').style.height = (lifestylePct === 1 ? 50 : 0) + '%';
+
+  // Dot states
+  setDot('dot-demographics',  demoPct === 1,  demoPct > 0 && demoPct < 1);
+  setDot('dot-lifestyle',     lifestylePct === 1 && demoPct === 1,
+                              demoPct === 1 && lifestylePct < 1);
+  setDot('dot-medical',       false, lifestylePct === 1);
+  setDot('dot-environmental', false, lifestylePct === 1);
+}
+
+function setDot(id, done, active) {
+  const el = document.getElementById(id);
+  el.classList.toggle('done', done);
+  el.classList.toggle('active', !done && active);
+}
+
+function showSidebar() {
+  document.getElementById('progressSidebar').classList.add('visible');
+}
+
+// Dot-click scrolls to section
+[
+  ['wrap-demographics',  'section-demographics'],
+  ['wrap-lifestyle',     'section-lifestyle'],
+  ['wrap-medical',       'section-medical'],
+  ['wrap-environmental', 'section-environmental'],
+].forEach(([wrapId, sectionId]) => {
+  document.getElementById(wrapId).addEventListener('click', () => {
+    document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// ── CHIP INIT ──────────────────────────────────────────────────────────────
 function initChips(containerId, stateKey) {
-  const container = document.getElementById(containerId);
-  container.querySelectorAll('.chip').forEach(chip => {
+  document.getElementById(containerId).querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', () => {
-      container.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+      document.getElementById(containerId).querySelectorAll('.chip')
+        .forEach(c => c.classList.remove('selected'));
       chip.classList.add('selected');
       state[stateKey] = chip.dataset.val;
+      showSidebar();
+      updateProgress();
     });
   });
 }
 
+// ── VALIDATE ───────────────────────────────────────────────────────────────
 function validate() {
-  const required = ['age', 'sex', 'race', 'smoking_status', 'bmi_category',
-                   'alcohol_consumption', 'physical_activity', 'diet_quality'];
-  const missing = required.filter(k => !state[k]);
+  const missing = REQUIRED.filter(k => !state[k]);
   if (missing.length > 0) {
     alert(`Please fill in: ${missing.join(', ')}`);
     return false;
@@ -607,55 +736,89 @@ function validate() {
   return true;
 }
 
-// ── PREDICTION ─────────────────────────────────────────────────────────────
+// ── PREDICT ────────────────────────────────────────────────────────────────
 window.predictRisk = async function() {
   if (!validate()) return;
 
-  // Show loading state
   const resultsCard = document.getElementById('results');
   resultsCard.classList.remove('results-hidden');
   resultsCard.innerHTML = '<div class="ai-loading"><div class="dots"><span></span><span></span><span></span></div> Running ML prediction…</div>';
   resultsCard.scrollIntoView({ behavior: 'smooth' });
 
+  // Mark all complete in sidebar
+  ['dot-demographics','dot-lifestyle','dot-medical','dot-environmental'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('active'); el.classList.add('done');
+  });
+  ['fill-1','fill-2','fill-3'].forEach(id => {
+    document.getElementById(id).style.height = '100%';
+  });
+  document.getElementById('progressPct').textContent = '100%';
+
   try {
-    // Call API
-    const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, fetchOptions);
+    const payload = {
+      age: state.age, sex: state.sex, race: state.race,
+      smoking_status: state.smoking_status, pack_years: state.pack_years,
+      bmi_category: state.bmi_category,
+      alcohol_consumption: state.alcohol_consumption,
+      physical_activity: state.physical_activity,
+      diet_quality: state.diet_quality,
+      family_history: state.family_history,
+      diabetes: state.diabetes,
+      hepatitis: state.hepatitis,
+      hpv: state.hpv,
+      h_pylori: state.h_pylori,
+      ibd: state.ibd,
+      radiation_history: state.radiation_history,
+      immunosuppression: state.immunosuppression,
+      precancerous_lesions: state.precancerous_lesions,
+      occupational_exposure: state.occupational_exposure,
+      uv_exposure: state.uv_exposure
+    };
+
+    const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, {
+      ...fetchOptions,
+      method: 'POST',
+      headers: { ...(fetchOptions.headers || {}), 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
 
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error || res.statusText);
     }
 
-    const data = await res.json();
-    displayResults(data);
+    displayResults(await res.json());
 
   } catch(e) {
-    resultsCard.innerHTML = `<div class="card-sub" style="color:var(--terracotta)">Error: ${e.message}. Make sure you are logged in and the backend is running.</div>`;
+    resultsCard.innerHTML = `<div class="card-sub" style="color:var(--terracotta);padding:20px">
+      Error: ${e.message}. Make sure you are logged in and the backend is running.
+    </div>`;
   }
 };
 
+// ── DISPLAY RESULTS ────────────────────────────────────────────────────────
 function displayResults(data) {
   const resultsCard = document.getElementById('results');
-  const isHighRisk = data.risk_category === 'high';
-  const prob = isHighRisk ? data.high_risk_probability : data.low_risk_probability;
+  const isHigh = data.risk_category === 'high';
+  const prob = isHigh ? data.high_risk_probability : data.low_risk_probability;
 
-  // Rebuild results HTML
   resultsCard.innerHTML = `
     <div class="card-title">Your ML Risk Prediction</div>
     <div class="card-sub">Based on machine learning analysis of your profile</div>
 
     <div class="risk-hero">
       <div class="risk-category-label">Predicted Risk Category</div>
-      <div class="risk-number" id="res-risk-pct" style="color:${isHighRisk ? 'var(--terracotta)' : 'var(--sage)'}">
+      <div class="risk-number" style="color:${isHigh ? 'var(--terracotta)' : 'var(--sage)'}">
         ${(prob * 100).toFixed(1)}%
       </div>
-      <div class="risk-label">${data.risk_category.toUpperCase()} RISK (${(data.model_confidence * 100).toFixed(0)}% confidence)</div>
+      <div class="risk-label">${data.risk_category.toUpperCase()} RISK &nbsp;·&nbsp; ${(data.model_confidence*100).toFixed(0)}% model confidence</div>
       <div class="gauge-wrap">
         <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
         <div class="gauge-labels"><span>Low Risk</span><span>High Risk</span></div>
       </div>
       <div class="risk-badge ${data.risk_category}">
-        ${isHighRisk ? '↑ Higher Than Average Risk' : '↓ Lower Than Average Risk'}
+        ${isHigh ? '↑ Higher Than Average Risk' : '↓ Lower Than Average Risk'}
       </div>
     </div>
 
@@ -666,21 +829,20 @@ function displayResults(data) {
     <div class="importance-grid" id="importance-grid"></div>
 
     <div class="source-note">
-      <strong>Model:</strong> Ensemble ML (Logistic Regression + Random Forest) trained on ACS Cancer Facts & Figures 2026 data. This is for educational purposes only and does not constitute medical advice. Consult a healthcare provider for personalized screening recommendations.
+      <strong>Model:</strong> Ensemble ML (Logistic Regression + Random Forest) trained on ACS Cancer Facts &amp; Figures 2026 data.
+      This is for educational purposes only and does not constitute medical advice.
+      Consult a healthcare provider for personalized screening recommendations.
     </div>
   `;
 
-  // Animate gauge
   setTimeout(() => {
     const gf = document.getElementById('gauge-fill');
-    const width = isHighRisk ? (prob * 100) : (50 - prob * 50);
-    gf.style.width = width + '%';
-    gf.style.background = isHighRisk ? 'var(--terracotta)' : 'var(--sage)';
+    gf.style.width = Math.max(4, isHigh ? prob * 100 : 50 - prob * 50) + '%';
+    gf.style.background = isHigh ? 'var(--terracotta)' : 'var(--sage)';
   }, 200);
 
-  // Render risk factors
   const rfList = document.getElementById('risk-factors-list');
-  if (data.risk_factors && data.risk_factors.length > 0) {
+  if (data.risk_factors?.length > 0) {
     rfList.innerHTML = data.risk_factors.map(rf => `
       <div class="risk-factor-item ${rf.impact}">
         <div class="rf-header">
@@ -694,53 +856,80 @@ function displayResults(data) {
     rfList.innerHTML = '<div class="card-sub">No significant modifiable risk factors identified. Continue healthy lifestyle behaviors!</div>';
   }
 
-  // Render feature importances
   const impGrid = document.getElementById('importance-grid');
-  const sortedImps = Object.entries(data.feature_importances)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6);
-  
-  impGrid.innerHTML = sortedImps.map(([feature, imp]) => `
+  const sorted = Object.entries(data.feature_importances)
+    .sort((a,b) => b[1]-a[1]).slice(0, 8);
+
+  impGrid.innerHTML = sorted.map(([feat, imp]) => `
     <div class="importance-row">
-      <div class="importance-label">${feature.replace(/_/g, ' ')}</div>
+      <div class="importance-label">${feat.replace(/_/g,' ')}</div>
       <div class="importance-bar-track">
-        <div class="importance-bar-fill" style="width:0%" data-w="${(imp * 100).toFixed(0)}"></div>
+        <div class="importance-bar-fill" style="width:0%" data-w="${(imp*100).toFixed(0)}"></div>
       </div>
-      <div class="importance-val">${(imp * 100).toFixed(1)}%</div>
+      <div class="importance-val">${(imp*100).toFixed(1)}%</div>
     </div>
   `).join('');
 
   setTimeout(() => {
-    impGrid.querySelectorAll('.importance-bar-fill').forEach(el => {
-      el.style.width = el.dataset.w + '%';
-    });
+    impGrid.querySelectorAll('.importance-bar-fill')
+      .forEach(el => { el.style.width = el.dataset.w + '%'; });
   }, 300);
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('age').addEventListener('input', e => { state.age = parseInt(e.target.value) || null; });
-  document.getElementById('sex').addEventListener('change', e => { state.sex = e.target.value || null; });
-  document.getElementById('packYears').addEventListener('input', e => { state.pack_years = parseInt(e.target.value) || 0; });
+  document.getElementById('age').addEventListener('input', e => {
+    state.age = parseInt(e.target.value) || null;
+    showSidebar(); updateProgress();
+  });
+  document.getElementById('sex').addEventListener('change', e => {
+    state.sex = e.target.value || null;
+    showSidebar(); updateProgress();
+  });
+  document.getElementById('packYears').addEventListener('input', e => {
+    state.pack_years = parseInt(e.target.value) || 0;
+  });
 
-  initChips('race-chips', 'race');
-  initChips('smoke-chips', 'smoking_status');
-  initChips('bmi-chips', 'bmi_category');
-  initChips('alcohol-chips', 'alcohol_consumption');
+  initChips('race-chips',     'race');
+  initChips('smoke-chips',    'smoking_status');
+  initChips('bmi-chips',      'bmi_category');
+  initChips('alcohol-chips',  'alcohol_consumption');
   initChips('activity-chips', 'physical_activity');
-  initChips('diet-chips', 'diet_quality');
+  initChips('diet-chips',     'diet_quality');
 
-  document.getElementById('familyHistory').addEventListener('change', e => { state.family_history = e.target.checked; });
-  document.getElementById('diabetes').addEventListener('change', e => { state.diabetes = e.target.checked; });
-  document.getElementById('hepatitis').addEventListener('change', e => { state.hepatitis = e.target.checked; });
-
-  // Show pack-years field for smokers
-  document.getElementById('smoke-chips').querySelectorAll('.chip').forEach(chip => {
-    chip.addEventListener('click', () => {
-      const field = document.getElementById('pack-years-field');
-      field.style.display = (chip.dataset.val !== 'never') ? 'block' : 'none';
+  const checkboxMap = {
+    familyHistory:       'family_history',
+    diabetes:            'diabetes',
+    hepatitis:           'hepatitis',
+    hpv:                 'hpv',
+    hPylori:             'h_pylori',
+    ibd:                 'ibd',
+    radiationHistory:    'radiation_history',
+    immunosuppression:   'immunosuppression',
+    precancerousLesions: 'precancerous_lesions',
+    occupationalExposure:'occupational_exposure',
+    uvExposure:          'uv_exposure'
+  };
+  Object.entries(checkboxMap).forEach(([elId, key]) => {
+    document.getElementById(elId).addEventListener('change', e => {
+      state[key] = e.target.checked;
+      showSidebar(); updateProgress();
     });
   });
+
+  // Pack-years visibility
+  document.getElementById('smoke-chips').querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.getElementById('pack-years-field').style.display =
+        chip.dataset.val !== 'never' ? 'block' : 'none';
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) showSidebar();
+  }, { passive: true });
+
+  updateProgress();
 });
 </script>
 </body>
