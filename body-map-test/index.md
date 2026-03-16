@@ -876,7 +876,7 @@ show_reading_time: false
     </a>
     <div class="hero-cta-row">
       <button class="hero-cta hero-cta-secondary" onclick="bmOpenPersonalizedReport()" type="button">
-        Download My Report
+        Personalized Report
         <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 1v8M3.5 6.5L7 10l3.5-3.5M2 13h10"/></svg>
       </button>
     </div>
@@ -1711,7 +1711,8 @@ function bmGetRecommendedScreenings(profile, elevatedRegions) {
 
 function bmGetPrototypeReportData() {
   const profileSource = bmReadStorageObject([
-    'acsUserProfile', 'userProfile', 'profile', 'patientProfile', 'acs_profile'
+    'acsUserProfile', 'userProfile', 'profile', 'patientProfile', 'acs_profile',
+    'currentUser', 'authUser', 'loginUser', 'user'
   ]);
   const riskSource = bmReadStorageObject([
     'acsRiskResults', 'riskCalculatorResults', 'riskResults', 'bodyMapRisk', 'acs_risk'
@@ -1726,6 +1727,7 @@ function bmGetPrototypeReportData() {
   const elevatedRegions = bmExtractElevatedRegions(riskSource);
   const riskFactorNotes = bmDeriveRiskFactorNotes(profileSource, riskSource);
   const screeningRecommendations = bmGetRecommendedScreenings({ ...profileSource, age, gender: genderLabel }, elevatedRegions);
+  const calculatorCancers = bmExtractRiskCalculatorCancers(riskSource, elevatedRegions);
 
   return {
     fullName,
@@ -1735,9 +1737,86 @@ function bmGetPrototypeReportData() {
     profileSource,
     riskSource,
     elevatedRegions,
+    calculatorCancers,
     riskFactorNotes,
     screeningRecommendations,
   };
+}
+
+function bmExtractRiskCalculatorCancers(riskData, elevatedRegions = []) {
+  const extracted = [];
+  const seen = new Set();
+
+  const addEntry = (name, score, level, sourceId) => {
+    const cleanName = String(name || '').trim();
+    if (!cleanName) return;
+    const key = cleanName.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    extracted.push({
+      name: cleanName,
+      score: Number.isFinite(Number(score)) ? Number(score) : null,
+      level: level ? String(level) : null,
+      sourceId: sourceId || null,
+    });
+  };
+
+  const tryObjectAsCancer = (idOrName, value) => {
+    if (!value || typeof value !== 'object') return;
+    const score = value.score ?? value.riskScore ?? value.probability ?? value.percent;
+    const level = value.level ?? value.risk ?? value.category ?? value.label;
+    const isRiskish = score !== undefined || level !== undefined || value.isElevated || value.selected || value.recommended;
+    if (!isRiskish) return;
+
+    const byId = BM_CANCERS[idOrName];
+    const name = value.name || value.cancer || value.cancerType || value.type || (byId ? byId.name : idOrName);
+    addEntry(name, score, level, byId ? idOrName : null);
+  };
+
+  const knownArrays = [
+    riskData?.cancers,
+    riskData?.cancerTypes,
+    riskData?.results,
+    riskData?.predictions,
+    riskData?.topRisks,
+    riskData?.recommendations,
+  ].filter(Array.isArray);
+
+  knownArrays.forEach(arr => {
+    arr.forEach(item => {
+      if (typeof item === 'string') {
+        const byId = BM_CANCERS[item];
+        addEntry(byId ? byId.name : item, null, null, byId ? item : null);
+        return;
+      }
+      if (!item || typeof item !== 'object') return;
+      const id = item.id || item.cancerId || item.key;
+      const byId = id && BM_CANCERS[id] ? BM_CANCERS[id] : null;
+      const name = item.name || item.cancer || item.cancerType || item.type || (byId ? byId.name : id);
+      addEntry(name, item.score ?? item.riskScore ?? item.probability ?? item.percent, item.level ?? item.risk ?? item.category, byId ? id : null);
+    });
+  });
+
+  if (riskData && typeof riskData === 'object' && !Array.isArray(riskData)) {
+    Object.entries(riskData).forEach(([key, value]) => {
+      if (Array.isArray(value)) return;
+      tryObjectAsCancer(key, value);
+    });
+  }
+
+  if (!extracted.length && Array.isArray(elevatedRegions)) {
+    elevatedRegions.forEach(region => {
+      const hs = BM_HOTSPOTS.find(h => h.id === region.regionId);
+      if (!hs) return;
+      hs.cancerIds.slice(0, 3).forEach(cid => {
+        const c = BM_CANCERS[cid];
+        if (c) addEntry(c.name, region.score, region.level, cid);
+      });
+    });
+  }
+
+  extracted.sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+  return extracted.slice(0, 10);
 }
 
 function bmRegionCancersForReport(regionId) {
@@ -1791,6 +1870,21 @@ function bmRenderPersonalizedReport() {
     <section class="report-section">
       <h3>Body Map Elevated Risk Regions</h3>
       ${elevatedRegionBlocks}
+    </section>
+
+    <section class="report-section">
+      <h3>Risk Calculator Cancer-Type Results</h3>
+      <ul class="report-bullet-list">
+        ${reportData.calculatorCancers.length
+          ? reportData.calculatorCancers.map(item => {
+              const scoreText = Number.isFinite(item.score)
+                ? ` · Score: ${Math.round(item.score * (item.score <= 1 ? 100 : 1))}${item.score <= 1 ? '%' : ''}`
+                : '';
+              const levelText = item.level ? ` · Level: ${item.level}` : '';
+              return `<li>${item.name}${levelText}${scoreText}</li>`;
+            }).join('')
+          : '<li>No explicit cancer-type list was found in risk calculator storage yet.</li>'}
+      </ul>
     </section>
 
     <section class="report-section">
@@ -1870,7 +1964,7 @@ function bmCloseSearch() {
   document.getElementById('bmSearchResults').classList.remove('open');
 }
 
-// ─── SHARE & PRINT ─────────────────────────────────────────────────────────
+// ─── SHARE ─────────────────────────────────────────────────────────────────
 function bmShareRegion(hotspotId) {
   const url = window.location.href.split('?')[0] + '?region=' + hotspotId;
   navigator.clipboard.writeText(url).then(() => {
@@ -1878,34 +1972,6 @@ function bmShareRegion(hotspotId) {
     btns.forEach(b => { if (b.textContent.includes('Share')) { b.textContent = 'Link copied!'; b.classList.add('copied'); }});
     setTimeout(() => btns.forEach(b => { b.textContent = b.classList.contains('copied') ? 'Share this region' : b.textContent; b.classList.remove('copied'); }), 2000);
   });
-}
-
-function bmPrintRegion(hotspotId) {
-  const hs = BM_HOTSPOTS.find(h => h.id === hotspotId);
-  if (!hs) return;
-  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
-    if (!c) return false;
-    if (c.reproGender) return c.reproGender === bmGender;
-    return true;
-  });
-  const win = window.open('', '_blank');
-  win.document.write(`
-    <html><head><title>${hs.label} — ACS Cancer Map</title>
-    <style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;color:#3d2c24;line-height:1.7}
-    h1{font-size:28px;margin-bottom:4px}p.sub{color:#937468;font-size:13px;margin-bottom:24px}
-    h3{font-size:16px;margin:20px 0 4px}ul{margin:0 0 8px 20px;font-size:13px}
-    .tag{display:inline-block;padding:2px 8px;background:#fce9e6;border-radius:3px;font-size:11px;margin:2px}
-    a{color:#c45e4a}</style></head><body>
-    <h1>${hs.label}</h1>
-    <p class="sub">American Cancer Society · Cancer Body Map · cancer.org</p>
-    ${cancers.map(c => `
-      <h3><a href="${c.link}">${c.name}</a></h3>
-      <div>${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-      <p style="font-size:13px;color:#6b4c3b">${c.desc}</p>
-    `).join('')}
-    </body></html>`);
-  win.document.close();
-  win.print();
 }
 
 // ─── DEEP LINK on load ────────────────────────────────────────────────────
@@ -1980,7 +2046,6 @@ function bmActivateHotspot(id) {
     </div>
     <div class="panel-share-row">
       <button class="share-btn" onclick="bmShareRegion('${hs.id}')">Share this region</button>
-      <button class="share-btn" onclick="bmPrintRegion('${hs.id}')">Print summary</button>
     </div>
     <div class="panel-body">
 
