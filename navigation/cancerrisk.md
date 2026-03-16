@@ -104,9 +104,7 @@ title: Risk Calculator
     transition: background 0.3s ease, transform 0.25s ease, box-shadow 0.25s ease;
     z-index: 1;
   }
-  .progress-dot.done {
-    background: var(--rose);
-  }
+  .progress-dot.done  { background: var(--rose); }
   .progress-dot.active {
     background: var(--terracotta);
     transform: scale(1.35);
@@ -285,6 +283,7 @@ title: Risk Calculator
     color: var(--tan); pointer-events: none; font-size: 13px;
   }
 
+  /* chips – used for single-select AND multi-select */
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chip {
     padding: 7px 16px;
@@ -302,6 +301,15 @@ title: Risk Calculator
   .chip.selected {
     background: var(--rose); border-color: var(--rose);
     color: white; font-weight: 600;
+  }
+
+  /* cancer-type chips get a slightly different selected colour so they
+     look distinct from the single-select chips */
+  .cancer-chips .chip.selected {
+    background: var(--terracotta); border-color: var(--terracotta);
+  }
+  .cancer-chips .chip.na {
+    opacity: .35; pointer-events: none; cursor: default;
   }
 
   .toggles-grid {
@@ -362,34 +370,39 @@ title: Risk Calculator
 
   /* ── RESULTS ── */
   .results-hidden { display: none; }
+
+  /* ── RISK HERO (redesigned) ── */
   .risk-hero {
     text-align: center;
-    padding: 28px 0 20px;
+    padding: 32px 0 24px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 28px;
   }
-  .risk-category-label {
-    font-family: var(--serif); font-size: 13px;
-    letter-spacing: .15em; text-transform: uppercase;
-    color: var(--text-muted); margin-bottom: 8px;
-  }
+
+  /* Big primary number */
   .risk-number {
     font-family: var(--serif);
-    font-size: clamp(52px, 10vw, 80px);
-    font-weight: 600; line-height: 1; margin-bottom: 6px;
+    font-size: clamp(72px, 14vw, 110px);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
     transition: color .3s;
+    margin-bottom: 4px;
   }
-  .risk-label { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; }
-  .risk-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 18px; border-radius: 20px;
-    font-size: 12px; font-weight: 700;
-    letter-spacing: .06em; text-transform: uppercase;
-  }
-  .risk-badge.low { background: var(--sage-pale); color: #4a7a4c; }
-  .risk-badge.high { background: var(--rose-pale); color: var(--terracotta); }
 
-  .gauge-wrap { margin: 20px 0 8px; }
+  /* Category label sits UNDER the big number */
+  .risk-category-label {
+    font-family: var(--serif);
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+
+  /* Gauge */
+  .gauge-wrap { margin: 16px auto 12px; max-width: 480px; }
   .gauge-track {
     height: 8px; background: var(--tan-light);
     border-radius: 4px; overflow: hidden; margin-bottom: 6px;
@@ -404,30 +417,51 @@ title: Risk Calculator
     letter-spacing: .05em; text-transform: uppercase;
   }
 
+  /* Badge */
+  .risk-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 18px; border-radius: 20px;
+    font-size: 13px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .risk-badge.low  { background: var(--sage-pale); color: #4a7a4c; }
+  .risk-badge.high { background: var(--rose-pale); color: var(--terracotta); }
+
+  /* Model confidence — now small and muted */
+  .confidence-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: .03em;
+    margin-top: 4px;
+  }
+
+  /* ── RISK FACTORS ── */
   .risk-factors-list { margin-bottom: 28px; }
   .risk-factor-item {
     padding: 14px 16px; background: var(--cream);
     border-radius: 10px; margin-bottom: 10px;
     border-left: 3px solid var(--tan-light);
   }
-  .risk-factor-item.high { border-left-color: var(--terracotta); }
+  .risk-factor-item.high     { border-left-color: var(--terracotta); }
   .risk-factor-item.moderate { border-left-color: #d9a566; }
   .rf-header {
     display: flex; align-items: center;
     justify-content: space-between; margin-bottom: 4px;
   }
-  .rf-name { font-size: 14px; font-weight: 600; color: var(--text-main); }
+  .rf-name   { font-size: 14px; font-weight: 600; color: var(--text-main); }
   .rf-impact {
     font-size: 10px; font-weight: 700;
     letter-spacing: .08em; text-transform: uppercase;
     padding: 3px 10px; border-radius: 12px;
   }
-  .rf-impact.high { background: var(--rose-pale); color: var(--terracotta); }
+  .rf-impact.high     { background: var(--rose-pale); color: var(--terracotta); }
   .rf-impact.moderate { background: #fff3e0; color: #9b6a00; }
   .rf-detail { font-size: 12px; color: var(--text-muted); line-height: 1.6; }
 
+  /* ── FEATURE IMPORTANCE ── */
   .importance-grid { display: grid; gap: 10px; margin-bottom: 24px; }
-  .importance-row { display: flex; align-items: center; gap: 12px; }
+  .importance-row  { display: flex; align-items: center; gap: 12px; }
   .importance-label { min-width: 160px; font-size: 12px; color: var(--text-muted); }
   .importance-bar-track {
     flex: 1; height: 6px;
@@ -439,6 +473,93 @@ title: Risk Calculator
   }
   .importance-val { font-size: 12px; font-weight: 600; min-width: 40px; text-align: right; color: var(--text-main); }
 
+  /* ── CANCER TYPE BREAKDOWN ── */
+  .ct-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .ct-card {
+    background: var(--cream);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 18px;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .ct-card:hover { box-shadow: 0 4px 16px rgba(61,44,36,.08); }
+  .ct-card-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+  .ct-rr {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 600;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .ct-rr-sub {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .ct-level-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--tan-light);
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .ct-level-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s cubic-bezier(.22,1,.36,1);
+  }
+  .ct-level-fill.low      { background: var(--sage); }
+  .ct-level-fill.moderate { background: #d9a566; }
+  .ct-level-fill.high     { background: var(--terracotta); }
+  .ct-badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: .07em; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .ct-badge.low      { background: var(--sage-pale); color: #4a7a4c; }
+  .ct-badge.moderate { background: #fff3e0; color: #9b6a00; }
+  .ct-badge.high     { background: var(--rose-pale); color: var(--terracotta); }
+  .ct-factors {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-top: 6px;
+  }
+  .ct-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 6px;
+    line-height: 1.5;
+    border-top: 1px solid var(--border);
+    padding-top: 6px;
+  }
+  .ct-na {
+    opacity: .5;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* ── LOADING / MISC ── */
   .ai-loading {
     display: flex; align-items: center; justify-content: center;
     gap: 10px; color: var(--text-muted); font-size: 13px; padding: 40px 20px;
@@ -452,7 +573,7 @@ title: Risk Calculator
   .dots span:nth-child(3) { animation-delay: .4s; }
   @keyframes pulse {
     0%, 100% { opacity: .3; transform: scale(.8); }
-    50% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 1; transform: scale(1);   }
   }
 
   .source-note {
@@ -461,6 +582,14 @@ title: Risk Calculator
     padding: 16px; border-top: 1px solid var(--border);
   }
   .source-note strong { color: var(--text-main); }
+
+  /* cancer-type optional notice */
+  .optional-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
 </style>
 </head>
 <body>
@@ -663,6 +792,31 @@ title: Risk Calculator
       </div>
     </div>
 
+    <!-- SECTION 5: CANCER TYPES OF INTEREST -->
+    <div class="section-heading" id="section-cancertypes">
+      <span class="section-icon">𖡡</span><span data-i18n="sectionCancerTypes">Cancer Types of Interest</span>
+    </div>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:8px" data-i18n="cancerTypesHelp">
+      Select any cancer types you'd like a specific risk breakdown for
+    </p>
+    <p class="optional-note" data-i18n="cancerTypesOptional">Optional: leave unselected for overall risk only</p>
+    <br>
+
+    <div class="chips cancer-chips" id="cancer-type-chips">
+      <div class="chip" data-val="lung">Lung</div>
+      <div class="chip" data-val="colorectal">Colorectal</div>
+      <div class="chip" data-val="breast" data-sex="female">Breast</div>
+      <div class="chip" data-val="prostate" data-sex="male">Prostate</div>
+      <div class="chip" data-val="melanoma">Melanoma</div>
+      <div class="chip" data-val="liver">Liver</div>
+      <div class="chip" data-val="cervical" data-sex="female">Cervical</div>
+      <div class="chip" data-val="stomach">Stomach</div>
+      <div class="chip" data-val="bladder">Bladder</div>
+      <div class="chip" data-val="lymphoma">Lymphoma</div>
+      <div class="chip" data-val="leukemia">Leukemia</div>
+      <div class="chip" data-val="pancreatic">Pancreatic</div>
+    </div>
+
     <div class="btn-row">
       <button class="btn btn-primary" id="predictBtn" onclick="predictRisk()" data-i18n="predictBtn">Predict My Risk →</button>
     </div>
@@ -686,14 +840,14 @@ const state = {
   hpv: false, h_pylori: false, ibd: false,
   radiation_history: false, immunosuppression: false,
   precancerous_lesions: false,
-  occupational_exposure: false, uv_exposure: false
+  occupational_exposure: false, uv_exposure: false,
+  selected_cancer_types: []   // multi-select
 };
 
 const REQUIRED = ['age','sex','race','smoking_status','bmi_category',
                   'alcohol_consumption','physical_activity','diet_quality'];
-
-const DEMO_KEYS    = ['age','sex','race'];
-const LIFESTYLE_KEYS = ['smoking_status','bmi_category','alcohol_consumption','physical_activity','diet_quality'];
+const DEMO_KEYS     = ['age','sex','race'];
+const LIFESTYLE_KEYS= ['smoking_status','bmi_category','alcohol_consumption','physical_activity','diet_quality'];
 
 const RC_LANGUAGE_KEY = 'acsReportLanguage';
 let rcLanguage = (() => {
@@ -703,174 +857,142 @@ let rcLanguage = (() => {
 
 const RC_I18N = {
   en: {
-    titleMain: 'Cancer Risk',
-    titleSub: 'ML Predictor',
+    titleMain: 'Cancer Risk', titleSub: 'ML Predictor',
     introText: 'Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts & Figures 2026 epidemiological data, will predict your relative cancer risk category and identify your key modifiable risk factors.',
-    tipDemographics: 'Demographics',
-    tipLifestyle: 'Lifestyle',
-    tipMedical: 'Medical History',
-    tipEnvironmental: 'Environmental',
+    tipDemographics: 'Demographics', tipLifestyle: 'Lifestyle',
+    tipMedical: 'Medical History', tipEnvironmental: 'Environmental',
     progressLabel: 'Progress',
-    sectionDemographics: 'Demographics',
-    labelAge: 'Age',
-    labelSex: 'Biological Sex',
-    labelRace: 'Race / Ethnicity',
-    sectionLifestyle: 'Lifestyle Factors',
-    labelSmoking: 'Smoking Status',
-    labelPackYears: 'Pack-Years',
-    labelBmi: 'BMI Category',
-    labelAlcohol: 'Alcohol Consumption',
-    labelActivity: 'Physical Activity',
-    labelDiet: 'Diet Quality',
-    sectionMedical: 'Medical History',
-    medicalHelp: 'Toggle any conditions that apply to you',
-    sectionEnvironmental: 'Environmental Exposures',
-    environmentalHelp: 'Toggle any exposures that apply to you',
+    sectionDemographics: 'Demographics', labelAge: 'Age', labelSex: 'Biological Sex', labelRace: 'Race / Ethnicity',
+    sectionLifestyle: 'Lifestyle Factors', labelSmoking: 'Smoking Status', labelPackYears: 'Pack-Years',
+    labelBmi: 'BMI Category', labelAlcohol: 'Alcohol Consumption', labelActivity: 'Physical Activity', labelDiet: 'Diet Quality',
+    sectionMedical: 'Medical History', medicalHelp: 'Toggle any conditions that apply to you',
+    sectionEnvironmental: 'Environmental Exposures', environmentalHelp: 'Toggle any exposures that apply to you',
+    sectionCancerTypes: 'Cancer Types of Interest',
+    cancerTypesHelp: 'Select any cancer types you\'d like a specific risk breakdown for',
+    cancerTypesOptional: 'Optional — leave unselected for overall risk only',
     predictBtn: 'Predict My Risk →',
     validatePrefix: 'Please fill in',
     loading: 'Running ML prediction…',
-    errorPrefix: 'Error',
-    errorHelp: 'Make sure you are logged in and the backend is running.',
-    resultTitle: 'Your ML Risk Prediction',
-    resultSub: 'Based on machine learning analysis of your profile',
+    errorPrefix: 'Error', errorHelp: 'Make sure you are logged in and the backend is running.',
+    resultTitle: 'Your ML Risk Prediction', resultSub: 'Based on machine learning analysis of your profile',
     predictedCategory: 'Predicted Risk Category',
-    riskWord: 'RISK',
-    modelConfidence: 'model confidence',
-    lowRisk: 'Low Risk',
-    highRisk: 'High Risk',
-    highBadge: '↑ Higher Than Average Risk',
-    lowBadge: '↓ Lower Than Average Risk',
+    lowRisk: 'Low Risk', highRisk: 'High Risk',
+    highBadge: '↑ Higher Than Average Risk', lowBadge: '↓ Lower Than Average Risk',
     keyFactorsTitle: 'Your Key Risk Factors',
     importanceTitle: 'Feature Importance Analysis',
+    cancerTypeTitle: 'Cancer-Type Risk Breakdown',
+    cancerTypeSub: 'Relative risk compared to population average (1.0 = average)',
+    rrLabel: '× avg. risk',
+    keyFactorsLabel: 'Contributing factors',
     sourceModel: 'Model',
     sourceBody: 'Ensemble ML (Logistic Regression + Random Forest) trained on ACS Cancer Facts & Figures 2026 data. This is for educational purposes only and does not constitute medical advice. Consult a healthcare provider for personalized screening recommendations.',
-    noFactors: 'No significant modifiable risk factors identified. Continue healthy lifestyle behaviors!'
+    noFactors: 'No significant modifiable risk factors identified. Continue healthy lifestyle behaviors!',
+    naLabel: 'Not applicable'
   },
   es: {
-    titleMain: 'Riesgo de Cáncer',
-    titleSub: 'Predictor ML',
+    titleMain: 'Riesgo de Cáncer', titleSub: 'Predictor ML',
     introText: 'Responda preguntas sobre su demografía, estilo de vida e historial médico. Nuestro modelo de aprendizaje automático, entrenado con datos epidemiológicos de ACS Cancer Facts & Figures 2026, predecirá su categoría de riesgo relativo de cáncer e identificará sus principales factores de riesgo modificables.',
-    tipDemographics: 'Demografía',
-    tipLifestyle: 'Estilo de vida',
-    tipMedical: 'Historial médico',
-    tipEnvironmental: 'Exposición',
+    tipDemographics: 'Demografía', tipLifestyle: 'Estilo de vida',
+    tipMedical: 'Historial médico', tipEnvironmental: 'Exposición',
     progressLabel: 'Progreso',
-    sectionDemographics: 'Demografía',
-    labelAge: 'Edad',
-    labelSex: 'Sexo biológico',
-    labelRace: 'Raza / Etnicidad',
-    sectionLifestyle: 'Factores de estilo de vida',
-    labelSmoking: 'Tabaquismo',
-    labelPackYears: 'Años-paquete',
-    labelBmi: 'Categoría de IMC',
-    labelAlcohol: 'Consumo de alcohol',
-    labelActivity: 'Actividad física',
-    labelDiet: 'Calidad de la dieta',
-    sectionMedical: 'Historial médico',
-    medicalHelp: 'Marque las condiciones que correspondan a su caso',
-    sectionEnvironmental: 'Exposiciones ambientales',
-    environmentalHelp: 'Marque las exposiciones que correspondan a su caso',
+    sectionDemographics: 'Demografía', labelAge: 'Edad', labelSex: 'Sexo biológico', labelRace: 'Raza / Etnicidad',
+    sectionLifestyle: 'Factores de estilo de vida', labelSmoking: 'Tabaquismo', labelPackYears: 'Años-paquete',
+    labelBmi: 'Categoría de IMC', labelAlcohol: 'Consumo de alcohol', labelActivity: 'Actividad física', labelDiet: 'Calidad de la dieta',
+    sectionMedical: 'Historial médico', medicalHelp: 'Marque las condiciones que correspondan a su caso',
+    sectionEnvironmental: 'Exposiciones ambientales', environmentalHelp: 'Marque las exposiciones que correspondan a su caso',
+    sectionCancerTypes: 'Tipos de cáncer de interés',
+    cancerTypesHelp: 'Seleccione los tipos de cáncer para los que desea un desglose de riesgo específico',
+    cancerTypesOptional: 'Opcional — déjelo sin seleccionar para el riesgo general únicamente',
     predictBtn: 'Predecir mi riesgo →',
     validatePrefix: 'Por favor complete',
     loading: 'Ejecutando predicción ML…',
-    errorPrefix: 'Error',
-    errorHelp: 'Asegúrese de haber iniciado sesión y de que el backend esté en ejecución.',
-    resultTitle: 'Su predicción de riesgo (ML)',
-    resultSub: 'Basada en un análisis de aprendizaje automático de su perfil',
+    errorPrefix: 'Error', errorHelp: 'Asegúrese de haber iniciado sesión y de que el backend esté en ejecución.',
+    resultTitle: 'Su predicción de riesgo (ML)', resultSub: 'Basada en un análisis de aprendizaje automático de su perfil',
     predictedCategory: 'Categoría de riesgo predicha',
-    riskWord: 'RIESGO',
-    modelConfidence: 'confianza del modelo',
-    lowRisk: 'Riesgo bajo',
-    highRisk: 'Riesgo alto',
-    highBadge: '↑ Riesgo superior al promedio',
-    lowBadge: '↓ Riesgo inferior al promedio',
+    lowRisk: 'Riesgo bajo', highRisk: 'Riesgo alto',
+    highBadge: '↑ Riesgo superior al promedio', lowBadge: '↓ Riesgo inferior al promedio',
     keyFactorsTitle: 'Sus factores de riesgo clave',
     importanceTitle: 'Análisis de importancia de variables',
+    cancerTypeTitle: 'Desglose de riesgo por tipo de cáncer',
+    cancerTypeSub: 'Riesgo relativo comparado con el promedio poblacional (1.0 = promedio)',
+    rrLabel: '× riesgo prom.',
+    keyFactorsLabel: 'Factores contribuyentes',
     sourceModel: 'Modelo',
     sourceBody: 'Modelo de ML ensamblado (regresión logística + Random Forest) entrenado con datos de ACS Cancer Facts & Figures 2026. Esto es solo con fines educativos y no constituye consejo médico. Consulte a un profesional de la salud para recomendaciones de detección personalizadas.',
-    noFactors: 'No se identificaron factores de riesgo modificables significativos. ¡Mantenga hábitos de vida saludables!'
+    noFactors: 'No se identificaron factores de riesgo modificables significativos. ¡Mantenga hábitos de vida saludables!',
+    naLabel: 'No aplicable'
   }
 };
 
 function rcT(key) {
-  const langSet = RC_I18N[rcLanguage] || RC_I18N.en;
-  return langSet[key] || RC_I18N.en[key] || key;
+  const s = RC_I18N[rcLanguage] || RC_I18N.en;
+  return s[key] || RC_I18N.en[key] || key;
 }
 
 const RC_CHIP_TEXT = {
   en: {
-    race: { white: 'White', black: 'Black / African American', hispanic: 'Hispanic / Latino', aian: 'American Indian / Alaskan Native', aapi: 'Asian American / Pacific Islander' },
-    smoking_status: { never: 'Never smoked', former: 'Former smoker', current: 'Current smoker' },
-    bmi_category: { normal: 'Normal', overweight: 'Overweight', obese: 'Obese', 'severely-obese': 'Severely Obese' },
-    alcohol_consumption: { none: 'None', light: 'Light', moderate: 'Moderate', heavy: 'Heavy' },
-    physical_activity: { sedentary: 'Sedentary', moderate: 'Moderate', active: 'Active (150+ min/wk)' },
-    diet_quality: { poor: 'Poor', average: 'Average', healthy: 'Healthy' }
+    race: { white:'White', black:'Black / African American', hispanic:'Hispanic / Latino', aian:'American Indian / Alaskan Native', aapi:'Asian American / Pacific Islander' },
+    smoking_status: { never:'Never smoked', former:'Former smoker', current:'Current smoker' },
+    bmi_category: { normal:'Normal', overweight:'Overweight', obese:'Obese', 'severely-obese':'Severely Obese' },
+    alcohol_consumption: { none:'None', light:'Light', moderate:'Moderate', heavy:'Heavy' },
+    physical_activity: { sedentary:'Sedentary', moderate:'Moderate', active:'Active (150+ min/wk)' },
+    diet_quality: { poor:'Poor', average:'Average', healthy:'Healthy' },
+    cancer_types: { lung:'Lung', colorectal:'Colorectal', breast:'Breast', prostate:'Prostate',
+                    melanoma:'Melanoma', liver:'Liver', cervical:'Cervical', stomach:'Stomach',
+                    bladder:'Bladder', lymphoma:'Lymphoma', leukemia:'Leukemia', pancreatic:'Pancreatic' }
   },
   es: {
-    race: { white: 'Blanco', black: 'Negro / Afroamericano', hispanic: 'Hispano / Latino', aian: 'Indígena americano / Nativo de Alaska', aapi: 'Asiático-estadounidense / Isleño del Pacífico' },
-    smoking_status: { never: 'Nunca fumó', former: 'Exfumador', current: 'Fumador actual' },
-    bmi_category: { normal: 'Normal', overweight: 'Sobrepeso', obese: 'Obesidad', 'severely-obese': 'Obesidad severa' },
-    alcohol_consumption: { none: 'Ninguno', light: 'Bajo', moderate: 'Moderado', heavy: 'Alto' },
-    physical_activity: { sedentary: 'Sedentario', moderate: 'Moderado', active: 'Activo (150+ min/sem)' },
-    diet_quality: { poor: 'Mala', average: 'Promedio', healthy: 'Saludable' }
+    race: { white:'Blanco', black:'Negro / Afroamericano', hispanic:'Hispano / Latino', aian:'Indígena americano / Nativo de Alaska', aapi:'Asiático-estadounidense / Isleño del Pacífico' },
+    smoking_status: { never:'Nunca fumó', former:'Exfumador', current:'Fumador actual' },
+    bmi_category: { normal:'Normal', overweight:'Sobrepeso', obese:'Obesidad', 'severely-obese':'Obesidad severa' },
+    alcohol_consumption: { none:'Ninguno', light:'Bajo', moderate:'Moderado', heavy:'Alto' },
+    physical_activity: { sedentary:'Sedentario', moderate:'Moderado', active:'Activo (150+ min/sem)' },
+    diet_quality: { poor:'Mala', average:'Promedio', healthy:'Saludable' },
+    cancer_types: { lung:'Pulmón', colorectal:'Colorrectal', breast:'Mama', prostate:'Próstata',
+                    melanoma:'Melanoma', liver:'Hígado', cervical:'Cervical', stomach:'Estómago',
+                    bladder:'Vejiga', lymphoma:'Linfoma', leukemia:'Leucemia', pancreatic:'Pancreático' }
   }
 };
 
 const RC_TOGGLE_TEXT = {
   en: {
-    familyHistory: 'Family history of cancer',
-    diabetes: 'Type 2 Diabetes',
-    hepatitis: 'Hepatitis B or C',
-    hpv: 'HPV infection',
-    hPylori: 'H. pylori infection',
-    ibd: 'Inflammatory Bowel Disease',
-    radiationHistory: 'Prior radiation therapy',
-    immunosuppression: 'Immunosuppression',
-    precancerousLesions: 'Precancerous lesions',
-    occupationalExposure: 'Occupational chemical exposure',
-    uvExposure: 'High UV / sun exposure history'
+    familyHistory:'Family history of cancer', diabetes:'Type 2 Diabetes',
+    hepatitis:'Hepatitis B or C', hpv:'HPV infection', hPylori:'H. pylori infection',
+    ibd:'Inflammatory Bowel Disease', radiationHistory:'Prior radiation therapy',
+    immunosuppression:'Immunosuppression', precancerousLesions:'Precancerous lesions',
+    occupationalExposure:'Occupational chemical exposure', uvExposure:'High UV / sun exposure history'
   },
   es: {
-    familyHistory: 'Antecedentes familiares de cáncer',
-    diabetes: 'Diabetes tipo 2',
-    hepatitis: 'Hepatitis B o C',
-    hpv: 'Infección por VPH',
-    hPylori: 'Infección por H. pylori',
-    ibd: 'Enfermedad inflamatoria intestinal',
-    radiationHistory: 'Radioterapia previa',
-    immunosuppression: 'Inmunosupresión',
-    precancerousLesions: 'Lesiones precancerosas',
-    occupationalExposure: 'Exposición ocupacional a químicos',
-    uvExposure: 'Antecedentes de alta exposición a UV/sol'
+    familyHistory:'Antecedentes familiares de cáncer', diabetes:'Diabetes tipo 2',
+    hepatitis:'Hepatitis B o C', hpv:'Infección por VPH', hPylori:'Infección por H. pylori',
+    ibd:'Enfermedad inflamatoria intestinal', radiationHistory:'Radioterapia previa',
+    immunosuppression:'Inmunosupresión', precancerousLesions:'Lesiones precancerosas',
+    occupationalExposure:'Exposición ocupacional a químicos', uvExposure:'Antecedentes de alta exposición a UV/sol'
   }
 };
 
 function rcApplyChoiceTexts() {
   const map = RC_CHIP_TEXT[rcLanguage] || RC_CHIP_TEXT.en;
-  const applyGroup = (containerId, dict) => {
-    const root = document.getElementById(containerId);
+  const applyGroup = (id, dict) => {
+    const root = document.getElementById(id);
     if (!root) return;
     root.querySelectorAll('.chip').forEach(chip => {
       const key = chip.getAttribute('data-val');
       if (key && dict[key]) chip.textContent = dict[key];
     });
   };
-
-  applyGroup('race-chips', map.race);
-  applyGroup('smoke-chips', map.smoking_status);
-  applyGroup('bmi-chips', map.bmi_category);
-  applyGroup('alcohol-chips', map.alcohol_consumption);
+  applyGroup('race-chips',     map.race);
+  applyGroup('smoke-chips',    map.smoking_status);
+  applyGroup('bmi-chips',      map.bmi_category);
+  applyGroup('alcohol-chips',  map.alcohol_consumption);
   applyGroup('activity-chips', map.physical_activity);
-  applyGroup('diet-chips', map.diet_quality);
+  applyGroup('diet-chips',     map.diet_quality);
+  applyGroup('cancer-type-chips', map.cancer_types);
 
   const sex = document.getElementById('sex');
   if (sex) {
-    const blank = sex.querySelector('option[value=""]');
-    const male = sex.querySelector('option[value="male"]');
-    const female = sex.querySelector('option[value="female"]');
-    if (blank) blank.textContent = rcLanguage === 'es' ? 'Seleccionar…' : 'Select…';
-    if (male) male.textContent = rcLanguage === 'es' ? 'Masculino' : 'Male';
-    if (female) female.textContent = rcLanguage === 'es' ? 'Femenino' : 'Female';
+    const opts = { '': rcLanguage==='es'?'Seleccionar…':'Select…', male: rcLanguage==='es'?'Masculino':'Male', female: rcLanguage==='es'?'Femenino':'Female' };
+    sex.querySelectorAll('option').forEach(o => { if (opts[o.value]!==undefined) o.textContent=opts[o.value]; });
   }
 
   const toggleMap = RC_TOGGLE_TEXT[rcLanguage] || RC_TOGGLE_TEXT.en;
@@ -878,26 +1000,21 @@ function rcApplyChoiceTexts() {
     const input = document.getElementById(id);
     if (!input) return;
     const row = input.closest('.toggle-row');
-    const textNode = row ? row.querySelector('.toggle-label') : null;
-    if (textNode) textNode.textContent = label;
+    const node = row ? row.querySelector('.toggle-label') : null;
+    if (node) node.textContent = label;
   });
 }
 
 function rcApplyLanguage() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (!key) return;
-    el.textContent = rcT(key);
+    if (key) el.textContent = rcT(key);
   });
   const title = document.getElementById('rcTitle');
-  if (title) {
-    title.innerHTML = `${rcT('titleMain')}<br><em>${rcT('titleSub')}</em>`;
-  }
+  if (title) title.innerHTML = `${rcT('titleMain')}<br><em>${rcT('titleSub')}</em>`;
   const intro = document.getElementById('rcIntro');
   if (intro) intro.textContent = rcT('introText');
   rcApplyChoiceTexts();
-  const sidebar = document.getElementById('progressSidebar');
-  if (sidebar) sidebar.setAttribute('aria-label', rcLanguage === 'es' ? 'Progreso de finalización del formulario' : 'Form completion progress');
   document.querySelectorAll('.lang-btn').forEach(btn => {
     const active = btn.getAttribute('data-lang') === rcLanguage;
     btn.classList.toggle('active', active);
@@ -909,42 +1026,48 @@ window.rcSetLanguage = function(lang) {
   rcLanguage = lang === 'es' ? 'es' : 'en';
   localStorage.setItem(RC_LANGUAGE_KEY, rcLanguage);
   rcApplyLanguage();
-  if (window.__lastRiskData) {
-    displayResults(window.__lastRiskData);
-  }
+  if (window.__lastRiskData) displayResults(window.__lastRiskData);
 };
+
+// ── SEX → grey-out inapplicable cancer type chips ─────────────────────────
+function updateCancerChipAvailability() {
+  const sex = state.sex;
+  document.querySelectorAll('#cancer-type-chips .chip[data-sex]').forEach(chip => {
+    const chipSex = chip.getAttribute('data-sex');
+    if (sex && chipSex && chipSex !== sex) {
+      chip.classList.add('na');
+      chip.classList.remove('selected');
+      // remove from selected list if sex changed
+      const val = chip.dataset.val;
+      state.selected_cancer_types = state.selected_cancer_types.filter(t => t !== val);
+    } else {
+      chip.classList.remove('na');
+    }
+  });
+}
 
 // ── PROGRESS ───────────────────────────────────────────────────────────────
 function pct(keys) {
   return keys.filter(k => state[k] !== null && state[k] !== '').length / keys.length;
 }
-
 function updateProgress() {
   const demoPct      = pct(DEMO_KEYS);
   const lifestylePct = pct(LIFESTYLE_KEYS);
   const overall      = Math.round(pct(REQUIRED) * 100);
-
   document.getElementById('progressPct').textContent = overall + '%';
-
-  // Track fills (0–100)
   document.getElementById('fill-1').style.height = (demoPct * 100) + '%';
   document.getElementById('fill-2').style.height = (demoPct === 1 ? lifestylePct * 100 : 0) + '%';
   document.getElementById('fill-3').style.height = (lifestylePct === 1 ? 50 : 0) + '%';
-
-  // Dot states
   setDot('dot-demographics',  demoPct === 1,  demoPct > 0 && demoPct < 1);
-  setDot('dot-lifestyle',     lifestylePct === 1 && demoPct === 1,
-                              demoPct === 1 && lifestylePct < 1);
+  setDot('dot-lifestyle',     lifestylePct === 1 && demoPct === 1, demoPct === 1 && lifestylePct < 1);
   setDot('dot-medical',       false, lifestylePct === 1);
   setDot('dot-environmental', false, lifestylePct === 1);
 }
-
 function setDot(id, done, active) {
   const el = document.getElementById(id);
   el.classList.toggle('done', done);
   el.classList.toggle('active', !done && active);
 }
-
 function showSidebar() {
   document.getElementById('progressSidebar').classList.add('visible');
 }
@@ -961,7 +1084,7 @@ function showSidebar() {
   });
 });
 
-// ── CHIP INIT ──────────────────────────────────────────────────────────────
+// ── CHIP INIT (single-select) ──────────────────────────────────────────────
 function initChips(containerId, stateKey) {
   document.getElementById(containerId).querySelectorAll('.chip').forEach(chip => {
     chip.addEventListener('click', () => {
@@ -971,6 +1094,22 @@ function initChips(containerId, stateKey) {
       state[stateKey] = chip.dataset.val;
       showSidebar();
       updateProgress();
+    });
+  });
+}
+
+// ── CANCER TYPE CHIPS (multi-select) ──────────────────────────────────────
+function initCancerTypeChips() {
+  document.getElementById('cancer-type-chips').querySelectorAll('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      if (chip.classList.contains('na')) return;
+      chip.classList.toggle('selected');
+      const val = chip.dataset.val;
+      if (chip.classList.contains('selected')) {
+        if (!state.selected_cancer_types.includes(val)) state.selected_cancer_types.push(val);
+      } else {
+        state.selected_cancer_types = state.selected_cancer_types.filter(t => t !== val);
+      }
     });
   });
 }
@@ -994,7 +1133,6 @@ window.predictRisk = async function() {
   resultsCard.innerHTML = `<div class="ai-loading"><div class="dots"><span></span><span></span><span></span></div> ${rcT('loading')}</div>`;
   resultsCard.scrollIntoView({ behavior: 'smooth' });
 
-  // Mark all complete in sidebar
   ['dot-demographics','dot-lifestyle','dot-medical','dot-environmental'].forEach(id => {
     const el = document.getElementById(id);
     el.classList.remove('active'); el.classList.add('done');
@@ -1008,21 +1146,17 @@ window.predictRisk = async function() {
     const payload = {
       age: state.age, sex: state.sex, race: state.race,
       smoking_status: state.smoking_status, pack_years: state.pack_years,
-      bmi_category: state.bmi_category,
-      alcohol_consumption: state.alcohol_consumption,
-      physical_activity: state.physical_activity,
-      diet_quality: state.diet_quality,
-      family_history: state.family_history,
-      diabetes: state.diabetes,
-      hepatitis: state.hepatitis,
-      hpv: state.hpv,
-      h_pylori: state.h_pylori,
-      ibd: state.ibd,
-      radiation_history: state.radiation_history,
-      immunosuppression: state.immunosuppression,
+      bmi_category: state.bmi_category, alcohol_consumption: state.alcohol_consumption,
+      physical_activity: state.physical_activity, diet_quality: state.diet_quality,
+      family_history: state.family_history, diabetes: state.diabetes, hepatitis: state.hepatitis,
+      hpv: state.hpv, h_pylori: state.h_pylori, ibd: state.ibd,
+      radiation_history: state.radiation_history, immunosuppression: state.immunosuppression,
       precancerous_lesions: state.precancerous_lesions,
-      occupational_exposure: state.occupational_exposure,
-      uv_exposure: state.uv_exposure
+      occupational_exposure: state.occupational_exposure, uv_exposure: state.uv_exposure,
+      // Only send selected_cancer_types if at least one type chosen
+      ...(state.selected_cancer_types.length > 0
+          ? { selected_cancer_types: state.selected_cancer_types }
+          : {})
     };
 
     const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, {
@@ -1050,31 +1184,48 @@ window.predictRisk = async function() {
 function displayResults(data) {
   window.__lastRiskData = data;
   const resultsCard = document.getElementById('results');
-  const isHigh = data.risk_category === 'high';
-  const prob = isHigh ? data.high_risk_probability : data.low_risk_probability;
+  const isHigh  = data.risk_category === 'high';
+  const prob    = isHigh ? data.high_risk_probability : data.low_risk_probability;
+  const color   = isHigh ? 'var(--terracotta)' : 'var(--sage)';
 
   resultsCard.innerHTML = `
     <div class="card-title">${rcT('resultTitle')}</div>
     <div class="card-sub">${rcT('resultSub')}</div>
 
+    <!-- ── HERO: percentage is the star ── -->
     <div class="risk-hero">
-      <div class="risk-category-label">${rcT('predictedCategory')}</div>
-      <div class="risk-number" style="color:${isHigh ? 'var(--terracotta)' : 'var(--sage)'}">
-        ${(prob * 100).toFixed(1)}%
+      <div class="risk-number" style="color:${color}">
+        ${(prob * 100).toFixed(1)}<span style="font-size:.45em;vertical-align:middle;opacity:.7">%</span>
       </div>
-      <div class="risk-label">${data.risk_category.toUpperCase()} ${rcT('riskWord')} &nbsp;·&nbsp; ${(data.model_confidence*100).toFixed(0)}% ${rcT('modelConfidence')}</div>
-      <div class="gauge-wrap">
-        <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
-        <div class="gauge-labels"><span>${rcT('lowRisk')}</span><span>${rcT('highRisk')}</span></div>
+      <div class="risk-category-label" style="color:${color}">
+        ${data.risk_category.toUpperCase()} ${rcT('riskWord') || 'RISK'}
       </div>
       <div class="risk-badge ${data.risk_category}">
         ${isHigh ? rcT('highBadge') : rcT('lowBadge')}
       </div>
+      <div class="gauge-wrap">
+        <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
+        <div class="gauge-labels"><span>${rcT('lowRisk')}</span><span>${rcT('highRisk')}</span></div>
+      </div>
+      <!-- model confidence is secondary — shown small -->
+      <div class="confidence-note">
+        Model confidence: ${(data.model_confidence * 100).toFixed(0)}%
+        &nbsp;·&nbsp; Ensemble ML (Logistic Regression + Random Forest)
+      </div>
     </div>
 
+    <!-- ── CANCER TYPE BREAKDOWN (only if data exists) ── -->
+    ${data.cancer_type_risks ? `
+      <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:6px;color:var(--text-main)">${rcT('cancerTypeTitle')}</div>
+      <div class="card-sub" style="margin-bottom:16px">${rcT('cancerTypeSub')}</div>
+      <div class="ct-grid" id="ct-grid"></div>
+    ` : ''}
+
+    <!-- ── KEY RISK FACTORS ── -->
     <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:14px;color:var(--text-main)">${rcT('keyFactorsTitle')}</div>
     <div class="risk-factors-list" id="risk-factors-list"></div>
 
+    <!-- ── FEATURE IMPORTANCE ── -->
     <div style="font-family:var(--serif);font-size:18px;font-weight:600;margin-bottom:14px;color:var(--text-main)">${rcT('importanceTitle')}</div>
     <div class="importance-grid" id="importance-grid"></div>
 
@@ -1083,12 +1234,75 @@ function displayResults(data) {
     </div>
   `;
 
+  // Animate gauge
   setTimeout(() => {
     const gf = document.getElementById('gauge-fill');
     gf.style.width = Math.max(4, isHigh ? prob * 100 : 50 - prob * 50) + '%';
-    gf.style.background = isHigh ? 'var(--terracotta)' : 'var(--sage)';
+    gf.style.background = color;
   }, 200);
 
+  // Cancer type cards
+  if (data.cancer_type_risks) {
+    const grid = document.getElementById('ct-grid');
+    const entries = Object.entries(data.cancer_type_risks);
+
+    grid.innerHTML = entries.map(([ct, res]) => {
+      if (!res.applicable) {
+        return `
+          <div class="ct-card">
+            <div class="ct-card-label">${res.label}</div>
+            <div class="ct-na">${rcT('naLabel')}</div>
+            <div class="ct-note">${res.note}</div>
+          </div>`;
+      }
+
+      // Cap bar at RR=8 for display purposes
+      const barPct = Math.min(100, (res.relative_risk / 8) * 100);
+      const rrColor = res.risk_level === 'high' ? 'var(--terracotta)'
+                    : res.risk_level === 'moderate' ? '#d9a566'
+                    : 'var(--sage)';
+
+      return `
+        <div class="ct-card">
+          <div class="ct-card-label">${res.label}</div>
+          <div class="ct-rr" style="color:${rrColor}" data-rr="${res.relative_risk}">0.0</div>
+          <div class="ct-rr-sub">${rcT('rrLabel')}</div>
+          <div class="ct-level-bar">
+            <div class="ct-level-fill ${res.risk_level}" style="width:0%" data-w="${barPct.toFixed(1)}"></div>
+          </div>
+          <div class="ct-badge ${res.risk_level}">${res.risk_level.toUpperCase()}</div>
+          ${res.key_factors.length > 0 ? `
+            <div class="ct-factors">
+              <strong style="font-size:10px;text-transform:uppercase;letter-spacing:.05em">${rcT('keyFactorsLabel')}:</strong>
+              ${res.key_factors.join(' · ')}
+            </div>` : ''}
+          <div class="ct-note">${res.note}</div>
+        </div>`;
+    }).join('');
+
+    // Animate RR counters and bars
+    setTimeout(() => {
+      grid.querySelectorAll('.ct-rr[data-rr]').forEach(el => {
+        const target = parseFloat(el.dataset.rr);
+        let start = null;
+        const dur = 900;
+        function step(ts) {
+          if (!start) start = ts;
+          const prog = Math.min((ts - start) / dur, 1);
+          const ease = 1 - Math.pow(1 - prog, 3);
+          el.textContent = (target * ease).toFixed(1);
+          if (prog < 1) requestAnimationFrame(step);
+          else el.textContent = target.toFixed(1);
+        }
+        requestAnimationFrame(step);
+      });
+      grid.querySelectorAll('.ct-level-fill[data-w]').forEach(el => {
+        el.style.width = el.dataset.w + '%';
+      });
+    }, 300);
+  }
+
+  // Risk factors
   const rfList = document.getElementById('risk-factors-list');
   if (data.risk_factors?.length > 0) {
     rfList.innerHTML = data.risk_factors.map(rf => `
@@ -1104,6 +1318,7 @@ function displayResults(data) {
     rfList.innerHTML = `<div class="card-sub">${rcT('noFactors')}</div>`;
   }
 
+  // Feature importance bars
   const impGrid = document.getElementById('importance-grid');
   const sorted = Object.entries(data.feature_importances)
     .sort((a,b) => b[1]-a[1]).slice(0, 8);
@@ -1127,6 +1342,7 @@ function displayResults(data) {
 // ── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   rcApplyLanguage();
+
   document.getElementById('age').addEventListener('input', e => {
     state.age = parseInt(e.target.value) || null;
     showSidebar(); updateProgress();
@@ -1134,6 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('sex').addEventListener('change', e => {
     state.sex = e.target.value || null;
     showSidebar(); updateProgress();
+    updateCancerChipAvailability();
   });
   document.getElementById('packYears').addEventListener('input', e => {
     state.pack_years = parseInt(e.target.value) || 0;
@@ -1145,19 +1362,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initChips('alcohol-chips',  'alcohol_consumption');
   initChips('activity-chips', 'physical_activity');
   initChips('diet-chips',     'diet_quality');
+  initCancerTypeChips();
 
   const checkboxMap = {
-    familyHistory:       'family_history',
-    diabetes:            'diabetes',
-    hepatitis:           'hepatitis',
-    hpv:                 'hpv',
-    hPylori:             'h_pylori',
-    ibd:                 'ibd',
-    radiationHistory:    'radiation_history',
-    immunosuppression:   'immunosuppression',
-    precancerousLesions: 'precancerous_lesions',
-    occupationalExposure:'occupational_exposure',
-    uvExposure:          'uv_exposure'
+    familyHistory:'family_history', diabetes:'diabetes', hepatitis:'hepatitis',
+    hpv:'hpv', hPylori:'h_pylori', ibd:'ibd',
+    radiationHistory:'radiation_history', immunosuppression:'immunosuppression',
+    precancerousLesions:'precancerous_lesions',
+    occupationalExposure:'occupational_exposure', uvExposure:'uv_exposure'
   };
   Object.entries(checkboxMap).forEach(([elId, key]) => {
     document.getElementById(elId).addEventListener('change', e => {
