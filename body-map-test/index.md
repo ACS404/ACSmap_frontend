@@ -514,6 +514,13 @@ show_reading_time: false
 
 <!-- ── MAIN INTERACTIVE SECTION ──────────────────────────── -->
 <div class="main-section">
+<div class="search-row">
+  <input class="bm-search-input" id="bmSearchInput" type="text"
+    placeholder="Search any cancer type — e.g. melanoma, leukemia, ovarian..."
+    oninput="bmSearchCancers(this.value)"
+    onblur="setTimeout(()=>bmCloseSearch(),150)" />
+  <div class="bm-search-results" id="bmSearchResults"></div>
+</div>
   <div class="gender-row">
     <div class="section-eyebrow">Interactive Body Map</div>
     <div class="gender-toggle">
@@ -1083,7 +1090,12 @@ function bmActivateHotspot(id) {
       <div class="panel-region">${hs.label}</div>
       <div class="panel-count">${cancers.length} cancer type${cancers.length!==1?'s':''} in this region</div>
     </div>
+    <div class="panel-share-row">
+      <button class="share-btn" onclick="bmShareRegion('${hs.id}')">Share this region</button>
+      <button class="share-btn" onclick="bmPrintRegion('${hs.id}')">Print summary</button>
+    </div>
     <div class="panel-body">
+    
       ${cancers.map((c,i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
