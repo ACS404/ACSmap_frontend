@@ -693,6 +693,37 @@ show_reading_time: false
   line-height: 1.6;
   text-align: right;
 }
+#body-map-root .report-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+#body-map-root .report-lang-switch {
+  display: inline-flex;
+  background: rgba(196,168,130,0.16);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 3px;
+}
+#body-map-root .report-lang-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+#body-map-root .report-lang-btn.active {
+  background: #fff;
+  color: var(--text);
+  box-shadow: 0 1px 6px rgba(61,44,36,0.12);
+}
 #body-map-root .report-content {
   padding: 26px 30px 30px;
   display: grid;
@@ -826,7 +857,8 @@ show_reading_time: false
   #body-map-root .report-header,
   #body-map-root .report-content,
   #body-map-root .report-actions { padding-left: 20px; padding-right: 20px; }
-  #body-map-root .report-meta { text-align: left; }
+  #body-map-root .report-meta,
+  #body-map-root .report-meta-wrap { text-align: left; align-items: flex-start; }
   #body-map-root .categories-section { padding: 40px 24px 60px; }
 }
 
@@ -950,14 +982,20 @@ show_reading_time: false
     <div class="report-header">
       <div>
         <div class="report-brand">American Cancer Society · Prototype</div>
-        <div class="report-title">Personalized Cancer Risk Report</div>
+        <div class="report-title" id="bmReportTitle">Personalized Cancer Risk Report</div>
       </div>
-      <div class="report-meta" id="bmReportMeta"></div>
+      <div class="report-meta-wrap">
+        <div class="report-lang-switch" aria-label="Report language">
+          <button class="report-lang-btn active" type="button" data-lang="en" onclick="bmSetReportLanguage('en')">EN</button>
+          <button class="report-lang-btn" type="button" data-lang="es" onclick="bmSetReportLanguage('es')">ES</button>
+        </div>
+        <div class="report-meta" id="bmReportMeta"></div>
+      </div>
     </div>
     <div class="report-content" id="bmReportContent"></div>
     <div class="report-actions">
-      <button class="report-btn" type="button" onclick="bmClosePersonalizedReport()">Back to Body Map</button>
-      <button class="report-btn primary" type="button" onclick="bmDownloadPersonalizedReport()">Download PDF</button>
+      <button class="report-btn" id="bmReportBackBtn" type="button" onclick="bmClosePersonalizedReport()">Back to Body Map</button>
+      <button class="report-btn primary" id="bmReportDownloadBtn" type="button" onclick="bmDownloadPersonalizedReport()">Download PDF</button>
     </div>
   </div>
 </div>
@@ -1554,6 +1592,118 @@ const BM_RISK_SOURCE_KEYS = [
   'cancerRiskResults', 'mlCancerRiskResults'
 ];
 
+const BM_REPORT_LANGUAGE_KEY = 'acsReportLanguage';
+let bmReportLanguage = (() => {
+  const saved = localStorage.getItem(BM_REPORT_LANGUAGE_KEY);
+  return saved === 'es' ? 'es' : 'en';
+})();
+
+const BM_REPORT_I18N = {
+  en: {
+    reportTitle: 'Personalized Cancer Risk Report',
+    generated: 'Generated',
+    document: 'Document',
+    preparedFor: 'Prepared for',
+    patientSummary: 'Patient Summary',
+    name: 'Name',
+    age: 'Age',
+    gender: 'Gender',
+    elevatedRiskRegions: 'Body Map Elevated Risk Regions',
+    riskLevel: 'Risk level',
+    watchFor: 'Watch for',
+    noMappedCancers: 'No mapped cancers available for this region in prototype data.',
+    riskCalculatorResults: 'Risk Calculator Cancer-Type Results',
+    score: 'Score',
+    level: 'Level',
+    noCancerTypeList: 'No explicit cancer-type list was found in risk calculator storage yet.',
+    riskFactorNotes: 'Personal Risk Factor Notes',
+    screeningPoints: 'Recommended Screening Discussion Points',
+    backToMap: 'Back to Body Map',
+    downloadPdf: 'Download PDF',
+    reportLanguage: 'Report language',
+  },
+  es: {
+    reportTitle: 'Informe Personalizado de Riesgo de Cáncer',
+    generated: 'Generado',
+    document: 'Documento',
+    preparedFor: 'Preparado para',
+    patientSummary: 'Resumen del Paciente',
+    name: 'Nombre',
+    age: 'Edad',
+    gender: 'Género',
+    elevatedRiskRegions: 'Regiones con Riesgo Elevado en el Mapa Corporal',
+    riskLevel: 'Nivel de riesgo',
+    watchFor: 'Vigilar',
+    noMappedCancers: 'No hay cánceres mapeados para esta región en los datos del prototipo.',
+    riskCalculatorResults: 'Resultados del Calculador de Riesgo por Tipo de Cáncer',
+    score: 'Puntaje',
+    level: 'Nivel',
+    noCancerTypeList: 'Aún no se encontró una lista explícita de tipos de cáncer en el almacenamiento del calculador de riesgo.',
+    riskFactorNotes: 'Notas de Factores de Riesgo Personales',
+    screeningPoints: 'Puntos Recomendados para Conversar sobre Pruebas de Detección',
+    backToMap: 'Volver al Mapa Corporal',
+    downloadPdf: 'Descargar PDF',
+    reportLanguage: 'Idioma del informe',
+  },
+};
+
+const BM_REPORT_TEXT_ES = {
+  'Your smoking history may increase risk for lung, bladder, and other cancers.': 'Su historial de tabaquismo puede aumentar el riesgo de cáncer de pulmón, vejiga y otros cánceres.',
+  'Your reported family history may increase inherited cancer risk in specific organs.': 'Sus antecedentes familiares reportados pueden aumentar el riesgo hereditario de cáncer en órganos específicos.',
+  'Weight-related factors can increase risk for colorectal, endometrial, and other cancers.': 'Los factores relacionados con el peso pueden aumentar el riesgo de cáncer colorrectal, endometrial y otros cánceres.',
+  'Alcohol use can increase risk for liver, breast, and head/neck cancers.': 'El consumo de alcohol puede aumentar el riesgo de cáncer de hígado, mama y cabeza/cuello.',
+  'Lower physical activity may contribute to higher risk for several cancers.': 'Una menor actividad física puede contribuir a un mayor riesgo de varios cánceres.',
+  'Risk factors were inferred from your available profile and calculator data in this prototype.': 'Los factores de riesgo se infirieron de su perfil y de los datos del calculador disponibles en este prototipo.',
+  'Colorectal screening (colonoscopy or stool-based test) starting at age 45.': 'Prueba de detección colorrectal (colonoscopia o prueba de heces) a partir de los 45 años.',
+  'Annual mammogram starting at age 40.': 'Mamografía anual a partir de los 40 años.',
+  'Cervical cancer screening (Pap/HPV) per clinician schedule.': 'Prueba de detección de cáncer cervicouterino (Papanicolaou/VPH) según el calendario clínico.',
+  'Discuss PSA testing for prostate cancer with your doctor.': 'Converse con su médico sobre la prueba de PSA para cáncer de próstata.',
+  'Ask about annual low-dose CT screening if smoking history is significant.': 'Pregunte por una tomografía anual de baja dosis si su historial de tabaquismo es significativo.',
+  'Annual full-body skin exam and monthly self-check of changing moles/spots.': 'Examen anual de piel de cuerpo completo y autoevaluación mensual de lunares/manchas cambiantes.',
+  'If high-risk for liver disease, discuss liver ultrasound and blood tests.': 'Si tiene alto riesgo de enfermedad hepática, converse sobre ecografía de hígado y análisis de sangre.',
+  'Discuss age-appropriate routine cancer screening with your primary care doctor.': 'Converse con su médico de atención primaria sobre pruebas rutinarias de detección de cáncer según su edad.',
+  Male: 'Masculino',
+  Female: 'Femenino',
+  'Not provided': 'No proporcionado',
+  'ACS Patient': 'Paciente ACS',
+};
+
+function bmReportText(key) {
+  const langSet = BM_REPORT_I18N[bmReportLanguage] || BM_REPORT_I18N.en;
+  return langSet[key] || BM_REPORT_I18N.en[key] || key;
+}
+
+function bmTranslateReportSentence(text) {
+  if (bmReportLanguage !== 'es') return text;
+  return BM_REPORT_TEXT_ES[text] || text;
+}
+
+function bmUpdateReportLanguageUI() {
+  const switchWrap = document.querySelector('#body-map-root .report-lang-switch');
+  if (switchWrap) {
+    switchWrap.setAttribute('aria-label', bmReportText('reportLanguage'));
+  }
+  document.querySelectorAll('#body-map-root .report-lang-btn').forEach(btn => {
+    const active = btn.getAttribute('data-lang') === bmReportLanguage;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+  });
+}
+
+function bmSetReportLanguage(lang) {
+  const normalized = lang === 'es' ? 'es' : 'en';
+  if (normalized === bmReportLanguage) {
+    bmUpdateReportLanguageUI();
+    return;
+  }
+  bmReportLanguage = normalized;
+  localStorage.setItem(BM_REPORT_LANGUAGE_KEY, bmReportLanguage);
+  bmUpdateReportLanguageUI();
+  if (document.getElementById('body-map-root')?.classList.contains('report-mode')) {
+    bmRenderPersonalizedReport();
+  }
+}
+
 const BM_REGION_ALIASES = {
   brain: 'brain', brain_ns: 'brain', nervous: 'brain',
   eye: 'eye',
@@ -1896,12 +2046,23 @@ function bmRenderPersonalizedReport() {
   const reportData = bmGetPrototypeReportData();
   const meta = document.getElementById('bmReportMeta');
   const content = document.getElementById('bmReportContent');
+  const title = document.getElementById('bmReportTitle');
+  const backBtn = document.getElementById('bmReportBackBtn');
+  const downloadBtn = document.getElementById('bmReportDownloadBtn');
   if (!meta || !content) return;
 
+  bmUpdateReportLanguageUI();
+  if (title) title.textContent = bmReportText('reportTitle');
+  if (backBtn) backBtn.textContent = bmReportText('backToMap');
+  if (downloadBtn) downloadBtn.textContent = bmReportText('downloadPdf');
+
+  const translatedName = bmTranslateReportSentence(reportData.fullName);
+  const translatedGender = bmTranslateReportSentence(reportData.gender);
+
   meta.innerHTML = `
-    <div><strong>Generated:</strong> ${reportData.dateISO}</div>
-    <div><strong>Document:</strong> ACS-RISK-PROTOTYPE</div>
-    <div><strong>Prepared for:</strong> ${reportData.fullName}</div>
+    <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
+    <div><strong>${bmReportText('document')}:</strong> ACS-RISK-PROTOTYPE</div>
+    <div><strong>${bmReportText('preparedFor')}:</strong> ${translatedName}</div>
   `;
 
   const elevatedRegionBlocks = reportData.elevatedRegions.map(region => {
@@ -1909,12 +2070,12 @@ function bmRenderPersonalizedReport() {
     const label = hs ? hs.label : region.regionId;
     const cancers = bmRegionCancersForReport(region.regionId).slice(0, 6);
     const items = cancers.length
-      ? cancers.map(c => `<li><a href="${c.link}" target="_blank" rel="noopener">${c.name}</a> — Watch for: ${c.tags.slice(0, 3).join(', ')}</li>`).join('')
-      : '<li>No mapped cancers available for this region in prototype data.</li>';
+      ? cancers.map(c => `<li><a href="${c.link}" target="_blank" rel="noopener">${c.name}</a> — ${bmReportText('watchFor')}: ${c.tags.slice(0, 3).join(', ')}</li>`).join('')
+      : `<li>${bmReportText('noMappedCancers')}</li>`;
 
     return `
       <div class="report-region">
-        <div class="report-region-title">${label} · Risk level: ${region.level || 'elevated'}</div>
+        <div class="report-region-title">${label} · ${bmReportText('riskLevel')}: ${region.level || 'elevated'}</div>
         <ul class="report-cancer-list">${items}</ul>
       </div>
     `;
@@ -1922,42 +2083,42 @@ function bmRenderPersonalizedReport() {
 
   content.innerHTML = `
     <section class="report-section">
-      <h3>Patient Summary</h3>
+      <h3>${bmReportText('patientSummary')}</h3>
       <div class="report-kv">
-        <div class="report-kv-item"><div class="report-kv-label">Name</div><div class="report-kv-value">${reportData.fullName}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">Age</div><div class="report-kv-value">${reportData.age}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">Gender</div><div class="report-kv-value">${reportData.gender}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('name')}</div><div class="report-kv-value">${translatedName}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('age')}</div><div class="report-kv-value">${reportData.age}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('gender')}</div><div class="report-kv-value">${translatedGender}</div></div>
       </div>
     </section>
 
     <section class="report-section">
-      <h3>Body Map Elevated Risk Regions</h3>
+      <h3>${bmReportText('elevatedRiskRegions')}</h3>
       ${elevatedRegionBlocks}
     </section>
 
     <section class="report-section">
-      <h3>Risk Calculator Cancer-Type Results</h3>
+      <h3>${bmReportText('riskCalculatorResults')}</h3>
       <ul class="report-bullet-list">
         ${reportData.calculatorCancers.length
           ? reportData.calculatorCancers.map(item => {
               const scoreText = Number.isFinite(item.score)
-                ? ` · Score: ${Math.round(item.score * (item.score <= 1 ? 100 : 1))}${item.score <= 1 ? '%' : ''}`
+                ? ` · ${bmReportText('score')}: ${Math.round(item.score * (item.score <= 1 ? 100 : 1))}${item.score <= 1 ? '%' : ''}`
                 : '';
-              const levelText = item.level ? ` · Level: ${item.level}` : '';
+              const levelText = item.level ? ` · ${bmReportText('level')}: ${item.level}` : '';
               return `<li>${item.name}${levelText}${scoreText}</li>`;
             }).join('')
-          : '<li>No explicit cancer-type list was found in risk calculator storage yet.</li>'}
+          : `<li>${bmReportText('noCancerTypeList')}</li>`}
       </ul>
     </section>
 
     <section class="report-section">
-      <h3>Personal Risk Factor Notes</h3>
-      <ul class="report-bullet-list">${reportData.riskFactorNotes.map(note => `<li>${note}</li>`).join('')}</ul>
+      <h3>${bmReportText('riskFactorNotes')}</h3>
+      <ul class="report-bullet-list">${reportData.riskFactorNotes.map(note => `<li>${bmTranslateReportSentence(note)}</li>`).join('')}</ul>
     </section>
 
     <section class="report-section">
-      <h3>Recommended Screening Discussion Points</h3>
-      <ul class="report-bullet-list">${reportData.screeningRecommendations.map(note => `<li>${note}</li>`).join('')}</ul>
+      <h3>${bmReportText('screeningPoints')}</h3>
+      <ul class="report-bullet-list">${reportData.screeningRecommendations.map(note => `<li>${bmTranslateReportSentence(note)}</li>`).join('')}</ul>
     </section>
   `;
 }
@@ -2045,6 +2206,7 @@ function bmShareRegion(hotspotId) {
 
 // ─── DEEP LINK on load ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  bmUpdateReportLanguageUI();
   const params = new URLSearchParams(window.location.search);
   const region = params.get('region');
   if (region) setTimeout(() => bmActivateHotspot(region), 500);
