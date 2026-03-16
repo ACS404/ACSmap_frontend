@@ -642,7 +642,7 @@ title: Risk Calculator
 
     <!-- SECTION 1: DEMOGRAPHICS -->
     <div class="section-heading" id="section-demographics">
-      <span class="section-icon">𐦂𖨆𐀪𖠋</span><span data-i18n="sectionDemographics">Demographics</span>
+      <span class="section-icon">𐦂𖨆𖠋</span><span data-i18n="sectionDemographics">Demographics</span>
     </div>
 
     <div class="field-grid">
