@@ -827,7 +827,7 @@ show_reading_time: false
   #body-map-root .report-content,
   #body-map-root .report-actions { padding-left: 20px; padding-right: 20px; }
   #body-map-root .report-meta { text-align: left; }
-  #body-map-root .categories-section { padding: 40px 24px 60px; 
+  #body-map-root .categories-section { padding: 40px 24px 60px; }
 }
 
 /* ── BREAK OUT OF JEKYLL .WRAPPER PADDING ──────────────── */
