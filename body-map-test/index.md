@@ -1109,7 +1109,7 @@ function bmPrintRegion(hotspotId) {
     </body></html>`);
   win.document.close();
   win.print();
-
+}
 
 // ─── DEEP LINK on load ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
