@@ -1544,6 +1544,16 @@ function bmRefreshBookmarksUI() {
 }
 
 // ─── PERSONALIZED REPORT (SINGLE-FILE PROTOTYPE) ─────────────────────────
+const BM_LOGIN_SOURCE_KEYS = [
+  'acsUserProfile', 'userProfile', 'profile', 'patientProfile', 'acs_profile',
+  'currentUser', 'authUser', 'loginUser', 'user'
+];
+
+const BM_RISK_SOURCE_KEYS = [
+  'acsRiskResults', 'riskCalculatorResults', 'riskResults', 'bodyMapRisk', 'acs_risk',
+  'cancerRiskResults', 'mlCancerRiskResults'
+];
+
 const BM_REGION_ALIASES = {
   brain: 'brain', brain_ns: 'brain', nervous: 'brain',
   eye: 'eye',
@@ -1578,6 +1588,64 @@ function bmReadStorageObject(candidates) {
     if (parsedSession && typeof parsedSession === 'object') return parsedSession;
   }
   return {};
+}
+
+function bmHasMeaningfulData(value) {
+  if (value === null || value === undefined) return false;
+  if (typeof value === 'string') return value.trim() !== '';
+  if (typeof value === 'number') return Number.isFinite(value);
+  if (typeof value === 'boolean') return true;
+  if (Array.isArray(value)) return value.some(item => bmHasMeaningfulData(item));
+  if (typeof value === 'object') {
+    const keys = Object.keys(value);
+    if (!keys.length) return false;
+    return keys.some(key => bmHasMeaningfulData(value[key]));
+  }
+  return false;
+}
+
+function bmLooksLoggedInFromNav() {
+  const loginArea = document.getElementById('loginArea');
+  if (!loginArea) return false;
+  const hasDropButton = !!loginArea.querySelector('.dropbtn');
+  if (hasDropButton) return true;
+  const text = (loginArea.textContent || '').trim().toLowerCase();
+  if (!text) return false;
+  return !/^login$/.test(text);
+}
+
+function bmHasLoginForReport() {
+  const profileSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
+  const storageSignal = bmHasMeaningfulData(profileSource);
+  const windowSignal = !!(window.user && (window.user.name || window.user.uid || window.user.username));
+  const navSignal = bmLooksLoggedInFromNav();
+  return storageSignal || windowSignal || navSignal;
+}
+
+function bmHasCompletedRiskForReport() {
+  const riskSource = bmReadStorageObject(BM_RISK_SOURCE_KEYS);
+  return bmHasMeaningfulData(riskSource);
+}
+
+function bmValidateReportReadiness() {
+  const hasLogin = bmHasLoginForReport();
+  const hasRisk = bmHasCompletedRiskForReport();
+  return {
+    ready: hasLogin && hasRisk,
+    needsLogin: !hasLogin,
+    needsRisk: !hasRisk,
+  };
+}
+
+function bmRedirectToRiskCalculator({ needsLogin, needsRisk }) {
+  let message = 'Please complete your risk calculator before opening Personalized Report. Taking you there now.';
+  if (needsLogin && needsRisk) {
+    message = 'Please log in and complete your risk calculator first. Taking you there now.';
+  } else if (needsLogin) {
+    message = 'Please log in first, then complete your risk calculator to use Personalized Report. Taking you there now.';
+  }
+  alert(message);
+  window.location.href = '{{ site.baseurl }}/cancerrisk';
 }
 
 function bmPickFirstDefined(source, keys, fallback = '') {
@@ -1710,13 +1778,8 @@ function bmGetRecommendedScreenings(profile, elevatedRegions) {
 }
 
 function bmGetPrototypeReportData() {
-  const profileSource = bmReadStorageObject([
-    'acsUserProfile', 'userProfile', 'profile', 'patientProfile', 'acs_profile',
-    'currentUser', 'authUser', 'loginUser', 'user'
-  ]);
-  const riskSource = bmReadStorageObject([
-    'acsRiskResults', 'riskCalculatorResults', 'riskResults', 'bodyMapRisk', 'acs_risk'
-  ]);
+  const profileSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
+  const riskSource = bmReadStorageObject(BM_RISK_SOURCE_KEYS);
 
   const fullName = bmPickFirstDefined(profileSource, ['fullName', 'name', 'displayName'], 'ACS Patient');
   const age = bmPickFirstDefined(profileSource, ['age'], 'Not provided');
@@ -1900,6 +1963,12 @@ function bmRenderPersonalizedReport() {
 }
 
 function bmOpenPersonalizedReport() {
+  const readiness = bmValidateReportReadiness();
+  if (!readiness.ready) {
+    bmRedirectToRiskCalculator(readiness);
+    return;
+  }
+
   bmRenderPersonalizedReport();
   const params = new URLSearchParams(window.location.search);
   params.set('report', '1');
