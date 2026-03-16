@@ -1030,6 +1030,94 @@ const BM_HOTSPOTS = [
 let bmGender = 'female';
 let bmActiveId = null;
 
+// ─── SEARCH ────────────────────────────────────────────────────────────────
+function bmSearchCancers(query) {
+  const results = document.getElementById('bmSearchResults');
+  const q = query.toLowerCase().trim();
+  if (q.length < 2) { results.classList.remove('open'); return; }
+
+  const matches = [];
+  BM_HOTSPOTS.forEach(hs => {
+    hs.cancerIds.forEach(cid => {
+      const c = BM_CANCERS[cid];
+      if (!c) return;
+      if (c.name.toLowerCase().includes(q) || c.tags.some(t => t.toLowerCase().includes(q))) {
+        matches.push({ cancer: c, hotspot: hs, cid });
+      }
+    });
+  });
+
+  results.innerHTML = '';
+  if (matches.length === 0) {
+    results.innerHTML = `<div class="bm-search-no-results">No results for "${query}"</div>`;
+  } else {
+    matches.slice(0, 8).forEach(({ cancer, hotspot }) => {
+      const item = document.createElement('div');
+      item.className = 'bm-search-result-item';
+      item.innerHTML = `
+        <span>${cancer.name}</span>
+        <span class="bm-search-result-region">${hotspot.label}</span>`;
+      item.addEventListener('click', () => {
+        bmCloseSearch();
+        document.getElementById('bmSearchInput').value = '';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setTimeout(() => bmActivateHotspot(hotspot.id), 200);
+      });
+      results.appendChild(item);
+    });
+  }
+  results.classList.add('open');
+}
+
+function bmCloseSearch() {
+  document.getElementById('bmSearchResults').classList.remove('open');
+}
+
+// ─── SHARE & PRINT ─────────────────────────────────────────────────────────
+function bmShareRegion(hotspotId) {
+  const url = window.location.href.split('?')[0] + '?region=' + hotspotId;
+  navigator.clipboard.writeText(url).then(() => {
+    const btns = document.querySelectorAll('.share-btn');
+    btns.forEach(b => { if (b.textContent.includes('Share')) { b.textContent = 'Link copied!'; b.classList.add('copied'); }});
+    setTimeout(() => btns.forEach(b => { b.textContent = b.classList.contains('copied') ? 'Share this region' : b.textContent; b.classList.remove('copied'); }), 2000);
+  });
+}
+
+function bmPrintRegion(hotspotId) {
+  const hs = BM_HOTSPOTS.find(h => h.id === hotspotId);
+  if (!hs) return;
+  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
+    if (!c) return false;
+    if (c.reproGender) return c.reproGender === bmGender;
+    return true;
+  });
+  const win = window.open('', '_blank');
+  win.document.write(`
+    <html><head><title>${hs.label} — ACS Cancer Map</title>
+    <style>body{font-family:Georgia,serif;max-width:700px;margin:40px auto;color:#3d2c24;line-height:1.7}
+    h1{font-size:28px;margin-bottom:4px}p.sub{color:#937468;font-size:13px;margin-bottom:24px}
+    h3{font-size:16px;margin:20px 0 4px}ul{margin:0 0 8px 20px;font-size:13px}
+    .tag{display:inline-block;padding:2px 8px;background:#fce9e6;border-radius:3px;font-size:11px;margin:2px}
+    a{color:#c45e4a}</style></head><body>
+    <h1>${hs.label}</h1>
+    <p class="sub">American Cancer Society · Cancer Body Map · cancer.org</p>
+    ${cancers.map(c => `
+      <h3><a href="${c.link}">${c.name}</a></h3>
+      <div>${c.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+      <p style="font-size:13px;color:#6b4c3b">${c.desc}</p>
+    `).join('')}
+    </body></html>`);
+  win.document.close();
+  win.print();
+}
+
+// ─── DEEP LINK on load ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const region = params.get('region');
+  if (region) setTimeout(() => bmActivateHotspot(region), 500);
+});
+
 function bmSwitchGender(g) {
   bmGender = g;
   document.getElementById('bm-svg-container-female').style.display = g === 'female' ? '' : 'none';
@@ -1095,7 +1183,7 @@ function bmActivateHotspot(id) {
       <button class="share-btn" onclick="bmPrintRegion('${hs.id}')">Print summary</button>
     </div>
     <div class="panel-body">
-    
+
       ${cancers.map((c,i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
