@@ -883,7 +883,7 @@ show_reading_time: false
   </div>
 </div>
 
-<!-- ── MAIN INTERACTIVE SE──────────────────────────── -->
+<!-- ── MAIN INTERACTIVE SECTION ──────────────────────────── -->
 <div class="main-section">
 <div class="search-row">
   <input class="bm-search-input" id="bmSearchInput" type="text"
