@@ -121,6 +121,11 @@ show_reading_time: false
   display: flex; align-items: center; justify-content: space-between;
   margin-bottom: 32px; flex-wrap: wrap; gap: 12px;
 }
+#body-map-root .gender-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 #body-map-root .section-eyebrow {
   font-family: var(--sans); font-size: 11px; font-weight: 600;
   letter-spacing: 0.15em; text-transform: uppercase;
@@ -265,6 +270,11 @@ show_reading_time: false
 #body-map-root .cancer-row {
   display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
 }
+#body-map-root .cancer-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 #body-map-root .cancer-name-link {
   font-size: 13px; font-weight: 700; color: var(--text);
   text-decoration: none; line-height: 1.3; transition: color 0.15s;
@@ -277,6 +287,30 @@ show_reading_time: false
 }
 #body-map-root .cancer-item:hover .cancer-arrow,
 #body-map-root .cancer-item.open .cancer-arrow { transform: translateX(4px); color: var(--rose); }
+#body-map-root .bookmark-icon-btn {
+  border: 1px solid rgba(196,168,130,0.35);
+  background: #fff;
+  color: var(--muted);
+  border-radius: 8px;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  transition: all 0.15s;
+}
+#body-map-root .bookmark-icon-btn:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .bookmark-icon-btn.active {
+  color: #fff;
+  border-color: var(--rose);
+  background: var(--rose);
+}
 #body-map-root .cancer-tags {
   display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px;
 }
@@ -466,6 +500,147 @@ show_reading_time: false
   padding: 10px 24px 4px;
   border-bottom: 1px solid var(--border);
 }
+#body-map-root .bookmarks-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--border);
+  background: var(--warm-white);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#body-map-root .bookmarks-trigger:hover {
+  border-color: var(--rose-light);
+  color: var(--rose);
+}
+#body-map-root .bookmarks-count {
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--rose-pale);
+  color: var(--terra);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  padding: 0 5px;
+}
+
+/* ── BOOKMARKS DRAWER ───────────────────────────────────── */
+#body-map-root .bookmarks-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  z-index: 120;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+#body-map-root .bookmarks-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+#body-map-root .bookmarks-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(400px, 92vw);
+  background: var(--warm-white);
+  border-left: 1px solid var(--border);
+  box-shadow: -12px 0 28px rgba(61,44,36,0.12);
+  z-index: 130;
+  transform: translateX(100%);
+  transition: transform 0.24s ease;
+  display: flex;
+  flex-direction: column;
+}
+#body-map-root .bookmarks-drawer.open {
+  transform: translateX(0);
+}
+#body-map-root .bookmarks-head {
+  padding: 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+#body-map-root .bookmarks-title {
+  font-family: var(--serif);
+  font-size: 26px;
+  color: var(--text);
+}
+#body-map-root .bookmarks-close {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  color: var(--muted);
+}
+#body-map-root .bookmarks-body {
+  padding: 14px 18px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+#body-map-root .bookmark-item {
+  border: 1px solid rgba(196,168,130,0.35);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+#body-map-root .bookmark-item-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+#body-map-root .bookmark-item a {
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+}
+#body-map-root .bookmark-item a:hover {
+  color: var(--rose);
+}
+#body-map-root .bookmark-meta {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+#body-map-root .bookmark-remove {
+  border: 1px solid rgba(196,168,130,0.35);
+  background: #fff;
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 4px 6px;
+}
+#body-map-root .bookmark-remove:hover {
+  color: var(--rose);
+  border-color: var(--rose-light);
+}
+#body-map-root .bookmarks-empty {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+  padding: 28px 10px;
+}
 
 /* ── REPORT PAGE PROTOTYPE ───────────────────────────────── */
 #body-map-root .report-view {
@@ -643,6 +818,7 @@ show_reading_time: false
   #body-map-root .hero-cta,
   #body-map-root .hero-cta-secondary { width: 100%; justify-content: center; }
   #body-map-root .main-section { padding: 32px 24px 0; }
+  #body-map-root .gender-actions { width: 100%; justify-content: space-between; }
   #body-map-root .diagram-area { grid-template-columns: 1fr; }
   #body-map-root .body-wrap { margin: 0 auto; }
   #body-map-root .info-panel { position: static; }
@@ -718,9 +894,15 @@ show_reading_time: false
 </div>
   <div class="gender-row">
     <div class="section-eyebrow">Interactive Body Map</div>
-    <div class="gender-toggle">
-      <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')">♀ Female</button>
-      <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')">♂ Male</button>
+    <div class="gender-actions">
+      <button class="bookmarks-trigger" type="button" onclick="bmOpenBookmarks()">
+        My Bookmarks
+        <span class="bookmarks-count" id="bmBookmarksCount">0</span>
+      </button>
+      <div class="gender-toggle">
+        <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')">♀ Female</button>
+        <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')">♂ Male</button>
+      </div>
     </div>
   </div>
 
@@ -751,6 +933,16 @@ show_reading_time: false
     </div>
   </div>
 </div>
+
+<!-- ── BOOKMARKS DRAWER ─────────────────────────────────── -->
+<div class="bookmarks-overlay" id="bmBookmarksOverlay" onclick="bmCloseBookmarks()"></div>
+<aside class="bookmarks-drawer" id="bmBookmarksDrawer" aria-label="My Bookmarks">
+  <div class="bookmarks-head">
+    <div class="bookmarks-title">My Bookmarks</div>
+    <button type="button" class="bookmarks-close" onclick="bmCloseBookmarks()">✕</button>
+  </div>
+  <div class="bookmarks-body" id="bmBookmarksBody"></div>
+</aside>
 
 <!-- ── PERSONALIZED REPORT PROTOTYPE ────────────────────── -->
 <div class="report-view" id="bmReportView" aria-live="polite">
@@ -1242,6 +1434,114 @@ const BM_HOTSPOTS = [
 // ─── GENDER STATE ──────────────────────────────────────────────────────────
 let bmGender = 'female';
 let bmActiveId = null;
+const BM_BOOKMARKS_STORAGE_KEY = 'acsCancerBookmarks';
+
+// ─── BOOKMARKS ─────────────────────────────────────────────────────────────
+function bmGetBookmarks() {
+  const raw = localStorage.getItem(BM_BOOKMARKS_STORAGE_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function bmSetBookmarks(items) {
+  localStorage.setItem(BM_BOOKMARKS_STORAGE_KEY, JSON.stringify(items));
+  bmRefreshBookmarksUI();
+}
+
+function bmBookmarkPayload(cancerId) {
+  const cancer = BM_CANCERS[cancerId];
+  if (!cancer) return null;
+  const hs = BM_HOTSPOTS.find(h => h.cancerIds.includes(cancerId));
+  return {
+    id: cancerId,
+    name: cancer.name,
+    link: cancer.link,
+    regionId: hs ? hs.id : null,
+    regionLabel: hs ? hs.label : 'Body Map Region',
+    savedAt: Date.now(),
+  };
+}
+
+function bmIsBookmarked(cancerId) {
+  return bmGetBookmarks().some(item => item.id === cancerId);
+}
+
+function bmToggleBookmark(cancerId, event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  const bookmarks = bmGetBookmarks();
+  const existingIdx = bookmarks.findIndex(item => item.id === cancerId);
+
+  if (existingIdx >= 0) {
+    bookmarks.splice(existingIdx, 1);
+  } else {
+    const payload = bmBookmarkPayload(cancerId);
+    if (payload) bookmarks.unshift(payload);
+  }
+
+  bmSetBookmarks(bookmarks);
+  if (bmActiveId) bmActivateHotspot(bmActiveId);
+}
+
+function bmRemoveBookmark(cancerId) {
+  const updated = bmGetBookmarks().filter(item => item.id !== cancerId);
+  bmSetBookmarks(updated);
+  if (bmActiveId) bmActivateHotspot(bmActiveId);
+}
+
+function bmOpenBookmarks() {
+  document.getElementById('bmBookmarksOverlay').classList.add('open');
+  document.getElementById('bmBookmarksDrawer').classList.add('open');
+  bmRenderBookmarksList();
+}
+
+function bmCloseBookmarks() {
+  document.getElementById('bmBookmarksOverlay').classList.remove('open');
+  document.getElementById('bmBookmarksDrawer').classList.remove('open');
+}
+
+function bmJumpToBookmarkRegion(regionId) {
+  if (!regionId) return;
+  bmCloseBookmarks();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  setTimeout(() => bmActivateHotspot(regionId), 300);
+}
+
+function bmRenderBookmarksList() {
+  const body = document.getElementById('bmBookmarksBody');
+  if (!body) return;
+  const bookmarks = bmGetBookmarks();
+
+  if (!bookmarks.length) {
+    body.innerHTML = `<div class="bookmarks-empty">No saved cancers yet. Click the bookmark icon next to any cancer in the panel to save it here.</div>`;
+    return;
+  }
+
+  body.innerHTML = bookmarks.map(item => `
+    <div class="bookmark-item">
+      <div class="bookmark-item-top">
+        <a href="${item.link}" target="_blank" rel="noopener">${item.name}</a>
+        <button class="bookmark-remove" type="button" onclick="bmRemoveBookmark('${item.id}')">Remove</button>
+      </div>
+      <div class="bookmark-meta">${item.regionLabel || 'Body Map Region'}</div>
+      ${item.regionId ? `<button class="share-btn" type="button" style="margin-top:8px" onclick="bmJumpToBookmarkRegion('${item.regionId}')">Open on body map</button>` : ''}
+    </div>
+  `).join('');
+}
+
+function bmRefreshBookmarksUI() {
+  const bookmarks = bmGetBookmarks();
+  const count = document.getElementById('bmBookmarksCount');
+  if (count) count.textContent = String(bookmarks.length);
+  bmRenderBookmarksList();
+}
 
 // ─── PERSONALIZED REPORT (SINGLE-FILE PROTOTYPE) ─────────────────────────
 const BM_REGION_ALIASES = {
@@ -1665,9 +1965,9 @@ function bmActivateHotspot(id) {
   panel.classList.add('active');
   panel.style.setProperty('--panel-accent', sys.color);
 
-  const cancers = hs.cancerIds.map(cid => BM_CANCERS[cid]).filter(c => {
-    if (!c) return false;
-    if (c.reproGender) return c.reproGender === bmGender;
+  const cancers = hs.cancerIds.map(cid => ({ cid, cancer: BM_CANCERS[cid] })).filter(({ cancer }) => {
+    if (!cancer) return false;
+    if (cancer.reproGender) return cancer.reproGender === bmGender;
     return true;
   });
 
@@ -1684,11 +1984,14 @@ function bmActivateHotspot(id) {
     </div>
     <div class="panel-body">
 
-      ${cancers.map((c,i) => `
+      ${cancers.map(({ cid, cancer: c },i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
             <a href="${c.link}" target="_blank" class="cancer-name-link">${c.name}</a>
-            <span class="cancer-arrow">→</span>
+            <span class="cancer-right">
+              <button class="bookmark-icon-btn ${bmIsBookmarked(cid) ? 'active' : ''}" type="button" onclick="bmToggleBookmark('${cid}', event)" title="${bmIsBookmarked(cid) ? 'Remove bookmark' : 'Save bookmark'}">★</button>
+              <span class="cancer-arrow">→</span>
+            </span>
           </div>
           <div class="cancer-tags">${c.tags.map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
           <div class="cancer-desc">${c.desc}</div>
@@ -1733,6 +2036,7 @@ function bmBuildSysGrid() {
   function init() {
     bmBuildHotspots();
     bmBuildSysGrid();
+    bmRefreshBookmarksUI();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
