@@ -1778,22 +1778,16 @@ function bmHasCompletedRiskForReport() {
 }
 
 function bmValidateReportReadiness() {
-  const hasLogin = bmHasLoginForReport();
   const hasRisk = bmHasCompletedRiskForReport();
   return {
-    ready: hasLogin && hasRisk,
-    needsLogin: !hasLogin,
+    ready: hasRisk,
+    needsLogin: false,
     needsRisk: !hasRisk,
   };
 }
 
 function bmRedirectToRiskCalculator({ needsLogin, needsRisk }) {
   let message = 'Please complete your risk calculator before opening Personalized Report. Taking you there now.';
-  if (needsLogin && needsRisk) {
-    message = 'Please log in and complete your risk calculator first. Taking you there now.';
-  } else if (needsLogin) {
-    message = 'Please log in first, then complete your risk calculator to use Personalized Report. Taking you there now.';
-  }
   alert(message);
   window.location.href = '{{ site.baseurl }}/cancerrisk';
 }
