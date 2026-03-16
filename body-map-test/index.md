@@ -358,18 +358,75 @@ show_reading_time: false
 }
 #body-map-root .fade-in { animation: fadeUp 0.5s ease both; }
 
-
-/* ── RISK PANEL ──────────────────────────────────────────── */
-#body-map-root .risk-trigger-row {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 16px;
+/* ── SEARCH BAR ──────────────────────────────────────────── */
+#body-map-root .search-row {
+  margin-bottom: 20px;
+  position: relative;
 }
-#body-map-root .risk-trigger-btn {
+#body-map-root .bm-search-input {
+  width: 100%;
+  padding: 12px 44px 12px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--text);
+  background: var(--warm-white);
+  outline: none;
+  transition: border-color 0.2s;
+}
+#body-map-root .bm-search-input:focus {
+  border-color: var(--rose-light);
+}
+#body-map-root .bm-search-input::placeholder { color: var(--muted); }
+#body-map-root .bm-search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0; right: 0;
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(61,44,36,0.1);
+  z-index: 100;
+  overflow: hidden;
+  display: none;
+}
+#body-map-root .bm-search-results.open { display: block; }
+#body-map-root .bm-search-result-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  border-bottom: 1px solid rgba(196,168,130,0.15);
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#body-map-root .bm-search-result-item:last-child { border-bottom: none; }
+#body-map-root .bm-search-result-item:hover { background: var(--rose-pale); }
+#body-map-root .bm-search-result-region {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-left: auto;
+  white-space: nowrap;
+}
+#body-map-root .bm-search-no-results {
+  padding: 14px 16px;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ── SHARE BUTTON ─────────────────────────────────────────── */
+#body-map-root .share-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
+  gap: 7px;
+  padding: 7px 16px;
   background: var(--warm-white);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -381,166 +438,20 @@ show_reading_time: false
   transition: all 0.2s;
   letter-spacing: 0.04em;
 }
-#body-map-root .risk-trigger-btn:hover {
+#body-map-root .share-btn:hover {
   border-color: var(--rose-light);
   color: var(--rose);
 }
-#body-map-root .risk-trigger-btn.open {
-  background: var(--rose-pale);
-  border-color: var(--rose);
-  color: var(--terra);
+#body-map-root .share-btn.copied {
+  background: var(--sage-pale);
+  border-color: var(--sage);
+  color: var(--sage);
 }
-#body-map-root .risk-trigger-btn .rtb-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--muted);
-  transition: background 0.2s;
-}
-#body-map-root .risk-trigger-btn.open .rtb-dot {
-  background: var(--rose);
-}
-#body-map-root .risk-panel {
-  background: var(--warm-white);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px 24px;
-  margin-bottom: 28px;
-  display: none;
-}
-#body-map-root .risk-panel.open {
-  display: block;
-}
-#body-map-root .risk-panel-top {
+#body-map-root .panel-share-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
   gap: 8px;
-}
-#body-map-root .risk-title {
-  font-family: var(--serif);
-  font-size: 17px;
-  font-weight: 700;
-  color: var(--text);
-}
-#body-map-root .risk-subtitle {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
-}
-#body-map-root .risk-clear {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--muted);
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 5px 12px;
-  cursor: pointer;
-  font-family: var(--sans);
-  transition: color 0.15s, border-color 0.15s;
-}
-#body-map-root .risk-clear:hover {
-  color: var(--rose);
-  border-color: var(--rose-light);
-}
-#body-map-root .risk-input-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-#body-map-root .risk-input {
-  flex: 1;
-  padding: 9px 14px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: 13px;
-  color: var(--text);
-  background: var(--cream);
-  outline: none;
-  transition: border-color 0.2s;
-}
-#body-map-root .risk-input:focus {
-  border-color: var(--rose-light);
-}
-#body-map-root .risk-input::placeholder {
-  color: var(--muted);
-}
-#body-map-root .risk-submit {
-  padding: 9px 18px;
-  background: var(--rose);
-  border: none;
-  border-radius: 8px;
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  cursor: pointer;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-#body-map-root .risk-submit:hover {
-  background: var(--terra);
-}
-#body-map-root .risk-tags-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  min-height: 28px;
-}
-#body-map-root .risk-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  background: var(--rose-pale);
-  border: 1px solid var(--rose-light);
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--terra);
-}
-#body-map-root .risk-tag-remove {
-  cursor: pointer;
-  font-size: 14px;
-  line-height: 1;
-  color: var(--rose);
-  transition: color 0.15s;
-}
-#body-map-root .risk-tag-remove:hover {
-  color: var(--terra);
-}
-#body-map-root .risk-hint {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 10px;
-  line-height: 1.6;
-}
-#body-map-root .risk-hint span {
-  cursor: pointer;
-  text-decoration: underline;
-  color: var(--tan);
-  margin-right: 6px;
-}
-#body-map-root .risk-hint span:hover {
-  color: var(--rose);
-}
-#body-map-root .panel-elevated {
-  background: var(--rose-pale);
-  border-left: 3px solid var(--rose);
-  border-radius: 6px;
-  padding: 8px 12px;
-  margin: 0 24px 10px;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--terra);
-  display: none;
-}
-#body-map-root .panel-elevated.visible {
-  display: block;
+  padding: 10px 24px 4px;
+  border-bottom: 1px solid var(--border);
 }
 
 /* ── RESPONSIVE ───────────────────────────────────────── */
@@ -611,42 +522,6 @@ show_reading_time: false
     </div>
   </div>
 
-
-<!-- Risk Heatmap Panel -->
-<div class="risk-trigger-row">
-  <button class="risk-trigger-btn" id="bmRiskTrigger" onclick="bmToggleRiskPanel()">
-    <span class="rtb-dot"></span>
-    Personalise your map
-    <span id="bmRiskArrow">▾</span>
-  </button>
-</div>
-<div class="risk-panel" id="bmRiskPanel">
-  <div class="risk-panel-top">
-    <div>
-      <div class="risk-title">Personalise your map</div>
-      <div class="risk-subtitle">Type a risk factor, symptom, or condition — we'll highlight relevant regions.</div>
-    </div>
-    <button class="risk-clear" onclick="bmClearRisk()">Clear all</button>
-  </div>
-  <div class="risk-input-row">
-    <input class="risk-input" id="bmRiskInput" type="text"
-      placeholder="e.g. smoker, BRCA mutation, over 50, obesity..."
-      onkeydown="if(event.key==='Enter')bmAddRiskFromInput()" />
-    <button class="risk-submit" onclick="bmAddRiskFromInput()">Add</button>
-  </div>
-  <div class="risk-tags-row" id="bmRiskTags"></div>
-  <div class="risk-hint">
-    Try: <span onclick="bmAddRiskTerm('smoker')">smoker</span>
-    <span onclick="bmAddRiskTerm('BRCA mutation')">BRCA mutation</span>
-    <span onclick="bmAddRiskTerm('obesity')">obesity</span>
-    <span onclick="bmAddRiskTerm('HPV')">HPV</span>
-    <span onclick="bmAddRiskTerm('over 50')">over 50</span>
-    <span onclick="bmAddRiskTerm('heavy drinker')">heavy drinker</span>
-    <span onclick="bmAddRiskTerm('sun exposure')">sun exposure</span>
-  </div>
-</div>
-
-
   <div class="diagram-area fade-in">
     <!-- SVG Body -->
     <div class="body-wrap" id="bmBodyWrap">
@@ -675,6 +550,314 @@ show_reading_time: false
   </div>
 </div>
 
+<!-- ── ACS CANCER CHAT ─────────────────────────────────── -->
+  <div class="acs-chat-section" id="acsChatSection">
+    <div class="acs-chat-inner">
+      <div class="acs-chat-header">
+        <h2 class="acs-chat-title">American Cancer Society · AI Assistant</h2>
+        <p class="acs-chat-sub">Recieve answers about symptoms, risk factors, and ACS resources — or seek clarifications about the body map above.</p>
+      </div>
+
+      <div class="acs-chat-card">
+        <div class="acs-prompts-row" id="acsPromptsRow">
+          <div class="acs-prompts-label">Common questions</div>
+          <div class="acs-prompts-grid" id="acsPromptsGrid"></div>
+        </div>
+
+        <label class="acs-chat-label" for="acsChatInput">Your question</label>
+        <textarea id="acsChatInput" class="acs-chat-textarea"
+          placeholder="e.g. What are the early signs of pancreatic cancer? What causes melanoma? How is leukemia treated?"></textarea>
+
+        <div class="acs-chat-actions">
+          <button class="acs-send-btn" id="acsSendBtn" onclick="acsChatSend()">
+            Ask ACS Assistant
+            <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 3l5 4-5 4"/></svg>
+          </button>
+          <button class="acs-clear-btn" id="acsClearBtn" onclick="acsChatClear()">Clear</button>
+        </div>
+
+        <div id="acsChatStatus" class="acs-chat-status" style="display:none;"></div>
+      </div>
+
+      <div id="acsChatLog" class="acs-chat-log" style="display:none;"></div>
+    </div>
+  </div>
+
+<style>
+/* ── ACS CHAT SECTION ──────────────────────────────────── */
+#body-map-root .acs-chat-section {
+  background: var(--cream);
+  padding: 0 48px 64px;
+}
+#body-map-root .acs-chat-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+#body-map-root .acs-chat-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px;
+}
+#body-map-root .acs-chat-title {
+  font-family: var(--serif); font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700; color: var(--text); margin-bottom: 8px;
+  line-height: 1.15;
+}
+#body-map-root .acs-chat-sub {
+  font-size: 14px; color: var(--muted); line-height: 1.7;
+  max-width: 600px; margin-bottom: 28px;
+}
+#body-map-root .acs-chat-header {
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+#body-map-root .acs-chat-card {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 24px rgba(61,44,36,0.06);
+}
+#body-map-root .acs-chat-label {
+  font-size: 12px; font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+  display: block; margin-bottom: 8px;
+}
+#body-map-root .acs-prompts-row {
+  margin-bottom: 16px;
+}
+#body-map-root .acs-prompts-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+#body-map-root .acs-prompts-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+#body-map-root .acs-prompt-btn {
+  padding: 6px 14px; background: var(--sage-pale);
+  border: 1px solid rgba(138,170,140,0.35);
+  border-radius: 20px; cursor: pointer; font-family: var(--sans);
+  font-size: 12px; font-weight: 500; color: var(--text);
+  transition: background 0.15s, border-color 0.15s;
+  text-align: left;
+}
+#body-map-root .acs-prompt-btn:hover {
+  background: var(--tan-light); border-color: var(--tan);
+}
+#body-map-root .acs-chat-textarea {
+  width: 100%; min-height: 90px; resize: vertical;
+  padding: 14px 16px; font-size: 14px; font-family: var(--sans);
+  border-radius: 10px; border: 1.5px solid var(--border);
+  background: var(--cream); color: var(--text);
+  box-sizing: border-box; margin-bottom: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  line-height: 1.6;
+}
+#body-map-root .acs-chat-textarea::placeholder { color: var(--muted); }
+#body-map-root .acs-chat-textarea:focus {
+  outline: none; border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
+}
+#body-map-root .acs-chat-actions {
+  display: flex; gap: 12px; align-items: center;
+}
+#body-map-root .acs-send-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 13px 24px; background: var(--rose); color: #fff;
+  font-family: var(--sans); font-weight: 700; font-size: 13px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 4px 16px rgba(224,122,106,0.3);
+}
+#body-map-root .acs-send-btn svg { width: 13px; height: 13px; }
+#body-map-root .acs-send-btn:hover:not(:disabled) {
+  background: var(--terra); transform: translateY(-2px);
+}
+#body-map-root .acs-send-btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+#body-map-root .acs-clear-btn {
+  padding: 13px 20px; background: transparent;
+  border: 1.5px solid var(--border); border-radius: 8px;
+  font-family: var(--sans); font-size: 13px; font-weight: 600;
+  color: var(--muted); cursor: pointer; transition: all 0.2s;
+}
+#body-map-root .acs-clear-btn:hover { border-color: var(--rose); color: var(--rose); }
+#body-map-root .acs-chat-status {
+  margin-top: 14px; padding: 10px 14px; border-radius: 8px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  background: var(--sage-pale); border: 1px solid rgba(138,170,140,0.3);
+}
+#body-map-root .acs-chat-status.error {
+  background: var(--rose-pale); border-color: var(--rose-light);
+  color: var(--terra);
+}
+#body-map-root .acs-chat-log {
+  margin-top: 24px;
+  display: flex; flex-direction: column; gap: 16px;
+}
+#body-map-root .acs-bubble {
+  padding: 16px 20px; border-radius: 12px;
+  font-size: 14px; line-height: 1.7; max-width: 85%;
+}
+#body-map-root .acs-bubble-user {
+  background: var(--rose-pale);
+  border: 1px solid var(--rose-light);
+  color: var(--brown); align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+#body-map-root .acs-bubble-ai {
+  background: var(--warm-white);
+  border: 1.5px solid var(--border);
+  color: var(--text); align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 2px 12px rgba(61,44,36,0.05);
+}
+#body-map-root .acs-bubble-ai strong {
+  display: block; margin-bottom: 6px;
+  font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rose);
+}
+@media (max-width: 820px) {
+  #body-map-root .acs-chat-section { padding: 0 24px 48px; }
+  #body-map-root .acs-chat-actions { flex-wrap: wrap; }
+  #body-map-root .acs-send-btn, #body-map-root .acs-clear-btn { flex: 1; justify-content: center; }
+}
+</style>
+
+<script>
+const ACS_PROMPTS = [
+  { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
+  { text: "What causes lung cancer?",                             keywords: ["lung"] },
+  { text: "How is leukemia treated?",                             keywords: ["leukemia","blood","lymph"] },
+  { text: "What are the risk factors for skin cancer?",           keywords: ["skin","melanoma"] },
+  { text: "What are symptoms of colon cancer?",                   keywords: ["colon","colorectal","bowel"] },
+  { text: "Can cervical cancer be prevented?",                    keywords: ["cervical","hpv","ovarian"] },
+  { text: "What is the survival rate for pancreatic cancer?",     keywords: ["pancreatic","pancreas"] },
+  { text: "How is prostate cancer diagnosed?",                    keywords: ["prostate"] },
+  { text: "What are warning signs of thyroid cancer?",            keywords: ["thyroid","endocrine"] },
+  { text: "How does chemotherapy work?",                          keywords: ["chemo","treatment"] },
+  { text: "What does a cancer screening involve?",                keywords: ["screening","early","detect"] },
+  { text: "What is immunotherapy for cancer?",                    keywords: ["immuno","therapy","treatment"] },
+  { text: "What are common symptoms of brain tumors?",            keywords: ["brain","tumor","glioblastoma"] },
+  { text: "How is bladder cancer treated?",                       keywords: ["bladder","urinary"] },
+  { text: "What causes kidney cancer?",                           keywords: ["kidney","renal"] },
+];
+
+const ACS_DEFAULT_PROMPTS = [
+  "What are early warning signs of cancer?",
+  "How does cancer spread in the body?",
+  "What does cancer.org recommend for prevention?",
+  "What is the difference between benign and malignant tumors?",
+  "How is cancer staging determined?",
+];
+
+function acsRenderPrompts(query) {
+  const grid = document.getElementById('acsPromptsGrid');
+  if (!grid) return;
+  const q = (query || '').toLowerCase().trim();
+
+  let prompts;
+  if (q.length >= 3) {
+    const matched = ACS_PROMPTS.filter(p =>
+      p.keywords.some(k => q.includes(k) || k.includes(q)) ||
+      p.text.toLowerCase().includes(q)
+    );
+    prompts = matched.length ? matched.map(p => p.text) : ACS_DEFAULT_PROMPTS;
+  } else {
+    prompts = ACS_DEFAULT_PROMPTS;
+  }
+
+  grid.innerHTML = '';
+  prompts.slice(0, 5).forEach(text => {
+    const btn = document.createElement('button');
+    btn.className = 'acs-prompt-btn';
+    btn.textContent = text;
+    btn.addEventListener('click', () => {
+      document.getElementById('acsChatInput').value = text;
+      document.getElementById('acsChatInput').focus();
+    });
+    grid.appendChild(btn);
+  });
+}
+
+async function acsChatSend() {
+  const input = document.getElementById('acsChatInput');
+  const message = input.value.trim();
+  if (!message) return;
+
+  const sendBtn = document.getElementById('acsSendBtn');
+  const statusEl = document.getElementById('acsChatStatus');
+  const logEl = document.getElementById('acsChatLog');
+
+  sendBtn.disabled = true;
+  sendBtn.textContent = 'Thinking…';
+  statusEl.textContent = 'Processing your question…';
+  statusEl.className = 'acs-chat-status';
+  statusEl.style.display = 'block';
+
+  try {
+    const response = await fetch('http://localhost:8009/api/acs-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'information', message })
+    });
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    const userBubble = document.createElement('div');
+    userBubble.className = 'acs-bubble acs-bubble-user';
+    userBubble.textContent = message;
+
+    const aiBubble = document.createElement('div');
+    aiBubble.className = 'acs-bubble acs-bubble-ai';
+    aiBubble.innerHTML = `<strong>📚 ACS Info</strong>${data.answer}`;
+
+    logEl.appendChild(userBubble);
+    logEl.appendChild(aiBubble);
+    logEl.style.display = 'flex';
+    logEl.scrollTop = logEl.scrollHeight;
+
+    statusEl.style.display = 'none';
+    input.value = '';
+    acsRenderPrompts('');
+
+  } catch (err) {
+    statusEl.textContent = 'Error: ' + err.message;
+    statusEl.className = 'acs-chat-status error';
+  } finally {
+    sendBtn.disabled = false;
+    sendBtn.innerHTML = 'Ask ACS Assistant <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 7h12M8 3l5 4-5 4"/></svg>';
+  }
+}
+
+function acsChatClear() {
+  const logEl = document.getElementById('acsChatLog');
+  logEl.innerHTML = '';
+  logEl.style.display = 'none';
+  document.getElementById('acsChatInput').value = '';
+  document.getElementById('acsChatStatus').style.display = 'none';
+  acsRenderPrompts('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  acsRenderPrompts('');
+  const inp = document.getElementById('acsChatInput');
+  inp.addEventListener('input', () => acsRenderPrompts(inp.value));
+  inp.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      acsChatSend();
+    }
+  });
+});
+</script>
+
 <!-- ── CATEGORIES GRID ───────────────────────────────────── -->
 <div class="categories-section">
   <div class="cat-divider" style="margin-top:48px"></div>
@@ -683,7 +866,6 @@ show_reading_time: false
   <div class="sys-grid" id="bmSysGrid"></div>
 </div>
 
-</div><!-- #body-map-root -->
 
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
@@ -841,149 +1023,6 @@ const BM_HOTSPOTS = [
 let bmGender = 'female';
 let bmActiveId = null;
 
-
-
-// ─── RISK HEATMAP ──────────────────────────────────────────────────────────
-const bmActiveRisk = new Map();
-
-const BM_RISK_MAP = {
-  smoke:   ['smoke','smok','tobacco','cigarette','cigar'],
-  alcohol: ['alcohol','drink','drinker','drinking','booze'],
-  brca:    ['brca','breast gene','ovarian gene','genetic'],
-  hpv:     ['hpv','human papilloma','papillomavirus'],
-  obesity: ['obese','obesity','overweight','high bmi','bmi'],
-  sun:     ['sun','uv','tanning','outdoor','sunburn'],
-  hep:     ['hepatitis','hep b','hep c','liver disease'],
-  family:  ['family history','hereditary','inherited','parent had','relative had'],
-  age:     ['over 50','age 50','50+','older','elderly','senior','age 60','age 70'],
-};
-
-const BM_RISK_WEIGHTS = {
-  brain:     { age:30, family:20 },
-  eye:       { age:20, sun:15 },
-  head_neck: { smoke:50, alcohol:40, hpv:25, age:15 },
-  endocrine: { age:20, obesity:15, family:20 },
-  lung:      { smoke:65, age:20, family:10 },
-  heart:     { age:20, family:25 },
-  breast:    { brca:65, alcohol:20, obesity:20, family:30, age:15 },
-  skin:      { sun:65, age:20 },
-  liver:     { alcohol:55, hep:65, obesity:25 },
-  stomach:   { smoke:30, alcohol:25, age:20 },
-  kidney:    { smoke:30, obesity:30, age:15 },
-  lymph:     { age:15, family:20 },
-  pancreas:  { smoke:35, obesity:25, alcohol:20, age:20 },
-  intestine: { obesity:30, age:35, alcohol:20, family:25 },
-  bladder:   { smoke:55, age:25 },
-  repro:     { hpv:55, brca:45, obesity:20, age:15 },
-  bone:      { age:15, family:15 },
-  other:     { age:20, family:15 },
-};
-
-function bmParseRiskTerm(raw) {
-  const lower = raw.toLowerCase().trim();
-  for (const [key, keywords] of Object.entries(BM_RISK_MAP)) {
-    if (keywords.some(k => lower.includes(k))) return { key, label: raw.trim() };
-  }
-  return null;
-}
-
-function bmGetRiskScore(hotspotId) {
-  const weights = BM_RISK_WEIGHTS[hotspotId] || {};
-  let score = 0;
-  bmActiveRisk.forEach(f => { score += (weights[f] || 0); });
-  return Math.min(score, 100);
-}
-
-function bmUpdateRisk() {
-  BM_HOTSPOTS.forEach(hs => {
-    const score = bmGetRiskScore(hs.id);
-    const dot = document.getElementById('bm-hsdot-' + hs.id);
-    if (!dot) return;
-    const core = dot.querySelector('.hs-dot-core');
-    const pulse = dot.querySelector('.hs-dot-pulse');
-    const sys = BM_SYSTEMS[hs.system];
-    if (score === 0) {
-      core.style.width = '12px'; core.style.height = '12px';
-      core.style.top = '5px'; core.style.left = '5px';
-      core.style.boxShadow = '0 0 6px ' + sys.color;
-      pulse.style.animationDuration = '2.2s';
-      pulse.style.borderWidth = '2px';
-      dot.style.zIndex = '10';
-    } else {
-      const t = score / 100;
-      const size = Math.round(12 + t * 10);
-      const offset = Math.round((22 - size) / 2);
-      const glowR = Math.round(6 + t * 22);
-      core.style.width = size + 'px'; core.style.height = size + 'px';
-      core.style.top = offset + 'px'; core.style.left = offset + 'px';
-      core.style.boxShadow = `0 0 ${glowR}px ${sys.color}, 0 0 ${glowR * 2}px ${sys.color}`;
-      pulse.style.animationDuration = (2.2 - t * 1.4).toFixed(2) + 's';
-      pulse.style.borderWidth = (2 + t * 2).toFixed(1) + 'px';
-      dot.style.zIndex = Math.round(10 + t * 20).toString();
-    }
-  });
-  if (bmActiveId) {
-    const score = bmGetRiskScore(bmActiveId);
-    const el = document.getElementById('bmPanelElevated');
-    if (el) el.classList.toggle('visible', score > 20);
-  }
-}
-
-function bmRenderTags() {
-  const row = document.getElementById('bmRiskTags');
-  if (!row) return;
-  row.innerHTML = '';
-  bmActiveRisk.forEach((val, key) => {
-    const tag = document.createElement('div');
-    tag.className = 'risk-tag';
-    tag.innerHTML = `${val} <span class="risk-tag-remove" onclick="bmRemoveRisk('${key}')">×</span>`;
-    row.appendChild(tag);
-  });
-}
-
-function bmAddRiskTerm(term) {
-  const parsed = bmParseRiskTerm(term);
-  if (!parsed) return;
-  bmActiveRisk.set(parsed.key, parsed.label);
-  bmRenderTags();
-  bmUpdateRisk();
-}
-
-function bmAddRiskFromInput() {
-  const input = document.getElementById('bmRiskInput');
-  if (!input || !input.value.trim()) return;
-  const raw = input.value.trim();
-  const parsed = bmParseRiskTerm(raw) || { key: raw.toLowerCase().replace(/\s+/g, '_'), label: raw };
-  bmActiveRisk.set(parsed.key, parsed.label);
-  bmRenderTags();
-  bmUpdateRisk();
-  input.value = '';
-}
-
-function bmRemoveRisk(key) {
-  bmActiveRisk.delete(key);
-  bmRenderTags();
-  bmUpdateRisk();
-}
-
-function bmClearRisk() {
-  bmActiveRisk.clear();
-  bmRenderTags();
-  bmUpdateRisk();
-}
-
-function bmToggleRiskPanel() {
-  const panel = document.getElementById('bmRiskPanel');
-  const btn = document.getElementById('bmRiskTrigger');
-  const arrow = document.getElementById('bmRiskArrow');
-  const isOpen = panel.classList.toggle('open');
-  btn.classList.toggle('open', isOpen);
-  arrow.textContent = isOpen ? '▴' : '▾';
-}
-
-
-
-
 function bmSwitchGender(g) {
   bmGender = g;
   document.getElementById('bm-svg-container-female').style.display = g === 'female' ? '' : 'none';
@@ -1044,9 +1083,7 @@ function bmActivateHotspot(id) {
       <div class="panel-region">${hs.label}</div>
       <div class="panel-count">${cancers.length} cancer type${cancers.length!==1?'s':''} in this region</div>
     </div>
-    <div class="panel-elevated" id="bmPanelElevated">⚠ Elevated risk based on your profile</div>
     <div class="panel-body">
-
       ${cancers.map((c,i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
