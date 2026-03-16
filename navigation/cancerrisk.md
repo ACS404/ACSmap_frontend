@@ -794,12 +794,12 @@ title: Risk Calculator
 
     <!-- SECTION 5: CANCER TYPES OF INTEREST -->
     <div class="section-heading" id="section-cancertypes">
-      <span class="section-icon">𖡡</span><span data-i18n="sectionCancerTypes">Cancer Types of Interest</span>
+      <span class="section-icon">🎯</span><span data-i18n="sectionCancerTypes">Cancer Types of Interest</span>
     </div>
     <p class="card-sub" style="margin-top:-10px;margin-bottom:8px" data-i18n="cancerTypesHelp">
       Select any cancer types you'd like a specific risk breakdown for
     </p>
-    <p class="optional-note" data-i18n="cancerTypesOptional">Optional: leave unselected for overall risk only</p>
+    <p class="optional-note" data-i18n="cancerTypesOptional">Optional — leave unselected for overall risk only</p>
     <br>
 
     <div class="chips cancer-chips" id="cancer-type-chips">
@@ -869,7 +869,7 @@ const RC_I18N = {
     sectionEnvironmental: 'Environmental Exposures', environmentalHelp: 'Toggle any exposures that apply to you',
     sectionCancerTypes: 'Cancer Types of Interest',
     cancerTypesHelp: 'Select any cancer types you\'d like a specific risk breakdown for',
-    cancerTypesOptional: 'Optional: leave unselected for overall risk only',
+    cancerTypesOptional: 'Optional — leave unselected for overall risk only',
     predictBtn: 'Predict My Risk →',
     validatePrefix: 'Please fill in',
     loading: 'Running ML prediction…',
@@ -881,8 +881,11 @@ const RC_I18N = {
     keyFactorsTitle: 'Your Key Risk Factors',
     importanceTitle: 'Feature Importance Analysis',
     cancerTypeTitle: 'Cancer-Type Risk Breakdown',
-    cancerTypeSub: 'Relative risk compared to population average (1.0 = average)',
-    rrLabel: '× avg. risk',
+    cancerTypeSub: 'Estimated lifetime risk based on your profile vs. population baseline',
+    lifetimeRiskLabel: 'estimated lifetime risk',
+    rrLabel: 'avg. risk',
+    baselineLabel: 'population baseline',
+    rrExplain: 'Relative risk vs. population average (1.0×). Select cancer types below for individual lifetime risk estimates.',
     keyFactorsLabel: 'Contributing factors',
     sourceModel: 'Model',
     sourceBody: 'Ensemble ML (Logistic Regression + Random Forest) trained on ACS Cancer Facts & Figures 2026 data. This is for educational purposes only and does not constitute medical advice. Consult a healthcare provider for personalized screening recommendations.',
@@ -902,7 +905,7 @@ const RC_I18N = {
     sectionEnvironmental: 'Exposiciones ambientales', environmentalHelp: 'Marque las exposiciones que correspondan a su caso',
     sectionCancerTypes: 'Tipos de cáncer de interés',
     cancerTypesHelp: 'Seleccione los tipos de cáncer para los que desea un desglose de riesgo específico',
-    cancerTypesOptional: 'Opcional: déjelo sin seleccionar para el riesgo general únicamente',
+    cancerTypesOptional: 'Opcional — déjelo sin seleccionar para el riesgo general únicamente',
     predictBtn: 'Predecir mi riesgo →',
     validatePrefix: 'Por favor complete',
     loading: 'Ejecutando predicción ML…',
@@ -914,8 +917,11 @@ const RC_I18N = {
     keyFactorsTitle: 'Sus factores de riesgo clave',
     importanceTitle: 'Análisis de importancia de variables',
     cancerTypeTitle: 'Desglose de riesgo por tipo de cáncer',
-    cancerTypeSub: 'Riesgo relativo comparado con el promedio poblacional (1.0 = promedio)',
-    rrLabel: '× riesgo prom.',
+    cancerTypeSub: 'Riesgo estimado de por vida basado en su perfil frente al promedio poblacional',
+    lifetimeRiskLabel: 'riesgo estimado de por vida',
+    rrLabel: 'riesgo prom.',
+    baselineLabel: 'referencia poblacional',
+    rrExplain: 'Riesgo relativo frente al promedio poblacional (1.0×). Seleccione tipos de cáncer para estimaciones individuales.',
     keyFactorsLabel: 'Factores contribuyentes',
     sourceModel: 'Modelo',
     sourceBody: 'Modelo de ML ensamblado (regresión logística + Random Forest) entrenado con datos de ACS Cancer Facts & Figures 2026. Esto es solo con fines educativos y no constituye consejo médico. Consulte a un profesional de la salud para recomendaciones de detección personalizadas.',
@@ -1192,13 +1198,13 @@ function displayResults(data) {
     <div class="card-title">${rcT('resultTitle')}</div>
     <div class="card-sub">${rcT('resultSub')}</div>
 
-    <!-- ── HERO: percentage is the star ── -->
+    <!-- ── HERO: overall relative risk multiplier ── -->
     <div class="risk-hero">
       <div class="risk-number" style="color:${color}">
-        ${(prob * 100).toFixed(1)}<span style="font-size:.45em;vertical-align:middle;opacity:.7">%</span>
+        ${data.overall_relative_risk.toFixed(1)}<span style="font-size:.38em;vertical-align:middle;opacity:.6">×</span>
       </div>
       <div class="risk-category-label" style="color:${color}">
-        ${data.risk_category.toUpperCase()} ${rcT('riskWord') || 'RISK'}
+        ${data.risk_category === 'high' ? rcT('highRisk') : rcT('lowRisk')}
       </div>
       <div class="risk-badge ${data.risk_category}">
         ${isHigh ? rcT('highBadge') : rcT('lowBadge')}
@@ -1207,11 +1213,10 @@ function displayResults(data) {
         <div class="gauge-track"><div class="gauge-fill" id="gauge-fill"></div></div>
         <div class="gauge-labels"><span>${rcT('lowRisk')}</span><span>${rcT('highRisk')}</span></div>
       </div>
-      <!-- model confidence is secondary — shown small -->
       <div class="confidence-note">
-        Model confidence: ${(data.model_confidence * 100).toFixed(0)}%
-        &nbsp;·&nbsp; Ensemble ML (Logistic Regression + Random Forest)
+        ${rcT('rrExplain')}
       </div>
+    </div>
     </div>
 
     <!-- ── CANCER TYPE BREAKDOWN (only if data exists) ── -->
@@ -1234,10 +1239,11 @@ function displayResults(data) {
     </div>
   `;
 
-  // Animate gauge
+  // Animate gauge — cap at 4× for display (4× avg = full bar)
   setTimeout(() => {
     const gf = document.getElementById('gauge-fill');
-    gf.style.width = Math.max(4, isHigh ? prob * 100 : 50 - prob * 50) + '%';
+    const rrPct = Math.min(100, (data.overall_relative_risk / 4) * 100);
+    gf.style.width = Math.max(4, rrPct) + '%';
     gf.style.background = color;
   }, 200);
 
@@ -1256,8 +1262,8 @@ function displayResults(data) {
           </div>`;
       }
 
-      // Cap bar at RR=8 for display purposes
-      const barPct = Math.min(100, (res.relative_risk / 8) * 100);
+      // Cap bar at 80% lifetime risk for display
+      const barPct = Math.min(100, (res.lifetime_risk_pct / 80) * 100);
       const rrColor = res.risk_level === 'high' ? 'var(--terracotta)'
                     : res.risk_level === 'moderate' ? '#d9a566'
                     : 'var(--sage)';
@@ -1265,12 +1271,15 @@ function displayResults(data) {
       return `
         <div class="ct-card">
           <div class="ct-card-label">${res.label}</div>
-          <div class="ct-rr" style="color:${rrColor}" data-rr="${res.relative_risk}">0.0</div>
-          <div class="ct-rr-sub">${rcT('rrLabel')}</div>
+          <div class="ct-rr" style="color:${rrColor}" data-rr="${res.lifetime_risk_pct}">0.0</div>
+          <div class="ct-rr-sub">${rcT('lifetimeRiskLabel')}</div>
           <div class="ct-level-bar">
             <div class="ct-level-fill ${res.risk_level}" style="width:0%" data-w="${barPct.toFixed(1)}"></div>
           </div>
           <div class="ct-badge ${res.risk_level}">${res.risk_level.toUpperCase()}</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-bottom:6px">
+            ${res.relative_risk.toFixed(1)}× ${rcT('rrLabel')} &nbsp;·&nbsp; ${rcT('baselineLabel')}: ${res.baseline_risk_pct}%
+          </div>
           ${res.key_factors.length > 0 ? `
             <div class="ct-factors">
               <strong style="font-size:10px;text-transform:uppercase;letter-spacing:.05em">${rcT('keyFactorsLabel')}:</strong>
@@ -1290,9 +1299,9 @@ function displayResults(data) {
           if (!start) start = ts;
           const prog = Math.min((ts - start) / dur, 1);
           const ease = 1 - Math.pow(1 - prog, 3);
-          el.textContent = (target * ease).toFixed(1);
+          el.textContent = (target * ease).toFixed(1) + '%';
           if (prog < 1) requestAnimationFrame(step);
-          else el.textContent = target.toFixed(1);
+          else el.textContent = target.toFixed(1) + '%';
         }
         requestAnimationFrame(step);
       });
