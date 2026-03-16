@@ -753,7 +753,7 @@ const RC_I18N = {
     tipDemographics: 'Demografía',
     tipLifestyle: 'Estilo de vida',
     tipMedical: 'Historial médico',
-    tipEnvironmental: 'Ambiental',
+    tipEnvironmental: 'Exposición',
     progressLabel: 'Progreso',
     sectionDemographics: 'Demografía',
     labelAge: 'Edad',
@@ -765,29 +765,29 @@ const RC_I18N = {
     labelBmi: 'Categoría de IMC',
     labelAlcohol: 'Consumo de alcohol',
     labelActivity: 'Actividad física',
-    labelDiet: 'Calidad de dieta',
+    labelDiet: 'Calidad de la dieta',
     sectionMedical: 'Historial médico',
-    medicalHelp: 'Active las condiciones que correspondan a su caso',
+    medicalHelp: 'Marque las condiciones que correspondan a su caso',
     sectionEnvironmental: 'Exposiciones ambientales',
-    environmentalHelp: 'Active las exposiciones que correspondan a su caso',
+    environmentalHelp: 'Marque las exposiciones que correspondan a su caso',
     predictBtn: 'Predecir mi riesgo →',
     validatePrefix: 'Por favor complete',
     loading: 'Ejecutando predicción ML…',
     errorPrefix: 'Error',
     errorHelp: 'Asegúrese de haber iniciado sesión y de que el backend esté en ejecución.',
     resultTitle: 'Su predicción de riesgo (ML)',
-    resultSub: 'Basado en análisis de aprendizaje automático de su perfil',
+    resultSub: 'Basada en un análisis de aprendizaje automático de su perfil',
     predictedCategory: 'Categoría de riesgo predicha',
     riskWord: 'RIESGO',
     modelConfidence: 'confianza del modelo',
     lowRisk: 'Riesgo bajo',
     highRisk: 'Riesgo alto',
-    highBadge: '↑ Riesgo mayor al promedio',
-    lowBadge: '↓ Riesgo menor al promedio',
+    highBadge: '↑ Riesgo superior al promedio',
+    lowBadge: '↓ Riesgo inferior al promedio',
     keyFactorsTitle: 'Sus factores de riesgo clave',
     importanceTitle: 'Análisis de importancia de variables',
     sourceModel: 'Modelo',
-    sourceBody: 'ML de ensamble (Regresión logística + Random Forest) entrenado con datos de ACS Cancer Facts & Figures 2026. Esto es solo con fines educativos y no constituye consejo médico. Consulte a un profesional de salud para recomendaciones de detección personalizadas.',
+    sourceBody: 'Modelo de ML ensamblado (regresión logística + Random Forest) entrenado con datos de ACS Cancer Facts & Figures 2026. Esto es solo con fines educativos y no constituye consejo médico. Consulte a un profesional de la salud para recomendaciones de detección personalizadas.',
     noFactors: 'No se identificaron factores de riesgo modificables significativos. ¡Mantenga hábitos de vida saludables!'
   }
 };
@@ -807,10 +807,10 @@ const RC_CHIP_TEXT = {
     diet_quality: { poor: 'Poor', average: 'Average', healthy: 'Healthy' }
   },
   es: {
-    race: { white: 'Blanco', black: 'Negro / Afroamericano', hispanic: 'Hispano / Latino', aian: 'Indígena americano / Nativo de Alaska', aapi: 'Asiático americano / Isleño del Pacífico' },
+    race: { white: 'Blanco', black: 'Negro / Afroamericano', hispanic: 'Hispano / Latino', aian: 'Indígena americano / Nativo de Alaska', aapi: 'Asiático-estadounidense / Isleño del Pacífico' },
     smoking_status: { never: 'Nunca fumó', former: 'Exfumador', current: 'Fumador actual' },
     bmi_category: { normal: 'Normal', overweight: 'Sobrepeso', obese: 'Obesidad', 'severely-obese': 'Obesidad severa' },
-    alcohol_consumption: { none: 'Ninguno', light: 'Leve', moderate: 'Moderado', heavy: 'Alto' },
+    alcohol_consumption: { none: 'Ninguno', light: 'Bajo', moderate: 'Moderado', heavy: 'Alto' },
     physical_activity: { sedentary: 'Sedentario', moderate: 'Moderado', active: 'Activo (150+ min/sem)' },
     diet_quality: { poor: 'Mala', average: 'Promedio', healthy: 'Saludable' }
   }
@@ -841,7 +841,7 @@ const RC_TOGGLE_TEXT = {
     immunosuppression: 'Inmunosupresión',
     precancerousLesions: 'Lesiones precancerosas',
     occupationalExposure: 'Exposición ocupacional a químicos',
-    uvExposure: 'Historial de alta exposición UV/sol'
+    uvExposure: 'Antecedentes de alta exposición a UV/sol'
   }
 };
 
