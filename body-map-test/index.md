@@ -1778,11 +1778,10 @@ function bmHasCompletedRiskForReport() {
 }
 
 function bmValidateReportReadiness() {
-  const hasRisk = bmHasCompletedRiskForReport();
   return {
-    ready: hasRisk,
+    ready: true,
     needsLogin: false,
-    needsRisk: !hasRisk,
+    needsRisk: false,
   };
 }
 
@@ -2118,12 +2117,6 @@ function bmRenderPersonalizedReport() {
 }
 
 function bmOpenPersonalizedReport() {
-  const readiness = bmValidateReportReadiness();
-  if (!readiness.ready) {
-    bmRedirectToRiskCalculator(readiness);
-    return;
-  }
-
   bmRenderPersonalizedReport();
   const params = new URLSearchParams(window.location.search);
   params.set('report', '1');
