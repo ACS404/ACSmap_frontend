@@ -309,14 +309,14 @@ title: Risk Calculator
 <div class="page">
   <div class="page-header">
     <h1>Cancer Risk<br><em>ML Predictor</em></h1>
-    <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model — trained on ACS Cancer Facts &amp; Figures 2026 epidemiological data — predicts your relative cancer risk compared to the average US population.</p>
+    <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts &amp; Figures 2026 epidemiological data, predicts your relative cancer risk compared to the average US population.</p>
   </div>
 
   <div class="card">
 
     <!-- SECTION 1: DEMOGRAPHICS -->
     <div class="section-heading" id="section-demographics">
-      <span class="section-icon">👤</span><span>Demographics</span>
+      <span class="section-icon">𐦂𖨆𖠋</span><span>Demographics</span>
     </div>
     <div class="field-grid">
       <div class="field">
@@ -347,7 +347,7 @@ title: Risk Calculator
 
     <!-- SECTION 2: LIFESTYLE -->
     <div class="section-heading" id="section-lifestyle">
-      <span class="section-icon">🌿</span><span>Lifestyle Factors</span>
+      <span class="section-icon">☕︎</span><span>Lifestyle Factors</span>
     </div>
     <div class="field">
       <label>Smoking Status</label>
@@ -722,11 +722,8 @@ function displayResults(data) {
       <div class="rr-explain">
         <strong>How to read this:</strong> 1.0× means exactly the same risk as the average American.
         Your score of <strong>${rr.toFixed(1)}×</strong> means your overall cancer risk is estimated at
-        <strong>${rr.toFixed(1)} times</strong> the population baseline based on your profile —
+        <strong>${rr.toFixed(1)} times</strong> the population baseline based on your profile,
         ${rr > 1 ? 'higher' : 'lower'} than average, driven by the factors listed below.
-        <br><br>
-        The individual cancer cards below show separate <strong>lifetime risk %</strong> estimates
-        for each specific cancer type. These are different numbers and are independent of the ×multiplier above.
       </div>
     </div>
 
@@ -755,7 +752,7 @@ function displayResults(data) {
     <div class="source-note">
       <strong>Model:</strong> Ensemble ML (Logistic Regression + Random Forest + Decision Tree)
       trained on synthetic data calibrated to ACS Cancer Facts &amp; Figures 2026 epidemiological rates.
-      For educational purposes only — not medical advice. Consult a healthcare provider for
+      For educational purposes only, not medical advice. Consult a healthcare provider for
       personalized screening recommendations.
     </div>
   `;
