@@ -794,12 +794,12 @@ title: Risk Calculator
 
     <!-- SECTION 5: CANCER TYPES OF INTEREST -->
     <div class="section-heading" id="section-cancertypes">
-      <span class="section-icon">🎯</span><span data-i18n="sectionCancerTypes">Cancer Types of Interest</span>
+      <span class="section-icon">⚲</span><span data-i18n="sectionCancerTypes">Cancer Types of Interest</span>
     </div>
     <p class="card-sub" style="margin-top:-10px;margin-bottom:8px" data-i18n="cancerTypesHelp">
       Select any cancer types you'd like a specific risk breakdown for
     </p>
-    <p class="optional-note" data-i18n="cancerTypesOptional">Optional — leave unselected for overall risk only</p>
+    <p class="optional-note" data-i18n="cancerTypesOptional">Optional: leave unselected for overall risk only</p>
     <br>
 
     <div class="chips cancer-chips" id="cancer-type-chips">
@@ -869,7 +869,7 @@ const RC_I18N = {
     sectionEnvironmental: 'Environmental Exposures', environmentalHelp: 'Toggle any exposures that apply to you',
     sectionCancerTypes: 'Cancer Types of Interest',
     cancerTypesHelp: 'Select any cancer types you\'d like a specific risk breakdown for',
-    cancerTypesOptional: 'Optional — leave unselected for overall risk only',
+    cancerTypesOptional: 'Optional: leave unselected for overall risk only',
     predictBtn: 'Predict My Risk →',
     validatePrefix: 'Please fill in',
     loading: 'Running ML prediction…',
@@ -905,7 +905,7 @@ const RC_I18N = {
     sectionEnvironmental: 'Exposiciones ambientales', environmentalHelp: 'Marque las exposiciones que correspondan a su caso',
     sectionCancerTypes: 'Tipos de cáncer de interés',
     cancerTypesHelp: 'Seleccione los tipos de cáncer para los que desea un desglose de riesgo específico',
-    cancerTypesOptional: 'Opcional — déjelo sin seleccionar para el riesgo general únicamente',
+    cancerTypesOptional: 'Opcional: déjelo sin seleccionar para el riesgo general únicamente',
     predictBtn: 'Predecir mi riesgo →',
     validatePrefix: 'Por favor complete',
     loading: 'Ejecutando predicción ML…',
