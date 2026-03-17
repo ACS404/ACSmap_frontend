@@ -726,7 +726,7 @@ function displayResults(data) {
         ${rr > 1 ? 'higher' : 'lower'} than average, driven by the factors listed below.
         <br><br>
         The individual cancer cards below show separate <strong>lifetime risk %</strong> estimates
-        for each specific cancer type — these are different numbers and are independent of the ×multiplier above.
+        for each specific cancer type. These are different numbers and are independent of the ×multiplier above.
       </div>
     </div>
 
@@ -735,8 +735,8 @@ function displayResults(data) {
       <div class="res-section-title">Cancer-Type Risk Breakdown</div>
       <p class="card-sub" style="margin-top:-8px;margin-bottom:16px">
         Estimated <strong>lifetime risk %</strong> for each cancer type based on your profile vs. the US population baseline.
-        Each card is independent — prostate cancer at 75% lifetime risk means 1 in 1.3 men with your profile are
-        expected to develop it over a lifetime, not that you will definitely get it.
+        Each card is independent. (Ex. prostate cancer at 75% lifetime risk means 1 in 1.3 men with your profile are
+        expected to develop it over a lifetime, not that you will definitely get it.)
       </p>
       <div class="ct-grid" id="ct-grid"></div>
     ` : ''}
