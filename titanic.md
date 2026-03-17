@@ -4,7 +4,6 @@ title: Titanic Survival Predictor
 permalink: /titanic/predictor
 ---
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
