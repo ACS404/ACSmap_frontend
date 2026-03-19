@@ -908,5 +908,514 @@ document.addEventListener('DOMContentLoaded', () => {
   updateProgress();
 });
 </script>
+<!-- ── ACS RISK CHAT WIDGET ─────────────────────────────────────────────────
+     Paste this entire block right before </body> in cancerrisk.md
+     Does NOT touch any existing calculator code — reads DOM only.
+────────────────────────────────────────────────────────────────────────── -->
+
+<style>
+/* ── Floating button ── */
+.rcc-fab {
+  position: fixed; bottom: 28px; right: 28px;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: var(--rose); border: none; cursor: pointer;
+  box-shadow: 0 4px 20px rgba(224,122,106,0.45);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.rcc-fab:hover { background: var(--terracotta); transform: translateY(-2px); box-shadow: 0 6px 28px rgba(224,122,106,0.5); }
+.rcc-fab svg { width: 22px; height: 22px; fill: white; }
+.rcc-fab-badge {
+  position: absolute; top: -4px; right: -4px;
+  background: var(--terracotta); color: white;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.04em;
+  padding: 2px 5px; border-radius: 8px;
+  border: 2px solid var(--cream);
+  font-family: var(--sans);
+}
+
+/* ── Panel ── */
+.rcc-panel {
+  position: fixed; bottom: 94px; right: 28px;
+  width: 360px;
+  max-height: calc(100vh - 120px);
+  background: var(--warm-white);
+  border: 1.5px solid var(--border-bright);
+  border-radius: 18px;
+  box-shadow: 0 8px 48px rgba(61,44,36,0.15);
+  display: flex; flex-direction: column;
+  z-index: 999; overflow: hidden;
+  opacity: 0; transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+.rcc-panel.open { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+/* ── Header ── */
+.rcc-header {
+  padding: 14px 18px;
+  background: linear-gradient(135deg, var(--brown) 0%, #4a2e22 100%);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.rcc-header-left { display: flex; align-items: center; gap: 9px; }
+.rcc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
+.rcc-header-title { font-family: var(--serif); font-size: 16px; font-weight: 600; color: white; line-height: 1.2; }
+.rcc-header-sub { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+.rcc-close-btn {
+  background: rgba(255,255,255,0.12); border: none; color: rgba(255,255,255,0.7);
+  width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; font-size: 14px;
+  transition: background 0.15s;
+}
+.rcc-close-btn:hover { background: rgba(255,255,255,0.22); color: white; }
+
+/* ── Context bar ── */
+.rcc-context-bar {
+  padding: 7px 14px;
+  background: var(--sage-pale);
+  border-bottom: 1px solid rgba(138,170,140,0.3);
+  font-size: 11px; color: #3d6b3f; line-height: 1.5;
+  flex-shrink: 0; font-family: var(--sans);
+}
+.rcc-context-bar b { font-weight: 700; }
+.rcc-context-bar .rcc-rr { color: var(--terracotta); font-weight: 700; }
+
+/* ── Messages ── */
+.rcc-messages {
+  flex: 1; overflow-y: auto; min-height: 0;
+  padding: 14px 13px; display: flex; flex-direction: column; gap: 10px;
+}
+.rcc-messages::-webkit-scrollbar { width: 4px; }
+.rcc-messages::-webkit-scrollbar-thumb { background: var(--tan-light); border-radius: 2px; }
+
+.rcc-bubble {
+  padding: 11px 14px; border-radius: 12px;
+  font-size: 13px; line-height: 1.65; max-width: 90%;
+  font-family: var(--sans);
+}
+.rcc-bubble-user {
+  background: var(--rose-pale); border: 1px solid var(--rose-light);
+  color: var(--brown); align-self: flex-end; border-bottom-right-radius: 4px;
+}
+.rcc-bubble-ai {
+  background: var(--cream); border: 1px solid var(--border-bright);
+  color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px;
+}
+.rcc-bubble-ai b {
+  display: block; font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--rose); margin-bottom: 4px; font-weight: 700;
+}
+
+/* ── Suggestion chips ── */
+.rcc-chips-row {
+  padding: 0 13px 10px; display: flex; flex-wrap: wrap; gap: 6px;
+  flex-shrink: 0;
+}
+.rcc-chip {
+  padding: 5px 11px; background: var(--sage-pale);
+  border: 1px solid rgba(138,170,140,0.4); border-radius: 14px;
+  cursor: pointer; font-size: 11px; font-weight: 500;
+  color: var(--text-main); font-family: var(--sans);
+  transition: background 0.15s, border-color 0.15s;
+}
+.rcc-chip:hover { background: var(--tan-light); border-color: var(--tan); }
+
+/* ── Thinking indicator ── */
+.rcc-thinking {
+  display: none; padding: 6px 14px; font-size: 11px;
+  color: var(--text-muted); font-family: var(--sans);
+  font-style: italic; flex-shrink: 0;
+}
+.rcc-thinking.show { display: block; }
+
+/* ── Input row ── */
+.rcc-input-row {
+  padding: 11px 13px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; align-items: center;
+  flex-shrink: 0; background: var(--warm-white);
+}
+.rcc-input {
+  flex: 1; background: var(--cream);
+  border: 1.5px solid var(--border-bright); border-radius: 18px;
+  padding: 8px 13px; font-family: var(--sans); font-size: 13px;
+  color: var(--text-main); outline: none;
+  transition: border-color 0.2s;
+}
+.rcc-input::placeholder { color: var(--text-muted); }
+.rcc-input:focus { border-color: var(--rose); }
+.rcc-send-btn {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--rose); border: none; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: background 0.2s, transform 0.15s;
+}
+.rcc-send-btn:hover:not(:disabled) { background: var(--terracotta); transform: scale(1.06); }
+.rcc-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.rcc-send-btn svg { width: 15px; height: 15px; fill: white; }
+
+@media (max-width: 520px) {
+  .rcc-panel { width: calc(100vw - 24px); right: 12px; bottom: 88px; }
+  .rcc-fab  { right: 16px; bottom: 20px; }
+}
+</style>
+
+<!-- Floating button -->
+<button class="rcc-fab" id="rccFab" onclick="rccToggle()" title="Ask the ACS Risk Assistant">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.54.36 3 .97 4.29L2 22l5.71-.97C9 21.64 10.46 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18c-1.34 0-2.61-.35-3.71-.96l-.27-.14-2.78.47.47-2.78-.14-.27C5.35 14.61 5 13.34 5 12c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7z"/><circle cx="9" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></svg>
+  <div class="rcc-fab-badge">AI</div>
+</button>
+
+<!-- Chat panel -->
+<div class="rcc-panel" id="rccPanel">
+
+  <div class="rcc-header">
+    <div class="rcc-header-left">
+      <div class="rcc-status-dot"></div>
+      <div>
+        <div class="rcc-header-title">ACS Risk Assistant</div>
+        <div class="rcc-header-sub">Personalized to your profile</div>
+      </div>
+    </div>
+    <button class="rcc-close-btn" onclick="rccToggle()">✕</button>
+  </div>
+
+  <div class="rcc-context-bar" id="rccContextBar">
+    No profile loaded yet — fill in the calculator, then ask me questions.
+  </div>
+
+  <div class="rcc-messages" id="rccMessages"></div>
+
+  <div class="rcc-chips-row" id="rccChips"></div>
+
+  <div class="rcc-thinking" id="rccThinking">Assistant is thinking…</div>
+
+  <div class="rcc-input-row">
+    <input class="rcc-input" id="rccInput" type="text"
+      placeholder="Ask about your cancer risk…"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();rccSend()}" />
+    <button class="rcc-send-btn" id="rccSendBtn" onclick="rccSend()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<script>
+// ── ACS RISK CHAT WIDGET ──────────────────────────────────────────────────
+// Reads calculator fields from the DOM — does NOT touch the module-scoped state.
+
+let _rccOpen       = false;
+let _rccInited     = false;
+let _rccProfile    = null;
+let _rccResults    = null;
+
+// ── 1. Read all calculator fields from the DOM ─────────────────────────────
+function rccReadProfile() {
+  const chip    = id => document.querySelector(`#${id} .chip.selected`)?.dataset.val ?? null;
+  const tog     = id => !!(document.getElementById(id)?.checked);
+  const num     = id => document.getElementById(id)?.value?.trim() || null;
+  const sel     = id => { const v = document.getElementById(id)?.value; return v || null; };
+  const multiChip = id => [...document.querySelectorAll(`#${id} .chip.selected`)].map(c => c.dataset.val);
+
+  return {
+    age:                  num('age'),
+    sex:                  sel('sex'),
+    race:                 chip('race-chips'),
+    smoking_status:       chip('smoke-chips'),
+    pack_years:           num('packYears'),
+    bmi_category:         chip('bmi-chips'),
+    alcohol_consumption:  chip('alcohol-chips'),
+    physical_activity:    chip('activity-chips'),
+    diet_quality:         chip('diet-chips'),
+    family_history:       tog('familyHistory'),
+    diabetes:             tog('diabetes'),
+    hepatitis:            tog('hepatitis'),
+    hpv:                  tog('hpv'),
+    h_pylori:             tog('hPylori'),
+    ibd:                  tog('ibd'),
+    radiation_history:    tog('radiationHistory'),
+    immunosuppression:    tog('immunosuppression'),
+    precancerous_lesions: tog('precancerousLesions'),
+    occupational_exposure:tog('occupationalExposure'),
+    uv_exposure:          tog('uvExposure'),
+    cancer_types:         multiChip('cancer-type-chips'),
+  };
+}
+
+// ── 2. Read prediction results from the results card ──────────────────────
+function rccReadResults() {
+  const card = document.getElementById('results');
+  if (!card || card.classList.contains('results-hidden')) return null;
+
+  const rrEl  = card.querySelector('.rr-number');
+  if (!rrEl) return null;
+
+  // Overall RR — grab just the number (strip the <sup>)
+  const rrText = rrEl.cloneNode(true);
+  rrText.querySelectorAll('sup').forEach(s => s.remove());
+  const overallRR = rrText.textContent.trim() + '×';
+
+  const badge = card.querySelector('.rr-badge')?.textContent?.trim() || '';
+
+  // Per-cancer-type cards
+  const ctLines = [];
+  card.querySelectorAll('.ct-card').forEach(c => {
+    const label    = c.querySelector('.ct-card-label')?.textContent?.trim();
+    const lifetime = c.querySelector('.ct-lifetime')?.textContent?.trim();
+    const rr       = c.querySelector('.ct-rr-line strong')?.textContent?.trim();
+    const level    = c.querySelector('.ct-badge')?.textContent?.trim();
+    const na       = c.querySelector('.ct-na');
+    if (na) {
+      ctLines.push(`${label}: Not applicable for biological sex`);
+    } else if (label && lifetime) {
+      ctLines.push(`${label}: ${lifetime} lifetime risk, ${rr ? rr + ' pop. avg' : ''}, level: ${level || 'N/A'}`);
+    }
+  });
+
+  // Key risk factors
+  const rfs = [...card.querySelectorAll('.rf-name')].map(e => e.textContent.trim());
+
+  return { overallRR, badge, ctLines, riskFactors: rfs };
+}
+
+// ── 3. Build the context string injected into every message ───────────────
+function rccBuildContext(profile, results) {
+  const lines = ['[ACS CANCER RISK CALCULATOR — USER PROFILE CONTEXT]'];
+
+  if (profile.age)               lines.push(`Age: ${profile.age}`);
+  if (profile.sex)               lines.push(`Biological sex: ${profile.sex}`);
+  if (profile.race)              lines.push(`Race/ethnicity: ${profile.race}`);
+  if (profile.smoking_status) {
+    const py = (profile.smoking_status !== 'never' && profile.pack_years)
+                 ? ` — ${profile.pack_years} pack-years` : '';
+    lines.push(`Smoking status: ${profile.smoking_status}${py}`);
+  }
+  if (profile.bmi_category)      lines.push(`BMI category: ${profile.bmi_category}`);
+  if (profile.alcohol_consumption) lines.push(`Alcohol consumption: ${profile.alcohol_consumption}`);
+  if (profile.physical_activity) lines.push(`Physical activity: ${profile.physical_activity}`);
+  if (profile.diet_quality)      lines.push(`Diet quality: ${profile.diet_quality}`);
+
+  const medFlags = [
+    [profile.family_history,       'Family history of cancer'],
+    [profile.diabetes,             'Type 2 Diabetes'],
+    [profile.hepatitis,            'Hepatitis B or C'],
+    [profile.hpv,                  'HPV infection'],
+    [profile.h_pylori,             'H. pylori infection'],
+    [profile.ibd,                  'Inflammatory Bowel Disease'],
+    [profile.radiation_history,    'Prior radiation therapy'],
+    [profile.immunosuppression,    'Immunosuppression'],
+    [profile.precancerous_lesions, 'Precancerous lesions'],
+    [profile.occupational_exposure,'Occupational chemical exposure'],
+    [profile.uv_exposure,          'High UV / sun exposure'],
+  ].filter(([v]) => v).map(([, label]) => label);
+
+  if (medFlags.length) lines.push(`Medical/environmental factors present: ${medFlags.join(', ')}`);
+  if (profile.cancer_types?.length) lines.push(`Cancer types of interest: ${profile.cancer_types.join(', ')}`);
+
+  if (results) {
+    lines.push('');
+    lines.push('[ML PREDICTION RESULTS]');
+    lines.push(`Overall relative risk: ${results.overallRR} — ${results.badge}`);
+    if (results.ctLines.length) {
+      lines.push('Per-cancer-type breakdown:');
+      results.ctLines.forEach(l => lines.push('  • ' + l));
+    }
+    if (results.riskFactors.length) {
+      lines.push(`Key risk factors identified by the model: ${results.riskFactors.join(', ')}`);
+    }
+  } else {
+    lines.push('');
+    lines.push('[Note: The user has not yet run the ML prediction — no results to reference.]');
+  }
+
+  lines.push('');
+  lines.push('[INSTRUCTIONS FOR ASSISTANT]');
+  lines.push('You are the ACS Cancer Risk Assistant. Use the profile above to personalize every answer.');
+  lines.push('Reference the user\'s specific risk factors, prediction numbers, and cancer types where relevant.');
+  lines.push('Keep answers under 170 words. Always recommend consulting a healthcare provider for personal medical decisions.');
+  lines.push('If a field is missing/null, do not mention it — just answer with what you have.');
+
+  return lines.join('\n');
+}
+
+// ── 4. Build the context bar summary line ─────────────────────────────────
+function rccContextSummary(profile, results) {
+  const parts = [];
+  if (profile.age)  parts.push(`Age ${profile.age}`);
+  if (profile.sex)  parts.push(profile.sex);
+  if (profile.smoking_status) parts.push(profile.smoking_status === 'never' ? 'non-smoker' : profile.smoking_status + ' smoker');
+  if (profile.bmi_category)   parts.push(`BMI: ${profile.bmi_category}`);
+
+  const flagCount = [
+    profile.family_history, profile.diabetes, profile.hepatitis,
+    profile.hpv, profile.h_pylori, profile.ibd, profile.radiation_history,
+    profile.immunosuppression, profile.precancerous_lesions,
+    profile.occupational_exposure, profile.uv_exposure
+  ].filter(Boolean).length;
+  if (flagCount) parts.push(`${flagCount} medical factor${flagCount > 1 ? 's' : ''}`);
+
+  if (!parts.length) {
+    return 'No fields filled yet — fill the calculator above, then ask me questions.';
+  }
+
+  let s = `<b>Profile snapshot:</b> ${parts.join(' · ')}`;
+  if (results) s += ` &nbsp;·&nbsp; <span class="rcc-rr">Risk: ${results.overallRR}</span>`;
+  return s;
+}
+
+// ── 5. Build dynamic suggestion chips based on the profile ─────────────────
+function rccBuildChips(profile, results) {
+  const chips = [];
+
+  // If barely any fields are filled — show general onboarding chips
+  const filledCount = [profile.age, profile.sex, profile.race, profile.smoking_status,
+    profile.bmi_category, profile.alcohol_consumption, profile.physical_activity, profile.diet_quality
+  ].filter(Boolean).length;
+
+  if (filledCount < 2) {
+    return [
+      'What does "family history of cancer" mean?',
+      'How is relative cancer risk calculated?',
+      'What is a pack-year?',
+      'What does BMI category mean for cancer risk?',
+    ];
+  }
+
+  // Profile-specific chips
+  if (profile.smoking_status === 'current') chips.push('How much does smoking increase my cancer risk?');
+  if (profile.smoking_status === 'former')  chips.push('Does quitting smoking lower my cancer risk over time?');
+  if (profile.family_history)               chips.push('Which cancers are most hereditary?');
+  if (profile.hepatitis)                    chips.push('How does Hepatitis B/C raise liver cancer risk?');
+  if (profile.hpv)                          chips.push('Which cancers is HPV linked to?');
+  if (profile.h_pylori)                     chips.push('Can treating H. pylori lower my stomach cancer risk?');
+  if (profile.diabetes)                     chips.push('Which cancers are linked to Type 2 diabetes?');
+  if (profile.ibd)                          chips.push('How does IBD raise colorectal cancer risk?');
+  if (profile.precancerous_lesions)         chips.push('How serious are precancerous lesions?');
+  if (profile.uv_exposure)                  chips.push('How does UV exposure cause skin cancer?');
+  if (profile.bmi_category === 'obese' || profile.bmi_category === 'severely-obese')
+                                            chips.push('How does obesity affect cancer risk?');
+  if (results)                              chips.push(`Why is my overall risk ${results.overallRR}?`);
+  if (profile.cancer_types?.length)         chips.push(`What are early signs of ${profile.cancer_types[0]} cancer?`);
+
+  chips.push('What lifestyle changes most reduce cancer risk?');
+
+  return chips.slice(0, 4);
+}
+
+// ── 6. Render chips ───────────────────────────────────────────────────────
+function rccRenderChips(chips) {
+  const el = document.getElementById('rccChips');
+  el.style.display = '';
+  el.innerHTML = chips.map(text =>
+    `<div class="rcc-chip" onclick="rccFillAndSend(this.textContent.trim())">${text}</div>`
+  ).join('');
+}
+
+// ── 7. Add a chat bubble ──────────────────────────────────────────────────
+function rccAddBubble(type, text) {
+  const el = document.createElement('div');
+  el.className = `rcc-bubble rcc-bubble-${type}`;
+  if (type === 'ai') {
+    el.innerHTML = `<b>📚 ACS Assistant</b>${text}`;
+  } else {
+    el.textContent = text;
+  }
+  const msgs = document.getElementById('rccMessages');
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// ── 8. Toggle open / close ────────────────────────────────────────────────
+function rccToggle() {
+  _rccOpen = !_rccOpen;
+  document.getElementById('rccPanel').classList.toggle('open', _rccOpen);
+
+  if (!_rccOpen) return;
+
+  // Snapshot at open time
+  _rccProfile = rccReadProfile();
+  _rccResults = rccReadResults();
+
+  // Update context bar
+  document.getElementById('rccContextBar').innerHTML = rccContextSummary(_rccProfile, _rccResults);
+
+  // Build and render chips
+  rccRenderChips(rccBuildChips(_rccProfile, _rccResults));
+
+  // Welcome message — only shown once
+  if (!_rccInited) {
+    _rccInited = true;
+    const hasFields = [_rccProfile.age, _rccProfile.sex, _rccProfile.smoking_status,
+      _rccProfile.bmi_category].some(Boolean);
+
+    if (_rccResults) {
+      rccAddBubble('ai',
+        `Hi! I can see your prediction results — your overall risk is <strong>${_rccResults.overallRR}</strong> (${_rccResults.badge}). Ask me anything about what this means, your specific risk factors, or cancer in general.`
+      );
+    } else if (hasFields) {
+      rccAddBubble('ai',
+        `Hi! I've loaded your profile from the calculator. Ask me anything about your risk factors — or run the prediction first and I can explain your results too.`
+      );
+    } else {
+      rccAddBubble('ai',
+        `Hi! I'm your ACS Cancer Risk Assistant. The calculator isn't filled in yet, but I can already answer questions like "what does family history mean?" or "how does smoking affect cancer risk?"`
+      );
+    }
+  }
+
+  setTimeout(() => document.getElementById('rccInput').focus(), 150);
+}
+
+// ── 9. Fill input and send ────────────────────────────────────────────────
+function rccFillAndSend(text) {
+  document.getElementById('rccInput').value = text;
+  rccSend();
+}
+
+// ── 10. Send a message ────────────────────────────────────────────────────
+async function rccSend() {
+  const inputEl = document.getElementById('rccInput');
+  const message = inputEl.value.trim();
+  if (!message) return;
+
+  inputEl.value = '';
+  rccAddBubble('user', message);
+
+  // Hide chips after first user message
+  document.getElementById('rccChips').style.display = 'none';
+
+  const thinkEl = document.getElementById('rccThinking');
+  const sendBtn = document.getElementById('rccSendBtn');
+  thinkEl.classList.add('show');
+  sendBtn.disabled = true;
+
+  try {
+    const context    = rccBuildContext(_rccProfile || {}, _rccResults);
+    const fullMsg    = `${context}\n\nUser question: ${message}`;
+
+    const res = await fetch('http://localhost:8009/api/acs-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'information', message: fullMsg })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `Server error ${res.status}`);
+    }
+
+    const data = await res.json();
+    rccAddBubble('ai', data.answer);
+  } catch (err) {
+    rccAddBubble('ai', `Couldn't reach the assistant. Make sure the backend is running. (${err.message})`);
+  } finally {
+    thinkEl.classList.remove('show');
+    sendBtn.disabled = false;
+    inputEl.focus();
+  }
+}
+</script>
 </body>
 </html>
