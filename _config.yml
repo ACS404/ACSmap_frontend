@@ -113,6 +113,6 @@ minima:
     - { platform: youtube, user_url: "https://www.youtube.com/@OpenCodingSociety" } 
   nav_pages:
     - navigation/blog.md
-    - navigation/search.md
+    - navigation/cyclegame.md
     - navigation/about.md
     - navigation/cancerrisk.md
