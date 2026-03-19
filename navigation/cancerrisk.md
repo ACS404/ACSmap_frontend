@@ -939,7 +939,8 @@ document.addEventListener('DOMContentLoaded', () => {
 .rcc-panel {
   position: fixed; bottom: 94px; right: 28px;
   width: 360px;
-  max-height: calc(100vh - 120px);
+  height: 500px;
+  max-height: calc(100vh - 180px);
   background: var(--warm-white);
   border: 1.5px solid var(--border-bright);
   border-radius: 18px;
