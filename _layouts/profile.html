@@ -1482,7 +1482,6 @@ function fmtFreq(f) {
 </div>
 
 <script>
-import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 // ── Treatment Notes Widget ────────────────────────────────────────────────
 // Reads selectedDate and treatments from the existing tracker JS.
 // All state is server-side (no localStorage) — tied to the logged-in user.
@@ -1500,7 +1499,7 @@ let _tnCurDate    = null;   // ISO string YYYY-MM-DD
 let _tnNotes      = [];     // notes loaded from server
 let _tnSelCat     = 'general';
 let _tnFilterCat  = 'all';
-const _tnAPI      = `${pythonURI}/api/treatment/notes`;
+const _tnAPI      = 'http://localhost:8009/api/treatment/notes';
 
 // ── 1. Open / close ───────────────────────────────────────────────────────
 function tnToggle() {

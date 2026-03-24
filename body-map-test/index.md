@@ -1247,7 +1247,7 @@ async function acsChatSend() {
   statusEl.style.display = 'block';
 
   try {
-    const res = await fetch(`${pythonURI}/api/cancer-risk/predict`, {
+    const response = await fetch('http://localhost:8009/api/acs-chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'information', message })
