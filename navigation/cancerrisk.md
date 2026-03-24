@@ -501,6 +501,7 @@ title: Risk Calculator
 
 <script type="module">
   import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+  window._pythonURI = pythonURI; // expose to non-module scripts
 
 // ── STATE ─────────────────────────────────────────────────────────────────
 const state = {
@@ -1799,11 +1800,13 @@ async function rccSend() {
     const context    = rccBuildContext(_rccProfile || {}, _rccResults);
     const fullMsg    = `${context}\n\nUser question: ${message}`;
 
-    const res = await fetch('http://localhost:8009/api/acs-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'information', message: fullMsg })
-    });
+   const res = await fetch(`${window._pythonURI}/api/acs-chat`, {
+  method: 'POST',
+  mode: 'cors',
+  credentials: 'include',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ type: 'information', message: fullMsg })
+});
 
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
