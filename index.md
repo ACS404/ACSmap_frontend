@@ -629,7 +629,8 @@ show_reading_time: false
 }
 </style>
 
-<script>
+<script type="module">
+import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
 const ACS_PROMPTS = [
   { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
   { text: "What causes lung cancer?",                             keywords: ["lung"] },
@@ -700,12 +701,11 @@ async function acsChatSend() {
   statusEl.className = 'acs-chat-status';
   statusEl.style.display = 'block';
 
-  try {
-    const response = await fetch('http://localhost:8009/api/acs-chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'information', message })
-    });
+ const response = await fetch(`${pythonURI}/api/acs-chat`, {
+  ...fetchOptions,
+  method: 'POST',
+  body: JSON.stringify({ type: 'information', message })
+});
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
