@@ -374,6 +374,165 @@ title: Treatment Tracker
 .tx-empty-icon { font-size: 30px; margin-bottom: 10px; }
 
 /* ═══════════════════════════════════
+   TABS  (schedule / notes)
+═══════════════════════════════════ */
+.tx-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.tx-tab-btn {
+  flex: 1; padding: 12px 8px;
+  background: var(--cream); border: none;
+  font-family: var(--sans); font-size: 13px; font-weight: 700;
+  color: var(--text-muted); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+}
+.tx-tab-btn.active {
+  background: var(--warm-white);
+  color: var(--terracotta);
+  border-bottom-color: var(--rose);
+}
+.tx-tab-btn:hover:not(.active) { color: var(--text-main); background: var(--warm-white); }
+.tx-tab-badge {
+  background: var(--rose); color: white;
+  font-size: 9px; font-weight: 800;
+  padding: 1px 5px; border-radius: 8px;
+  display: none;
+}
+.tx-tab-badge.show { display: inline-block; }
+.tx-tab-pane { display: none; }
+.tx-tab-pane.active { display: block; }
+
+/* ═══════════════════════════════════
+   NOTES PANE
+═══════════════════════════════════ */
+.tn-form-area {
+  padding: 0 0 14px;
+  border-bottom: 1px solid rgba(196,168,130,0.2);
+  margin-bottom: 12px;
+}
+.tn-form-date {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--text-muted);
+  margin-bottom: 10px; display: block;
+}
+.tn-sel, .tn-ta {
+  width: 100%; box-sizing: border-box;
+  background: var(--cream);
+  border: 1px solid rgba(196,168,130,0.4);
+  border-radius: 9px; font-family: var(--sans);
+  font-size: 13px; color: var(--text-main);
+  margin-bottom: 7px;
+  transition: border-color 0.2s;
+}
+.tn-sel { padding: 8px 10px; appearance: none; cursor: pointer; }
+.tn-ta  { padding: 9px 10px; resize: vertical; min-height: 68px; }
+.tn-sel:focus, .tn-ta:focus {
+  outline: none; border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
+}
+.tn-ta::placeholder { color: var(--text-muted); }
+.tn-cat-row {
+  display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px;
+}
+.tn-cat-chip {
+  padding: 3px 10px; border-radius: 12px;
+  border: 1.5px solid rgba(196,168,130,0.35);
+  background: var(--warm-white); font-size: 11px; font-weight: 600;
+  cursor: pointer; color: var(--text-muted);
+  transition: all 0.12s; user-select: none;
+}
+.tn-cat-chip.active {
+  border-color: var(--rose); background: var(--rose-pale);
+  color: var(--terracotta);
+}
+.tn-save-btn {
+  width: 100%; padding: 9px;
+  background: var(--rose); color: white; border: none;
+  border-radius: 9px; font-family: var(--sans);
+  font-size: 13px; font-weight: 700;
+  cursor: pointer; transition: background 0.15s, transform 0.1s;
+}
+.tn-save-btn:hover:not(:disabled) { background: var(--terracotta); transform: translateY(-1px); }
+.tn-save-btn:disabled { background: var(--tan-light); color: var(--text-muted); cursor: not-allowed; transform: none; }
+.tn-status {
+  font-size: 11px; margin-top: 5px; min-height: 14px;
+  text-align: center; color: var(--sage); font-weight: 600;
+}
+.tn-status.err { color: var(--terracotta); }
+
+.tn-filter-row {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 10px;
+}
+.tn-f-btn {
+  padding: 3px 10px; border-radius: 12px;
+  border: 1px solid rgba(196,168,130,0.3);
+  background: transparent; font-family: var(--sans);
+  font-size: 10px; font-weight: 700; cursor: pointer;
+  color: var(--text-muted); transition: all 0.12s;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.tn-f-btn.active {
+  background: var(--rose-pale); border-color: var(--rose-light);
+  color: var(--terracotta);
+}
+
+.tn-list-wrap {
+  max-height: 340px; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.tn-list-wrap::-webkit-scrollbar { width: 4px; }
+.tn-list-wrap::-webkit-scrollbar-thumb { background: var(--tan-light); border-radius: 2px; }
+
+.tn-note {
+  background: var(--cream);
+  border: 1px solid rgba(196,168,130,0.28);
+  border-radius: 10px; padding: 10px 34px 10px 12px;
+  position: relative;
+  animation: tnIn 0.18s ease;
+}
+@keyframes tnIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+.tn-note[data-cat="side_effect"] { border-left: 3px solid var(--rose); }
+.tn-note[data-cat="reminder"]    { border-left: 3px solid var(--tan); }
+.tn-note[data-cat="general"]     { border-left: 3px solid var(--sage); }
+.tn-note[data-cat="dosage"]      { border-left: 3px solid #6b9ecf; }
+.tn-note[data-cat="symptom"]     { border-left: 3px solid #c987b8; }
+
+.tn-note-badge {
+  display: inline-block; padding: 2px 7px;
+  border-radius: 4px; font-size: 9px; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 4px;
+}
+.tn-note-badge.side_effect { background: var(--rose-pale);  color: var(--terracotta); }
+.tn-note-badge.reminder    { background: #fdf3e3; color: #9b6a00; }
+.tn-note-badge.general     { background: var(--sage-pale);  color: #4a7a4c; }
+.tn-note-badge.dosage      { background: #e8f0fb; color: #2255aa; }
+.tn-note-badge.symptom     { background: #f5eafb; color: #8a3fa0; }
+.tn-note-med  { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px; }
+.tn-note-text { font-size: 13px; color: var(--text-main); line-height: 1.5; }
+.tn-note-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.tn-del {
+  position: absolute; right: 8px; top: 8px;
+  background: rgba(224,122,106,0.12); border: none;
+  border-radius: 5px; width: 21px; height: 21px;
+  cursor: pointer; font-size: 11px; font-weight: 800;
+  color: var(--terracotta); display: flex; align-items: center;
+  justify-content: center; transition: background 0.12s;
+}
+.tn-del:hover { background: var(--rose-pale); }
+.tn-empty-note {
+  text-align: center; padding: 28px 12px;
+  color: var(--text-muted); font-size: 13px; line-height: 1.7;
+}
+.tn-empty-note-icon { font-size: 26px; margin-bottom: 6px; }
+
+/* ═══════════════════════════════════
    MODAL OVERLAY
 ═══════════════════════════════════ */
 .tx-overlay {
@@ -623,24 +782,70 @@ title: Treatment Tracker
 
     </div><!-- /left -->
 
-    <!-- ── Right column — Daily Checklist ── -->
-    <div class="tx-card">
-      <div class="checklist-day-header">
-        <div class="tx-section-title" id="chkDayTitle">Today's Schedule</div>
-      </div>
-      <div class="checklist-date-label" id="chkDateLabel"></div>
+    <!-- ── Right column — Schedule + Notes tabs ── -->
+    <div class="tx-card" style="padding:0;overflow:hidden;">
 
-      <!-- Progress bar (hidden when no meds) -->
-      <div class="tx-progress-wrap" id="txProgress" style="display:none;">
-        <div class="tx-progress-bar">
-          <div class="tx-progress-fill" id="txProgressFill" style="width:0%"></div>
+      <!-- Tab bar -->
+      <div class="tx-tabs">
+        <button class="tx-tab-btn active" id="tabScheduleBtn" onclick="tnSwitchTab('schedule')">
+          📅 Schedule
+        </button>
+        <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
+          📝 Notes
+          <span class="tx-tab-badge" id="tnBadge"></span>
+        </button>
+      </div>
+
+      <!-- Schedule pane -->
+      <div class="tx-tab-pane active" id="paneSchedule" style="padding:20px;">
+        <div class="checklist-day-header">
+          <div class="tx-section-title" id="chkDayTitle">Today's Schedule</div>
         </div>
-        <div class="tx-progress-count" id="txProgressCount">0 / 0</div>
+        <div class="checklist-date-label" id="chkDateLabel"></div>
+        <div class="tx-progress-wrap" id="txProgress" style="display:none;">
+          <div class="tx-progress-bar">
+            <div class="tx-progress-fill" id="txProgressFill" style="width:0%"></div>
+          </div>
+          <div class="tx-progress-count" id="txProgressCount">0 / 0</div>
+        </div>
+        <div id="chkList">
+          <div class="tx-empty"><div class="tx-empty-icon">⛨</div>Loading…</div>
+        </div>
       </div>
 
-      <div id="chkList">
-        <div class="tx-empty"><div class="tx-empty-icon">⛨</div>Loading…</div>
-      </div>
+      <!-- Notes pane -->
+      <div class="tx-tab-pane" id="paneNotes" style="padding:20px;">
+
+        <!-- Add note form -->
+        <div class="tn-form-area">
+          <span class="tn-form-date" id="tnFormDate">Notes for today</span>
+
+          <select class="tn-sel" id="tnMedSel">
+            <option value="">📅 Day note (no specific medication)</option>
+          </select>
+
+          <div class="tn-cat-row" id="tnCatRow"></div>
+
+          <textarea class="tn-ta" id="tnText"
+            placeholder="e.g. Feeling dizzy after evening dose, reminder to take with food…"></textarea>
+
+          <button class="tn-save-btn" id="tnSaveBtn" onclick="tnSave()">Save Note</button>
+          <div class="tn-status" id="tnStatus"></div>
+        </div>
+
+        <!-- Filter row -->
+        <div class="tn-filter-row" id="tnFilterRow"></div>
+
+        <!-- Notes list -->
+        <div class="tn-list-wrap" id="tnList">
+          <div class="tn-empty-note">
+            <div class="tn-empty-note-icon">📋</div>
+            No notes yet for this day.
+          </div>
+        </div>
+
+      </div><!-- /paneNotes -->
+
     </div><!-- /right -->
 
   </div><!-- /tx-grid -->
@@ -740,6 +945,10 @@ title: Treatment Tracker
 <script type="module">
 import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
 
+/* ── EXPOSE to notes script (non-module) ── */
+window._txPythonURI    = pythonURI;
+window._txFetchOptions = fetchOptions;
+
 /* ─── Constants ─────────────────────────────────────────── */
 const MONTHS  = ['January','February','March','April','May','June',
                  'July','August','September','October','November','December'];
@@ -758,6 +967,7 @@ let chosenTimes  = [];          // time strings in the modal
 let chosenColor  = PALETTE[0];  // hex in the modal
 let lookupTimer  = null;
 
+
 /* ─── Boot ──────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
   await loadUser();
@@ -767,7 +977,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   buildSwatches();
   document.getElementById('fStart').value = isoDate(new Date());
 
-  // Close modal on overlay click
+   // Close modal on overlay click
   document.getElementById('txOverlay').addEventListener('click', e => {
     if (e.target === document.getElementById('txOverlay')) txCloseModal();
   });
@@ -791,6 +1001,7 @@ async function loadTreatments() {
     const r = await fetch(`${pythonURI}/api/treatments`, fetchOptions);
     treatments = r.ok ? await r.json() : [];
   } catch (_) { treatments = []; }
+  window._txTreatments = treatments;
   renderMedsList();
 }
 
@@ -884,7 +1095,7 @@ async function renderChecklist(dt) {
   const today  = new Date();
   const isT    = dt.toDateString() === today.toDateString();
 
-  // Title + date label
+   // Title + date label
   document.getElementById('chkDayTitle').textContent =
     isT ? "Today's Schedule"
         : `Schedule — ${dt.toLocaleDateString('en-US',{month:'long',day:'numeric'})}`;
@@ -905,7 +1116,7 @@ async function renderChecklist(dt) {
     return;
   }
 
-  // Fetch logs for this date (cached)
+    // Fetch logs for this date (cached)
   if (!logsCache[ds]) {
     try {
       const r = await fetch(`${pythonURI}/api/treatment/log?date=${ds}`, fetchOptions);
@@ -950,7 +1161,7 @@ async function renderChecklist(dt) {
       <div class="chk-dot" style="background:${item.m.color}"></div>
     </div>`).join('');
 
-  // Store items for toggle handler
+// Store items for toggle handler
   window._txItems = items;
   window._txDate  = ds;
 }
@@ -990,7 +1201,7 @@ function renderTimesChips() {
       </div>`).join('');
 }
 
-/* ─── Global window API (called from HTML onclick) ───────── */
+/* ─── Global window API ──────────────────────────────────── */
 window.txOpenAdd = function () {
   editingId = null;
   resetModal();
@@ -1054,6 +1265,8 @@ window.txSelectDate = function (y, mo, d) {
   selectedDate = new Date(y, mo, d);
   renderCalendar();
   renderChecklist(selectedDate);
+  /* notify notes tab */
+  window._tnDateChanged && window._tnDateChanged(selectedDate);
 };
 
 window.txChangeMonth = function (dir) {
@@ -1080,9 +1293,9 @@ window.txToggle = async function (idx) {
       }),
     });
     if (r.ok) {
-      delete logsCache[ds]; // bust cache for this date
+      delete logsCache[ds];
       await renderChecklist(selectedDate);
-      renderCalendar();      // refresh dots
+      renderCalendar();
     }
   } catch (e) { console.error(e); }
 };
@@ -1209,516 +1422,220 @@ function fmtFreq(f) {
 </script>
 
 <!-- ═══════════════════════════════════════════════════════════
-     TREATMENT NOTES PANEL
-     Paste this entire block in _layouts/profile.html
-     right before the closing  {{ content }}  tag.
+     TREATMENT NOTES — inline tab script
+     Uses window._txPythonURI + window._txFetchOptions
+     exposed by the module script above.
 ═══════════════════════════════════════════════════════════ -->
-
-<style>
-/* ── Floating notes button ── */
-.tn-fab {
-  position: fixed; bottom: 28px; right: 28px;
-  width: 54px; height: 54px; border-radius: 50%;
-  background: var(--rose); border: none; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(224,122,106,0.45);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 1000;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  font-size: 22px; color: white;
-}
-.tn-fab:hover {
-  background: var(--terracotta);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 28px rgba(196,94,74,0.45);
-}
-.tn-fab-badge {
-  position: absolute; top: -4px; right: -4px;
-  background: var(--terracotta); color: white;
-  font-size: 9px; font-weight: 700;
-  padding: 2px 5px; border-radius: 8px;
-  border: 2px solid var(--warm-white);
-  font-family: var(--sans);
-  display: none;
-}
-.tn-fab-badge.show { display: block; }
-
-/* ── Slide-out panel ── */
-.tn-panel {
-  position: fixed; right: -400px; top: 0;
-  width: 370px; max-width: 92vw;
-  height: 100vh;
-  background: var(--warm-white);
-  border-left: 1.5px solid rgba(196,168,130,0.4);
-  box-shadow: -8px 0 48px rgba(61,44,36,0.15);
-  display: flex; flex-direction: column;
-  z-index: 1100;
-  transition: right 0.35s cubic-bezier(0.68,-0.55,0.265,1.55);
-  font-family: var(--sans);
-}
-.tn-panel.open { right: 0; }
-
-/* Panel header */
-.tn-header {
-  padding: 18px 20px 14px;
-  background: linear-gradient(135deg, var(--brown) 0%, #4a2e22 100%);
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0;
-}
-.tn-header-left { display: flex; align-items: center; gap: 9px; }
-.tn-header-dot  { width: 7px; height: 7px; border-radius: 50%; background: var(--sage-light); flex-shrink: 0; }
-.tn-header-title { font-family: var(--serif); font-size: 17px; font-weight: 600; color: white; line-height: 1.2; }
-.tn-header-sub   { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 1px; }
-.tn-close-btn {
-  background: rgba(255,255,255,0.12); border: none;
-  color: rgba(255,255,255,0.7);
-  width: 26px; height: 26px; border-radius: 50%;
-  cursor: pointer; display: flex; align-items: center;
-  justify-content: center; font-size: 14px;
-  transition: background 0.15s;
-}
-.tn-close-btn:hover { background: rgba(255,255,255,0.22); color: white; }
-
-/* Date context strip */
-.tn-date-strip {
-  padding: 7px 16px;
-  background: var(--rose-pale);
-  border-bottom: 1px solid var(--rose-light);
-  font-size: 11px; font-weight: 600;
-  color: var(--terracotta); letter-spacing: 0.06em;
-  text-transform: uppercase; flex-shrink: 0;
-}
-
-/* Add note form */
-.tn-form {
-  padding: 16px;
-  border-bottom: 1px solid rgba(196,168,130,0.25);
-  flex-shrink: 0;
-  background: var(--cream);
-}
-.tn-form-title {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--text-muted);
-  margin-bottom: 10px;
-}
-.tn-select, .tn-textarea {
-  width: 100%; box-sizing: border-box;
-  background: var(--warm-white);
-  border: 1px solid rgba(196,168,130,0.4);
-  border-radius: 9px; font-family: var(--sans);
-  font-size: 13px; color: var(--text-main);
-  margin-bottom: 8px;
-  transition: border-color 0.2s;
-}
-.tn-select  { padding: 8px 11px; appearance: none; cursor: pointer; }
-.tn-textarea { padding: 9px 11px; resize: vertical; min-height: 72px; }
-.tn-select:focus, .tn-textarea:focus {
-  outline: none; border-color: var(--rose);
-  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
-}
-.tn-textarea::placeholder { color: var(--text-muted); }
-.tn-add-btn {
-  width: 100%; padding: 9px;
-  background: var(--rose); color: white;
-  border: none; border-radius: 9px;
-  font-family: var(--sans); font-size: 13px; font-weight: 700;
-  cursor: pointer; transition: background 0.2s, transform 0.12s;
-}
-.tn-add-btn:hover:not(:disabled) { background: var(--terracotta); transform: translateY(-1px); }
-.tn-add-btn:disabled { background: var(--tan-light); color: var(--text-muted); cursor: not-allowed; }
-
-/* Category badges */
-.tn-cat-grid {
-  display: flex; flex-wrap: wrap; gap: 6px;
-  margin-bottom: 8px;
-}
-.tn-cat-chip {
-  padding: 4px 11px; border-radius: 14px;
-  border: 1.5px solid rgba(196,168,130,0.35);
-  background: var(--warm-white);
-  font-size: 11px; font-weight: 600;
-  cursor: pointer; color: var(--text-muted);
-  transition: all 0.15s; user-select: none;
-}
-.tn-cat-chip.active {
-  border-color: var(--rose); background: var(--rose-pale);
-  color: var(--terracotta);
-}
-
-/* Notes list */
-.tn-list {
-  flex: 1; overflow-y: auto; padding: 12px 14px;
-  display: flex; flex-direction: column; gap: 9px;
-}
-.tn-list::-webkit-scrollbar { width: 4px; }
-.tn-list::-webkit-scrollbar-thumb { background: var(--tan-light); border-radius: 2px; }
-
-.tn-note {
-  background: var(--cream);
-  border: 1px solid rgba(196,168,130,0.3);
-  border-radius: 11px;
-  padding: 11px 13px;
-  position: relative;
-  padding-right: 36px;
-  animation: tnFadeIn 0.2s ease;
-}
-@keyframes tnFadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Left accent line colour per category */
-.tn-note[data-cat="side_effect"] { border-left: 3px solid #e07a6a; }
-.tn-note[data-cat="reminder"]    { border-left: 3px solid #c4a882; }
-.tn-note[data-cat="general"]     { border-left: 3px solid #8aaa8c; }
-.tn-note[data-cat="dosage"]      { border-left: 3px solid #6b9ecf; }
-.tn-note[data-cat="symptom"]     { border-left: 3px solid #c987b8; }
-
-.tn-note-cat {
-  display: inline-block; padding: 2px 7px;
-  border-radius: 4px; font-size: 10px; font-weight: 700;
-  letter-spacing: 0.05em; text-transform: uppercase;
-  margin-bottom: 5px;
-}
-.tn-note-cat.side_effect { background: var(--rose-pale);  color: var(--terracotta); }
-.tn-note-cat.reminder    { background: #fdf3e3; color: #9b6a00; }
-.tn-note-cat.general     { background: var(--sage-pale);  color: #4a7a4c; }
-.tn-note-cat.dosage      { background: #e8f0fb; color: #2255aa; }
-.tn-note-cat.symptom     { background: #f5eafb; color: #8a3fa0; }
-
-.tn-note-med  { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; }
-.tn-note-text { font-size: 13px; color: var(--text-main); line-height: 1.55; }
-.tn-note-meta { font-size: 10px; color: var(--text-muted); margin-top: 5px; }
-
-.tn-del-btn {
-  position: absolute; right: 9px; top: 9px;
-  background: rgba(224,122,106,0.15);
-  border: none; border-radius: 5px;
-  width: 22px; height: 22px;
-  cursor: pointer; font-size: 12px; font-weight: 700;
-  color: var(--terracotta); display: flex;
-  align-items: center; justify-content: center;
-  transition: background 0.15s;
-}
-.tn-del-btn:hover { background: var(--rose-pale); }
-
-/* Filter tabs */
-.tn-filters {
-  padding: 8px 14px;
-  display: flex; gap: 6px; flex-wrap: wrap;
-  border-bottom: 1px solid rgba(196,168,130,0.2);
-  flex-shrink: 0; background: var(--warm-white);
-}
-.tn-filter-btn {
-  padding: 4px 11px; border-radius: 14px;
-  border: 1px solid rgba(196,168,130,0.3);
-  background: transparent; font-family: var(--sans);
-  font-size: 11px; font-weight: 600; cursor: pointer;
-  color: var(--text-muted); transition: all 0.15s;
-}
-.tn-filter-btn.active {
-  background: var(--rose-pale); border-color: var(--rose-light);
-  color: var(--terracotta);
-}
-
-/* Empty state */
-.tn-empty {
-  text-align: center; padding: 32px 16px;
-  color: var(--text-muted); font-size: 13px; line-height: 1.7;
-}
-.tn-empty-icon { font-size: 28px; margin-bottom: 8px; }
-</style>
-
-<!-- Floating button -->
-<button class="tn-fab" id="tnFab" onclick="tnToggle()" title="Treatment Notes">
-  📝
-  <div class="tn-fab-badge" id="tnBadge"></div>
-</button>
-
-<!-- Notes panel -->
-<div class="tn-panel" id="tnPanel">
-
-  <div class="tn-header">
-    <div class="tn-header-left">
-      <div class="tn-header-dot"></div>
-      <div>
-        <div class="tn-header-title">Treatment Notes</div>
-        <div class="tn-header-sub" id="tnHeaderSub">Loading…</div>
-      </div>
-    </div>
-    <button class="tn-close-btn" onclick="tnToggle()">✕</button>
-  </div>
-
-  <div class="tn-date-strip" id="tnDateStrip">No date selected</div>
-
-  <!-- Add note form -->
-  <div class="tn-form">
-    <div class="tn-form-title">Add a note</div>
-
-    <!-- Medication selector -->
-    <select class="tn-select" id="tnMedSelect">
-      <option value="">📅 General day note</option>
-    </select>
-
-    <!-- Category chips -->
-    <div class="tn-cat-grid" id="tnCatGrid"></div>
-
-    <textarea class="tn-textarea" id="tnNoteText"
-      placeholder="Side effect, reminder, dosage observation…"></textarea>
-
-    <button class="tn-add-btn" id="tnAddBtn" onclick="tnAddNote()">Add Note</button>
-  </div>
-
-  <!-- Filter row -->
-  <div class="tn-filters" id="tnFilters"></div>
-
-  <!-- Notes list -->
-  <div class="tn-list" id="tnList">
-    <div class="tn-empty">
-      <div class="tn-empty-icon">📋</div>
-      Open the panel on a day to see and add notes.
-    </div>
-  </div>
-
-</div>
-
 <script>
-// ── Treatment Notes Widget ────────────────────────────────────────────────
-// Reads selectedDate and treatments from the existing tracker JS.
-// All state is server-side (no localStorage) — tied to the logged-in user.
-
 const TN_CATS = [
-  { key: 'general',     label: 'General',      emoji: '📌' },
-  { key: 'side_effect', label: 'Side Effect',  emoji: '⚠️' },
-  { key: 'reminder',    label: 'Reminder',     emoji: '🔔' },
-  { key: 'dosage',      label: 'Dosage Note',  emoji: '💊' },
-  { key: 'symptom',     label: 'Symptom',      emoji: '🌡️' },
+  { key:'general',     label:'General',     emoji:'📌' },
+  { key:'side_effect', label:'Side Effect', emoji:'⚠️' },
+  { key:'reminder',    label:'Reminder',    emoji:'🔔' },
+  { key:'dosage',      label:'Dosage',      emoji:'💊' },
+  { key:'symptom',     label:'Symptom',     emoji:'🌡️' },
 ];
 
-let _tnOpen       = false;
-let _tnCurDate    = null;   // ISO string YYYY-MM-DD
-let _tnNotes      = [];     // notes loaded from server
-let _tnSelCat     = 'general';
-let _tnFilterCat  = 'all';
-const _tnAPI      = 'http://localhost:8009/api/treatment/notes';
+let _tnDate    = _tnIsoToday();
+let _tnNotes   = [];
+let _tnCat     = 'general';
+let _tnFilter  = 'all';
+let _tnInited  = false;   // true once the Notes tab has been opened
 
-// ── 1. Open / close ───────────────────────────────────────────────────────
-function tnToggle() {
-  _tnOpen = !_tnOpen;
-  document.getElementById('tnPanel').classList.toggle('open', _tnOpen);
-  if (_tnOpen) {
-    tnSync();
+/* ── Tab switching ── */
+window.tnSwitchTab = function(tab) {
+  document.getElementById('tabScheduleBtn').classList.toggle('active', tab === 'schedule');
+  document.getElementById('tabNotesBtn').classList.toggle('active',   tab === 'notes');
+  document.getElementById('paneSchedule').classList.toggle('active',  tab === 'schedule');
+  document.getElementById('paneNotes').classList.toggle('active',     tab === 'notes');
+
+  if (tab === 'notes') {
+    _tnInited = true;
+    _tnRefreshMeds();
+    _tnBuildCats();
+    _tnBuildFilters();
+    _tnLoad();
   }
-}
+};
 
-// ── 2. Sync panel with the current selectedDate from the tracker ──────────
-function tnSync() {
-  // selectedDate is declared in the existing module script
-  const dt = (typeof selectedDate !== 'undefined') ? selectedDate : new Date();
-  const iso = tnIso(dt);
-  _tnCurDate = iso;
+/* ── Called by the module script when the calendar date changes ── */
+window._tnDateChanged = function(dt) {
+  _tnDate = _tnIsoFrom(dt);
+  const label = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const el = document.getElementById('tnFormDate');
+  if (el) el.textContent = 'Notes for ' + label;
+  if (_tnInited) _tnLoad();
+  _tnSilentBadge();
+};
 
-  // Date strip
-  const label = dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  document.getElementById('tnDateStrip').textContent = '📅 ' + label;
-  document.getElementById('tnHeaderSub').textContent = iso;
-
-  // Populate medication selector
-  tnRefreshMedSelect();
-
-  // Build category chips
-  tnBuildCatChips();
-
-  // Build filter buttons
-  tnBuildFilters();
-
-  // Load notes
-  tnLoadNotes();
-}
-
-// ── 3. Medication selector ────────────────────────────────────────────────
-function tnRefreshMedSelect() {
-  const sel  = document.getElementById('tnMedSelect');
-  const meds = (typeof treatments !== 'undefined') ? treatments : [];
-  sel.innerHTML = '<option value="">📅 General day note</option>';
+/* ── Medication dropdown ── */
+function _tnRefreshMeds() {
+  const sel  = document.getElementById('tnMedSel');
+  const meds = window._txTreatments || [];
+  sel.innerHTML = '<option value="">📅 Day note (no specific medication)</option>';
   meds.forEach(m => {
-    const opt = document.createElement('option');
-    opt.value = m.id;
-    opt.textContent = '💊 ' + m.medication_name + (m.dosage ? '  (' + m.dosage + ')' : '');
-    sel.appendChild(opt);
+    const o = document.createElement('option');
+    o.value = m.id;
+    o.textContent = '💊 ' + m.medication_name + (m.dosage ? ' (' + m.dosage + ')' : '');
+    sel.appendChild(o);
   });
 }
 
-// ── 4. Category chips ─────────────────────────────────────────────────────
-function tnBuildCatChips() {
-  const grid = document.getElementById('tnCatGrid');
-  grid.innerHTML = TN_CATS.map(c =>
-    `<div class="tn-cat-chip ${c.key === _tnSelCat ? 'active' : ''}"
-          onclick="tnSelCat('${c.key}')">${c.emoji} ${c.label}</div>`
+/* ── Category chips ── */
+function _tnBuildCats() {
+  document.getElementById('tnCatRow').innerHTML = TN_CATS.map(c =>
+    `<div class="tn-cat-chip${c.key === _tnCat ? ' active' : ''}"
+          onclick="_tnPickCat('${c.key}')">${c.emoji} ${c.label}</div>`
   ).join('');
 }
+window._tnPickCat = function(key) { _tnCat = key; _tnBuildCats(); };
 
-function tnSelCat(key) {
-  _tnSelCat = key;
-  tnBuildCatChips();
-}
-
-// ── 5. Filter buttons ─────────────────────────────────────────────────────
-function tnBuildFilters() {
-  const row = document.getElementById('tnFilters');
-  const options = [{ key:'all', label:'All' }, ...TN_CATS];
-  row.innerHTML = options.map(c =>
-    `<button class="tn-filter-btn ${c.key === _tnFilterCat ? 'active' : ''}"
-             onclick="tnSetFilter('${c.key}')">${c.label}</button>`
+/* ── Filter buttons ── */
+function _tnBuildFilters() {
+  const opts = [{ key:'all', label:'All' }, ...TN_CATS];
+  document.getElementById('tnFilterRow').innerHTML = opts.map(c =>
+    `<button class="tn-f-btn${c.key === _tnFilter ? ' active' : ''}"
+             onclick="_tnSetFilter('${c.key}')">${c.label}</button>`
   ).join('');
 }
+window._tnSetFilter = function(key) { _tnFilter = key; _tnBuildFilters(); _tnRender(); };
 
-function tnSetFilter(key) {
-  _tnFilterCat = key;
-  tnBuildFilters();
-  tnRenderList();
+/* ── Fetch notes ── */
+function _tnApi() {
+  return (window._txPythonURI || 'http://localhost:8009') + '/api/treatment/notes';
+}
+function _tnFetchOpts(extra) {
+  const base = window._txFetchOptions || { credentials:'include', headers:{'Content-Type':'application/json'} };
+  return Object.assign({}, base, extra);
 }
 
-// ── 6. Load notes from server ──────────────────────────────────────────────
-async function tnLoadNotes() {
+async function _tnLoad() {
   document.getElementById('tnList').innerHTML =
-    '<div class="tn-empty"><div class="tn-empty-icon">⏳</div>Loading notes…</div>';
+    '<div class="tn-empty-note"><div class="tn-empty-note-icon">⏳</div>Loading…</div>';
   try {
-    const url = `${_tnAPI}?date=${_tnCurDate}`;
-    const r   = await fetch(url, { method:'GET', credentials:'include',
-                                   headers:{'Content-Type':'application/json'} });
-    _tnNotes  = r.ok ? await r.json() : [];
-  } catch (_) { _tnNotes = []; }
-  tnUpdateBadge();
-  tnRenderList();
+    const r = await fetch(`${_tnApi()}?date=${_tnDate}`,
+                          _tnFetchOpts({ method:'GET' }));
+    _tnNotes = r.ok ? await r.json() : [];
+  } catch(_) { _tnNotes = []; }
+  _tnUpdateBadge();
+  _tnRender();
 }
 
-// ── 7. Render notes list ──────────────────────────────────────────────────
-function tnRenderList() {
-  const list = document.getElementById('tnList');
-  const meds = (typeof treatments !== 'undefined') ? treatments : [];
+async function _tnSilentBadge() {
+  try {
+    const r = await fetch(`${_tnApi()}?date=${_tnDate}`,
+                          _tnFetchOpts({ method:'GET' }));
+    const notes = r.ok ? await r.json() : [];
+    _tnNotes = notes;
+    _tnUpdateBadge();
+  } catch(_) {}
+}
 
-  let shown = _tnNotes;
-  if (_tnFilterCat !== 'all') {
-    shown = shown.filter(n => n.category === _tnFilterCat);
-  }
+/* ── Render ── */
+function _tnRender() {
+  const list = document.getElementById('tnList');
+  const meds = window._txTreatments || [];
+  let shown  = _tnFilter === 'all' ? _tnNotes : _tnNotes.filter(n => n.category === _tnFilter);
 
   if (!shown.length) {
-    list.innerHTML = `
-      <div class="tn-empty">
-        <div class="tn-empty-icon">📋</div>
-        No notes for this day yet.<br>Add one using the form above.
-      </div>`;
+    list.innerHTML = `<div class="tn-empty-note"><div class="tn-empty-note-icon">📋</div>
+      No${_tnFilter !== 'all' ? ' ' + _tnFilter.replace('_',' ') : ''} notes for this day yet.</div>`;
     return;
   }
 
   list.innerHTML = shown.map(n => {
-    const med  = meds.find(m => m.id === n.treatment_id);
-    const cat  = TN_CATS.find(c => c.key === n.category) || TN_CATS[0];
-    const ts   = new Date(n.created_at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+    const med = meds.find(m => m.id === n.treatment_id);
+    const cat = TN_CATS.find(c => c.key === n.category) || TN_CATS[0];
+    const raw = n.created_at || '';
+    const ts  = raw ? new Date(raw.endsWith('Z') ? raw : raw + 'Z')
+                        .toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : '';
     return `
-      <div class="tn-note" data-cat="${n.category || 'general'}">
-        <span class="tn-note-cat ${n.category || 'general'}">${cat.emoji} ${cat.label}</span>
-        ${med ? `<div class="tn-note-med">💊 ${tnEsc(med.medication_name)}</div>` : ''}
-        <div class="tn-note-text">${tnEsc(n.content)}</div>
-        <div class="tn-note-meta">${ts}</div>
-        <button class="tn-del-btn" onclick="tnDelete(${n.id})" title="Delete">✕</button>
+      <div class="tn-note" data-cat="${n.category||'general'}">
+        <span class="tn-note-badge ${n.category||'general'}">${cat.emoji} ${cat.label}</span>
+        ${med ? `<div class="tn-note-med">💊 ${_tnEsc(med.medication_name)}</div>` : ''}
+        <div class="tn-note-text">${_tnEsc(n.content)}</div>
+        ${ts ? `<div class="tn-note-time">${ts}</div>` : ''}
+        <button class="tn-del" onclick="_tnDel(${n.id})" title="Delete note">✕</button>
       </div>`;
   }).join('');
 }
 
-// ── 8. Add a note ─────────────────────────────────────────────────────────
-async function tnAddNote() {
-  const content = document.getElementById('tnNoteText').value.trim();
-  if (!content) { document.getElementById('tnNoteText').focus(); return; }
+/* ── Save ── */
+window.tnSave = async function() {
+  const content = document.getElementById('tnText').value.trim();
+  const status  = document.getElementById('tnStatus');
+  const btn     = document.getElementById('tnSaveBtn');
 
-  const tid = document.getElementById('tnMedSelect').value;
-  const btn = document.getElementById('tnAddBtn');
+  if (!content) {
+    document.getElementById('tnText').focus();
+    status.textContent = 'Please write something first.';
+    status.className = 'tn-status err';
+    return;
+  }
+
+  const tid = document.getElementById('tnMedSel').value;
   btn.disabled = true; btn.textContent = 'Saving…';
+  status.textContent = ''; status.className = 'tn-status';
 
   try {
-    const r = await fetch(_tnAPI, {
-      method: 'POST', credentials: 'include',
-      headers: {'Content-Type':'application/json'},
+    const r = await fetch(_tnApi(), _tnFetchOpts({
+      method: 'POST',
       body: JSON.stringify({
         content,
-        date:         _tnCurDate,
+        date:         _tnDate,
         treatment_id: tid ? parseInt(tid) : null,
-        category:     _tnSelCat,
+        category:     _tnCat,
       }),
-    });
+    }));
+
     if (r.ok) {
-      document.getElementById('tnNoteText').value = '';
-      await tnLoadNotes();
+      document.getElementById('tnText').value = '';
+      status.textContent = '✓ Note saved!';
+      status.className = 'tn-status';
+      await _tnLoad();
+      setTimeout(() => { status.textContent = ''; }, 2500);
+    } else {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || 'Server ' + r.status);
     }
-  } catch (_) {}
+  } catch(e) {
+    status.textContent = 'Error: ' + e.message;
+    status.className = 'tn-status err';
+  }
 
-  btn.disabled = false; btn.textContent = 'Add Note';
-}
+  btn.disabled = false; btn.textContent = 'Save Note';
+};
 
-// ── 9. Delete a note ──────────────────────────────────────────────────────
-async function tnDelete(id) {
+/* ── Delete ── */
+window._tnDel = async function(id) {
   if (!confirm('Delete this note?')) return;
   try {
-    const r = await fetch(`${_tnAPI}/${id}`, {
-      method: 'DELETE', credentials: 'include',
-    });
-    if (r.ok) await tnLoadNotes();
-  } catch (_) {}
+    const r = await fetch(`${_tnApi()}/${id}`, _tnFetchOpts({ method:'DELETE' }));
+    if (r.ok) await _tnLoad();
+  } catch(_) {}
+};
+
+/* ── Badge ── */
+function _tnUpdateBadge() {
+  const b = document.getElementById('tnBadge');
+  if (!b) return;
+  if (_tnNotes.length) { b.textContent = _tnNotes.length; b.classList.add('show'); }
+  else                 { b.classList.remove('show'); }
 }
 
-// ── 10. Badge count ───────────────────────────────────────────────────────
-function tnUpdateBadge() {
-  const badge = document.getElementById('tnBadge');
-  if (_tnNotes.length) {
-    badge.textContent = _tnNotes.length;
-    badge.classList.add('show');
-  } else {
-    badge.classList.remove('show');
-  }
-}
-
-// ── 11. Hook into the existing txSelectDate so the panel auto-refreshes ───
-// Wrap the existing window.txSelectDate to also refresh the notes panel
-(function () {
-  const _orig = window.txSelectDate;
-  window.txSelectDate = function (y, mo, d) {
-    if (_orig) _orig(y, mo, d);
-    if (_tnOpen) {
-      setTimeout(tnSync, 80); // small delay so selectedDate updates first
-    } else {
-      // Still update badge silently
-      _tnCurDate = tnIso(new Date(y, mo, d));
-    }
-  };
-})();
-
-// ── Utility ───────────────────────────────────────────────────────────────
-function tnIso(dt) {
+/* ── Utilities ── */
+function _tnIsoToday() { return _tnIsoFrom(new Date()); }
+function _tnIsoFrom(dt) {
   const p = n => String(n).padStart(2,'0');
   return `${dt.getFullYear()}-${p(dt.getMonth()+1)}-${p(dt.getDate())}`;
 }
-function tnEsc(s) {
-  return String(s||'')
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function _tnEsc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+                      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-// Open panel to today's date on first visit after 1.5 s if there are notes
+/* ── Init: silent badge load for today ── */
 document.addEventListener('DOMContentLoaded', () => {
-  setTimeout(async () => {
-    _tnCurDate = tnIso(new Date());
-    try {
-      const r = await fetch(`${_tnAPI}?date=${_tnCurDate}`, {
-        credentials:'include',
-        headers:{'Content-Type':'application/json'}
-      });
-      const notes = r.ok ? await r.json() : [];
-      if (notes.length) {
-        _tnNotes = notes;
-        tnUpdateBadge();
-      }
-    } catch (_) {}
-  }, 1500);
+  setTimeout(_tnSilentBadge, 2000);
 });
 </script>
 
