@@ -1104,6 +1104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <script>
+import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+
 // ── ACS RISK CHAT WIDGET ──────────────────────────────────────────────────
 // Reads calculator fields from the DOM — does NOT touch the module-scoped state.
 
@@ -1396,7 +1398,7 @@ async function rccSend() {
     const context    = rccBuildContext(_rccProfile || {}, _rccResults);
     const fullMsg    = `${context}\n\nUser question: ${message}`;
 
-    const res = await fetch('http://localhost:8009/api/acs-chat', {
+    const res = await fetch(`${pythonURI}/api/acs-chat`, fetchOptions; {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ type: 'information', message: fullMsg })
