@@ -458,8 +458,9 @@ show_reading_time: false
   <div class="acs-chat-section" id="acsChatSection">
     <div class="acs-chat-inner">
       <div class="acs-chat-header">
-        <h2 class="acs-chat-title">American Cancer Society · AI Assistant</h2>
-        <p class="acs-chat-sub">Recieve answers about symptoms, risk factors, and ACS resources — or seek clarifications about the body map above.</p>
+        <div class="acs-chat-eyebrow">American Cancer Society · AI Assistant</div>
+        <h2 class="acs-chat-title">Ask About Any Cancer Type</h2>
+        <p class="acs-chat-sub">Get plain-English answers about symptoms, risk factors, and ACS resources — or ask about anything from the body map above.</p>
       </div>
 
       <div class="acs-chat-card">
@@ -629,8 +630,7 @@ show_reading_time: false
 }
 </style>
 
-<script type="module">
-import { pythonURI, fetchOptions } from '{{ site.baseurl }}/assets/js/api/config.js';
+<script>
 const ACS_PROMPTS = [
   { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
   { text: "What causes lung cancer?",                             keywords: ["lung"] },
@@ -701,11 +701,12 @@ async function acsChatSend() {
   statusEl.className = 'acs-chat-status';
   statusEl.style.display = 'block';
 
- const response = await fetch(`${pythonURI}/api/acs-chat`, {
-  ...fetchOptions,
-  method: 'POST',
-  body: JSON.stringify({ type: 'information', message })
-});
+  try {
+    const response = await fetch('http://localhost:8009/api/acs-chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'information', message })
+    });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
