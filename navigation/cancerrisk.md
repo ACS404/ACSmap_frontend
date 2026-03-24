@@ -59,6 +59,11 @@ title: Risk Calculator
 
   /* ── PAGE ── */
   .page { max-width: 900px; margin: 0 auto; padding: 48px 24px 80px; }
+  .page-topbar { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+  .lang-switch { display: inline-flex; background: var(--warm-white); border: 1px solid var(--border); border-radius: 999px; padding: 4px; gap: 4px; }
+  .lang-btn { border: none; background: transparent; color: var(--text-muted); font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .05em; padding: 6px 12px; border-radius: 999px; cursor: pointer; transition: all .18s; }
+  .lang-btn:hover { color: var(--text-main); background: var(--cream); }
+  .lang-btn.active { background: var(--rose); color: #fff; }
   .page-header { text-align: center; margin-bottom: 40px; }
   .page-header h1 { font-family: var(--serif); font-size: clamp(32px, 5vw, 52px); font-weight: 600; color: var(--text-main); line-height: 1.1; margin: 0 0 14px; }
   .page-header h1 em { font-style: italic; color: var(--rose); }
@@ -286,56 +291,63 @@ title: Risk Calculator
   <div class="progress-pct" id="progressPct">0%</div>
   <div class="progress-dot-wrap" id="wrap-demographics">
     <div class="progress-dot active" id="dot-demographics"></div>
-    <span class="tip">Demographics</span>
+    <span class="tip" id="tip-demographics">Demographics</span>
   </div>
   <div class="progress-track"><div class="progress-fill" id="fill-1"></div></div>
   <div class="progress-dot-wrap" id="wrap-lifestyle">
     <div class="progress-dot" id="dot-lifestyle"></div>
-    <span class="tip">Lifestyle</span>
+    <span class="tip" id="tip-lifestyle">Lifestyle</span>
   </div>
   <div class="progress-track"><div class="progress-fill" id="fill-2"></div></div>
   <div class="progress-dot-wrap" id="wrap-medical">
     <div class="progress-dot" id="dot-medical"></div>
-    <span class="tip">Medical History</span>
+    <span class="tip" id="tip-medical">Medical History</span>
   </div>
   <div class="progress-track"><div class="progress-fill" id="fill-3"></div></div>
   <div class="progress-dot-wrap" id="wrap-environmental">
     <div class="progress-dot" id="dot-environmental"></div>
-    <span class="tip">Environmental</span>
+    <span class="tip" id="tip-environmental">Environmental</span>
   </div>
-  <div class="progress-label">Progress</div>
+  <div class="progress-label" id="progress-label">Progress</div>
 </nav>
 
 <div class="page">
+  <div class="page-topbar">
+    <div class="lang-switch" id="lang-switch" aria-label="Language switch">
+      <button class="lang-btn active" id="lang-en" type="button" onclick="setLanguage('en')" aria-pressed="true">EN</button>
+      <button class="lang-btn" id="lang-es" type="button" onclick="setLanguage('es')" aria-pressed="false">ES</button>
+    </div>
+  </div>
+
   <div class="page-header">
-    <h1>Cancer Risk<br><em>ML Predictor</em></h1>
-    <p>Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts &amp; Figures 2026 epidemiological data, predicts your relative cancer risk compared to the average US population.</p>
+    <h1 id="page-title">Cancer Risk<br><em>ML Predictor</em></h1>
+    <p id="page-intro">Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts &amp; Figures 2026 epidemiological data, predicts your relative cancer risk compared to the average US population.</p>
   </div>
 
   <div class="card">
 
     <!-- SECTION 1: DEMOGRAPHICS -->
     <div class="section-heading" id="section-demographics">
-      <span class="section-icon">𐦂𖨆𖠋</span><span>Demographics</span>
+      <span class="section-icon">𐦂𖨆𖠋</span><span id="heading-demographics">Demographics</span>
     </div>
     <div class="field-grid">
       <div class="field">
-        <label>Age</label>
+        <label id="label-age">Age</label>
         <input type="number" id="age" min="18" max="100" placeholder="e.g. 55">
       </div>
       <div class="field">
-        <label>Biological Sex</label>
+        <label id="label-sex">Biological Sex</label>
         <div class="select-wrap">
           <select id="sex">
-            <option value="">Select…</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
+            <option value="" id="sex-option-default">Select…</option>
+            <option value="male" id="sex-option-male">Male</option>
+            <option value="female" id="sex-option-female">Female</option>
           </select>
         </div>
       </div>
     </div>
     <div class="field">
-      <label>Race / Ethnicity</label>
+      <label id="label-race">Race / Ethnicity</label>
       <div class="chips" id="race-chips">
         <div class="chip" data-val="white">White</div>
         <div class="chip" data-val="black">Black / African American</div>
@@ -347,10 +359,10 @@ title: Risk Calculator
 
     <!-- SECTION 2: LIFESTYLE -->
     <div class="section-heading" id="section-lifestyle">
-      <span class="section-icon">☕︎</span><span>Lifestyle Factors</span>
+      <span class="section-icon">☕︎</span><span id="heading-lifestyle">Lifestyle Factors</span>
     </div>
     <div class="field">
-      <label>Smoking Status</label>
+      <label id="label-smoking">Smoking Status</label>
       <div class="chips" id="smoke-chips">
         <div class="chip" data-val="never">Never smoked</div>
         <div class="chip" data-val="former">Former smoker</div>
@@ -358,11 +370,11 @@ title: Risk Calculator
       </div>
     </div>
     <div class="field" id="pack-years-field" style="display:none">
-      <label>Pack-Years (packs/day × years smoked)</label>
+      <label id="label-pack-years">Pack-Years (packs/day × years smoked)</label>
       <input type="number" id="packYears" min="0" max="200" placeholder="e.g. 20" value="0">
     </div>
     <div class="field">
-      <label>BMI Category</label>
+      <label id="label-bmi">BMI Category</label>
       <div class="chips" id="bmi-chips">
         <div class="chip" data-val="normal">Normal (18.5–24.9)</div>
         <div class="chip" data-val="overweight">Overweight (25–29.9)</div>
@@ -371,7 +383,7 @@ title: Risk Calculator
       </div>
     </div>
     <div class="field">
-      <label>Alcohol Consumption</label>
+      <label id="label-alcohol">Alcohol Consumption</label>
       <div class="chips" id="alcohol-chips">
         <div class="chip" data-val="none">None</div>
         <div class="chip" data-val="light">Light (1–7 drinks/wk)</div>
@@ -380,7 +392,7 @@ title: Risk Calculator
       </div>
     </div>
     <div class="field">
-      <label>Physical Activity</label>
+      <label id="label-activity">Physical Activity</label>
       <div class="chips" id="activity-chips">
         <div class="chip" data-val="sedentary">Sedentary / low activity</div>
         <div class="chip" data-val="moderate">Moderately active</div>
@@ -388,7 +400,7 @@ title: Risk Calculator
       </div>
     </div>
     <div class="field">
-      <label>Diet Quality</label>
+      <label id="label-diet">Diet Quality</label>
       <div class="chips" id="diet-chips">
         <div class="chip" data-val="poor">Poor (high red/processed meat)</div>
         <div class="chip" data-val="average">Average</div>
@@ -398,70 +410,70 @@ title: Risk Calculator
 
     <!-- SECTION 3: MEDICAL HISTORY -->
     <div class="section-heading" id="section-medical">
-      <span class="section-icon">⚕</span><span>Medical History</span>
+      <span class="section-icon">⚕</span><span id="heading-medical">Medical History</span>
     </div>
-    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px">Toggle any conditions that apply to you</p>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px" id="medical-subtext">Toggle any conditions that apply to you</p>
     <div class="toggles-grid">
       <div class="toggle-row">
-        <div class="toggle-label">Family history of cancer</div>
+        <div class="toggle-label" id="toggle-family-history">Family history of cancer</div>
         <label class="toggle"><input type="checkbox" id="familyHistory"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Type 2 Diabetes</div>
+        <div class="toggle-label" id="toggle-diabetes">Type 2 Diabetes</div>
         <label class="toggle"><input type="checkbox" id="diabetes"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Hepatitis B or C</div>
+        <div class="toggle-label" id="toggle-hepatitis">Hepatitis B or C</div>
         <label class="toggle"><input type="checkbox" id="hepatitis"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">HPV infection</div>
+        <div class="toggle-label" id="toggle-hpv">HPV infection</div>
         <label class="toggle"><input type="checkbox" id="hpv"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">H. pylori infection</div>
+        <div class="toggle-label" id="toggle-hpylori">H. pylori infection</div>
         <label class="toggle"><input type="checkbox" id="hPylori"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Inflammatory Bowel Disease</div>
+        <div class="toggle-label" id="toggle-ibd">Inflammatory Bowel Disease</div>
         <label class="toggle"><input type="checkbox" id="ibd"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Prior radiation therapy</div>
+        <div class="toggle-label" id="toggle-radiation">Prior radiation therapy</div>
         <label class="toggle"><input type="checkbox" id="radiationHistory"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Immunosuppression</div>
+        <div class="toggle-label" id="toggle-immuno">Immunosuppression</div>
         <label class="toggle"><input type="checkbox" id="immunosuppression"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">Precancerous lesions</div>
+        <div class="toggle-label" id="toggle-precancerous">Precancerous lesions</div>
         <label class="toggle"><input type="checkbox" id="precancerousLesions"><div class="toggle-track"></div></label>
       </div>
     </div>
 
     <!-- SECTION 4: ENVIRONMENTAL -->
     <div class="section-heading" id="section-environmental">
-      <span class="section-icon">☀</span><span>Environmental Exposures</span>
+      <span class="section-icon">☀</span><span id="heading-environmental">Environmental Exposures</span>
     </div>
-    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px">Toggle any exposures that apply to you</p>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:16px" id="environmental-subtext">Toggle any exposures that apply to you</p>
     <div class="toggles-grid">
       <div class="toggle-row">
-        <div class="toggle-label">Occupational chemical exposure</div>
+        <div class="toggle-label" id="toggle-occupational">Occupational chemical exposure</div>
         <label class="toggle"><input type="checkbox" id="occupationalExposure"><div class="toggle-track"></div></label>
       </div>
       <div class="toggle-row">
-        <div class="toggle-label">High UV / sun exposure history</div>
+        <div class="toggle-label" id="toggle-uv">High UV / sun exposure history</div>
         <label class="toggle"><input type="checkbox" id="uvExposure"><div class="toggle-track"></div></label>
       </div>
     </div>
 
     <!-- SECTION 5: CANCER TYPES -->
     <div class="section-heading" id="section-cancertypes">
-      <span class="section-icon">⚲</span><span>Cancer Types of Interest</span>
+      <span class="section-icon">⚲</span><span id="heading-cancer-types">Cancer Types of Interest</span>
     </div>
-    <p class="card-sub" style="margin-top:-10px;margin-bottom:8px">Select specific cancers to get individual lifetime risk estimates</p>
-    <p class="optional-note">Optional: leave unselected for overall relative risk only</p>
+    <p class="card-sub" style="margin-top:-10px;margin-bottom:8px" id="cancer-types-subtext">Select specific cancers to get individual lifetime risk estimates</p>
+    <p class="optional-note" id="cancer-types-note">Optional: leave unselected for overall relative risk only</p>
     <br>
     <div class="chips cancer-chips" id="cancer-type-chips">
       <div class="chip" data-val="lung">Lung</div>
@@ -508,6 +520,369 @@ const REQUIRED = ['age','sex','race','smoking_status','bmi_category',
                   'alcohol_consumption','physical_activity','diet_quality'];
 const DEMO_KEYS      = ['age','sex','race'];
 const LIFESTYLE_KEYS = ['smoking_status','bmi_category','alcohol_consumption','physical_activity','diet_quality'];
+const LANGUAGE_KEY = 'acsCancerRiskLanguage';
+let currentLang = (() => {
+  const saved = localStorage.getItem(LANGUAGE_KEY);
+  return saved === 'es' ? 'es' : 'en';
+})();
+let lastPredictionData = null;
+
+const I18N = {
+  en: {
+    progressAria: 'Form completion progress',
+    tipDemographics: 'Demographics',
+    tipLifestyle: 'Lifestyle',
+    tipMedical: 'Medical History',
+    tipEnvironmental: 'Environmental',
+    progressLabel: 'Progress',
+    pageTitleHtml: 'Cancer Risk<br><em>ML Predictor</em>',
+    pageIntro: 'Answer questions about your demographics, lifestyle, and medical history. Our machine learning model, trained on ACS Cancer Facts & Figures 2026 epidemiological data, predicts your relative cancer risk compared to the average US population.',
+    headingDemographics: 'Demographics',
+    headingLifestyle: 'Lifestyle Factors',
+    headingMedical: 'Medical History',
+    headingEnvironmental: 'Environmental Exposures',
+    headingCancerTypes: 'Cancer Types of Interest',
+    labelAge: 'Age',
+    labelSex: 'Biological Sex',
+    sexDefault: 'Select…',
+    sexMale: 'Male',
+    sexFemale: 'Female',
+    labelRace: 'Race / Ethnicity',
+    labelSmoking: 'Smoking Status',
+    labelPackYears: 'Pack-Years (packs/day × years smoked)',
+    labelBmi: 'BMI Category',
+    labelAlcohol: 'Alcohol Consumption',
+    labelActivity: 'Physical Activity',
+    labelDiet: 'Diet Quality',
+    medicalSubtext: 'Toggle any conditions that apply to you',
+    environmentalSubtext: 'Toggle any exposures that apply to you',
+    cancerTypesSubtext: 'Select specific cancers to get individual lifetime risk estimates',
+    cancerTypesNote: 'Optional: leave unselected for overall relative risk only',
+    predictBtn: 'Predict My Risk →',
+    raceWhite: 'White',
+    raceBlack: 'Black / African American',
+    raceHispanic: 'Hispanic / Latino',
+    raceAian: 'American Indian / Alaskan Native',
+    raceAapi: 'Asian American / Pacific Islander',
+    smokeNever: 'Never smoked',
+    smokeFormer: 'Former smoker',
+    smokeCurrent: 'Current smoker',
+    bmiNormal: 'Normal (18.5–24.9)',
+    bmiOverweight: 'Overweight (25–29.9)',
+    bmiObese: 'Obese (30–39.9)',
+    bmiSevere: 'Severely Obese (40+)',
+    alcoholNone: 'None',
+    alcoholLight: 'Light (1–7 drinks/wk)',
+    alcoholModerate: 'Moderate (8–14/wk)',
+    alcoholHeavy: 'Heavy (15+/wk)',
+    activitySedentary: 'Sedentary / low activity',
+    activityModerate: 'Moderately active',
+    activityActive: 'Active (150+ min/wk)',
+    dietPoor: 'Poor (high red/processed meat)',
+    dietAverage: 'Average',
+    dietHealthy: 'Healthy (high fruit/veg/fiber)',
+    toggleFamilyHistory: 'Family history of cancer',
+    toggleDiabetes: 'Type 2 Diabetes',
+    toggleHepatitis: 'Hepatitis B or C',
+    toggleHpv: 'HPV infection',
+    toggleHpylori: 'H. pylori infection',
+    toggleIbd: 'Inflammatory Bowel Disease',
+    toggleRadiation: 'Prior radiation therapy',
+    toggleImmuno: 'Immunosuppression',
+    togglePrecancerous: 'Precancerous lesions',
+    toggleOccupational: 'Occupational chemical exposure',
+    toggleUv: 'High UV / sun exposure history',
+    cancerLung: 'Lung',
+    cancerColorectal: 'Colorectal',
+    cancerBreast: 'Breast',
+    cancerProstate: 'Prostate',
+    cancerMelanoma: 'Melanoma',
+    cancerLiver: 'Liver',
+    cancerCervical: 'Cervical',
+    cancerStomach: 'Stomach',
+    cancerBladder: 'Bladder',
+    cancerLymphoma: 'Lymphoma',
+    cancerLeukemia: 'Leukemia',
+    cancerPancreatic: 'Pancreatic',
+    validateFill: 'Please fill in',
+    loadingPrediction: 'Running ML prediction…',
+    errorHint: 'Make sure you are logged in and the backend is running.',
+    resultsTitle: 'Your ML Risk Prediction',
+    resultsSubtitle: 'Based on machine learning analysis of your profile',
+    rrEyebrow: 'Overall Relative Cancer Risk',
+    rrSubtitle: 'times the average US population risk',
+    gaugeHalf: '0.5× (half average)',
+    gaugeAvg: '1.0× average',
+    gaugeHigh: '4× (very elevated)',
+    howReadTitle: 'How to read this:',
+    howReadBody: '1.0× means exactly the same risk as the average American.',
+    howReadMid: 'means your overall cancer risk is estimated at',
+    howReadEnd: 'the population baseline based on your profile,',
+    higher: 'higher',
+    lower: 'lower',
+    thanAverage: 'than average, driven by the factors listed below.',
+    cancerBreakdownTitle: 'Cancer-Type Risk Breakdown',
+    cancerBreakdownSub: 'Estimated lifetime risk % for each cancer type based on your profile vs. the US population baseline. Each card is independent. (Ex. prostate cancer at 75% lifetime risk means 1 in 1.3 men with your profile are expected to develop it over a lifetime, not that you will definitely get it.)',
+    keyRiskFactorsTitle: 'Your Key Risk Factors',
+    featureImportanceTitle: 'Feature Importance (Decision Tree)',
+    featureImportanceSub: "Which inputs had the most influence on the ML model's prediction for your profile.",
+    sourceNote: 'Model: Ensemble ML (Logistic Regression + Random Forest + Decision Tree) trained on synthetic data calibrated to ACS Cancer Facts & Figures 2026 epidemiological rates. For educational purposes only, not medical advice. Consult a healthcare provider for personalized screening recommendations.',
+    estimatedLifetimeRisk: 'estimated lifetime risk',
+    populationAverage: 'population average',
+    baseline: 'baseline',
+    contributingFactors: 'Contributing factors:',
+    notApplicableSex: 'Not applicable for your biological sex',
+    noRiskFactors: 'No significant modifiable risk factors identified. Keep up healthy lifestyle habits!',
+    impactHigh: 'high',
+    impactModerate: 'moderate',
+    impactLow: 'low',
+    aboveAverageBadge: 'above population average',
+    belowAverageBadge: 'below population average',
+    nearAverageBadge: '≈ Near population average'
+  },
+  es: {
+    progressAria: 'Progreso de completado del formulario',
+    tipDemographics: 'Demografía',
+    tipLifestyle: 'Estilo de vida',
+    tipMedical: 'Historial médico',
+    tipEnvironmental: 'Ambiental',
+    progressLabel: 'Progreso',
+    pageTitleHtml: 'Riesgo de Cáncer<br><em>Predictor ML</em>',
+    pageIntro: 'Responde preguntas sobre tu demografía, estilo de vida e historial médico. Nuestro modelo de aprendizaje automático, entrenado con datos epidemiológicos de ACS Cancer Facts & Figures 2026, predice tu riesgo relativo de cáncer en comparación con la población promedio de EE. UU.',
+    headingDemographics: 'Demografía',
+    headingLifestyle: 'Factores de estilo de vida',
+    headingMedical: 'Historial médico',
+    headingEnvironmental: 'Exposiciones ambientales',
+    headingCancerTypes: 'Tipos de cáncer de interés',
+    labelAge: 'Edad',
+    labelSex: 'Sexo biológico',
+    sexDefault: 'Selecciona…',
+    sexMale: 'Masculino',
+    sexFemale: 'Femenino',
+    labelRace: 'Raza / Etnicidad',
+    labelSmoking: 'Estado de tabaquismo',
+    labelPackYears: 'Paquetes-año (paquetes/día × años fumados)',
+    labelBmi: 'Categoría de IMC',
+    labelAlcohol: 'Consumo de alcohol',
+    labelActivity: 'Actividad física',
+    labelDiet: 'Calidad de la dieta',
+    medicalSubtext: 'Activa las condiciones que apliquen a ti',
+    environmentalSubtext: 'Activa las exposiciones que apliquen a ti',
+    cancerTypesSubtext: 'Selecciona cánceres específicos para obtener estimaciones individuales de riesgo de por vida',
+    cancerTypesNote: 'Opcional: déjalo sin seleccionar para ver solo el riesgo relativo general',
+    predictBtn: 'Predecir mi riesgo →',
+    raceWhite: 'Blanco',
+    raceBlack: 'Negro / Afroamericano',
+    raceHispanic: 'Hispano / Latino',
+    raceAian: 'Indígena americano / Nativo de Alaska',
+    raceAapi: 'Asiático americano / Isleño del Pacífico',
+    smokeNever: 'Nunca fumó',
+    smokeFormer: 'Exfumador',
+    smokeCurrent: 'Fumador actual',
+    bmiNormal: 'Normal (18.5–24.9)',
+    bmiOverweight: 'Sobrepeso (25–29.9)',
+    bmiObese: 'Obesidad (30–39.9)',
+    bmiSevere: 'Obesidad severa (40+)',
+    alcoholNone: 'Ninguno',
+    alcoholLight: 'Ligero (1–7 bebidas/sem)',
+    alcoholModerate: 'Moderado (8–14/sem)',
+    alcoholHeavy: 'Alto (15+/sem)',
+    activitySedentary: 'Sedentario / baja actividad',
+    activityModerate: 'Moderadamente activo',
+    activityActive: 'Activo (150+ min/sem)',
+    dietPoor: 'Mala (alta en carne roja/procesada)',
+    dietAverage: 'Promedio',
+    dietHealthy: 'Saludable (alta en fruta/verduras/fibra)',
+    toggleFamilyHistory: 'Antecedentes familiares de cáncer',
+    toggleDiabetes: 'Diabetes tipo 2',
+    toggleHepatitis: 'Hepatitis B o C',
+    toggleHpv: 'Infección por VPH',
+    toggleHpylori: 'Infección por H. pylori',
+    toggleIbd: 'Enfermedad inflamatoria intestinal',
+    toggleRadiation: 'Terapia de radiación previa',
+    toggleImmuno: 'Inmunosupresión',
+    togglePrecancerous: 'Lesiones precancerosas',
+    toggleOccupational: 'Exposición química ocupacional',
+    toggleUv: 'Antecedente de alta exposición UV/sol',
+    cancerLung: 'Pulmón',
+    cancerColorectal: 'Colorrectal',
+    cancerBreast: 'Mama',
+    cancerProstate: 'Próstata',
+    cancerMelanoma: 'Melanoma',
+    cancerLiver: 'Hígado',
+    cancerCervical: 'Cervicouterino',
+    cancerStomach: 'Estómago',
+    cancerBladder: 'Vejiga',
+    cancerLymphoma: 'Linfoma',
+    cancerLeukemia: 'Leucemia',
+    cancerPancreatic: 'Páncreas',
+    validateFill: 'Por favor completa',
+    loadingPrediction: 'Ejecutando predicción ML…',
+    errorHint: 'Asegúrate de haber iniciado sesión y que el backend esté en ejecución.',
+    resultsTitle: 'Tu predicción de riesgo ML',
+    resultsSubtitle: 'Basada en análisis de aprendizaje automático de tu perfil',
+    rrEyebrow: 'Riesgo relativo general de cáncer',
+    rrSubtitle: 'veces el riesgo promedio de la población de EE. UU.',
+    gaugeHalf: '0.5× (mitad del promedio)',
+    gaugeAvg: '1.0× promedio',
+    gaugeHigh: '4× (muy elevado)',
+    howReadTitle: 'Cómo leer esto:',
+    howReadBody: '1.0× significa exactamente el mismo riesgo que el estadounidense promedio.',
+    howReadMid: 'significa que tu riesgo general de cáncer se estima en',
+    howReadEnd: 'la línea base poblacional según tu perfil,',
+    higher: 'mayor',
+    lower: 'menor',
+    thanAverage: 'que el promedio, impulsado por los factores listados abajo.',
+    cancerBreakdownTitle: 'Desglose de riesgo por tipo de cáncer',
+    cancerBreakdownSub: 'Riesgo estimado de por vida (%) para cada tipo de cáncer según tu perfil frente a la línea base poblacional de EE. UU. Cada tarjeta es independiente. (Ej.: cáncer de próstata con 75% de riesgo de por vida significa que 1 de cada 1.3 hombres con tu perfil podría desarrollarlo a lo largo de la vida, no que definitivamente lo tendrás.)',
+    keyRiskFactorsTitle: 'Tus factores de riesgo clave',
+    featureImportanceTitle: 'Importancia de variables (Árbol de decisión)',
+    featureImportanceSub: 'Qué entradas tuvieron mayor influencia en la predicción del modelo ML para tu perfil.',
+    sourceNote: 'Modelo: ML en conjunto (Regresión logística + Bosque aleatorio + Árbol de decisión) entrenado con datos sintéticos calibrados a tasas epidemiológicas de ACS Cancer Facts & Figures 2026. Solo para fines educativos, no es consejo médico. Consulta a un profesional de la salud para recomendaciones personalizadas de tamizaje.',
+    estimatedLifetimeRisk: 'riesgo estimado de por vida',
+    populationAverage: 'promedio poblacional',
+    baseline: 'línea base',
+    contributingFactors: 'Factores contribuyentes:',
+    notApplicableSex: 'No aplica para tu sexo biológico',
+    noRiskFactors: 'No se identificaron factores de riesgo modificables significativos. ¡Sigue con hábitos de vida saludables!',
+    impactHigh: 'alto',
+    impactModerate: 'moderado',
+    impactLow: 'bajo',
+    aboveAverageBadge: 'por encima del promedio poblacional',
+    belowAverageBadge: 'por debajo del promedio poblacional',
+    nearAverageBadge: '≈ Cerca del promedio poblacional'
+  }
+};
+
+function t(key) {
+  return I18N[currentLang]?.[key] || I18N.en[key] || key;
+}
+
+function setText(id, text) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+function setChipText(containerId, dataVal, text) {
+  const el = document.querySelector(`#${containerId} .chip[data-val="${dataVal}"]`);
+  if (el) el.textContent = text;
+}
+
+function setToggleLanguageButtons() {
+  const enBtn = document.getElementById('lang-en');
+  const esBtn = document.getElementById('lang-es');
+  const enActive = currentLang === 'en';
+  if (enBtn) {
+    enBtn.classList.toggle('active', enActive);
+    enBtn.setAttribute('aria-pressed', String(enActive));
+  }
+  if (esBtn) {
+    esBtn.classList.toggle('active', !enActive);
+    esBtn.setAttribute('aria-pressed', String(!enActive));
+  }
+}
+
+function applyLanguageToStaticUI() {
+  setToggleLanguageButtons();
+
+  setText('heading-demographics', t('headingDemographics'));
+  setText('heading-lifestyle', t('headingLifestyle'));
+  setText('heading-medical', t('headingMedical'));
+  setText('heading-environmental', t('headingEnvironmental'));
+  setText('heading-cancer-types', t('headingCancerTypes'));
+
+  setText('label-age', t('labelAge'));
+  setText('label-sex', t('labelSex'));
+  setText('sex-option-default', t('sexDefault'));
+  setText('sex-option-male', t('sexMale'));
+  setText('sex-option-female', t('sexFemale'));
+  setText('label-race', t('labelRace'));
+  setText('label-smoking', t('labelSmoking'));
+  setText('label-pack-years', t('labelPackYears'));
+  setText('label-bmi', t('labelBmi'));
+  setText('label-alcohol', t('labelAlcohol'));
+  setText('label-activity', t('labelActivity'));
+  setText('label-diet', t('labelDiet'));
+
+  setText('medical-subtext', t('medicalSubtext'));
+  setText('environmental-subtext', t('environmentalSubtext'));
+  setText('cancer-types-subtext', t('cancerTypesSubtext'));
+  setText('cancer-types-note', t('cancerTypesNote'));
+
+  setText('toggle-family-history', t('toggleFamilyHistory'));
+  setText('toggle-diabetes', t('toggleDiabetes'));
+  setText('toggle-hepatitis', t('toggleHepatitis'));
+  setText('toggle-hpv', t('toggleHpv'));
+  setText('toggle-hpylori', t('toggleHpylori'));
+  setText('toggle-ibd', t('toggleIbd'));
+  setText('toggle-radiation', t('toggleRadiation'));
+  setText('toggle-immuno', t('toggleImmuno'));
+  setText('toggle-precancerous', t('togglePrecancerous'));
+  setText('toggle-occupational', t('toggleOccupational'));
+  setText('toggle-uv', t('toggleUv'));
+
+  setChipText('race-chips', 'white', t('raceWhite'));
+  setChipText('race-chips', 'black', t('raceBlack'));
+  setChipText('race-chips', 'hispanic', t('raceHispanic'));
+  setChipText('race-chips', 'aian', t('raceAian'));
+  setChipText('race-chips', 'aapi', t('raceAapi'));
+
+  setChipText('smoke-chips', 'never', t('smokeNever'));
+  setChipText('smoke-chips', 'former', t('smokeFormer'));
+  setChipText('smoke-chips', 'current', t('smokeCurrent'));
+
+  setChipText('bmi-chips', 'normal', t('bmiNormal'));
+  setChipText('bmi-chips', 'overweight', t('bmiOverweight'));
+  setChipText('bmi-chips', 'obese', t('bmiObese'));
+  setChipText('bmi-chips', 'severely-obese', t('bmiSevere'));
+
+  setChipText('alcohol-chips', 'none', t('alcoholNone'));
+  setChipText('alcohol-chips', 'light', t('alcoholLight'));
+  setChipText('alcohol-chips', 'moderate', t('alcoholModerate'));
+  setChipText('alcohol-chips', 'heavy', t('alcoholHeavy'));
+
+  setChipText('activity-chips', 'sedentary', t('activitySedentary'));
+  setChipText('activity-chips', 'moderate', t('activityModerate'));
+  setChipText('activity-chips', 'active', t('activityActive'));
+
+  setChipText('diet-chips', 'poor', t('dietPoor'));
+  setChipText('diet-chips', 'average', t('dietAverage'));
+  setChipText('diet-chips', 'healthy', t('dietHealthy'));
+
+  setChipText('cancer-type-chips', 'lung', t('cancerLung'));
+  setChipText('cancer-type-chips', 'colorectal', t('cancerColorectal'));
+  setChipText('cancer-type-chips', 'breast', t('cancerBreast'));
+  setChipText('cancer-type-chips', 'prostate', t('cancerProstate'));
+  setChipText('cancer-type-chips', 'melanoma', t('cancerMelanoma'));
+  setChipText('cancer-type-chips', 'liver', t('cancerLiver'));
+  setChipText('cancer-type-chips', 'cervical', t('cancerCervical'));
+  setChipText('cancer-type-chips', 'stomach', t('cancerStomach'));
+  setChipText('cancer-type-chips', 'bladder', t('cancerBladder'));
+  setChipText('cancer-type-chips', 'lymphoma', t('cancerLymphoma'));
+  setChipText('cancer-type-chips', 'leukemia', t('cancerLeukemia'));
+  setChipText('cancer-type-chips', 'pancreatic', t('cancerPancreatic'));
+
+  const ageInput = document.getElementById('age');
+  const packYearsInput = document.getElementById('packYears');
+  if (ageInput) ageInput.placeholder = currentLang === 'es' ? 'p. ej. 55' : 'e.g. 55';
+  if (packYearsInput) packYearsInput.placeholder = currentLang === 'es' ? 'p. ej. 20' : 'e.g. 20';
+
+  const predictBtn = document.getElementById('predictBtn');
+  if (predictBtn) predictBtn.textContent = t('predictBtn');
+
+}
+
+window.setLanguage = function(lang) {
+  const normalized = lang === 'es' ? 'es' : 'en';
+  if (normalized === currentLang) {
+    applyLanguageToStaticUI();
+    return;
+  }
+  currentLang = normalized;
+  localStorage.setItem(LANGUAGE_KEY, currentLang);
+  applyLanguageToStaticUI();
+  if (lastPredictionData) displayResults(lastPredictionData);
+};
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
 function pct(keys) {
@@ -528,9 +903,37 @@ function rrBadgeClass(rr) {
 }
 
 function rrBadgeText(rr) {
-  if (rr < 0.9)  return `↓ ${((1 - rr) * 100).toFixed(0)}% below population average`;
-  if (rr < 1.2)  return '≈ Near population average';
-  return `↑ ${((rr - 1) * 100).toFixed(0)}% above population average`;
+  if (rr < 0.9)  return `↓ ${((1 - rr) * 100).toFixed(0)}% ${t('belowAverageBadge')}`;
+  if (rr < 1.2)  return t('nearAverageBadge');
+  return `↑ ${((rr - 1) * 100).toFixed(0)}% ${t('aboveAverageBadge')}`;
+}
+
+function formatFeatureLabel(featureKey) {
+  const labels = {
+    age: { en: 'age', es: 'edad' },
+    sex: { en: 'sex', es: 'sexo' },
+    race: { en: 'race', es: 'raza' },
+    smoking_status: { en: 'smoking status', es: 'estado de tabaquismo' },
+    pack_years: { en: 'pack years', es: 'paquetes-año' },
+    bmi_category: { en: 'BMI category', es: 'categoría de IMC' },
+    alcohol_consumption: { en: 'alcohol consumption', es: 'consumo de alcohol' },
+    physical_activity: { en: 'physical activity', es: 'actividad física' },
+    diet_quality: { en: 'diet quality', es: 'calidad de la dieta' },
+    family_history: { en: 'family history', es: 'antecedentes familiares' },
+    diabetes: { en: 'diabetes', es: 'diabetes' },
+    hepatitis: { en: 'hepatitis', es: 'hepatitis' },
+    hpv: { en: 'HPV', es: 'VPH' },
+    h_pylori: { en: 'H. pylori', es: 'H. pylori' },
+    ibd: { en: 'IBD', es: 'EII' },
+    radiation_history: { en: 'radiation history', es: 'historial de radiación' },
+    immunosuppression: { en: 'immunosuppression', es: 'inmunosupresión' },
+    precancerous_lesions: { en: 'precancerous lesions', es: 'lesiones precancerosas' },
+    occupational_exposure: { en: 'occupational exposure', es: 'exposición ocupacional' },
+    uv_exposure: { en: 'UV exposure', es: 'exposición UV' }
+  };
+  const label = labels[featureKey];
+  if (!label) return featureKey.replace(/_/g, ' ');
+  return currentLang === 'es' ? label.es : label.en;
 }
 
 // ── PROGRESS ───────────────────────────────────────────────────────────────
@@ -615,7 +1018,7 @@ function updateCancerChipAvailability() {
 function validate() {
   const missing = REQUIRED.filter(k => !state[k]);
   if (missing.length > 0) {
-    alert(`Please fill in: ${missing.map(k => k.replace(/_/g,' ')).join(', ')}`);
+    alert(`${t('validateFill')}: ${missing.map(k => k.replace(/_/g,' ')).join(', ')}`);
     return false;
   }
   return true;
@@ -627,7 +1030,7 @@ window.predictRisk = async function() {
 
   const resultsCard = document.getElementById('results');
   resultsCard.classList.remove('results-hidden');
-  resultsCard.innerHTML = `<div class="ai-loading"><div class="dots"><span></span><span></span><span></span></div> Running ML prediction…</div>`;
+  resultsCard.innerHTML = `<div class="ai-loading"><div class="dots"><span></span><span></span><span></span></div> ${t('loadingPrediction')}</div>`;
   resultsCard.scrollIntoView({ behavior: 'smooth' });
 
   // Complete the progress sidebar
@@ -671,13 +1074,14 @@ window.predictRisk = async function() {
     displayResults(await res.json());
   } catch(e) {
     resultsCard.innerHTML = `<div class="card-sub" style="color:var(--terracotta);padding:20px">
-      Error: ${e.message}. Make sure you are logged in and the backend is running.
+      Error: ${e.message}. ${t('errorHint')}
     </div>`;
   }
 };
 
 // ── DISPLAY RESULTS ────────────────────────────────────────────────────────
 function displayResults(data) {
+  lastPredictionData = data;
   const rr    = data.overall_relative_risk;
   const color = rrColor(rr);
   const badgeClass = rrBadgeClass(rr);
@@ -688,19 +1092,19 @@ function displayResults(data) {
 
   const resultsCard = document.getElementById('results');
   resultsCard.innerHTML = `
-    <div class="card-title">Your ML Risk Prediction</div>
-    <div class="card-sub">Based on machine learning analysis of your profile</div>
+    <div class="card-title">${t('resultsTitle')}</div>
+    <div class="card-sub">${t('resultsSubtitle')}</div>
 
     <!-- ── HERO: relative risk multiplier ── -->
     <div class="risk-hero">
 
-      <div class="rr-eyebrow">Overall Relative Cancer Risk</div>
+      <div class="rr-eyebrow">${t('rrEyebrow')}</div>
 
       <div class="rr-number" style="color:${color}">
         ${rr.toFixed(1)}<sup>×</sup>
       </div>
 
-      <div class="rr-subtitle">times the average US population risk</div>
+      <div class="rr-subtitle">${t('rrSubtitle')}</div>
 
       <div class="rr-badge ${badgeClass}">${badgeText}</div>
 
@@ -713,47 +1117,42 @@ function displayResults(data) {
         </div>
         <br>
         <div class="gauge-labels">
-          <span>0.5× (half average)</span>
-          <span style="font-weight:600;color:var(--text-main)">1.0× average</span>
-          <span>4× (very elevated)</span>
+          <span>${t('gaugeHalf')}</span>
+          <span style="font-weight:600;color:var(--text-main)">${t('gaugeAvg')}</span>
+          <span>${t('gaugeHigh')}</span>
         </div>
       </div>
 
       <div class="rr-explain">
-        <strong>How to read this:</strong> 1.0× means exactly the same risk as the average American.
-        Your score of <strong>${rr.toFixed(1)}×</strong> means your overall cancer risk is estimated at
-        <strong>${rr.toFixed(1)} times</strong> the population baseline based on your profile,
-        ${rr > 1 ? 'higher' : 'lower'} than average, driven by the factors listed below.
+        <strong>${t('howReadTitle')}</strong> ${t('howReadBody')}
+        ${currentLang === 'es' ? 'Tu puntuación de' : 'Your score of'} <strong>${rr.toFixed(1)}×</strong> ${t('howReadMid')}
+        <strong>${rr.toFixed(1)} ${currentLang === 'es' ? 'veces' : 'times'}</strong> ${t('howReadEnd')}
+        ${rr > 1 ? t('higher') : t('lower')} ${t('thanAverage')}
       </div>
     </div>
 
     <!-- ── CANCER TYPE BREAKDOWN ── -->
     ${data.cancer_type_risks ? `
-      <div class="res-section-title">Cancer-Type Risk Breakdown</div>
+      <div class="res-section-title">${t('cancerBreakdownTitle')}</div>
       <p class="card-sub" style="margin-top:-8px;margin-bottom:16px">
-        Estimated <strong>lifetime risk %</strong> for each cancer type based on your profile vs. the US population baseline.
-        Each card is independent. (Ex. prostate cancer at 75% lifetime risk means 1 in 1.3 men with your profile are
-        expected to develop it over a lifetime, not that you will definitely get it.)
+        ${t('cancerBreakdownSub')}
       </p>
       <div class="ct-grid" id="ct-grid"></div>
     ` : ''}
 
     <!-- ── KEY RISK FACTORS ── -->
-    <div class="res-section-title">Your Key Risk Factors</div>
+    <div class="res-section-title">${t('keyRiskFactorsTitle')}</div>
     <div class="risk-factors-list" id="risk-factors-list"></div>
 
     <!-- ── FEATURE IMPORTANCE ── -->
-    <div class="res-section-title">Feature Importance (Decision Tree)</div>
+    <div class="res-section-title">${t('featureImportanceTitle')}</div>
     <p class="card-sub" style="margin-top:-8px;margin-bottom:16px">
-      Which inputs had the most influence on the ML model's prediction for your profile.
+      ${t('featureImportanceSub')}
     </p>
     <div class="importance-grid" id="importance-grid"></div>
 
     <div class="source-note">
-      <strong>Model:</strong> Ensemble ML (Logistic Regression + Random Forest + Decision Tree)
-      trained on synthetic data calibrated to ACS Cancer Facts &amp; Figures 2026 epidemiological rates.
-      For educational purposes only, not medical advice. Consult a healthcare provider for
-      personalized screening recommendations.
+      ${t('sourceNote')}
     </div>
   `;
 
@@ -772,29 +1171,31 @@ function displayResults(data) {
         return `
           <div class="ct-card">
             <div class="ct-card-label">${res.label}</div>
-            <div class="ct-na">Not applicable for your biological sex</div>
+            <div class="ct-na">${t('notApplicableSex')}</div>
             <div class="ct-note">${res.note}</div>
           </div>`;
       }
       const barPct = Math.min(100, (res.lifetime_risk_pct / 80) * 100);
       const levelColor = res.risk_level === 'high' ? 'var(--terracotta)'
                        : res.risk_level === 'moderate' ? '#d9a566' : 'var(--sage)';
+      const levelLabel = res.risk_level === 'high' ? t('impactHigh')
+                       : res.risk_level === 'moderate' ? t('impactModerate') : t('impactLow');
       return `
         <div class="ct-card">
           <div class="ct-card-label">${res.label}</div>
           <div class="ct-lifetime" style="color:${levelColor}" data-target="${res.lifetime_risk_pct}">0.0%</div>
-          <div class="ct-lifetime-sub">estimated lifetime risk</div>
+          <div class="ct-lifetime-sub">${t('estimatedLifetimeRisk')}</div>
           <div class="ct-rr-line">
-            <strong>${res.relative_risk.toFixed(1)}×</strong> population average
-            &nbsp;·&nbsp; baseline: ${res.baseline_risk_pct}%
+            <strong>${res.relative_risk.toFixed(1)}×</strong> ${t('populationAverage')}
+            &nbsp;·&nbsp; ${t('baseline')}: ${res.baseline_risk_pct}%
           </div>
           <div class="ct-level-bar">
             <div class="ct-level-fill ${res.risk_level}" style="width:0%" data-w="${barPct.toFixed(1)}"></div>
           </div>
-          <div class="ct-badge ${res.risk_level}">${res.risk_level}</div>
+          <div class="ct-badge ${res.risk_level}">${levelLabel}</div>
           ${res.key_factors.length > 0 ? `
             <div class="ct-factors">
-              <strong style="font-size:10px;text-transform:uppercase;letter-spacing:.05em">Contributing factors:</strong>
+              <strong style="font-size:10px;text-transform:uppercase;letter-spacing:.05em">${t('contributingFactors')}</strong>
               ${res.key_factors.join(' · ')}
             </div>` : ''}
           <div class="ct-note">${res.note}</div>
@@ -829,13 +1230,13 @@ function displayResults(data) {
       <div class="risk-factor-item ${rf.impact}">
         <div class="rf-header">
           <div class="rf-name">${rf.factor}</div>
-          <div class="rf-impact ${rf.impact}">${rf.impact}</div>
+          <div class="rf-impact ${rf.impact}">${rf.impact === 'high' ? t('impactHigh') : rf.impact === 'moderate' ? t('impactModerate') : t('impactLow')}</div>
         </div>
         <div class="rf-detail">${rf.detail}</div>
       </div>
     `).join('');
   } else {
-    rfList.innerHTML = '<div class="card-sub">No significant modifiable risk factors identified. Keep up healthy lifestyle habits!</div>';
+    rfList.innerHTML = `<div class="card-sub">${t('noRiskFactors')}</div>`;
   }
 
   // Feature importance
@@ -843,7 +1244,7 @@ function displayResults(data) {
   const sorted = Object.entries(data.feature_importances).sort((a,b) => b[1]-a[1]).slice(0, 8);
   impGrid.innerHTML = sorted.map(([feat, imp]) => `
     <div class="importance-row">
-      <div class="importance-label">${feat.replace(/_/g,' ')}</div>
+      <div class="importance-label">${formatFeatureLabel(feat)}</div>
       <div class="importance-bar-track">
         <div class="importance-bar-fill" style="width:0%" data-w="${(imp*100).toFixed(0)}"></div>
       </div>
@@ -859,6 +1260,8 @@ function displayResults(data) {
 
 // ── INIT ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  applyLanguageToStaticUI();
+
   document.getElementById('age').addEventListener('input', e => {
     state.age = parseInt(e.target.value) || null;
     showSidebar(); updateProgress();
