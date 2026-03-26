@@ -15,19 +15,19 @@ permalink: /networking/game
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 
 :root{
-  --bg:        #050d1a;
-  --bg2:       #091426;
-  --lane0:     #0d1f3c;
-  --lane1:     #0d2b2b;
-  --lane2:     #1a1a0d;
-  --lane3:     #1a0d1a;
-  --lane4:     #0d0d1a;
-  --cyan:      #00f5ff;
-  --green:     #00ff88;
-  --gold:      #ffd700;
-  --rose:      #ff4d6d;
-  --purple:    #bf5fff;
-  --orange:    #ff8c42;
+  --bg:        #0f1724;
+  --bg2:       #1a2536;
+  --lane0:     #1f2a3d;
+  --lane1:     #1b3234;
+  --lane2:     #3a3321;
+  --lane3:     #33263b;
+  --lane4:     #22273a;
+  --cyan:      #6ea9bf;
+  --green:     #6ea884;
+  --gold:      #b89a64;
+  --rose:      #b56e79;
+  --purple:    #8771ab;
+  --orange:    #b07d58;
   --mono:      'Share Tech Mono', monospace;
   --orb:       'Orbitron', sans-serif;
   --exo:       'Exo 2', sans-serif;
@@ -48,13 +48,13 @@ body{
 #header{
   display:flex; align-items:center; justify-content:space-between;
   padding:10px 20px;
-  background: linear-gradient(135deg, #050d1a, #091836);
-  border-bottom: 1px solid rgba(0,245,255,0.2);
+  background: linear-gradient(135deg, #0f1724, #1a2536);
+  border-bottom: 1px solid rgba(110,169,191,0.25);
   flex-shrink:0;
 }
 #header h1{
   font-family:var(--orb); font-size:15px; letter-spacing:0.12em;
-  color: var(--cyan); text-shadow: 0 0 12px rgba(0,245,255,0.5);
+  color: var(--cyan); text-shadow: 0 0 8px rgba(110,169,191,0.25);
 }
 #header h1 span{ color: var(--rose); }
 .hud-row{ display:flex; gap:20px; align-items:center; }
@@ -65,7 +65,7 @@ body{
 }
 .hud-val{
   font-family:var(--orb); font-size:16px; font-weight:700;
-  color: var(--gold); text-shadow: 0 0 8px rgba(255,215,0,0.4);
+  color: var(--gold); text-shadow: 0 0 6px rgba(184,154,100,0.25);
 }
 #livesDisplay span{ color: var(--rose); font-size:14px; margin:0 1px; }
 
@@ -78,15 +78,15 @@ body{
 /* ── LAYER PANEL (left) ── */
 #layerPanel{
   width:180px; flex-shrink:0;
-  background: rgba(5,13,26,0.95);
-  border-right: 1px solid rgba(0,245,255,0.15);
+  background: rgba(15,23,36,0.95);
+  border-right: 1px solid rgba(110,169,191,0.18);
   display:flex; flex-direction:column;
   overflow:hidden;
 }
 .lp-title{
   font-family:var(--orb); font-size:9px; letter-spacing:0.14em;
-  color: rgba(0,245,255,0.5); text-transform:uppercase;
-  padding:8px 12px 6px; border-bottom:1px solid rgba(0,245,255,0.1);
+  color: rgba(110,169,191,0.6); text-transform:uppercase;
+  padding:8px 12px 6px; border-bottom:1px solid rgba(110,169,191,0.15);
 }
 .layer-row{
   display:flex; align-items:center; gap:8px;
@@ -95,7 +95,7 @@ body{
   transition: background 0.3s;
   font-size:11px;
 }
-.layer-row.active{ background: rgba(0,245,255,0.06); }
+.layer-row.active{ background: rgba(110,169,191,0.1); }
 .layer-row.danger{ background: rgba(255,77,109,0.1); animation:dangerPulse 0.4s ease; }
 @keyframes dangerPulse{
   0%,100%{background:rgba(255,77,109,0.1);}
@@ -128,8 +128,8 @@ body{
 /* ── RIGHT PANEL ── */
 #rightPanel{
   width:200px; flex-shrink:0;
-  background: rgba(5,13,26,0.95);
-  border-left:1px solid rgba(0,245,255,0.15);
+  background: rgba(15,23,36,0.95);
+  border-left:1px solid rgba(110,169,191,0.18);
   display:flex; flex-direction:column; gap:0;
   overflow-y: auto;
   padding:0;
@@ -140,11 +140,11 @@ body{
 }
 .rp-title{
   font-family:var(--orb); font-size:9px; letter-spacing:0.12em;
-  color:rgba(0,245,255,0.5); text-transform:uppercase; margin-bottom:8px;
+  color:rgba(110,169,191,0.62); text-transform:uppercase; margin-bottom:8px;
 }
 .packet-info{
   font-family:var(--mono); font-size:10px;
-  background:rgba(0,245,255,0.05); border:1px solid rgba(0,245,255,0.15);
+  background:rgba(110,169,191,0.08); border:1px solid rgba(110,169,191,0.2);
   border-radius:4px; padding:6px 8px; margin-bottom:4px;
   line-height:1.6;
 }
@@ -197,14 +197,14 @@ body{
   color:var(--cyan); cursor:pointer; border-radius:4px;
   text-transform:uppercase;
   transition: all 0.2s;
-  box-shadow: 0 0 12px rgba(0,245,255,0.2);
+  box-shadow: 0 0 8px rgba(110,169,191,0.2);
 }
 .overlay button:hover,.btn:hover{
-  background:rgba(0,245,255,0.12); box-shadow:0 0 24px rgba(0,245,255,0.4);
+  background:rgba(110,169,191,0.14); box-shadow:0 0 14px rgba(110,169,191,0.28);
 }
 .score-breakdown{
   font-family:var(--mono); font-size:11px; text-align:center;
-  background:rgba(0,245,255,0.05); border:1px solid rgba(0,245,255,0.2);
+  background:rgba(110,169,191,0.08); border:1px solid rgba(110,169,191,0.22);
   border-radius:6px; padding:12px 20px; line-height:2;
   color:rgba(255,255,255,0.7);
 }
@@ -214,7 +214,7 @@ body{
 #layerFlash{
   position:absolute; left:50%; top:20px; transform:translateX(-50%);
   font-family:var(--orb); font-size:11px; letter-spacing:0.1em;
-  background:rgba(5,13,26,0.95); border:1px solid rgba(0,245,255,0.3);
+  background:rgba(15,23,36,0.95); border:1px solid rgba(110,169,191,0.32);
   color:var(--cyan); padding:7px 18px; border-radius:20px;
   pointer-events:none; opacity:0; transition:opacity 0.3s;
   z-index:50; white-space:nowrap;
@@ -237,8 +237,8 @@ body{
 #tutorialBox{
   position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
   font-family:var(--mono); font-size:10px;
-  background:rgba(5,13,26,0.9); border:1px solid rgba(255,215,0,0.25);
-  color:rgba(255,215,0,0.8); padding:6px 14px; border-radius:4px;
+  background:rgba(15,23,36,0.9); border:1px solid rgba(184,154,100,0.32);
+  color:rgba(184,154,100,0.92); padding:6px 14px; border-radius:4px;
   pointer-events:none; z-index:50; letter-spacing:0.04em; white-space:nowrap;
   transition:opacity 0.4s;
 }
@@ -275,7 +275,7 @@ body{
     <!-- START SCREEN -->
     <div class="overlay" id="startScreen">
       <h2 style="color:var(--cyan)">🌐 PACKET DEFENDER</h2>
-      <p style="color:rgba(255,215,0,0.85);font-size:12px;font-family:var(--mono)">
+      <p style="color:rgba(184,154,100,0.92);font-size:12px;font-family:var(--mono)">
         ACS Cancer Body Map — Networking Simulation
       </p>
       <p>
@@ -283,8 +283,8 @@ body{
         Navigate through all <b style="color:var(--cyan)">5 TCP/IP layers</b>, collect <b style="color:var(--gold)">data fragments</b>,
         and reach the destination without exceeding the <b style="color:var(--rose)">MTU limit</b>.
       </p>
-      <div style="font-family:var(--mono);font-size:11px;text-align:left;background:rgba(0,245,255,0.05);
-        border:1px solid rgba(0,245,255,0.2);border-radius:6px;padding:12px 16px;line-height:2;color:rgba(255,255,255,0.7);">
+      <div style="font-family:var(--mono);font-size:11px;text-align:left;background:rgba(110,169,191,0.08);
+        border:1px solid rgba(110,169,191,0.22);border-radius:6px;padding:12px 16px;line-height:2;color:rgba(255,255,255,0.7);">
         <b style="color:var(--cyan)">Layer 5</b> — APPLICATION  (HTTPS)<br>
         <b style="color:var(--green)">Layer 4</b> — TRANSPORT   (TCP)<br>
         <b style="color:var(--gold)">Layer 3</b> — NETWORK     (IP)<br>
@@ -380,13 +380,23 @@ const TCP_HDR = 20;
 const TLS_OH  = 29;
 const MSS = MTU - IP_HDR - TCP_HDR - TLS_OH;  // 1431 bytes usable
 
-const LAYER_COLORS = ['#ff8c42','#bf5fff','#ffd700','#00ff88','#00f5ff'];
+const PALETTE = {
+  orange: '#b07d58',
+  purple: '#8771ab',
+  gold:   '#b89a64',
+  green:  '#6ea884',
+  cyan:   '#6ea9bf',
+  rose:   '#b56e79',
+  ink:    '#0f1724',
+};
+
+const LAYER_COLORS = [PALETTE.orange, PALETTE.purple, PALETTE.gold, PALETTE.green, PALETTE.cyan];
 const LAYER_DATA = [
-  { num:1, name:'PHYSICAL',    proto:'Signals/Bits',   color:'#ff8c42', fact:'Layer 1 converts digital bits into physical signals — radio waves (Wi-Fi), light (fiber), or electrical voltages (Ethernet cable). Your laptop\'s Wi-Fi card broadcasts at 2.4GHz or 5GHz.' },
-  { num:2, name:'DATA LINK',   proto:'Ethernet/MAC',   color:'#bf5fff', fact:'Layer 2 uses MAC addresses for hop-to-hop delivery. Each Ethernet frame knows the next router\'s MAC address, not the final destination. ACS Body Map frames use 48-bit MAC addresses.' },
-  { num:3, name:'NETWORK',     proto:'IP Routing',     color:'#ffd700', fact:'Layer 3 handles IP routing across the internet. Your packet travels from your laptop (192.168.x.x) to GitHub Pages servers (185.199.108.153) via multiple routers.' },
-  { num:4, name:'TRANSPORT',   proto:'TCP/Port 443',   color:'#00ff88', fact:'Layer 4 TCP guarantees reliable delivery. Unlike UDP, TCP retransmits lost packets and reorders them. The ACS Body Map must receive ALL cancer data — TCP is essential.' },
-  { num:5, name:'APPLICATION', proto:'HTTPS/HTTP2',    color:'#00f5ff', fact:'Layer 5 is where HTTPS lives. TLS 1.3 encrypts your cancer research queries for privacy. HTTP/2 multiplexes multiple requests simultaneously for fast loading.' },
+  { num:1, name:'PHYSICAL',    proto:'Signals/Bits',   color:PALETTE.orange, fact:'Layer 1 converts digital bits into physical signals — radio waves (Wi-Fi), light (fiber), or electrical voltages (Ethernet cable). Your laptop\'s Wi-Fi card broadcasts at 2.4GHz or 5GHz.' },
+  { num:2, name:'DATA LINK',   proto:'Ethernet/MAC',   color:PALETTE.purple, fact:'Layer 2 uses MAC addresses for hop-to-hop delivery. Each Ethernet frame knows the next router\'s MAC address, not the final destination. ACS Body Map frames use 48-bit MAC addresses.' },
+  { num:3, name:'NETWORK',     proto:'IP Routing',     color:PALETTE.gold, fact:'Layer 3 handles IP routing across the internet. Your packet travels from your laptop (192.168.x.x) to GitHub Pages servers (185.199.108.153) via multiple routers.' },
+  { num:4, name:'TRANSPORT',   proto:'TCP/Port 443',   color:PALETTE.green, fact:'Layer 4 TCP guarantees reliable delivery. Unlike UDP, TCP retransmits lost packets and reorders them. The ACS Body Map must receive ALL cancer data — TCP is essential.' },
+  { num:5, name:'APPLICATION', proto:'HTTPS/HTTP2',    color:PALETTE.cyan, fact:'Layer 5 is where HTTPS lives. TLS 1.3 encrypts your cancer research queries for privacy. HTTP/2 multiplexes multiple requests simultaneously for fast loading.' },
 ];
 
 const ACS_DATA_NAMES = [
@@ -429,7 +439,7 @@ function initEntities() {
     vx: 0, vy: 0,
     speed: 180,
     onGround: false,
-    color: '#00f5ff',
+    color: PALETTE.cyan,
     trail: [],
     shield: 0, // invincibility frames
     layer: 0,
@@ -473,7 +483,7 @@ function spawnWave() {
       y: 40 + Math.random() * (H - 80),
       w: 20, h: 12,
       bytes: Math.floor(100 + Math.random() * 400),
-      color: '#ffd700',
+      color: PALETTE.gold,
       glow: 0,
       label: Math.floor(100 + Math.random() * 400) + 'B',
       id: Math.random(),
@@ -491,7 +501,7 @@ function spawnWave() {
       w: 24, h: 24,
       vx: (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 60 * difficulty),
       vy: 0,
-      color: '#ff4d6d',
+      color: PALETTE.rose,
       angle: 0,
       label: 'ERR',
     });
@@ -505,7 +515,7 @@ function spawnWave() {
       w: 32, h: 32,
       vx: (i % 2 === 0 ? 1 : -1) * 30,
       vy: Math.sin(i) * 15,
-      color: '#00f5ff',
+      color: PALETTE.cyan,
       message: ['Route via BGP','TCP SYN sent','MTU=1500'][i],
       messageTimer: 0,
       bobOffset: i * Math.PI * 0.66,
@@ -521,7 +531,7 @@ function spawnWave() {
       vx: 80 + G.level * 15,
       vy: 0,
       hp: 3,
-      color: '#bf5fff',
+      color: PALETTE.purple,
       label: 'AI FIREWALL',
       hitTimer: 0,
       pattern: 0,
@@ -577,7 +587,7 @@ function spawnParticles(x, y, color, count=8) {
 
 // ─── FLASH NOTIFICATION ───────────────────────────────────────
 let flashTimeout = null;
-function showFlash(text, color='#00f5ff') {
+function showFlash(text, color=PALETTE.cyan) {
   const el = document.getElementById('layerFlash');
   el.textContent = text;
   el.style.color = color;
@@ -650,7 +660,7 @@ function buildLayerPanel() {
 // ─── DRAWING ──────────────────────────────────────────────────
 function drawBackground() {
   const W = canvas.width, H = canvas.height;
-  ctx.fillStyle = '#050d1a';
+  ctx.fillStyle = PALETTE.ink;
   ctx.fillRect(0,0,W,H);
 
   // Draw 5 layer lanes
@@ -686,7 +696,7 @@ function drawBackground() {
 
     // MTU line indicator
     const mtuX = (MSS / MTU) * W;
-    ctx.strokeStyle = '#ffd70033';
+    ctx.strokeStyle = PALETTE.gold + '40';
     ctx.lineWidth = 1;
     ctx.setLineDash([4,4]);
     ctx.beginPath();
@@ -697,7 +707,7 @@ function drawBackground() {
   });
 
   // Bottom lane border
-  ctx.strokeStyle = 'rgba(0,245,255,0.1)';
+  ctx.strokeStyle = 'rgba(110,169,191,0.15)';
   ctx.lineWidth=1;
   ctx.beginPath();
   ctx.moveTo(0,H); ctx.lineTo(W,H);
@@ -711,9 +721,9 @@ function drawFragments() {
     f.glow = (Math.sin(now + f.id * 4) + 1) / 2;
 
     ctx.save();
-    ctx.shadowColor = '#ffd700';
+    ctx.shadowColor = PALETTE.gold;
     ctx.shadowBlur = 8 + f.glow * 8;
-    ctx.fillStyle = `rgba(255,215,0,${0.7 + f.glow * 0.3})`;
+    ctx.fillStyle = `rgba(184,154,100,${0.72 + f.glow * 0.2})`;
     ctx.fillRect(f.x - f.w/2, f.y - f.h/2, f.w, f.h);
 
     // Inner highlight
@@ -721,7 +731,7 @@ function drawFragments() {
     ctx.fillRect(f.x - f.w/2 + 2, f.y - f.h/2 + 2, f.w * 0.4, 3);
 
     ctx.shadowBlur = 0;
-    ctx.fillStyle = '#050d1a';
+    ctx.fillStyle = PALETTE.ink;
     ctx.font = '8px Share Tech Mono';
     ctx.textAlign = 'center';
     ctx.fillText(f.label, f.x, f.y + 4);
@@ -734,9 +744,9 @@ function drawCorruptPackets() {
     ctx.save();
     ctx.translate(cp.x, cp.y);
     ctx.rotate(cp.angle);
-    ctx.shadowColor = '#ff4d6d';
+    ctx.shadowColor = PALETTE.rose;
     ctx.shadowBlur = 12;
-    ctx.fillStyle = '#ff4d6d';
+    ctx.fillStyle = PALETTE.rose;
     ctx.fillRect(-cp.w/2, -cp.h/2, cp.w, cp.h);
     ctx.fillStyle = 'rgba(255,255,255,0.8)';
     ctx.font = 'bold 9px Share Tech Mono';
@@ -803,18 +813,18 @@ function drawAIFirewall() {
   ctx.translate(fw.x, fw.y);
 
   const pulse = (Math.sin(now * 2) + 1) / 2;
-  ctx.shadowColor = fw.hitTimer > 0 ? '#ffffff' : '#bf5fff';
+  ctx.shadowColor = fw.hitTimer > 0 ? '#ffffff' : PALETTE.purple;
   ctx.shadowBlur = 15 + pulse * 10;
 
   // Body
-  ctx.fillStyle = fw.hitTimer > 0 ? 'rgba(255,255,255,0.8)' : '#bf5fff33';
-  ctx.strokeStyle = fw.hitTimer > 0 ? '#ffffff' : '#bf5fff';
+  ctx.fillStyle = fw.hitTimer > 0 ? 'rgba(255,255,255,0.8)' : PALETTE.purple + '3d';
+  ctx.strokeStyle = fw.hitTimer > 0 ? '#ffffff' : PALETTE.purple;
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.roundRect(-fw.w/2, -fw.h/2, fw.w, fw.h, 4);
   ctx.fill(); ctx.stroke();
 
-  ctx.fillStyle = fw.hitTimer > 0 ? '#050d1a' : '#bf5fff';
+  ctx.fillStyle = fw.hitTimer > 0 ? PALETTE.ink : PALETTE.purple;
   ctx.font = 'bold 9px Orbitron, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
@@ -824,7 +834,7 @@ function drawAIFirewall() {
   for (let i = 0; i < 3; i++) {
     ctx.beginPath();
     ctx.arc(-10 + i*10, fw.h/2 + 8, 4, 0, Math.PI*2);
-    ctx.fillStyle = i < fw.hp ? '#bf5fff' : '#1a1a2e';
+    ctx.fillStyle = i < fw.hp ? PALETTE.purple : '#1f2330';
     ctx.fill();
   }
 
@@ -844,7 +854,7 @@ function drawPlayer() {
     const size = p.w * (i / p.trail.length) * 0.6;
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.fillStyle = p.shield > 0 ? '#ffd700' : '#00f5ff';
+    ctx.fillStyle = p.shield > 0 ? PALETTE.gold : PALETTE.cyan;
     ctx.shadowColor = ctx.fillStyle;
     ctx.shadowBlur = 4;
     ctx.fillRect(tp.x - size/2, tp.y - size/2, size, size);
@@ -855,9 +865,9 @@ function drawPlayer() {
   if (p.shield > 0) {
     ctx.save();
     ctx.globalAlpha = (p.shield % 10 < 5) ? 0.6 : 0.2;
-    ctx.strokeStyle = '#ffd700';
+    ctx.strokeStyle = PALETTE.gold;
     ctx.lineWidth = 2;
-    ctx.shadowColor = '#ffd700';
+    ctx.shadowColor = PALETTE.gold;
     ctx.shadowBlur = 12;
     ctx.beginPath();
     ctx.arc(p.x, p.y, p.w * 0.9, 0, Math.PI*2);
@@ -867,9 +877,9 @@ function drawPlayer() {
 
   // Player body
   ctx.save();
-  ctx.shadowColor = '#00f5ff';
+  ctx.shadowColor = PALETTE.cyan;
   ctx.shadowBlur = 14;
-  ctx.fillStyle = '#00f5ff';
+  ctx.fillStyle = PALETTE.cyan;
 
   // Packet shape (rectangle with data hint)
   const hw = p.w/2, hh = p.h/2;
@@ -970,11 +980,11 @@ function update(dt) {
       G.score += f.bytes;
       G.packetsDelivered++;
       G.totalPacketsThisLevel++;
-      spawnParticles(f.x, f.y, '#ffd700', 8);
+      spawnParticles(f.x, f.y, PALETTE.gold, 8);
 
       // MTU overflow check
       if (G.currentBytes > MTU) {
-        showFlash('⚠ MTU EXCEEDED! Packet must be fragmented (SPACE)', '#ff8c42');
+        showFlash('⚠ MTU EXCEEDED! Packet must be fragmented (SPACE)', PALETTE.orange);
         G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 15);
         damageLayerRow(p.layer);
       }
@@ -989,8 +999,8 @@ function update(dt) {
     G.keys[' '] = false;
     G.score += 200;
     const frags = Math.ceil(G.currentBytes / MSS);
-    showFlash(`✓ Fragmented into ${frags} packets (${MSS}B each)`, '#00ff88');
-    spawnParticles(p.x, p.y, '#00ff88', 14);
+    showFlash(`✓ Fragmented into ${frags} packets (${MSS}B each)`, PALETTE.green);
+    spawnParticles(p.x, p.y, PALETTE.green, 14);
     G.currentBytes = Math.floor(G.currentBytes / frags);
     updateHUD();
   }
@@ -1007,8 +1017,8 @@ function update(dt) {
       p.shield = 90;
       G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 20);
       damageLayerRow(p.layer);
-      spawnParticles(p.x, p.y, '#ff4d6d', 16);
-      showFlash('⚠ CORRUPT PACKET HIT! Retransmitting...', '#ff4d6d');
+      spawnParticles(p.x, p.y, PALETTE.rose, 16);
+      showFlash('⚠ CORRUPT PACKET HIT! Retransmitting...', PALETTE.rose);
       updateHUD();
       if (G.lives <= 0) G.end();
     }
@@ -1061,8 +1071,8 @@ function update(dt) {
       p.shield = 100;
       G.layerHP[4] = Math.max(0, G.layerHP[4] - 25);
       damageLayerRow(4);
-      spawnParticles(fw.x, fw.y, '#bf5fff', 20);
-      showFlash('🔴 AI FIREWALL BLOCKED YOU! TLS failed.', '#bf5fff');
+      spawnParticles(fw.x, fw.y, PALETTE.purple, 20);
+      showFlash('🔴 AI FIREWALL BLOCKED YOU! TLS failed.', PALETTE.purple);
       updateHUD();
       if (G.lives <= 0) G.end();
     }
@@ -1074,15 +1084,15 @@ function update(dt) {
         G.keys[' '] = false;
         fw.hp--;
         fw.hitTimer = 0.3;
-        spawnParticles(fw.x, fw.y, '#bf5fff', 20);
+        spawnParticles(fw.x, fw.y, PALETTE.purple, 20);
         G.score += 500;
         if (fw.hp <= 0) {
-          showFlash('✓ AI FIREWALL BYPASSED! TLS negotiated.', '#00ff88');
-          spawnParticles(fw.x, fw.y, '#00ff88', 30);
+          showFlash('✓ AI FIREWALL BYPASSED! TLS negotiated.', PALETTE.green);
+          spawnParticles(fw.x, fw.y, PALETTE.green, 30);
           aiFirewall = null;
           G.score += 1000;
         } else {
-          showFlash(`AI Firewall HP: ${fw.hp}/3 — Keep attacking!`, '#bf5fff');
+          showFlash(`AI Firewall HP: ${fw.hp}/3 — Keep attacking!`, PALETTE.purple);
         }
         updateHUD();
       }
@@ -1144,7 +1154,7 @@ function draw() {
     ctx.save();
     ctx.fillStyle = 'rgba(5,13,26,0.7)';
     ctx.fillRect(0,0,W,H);
-    ctx.fillStyle = '#00f5ff';
+    ctx.fillStyle = PALETTE.cyan;
     ctx.font = 'bold 24px Orbitron, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -1156,7 +1166,7 @@ function draw() {
   if (G.currentBytes > MTU) {
     ctx.save();
     ctx.globalAlpha = 0.5 + Math.sin(Date.now()*0.008)*0.5;
-    ctx.fillStyle = '#ff4d6d';
+    ctx.fillStyle = PALETTE.rose;
     ctx.font = 'bold 13px Orbitron, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('⚠ MTU OVERFLOW — Press SPACE to fragment!', W/2, 24);
@@ -1216,7 +1226,7 @@ G.nextLevel = function() {
   initEntities();
   G.running = true;
   updateHUD();
-  showFlash(`Wave ${G.wave} — Level ${G.level} — TCP/IP Networking Challenge`, '#00ff88');
+  showFlash(`Wave ${G.wave} — Level ${G.level} — TCP/IP Networking Challenge`, PALETTE.green);
 };
 
 G.reset = function() {
