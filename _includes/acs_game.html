@@ -1,6 +1,6 @@
 ---
 layout: none
-title: Packet Defender
+title: Packet Defender — ACS Body Map
 permalink: /networking/game
 ---
 <!DOCTYPE html>
@@ -8,1256 +8,631 @@ permalink: /networking/game
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Packet Defender — Networking Game</title>
+<title>ACS Data Defender — Networking Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-
 :root{
-  --bg:        #0f1724;
-  --bg2:       #1a2536;
-  --lane0:     #1f2a3d;
-  --lane1:     #1b3234;
-  --lane2:     #3a3321;
-  --lane3:     #33263b;
-  --lane4:     #22273a;
-  --cyan:      #6ea9bf;
-  --green:     #6ea884;
-  --gold:      #b89a64;
-  --rose:      #b56e79;
-  --purple:    #8771ab;
-  --orange:    #b07d58;
-  --mono:      'Share Tech Mono', monospace;
-  --orb:       'Orbitron', sans-serif;
-  --exo:       'Exo 2', sans-serif;
+  --cream:#fdf6ee; --warm:#fff9f3;
+  --rose:#e07a6a; --rose-d:#c45e4a; --rose-pale:#fce9e6;
+  --sage:#8aaa8c; --sage-pale:#eaf1ea;
+  --tan:#c4a882; --tan-light:#e8d9c4;
+  --brown:#6b4c3b; --text:#3d2c24; --muted:#937468;
+  --border:rgba(196,168,130,0.3);
+  --l1:#e07a6a; --l2:#8aaa8c; --l3:#c4a882; --l4:#6b9fd4; --l5:#a07cc5;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Nunito',system-ui,sans-serif;
+  --mono:'Share Tech Mono',monospace;
 }
+body{background:var(--cream);font-family:var(--sans);overflow:hidden;height:100vh;width:100vw;display:flex;flex-direction:column;color:var(--text);}
 
-body{
-  background: var(--bg);
-  color: #e0e8f0;
-  font-family: var(--exo);
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-}
+/* HEADER */
+#hdr{background:linear-gradient(135deg,var(--brown) 0%,#4a2e22 100%);padding:9px 18px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;box-shadow:0 2px 14px rgba(61,44,36,0.3);}
+#hdr h1{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;letter-spacing:0.02em;}
+#hdr h1 em{color:var(--rose);font-style:italic;}
+.hrow{display:flex;gap:16px;align-items:center;}
+.hitem{display:flex;flex-direction:column;align-items:center;font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+.hval{font-family:var(--mono);font-size:14px;color:#fce9e6;}
 
-/* ── HEADER ── */
-#header{
-  display:flex; align-items:center; justify-content:space-between;
-  padding:10px 20px;
-  background: linear-gradient(135deg, #0f1724, #1a2536);
-  border-bottom: 1px solid rgba(110,169,191,0.25);
-  flex-shrink:0;
-}
-#header h1{
-  font-family:var(--orb); font-size:15px; letter-spacing:0.12em;
-  color: var(--cyan); text-shadow: 0 0 8px rgba(110,169,191,0.25);
-}
-#header h1 span{ color: var(--rose); }
-.hud-row{ display:flex; gap:20px; align-items:center; }
-.hud-item{
-  display:flex; flex-direction:column; align-items:center;
-  font-family:var(--mono); font-size:11px; color: rgba(255,255,255,0.5);
-  letter-spacing:0.08em; text-transform:uppercase;
-}
-.hud-val{
-  font-family:var(--orb); font-size:16px; font-weight:700;
-  color: var(--gold); text-shadow: 0 0 6px rgba(184,154,100,0.25);
-}
-#livesDisplay span{ color: var(--rose); font-size:14px; margin:0 1px; }
+/* LAYOUT */
+#gw{display:flex;flex:1;overflow:hidden;min-height:0;}
 
-/* ── MAIN GAME AREA ── */
-#gameWrap{
-  display:flex; flex:1; overflow:hidden;
-  min-height: 0;
-}
+/* LEFT PANEL */
+#lp{width:170px;flex-shrink:0;background:var(--warm);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.lph{padding:9px 11px 7px;border-bottom:1px solid var(--border);font-size:9px;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
+.lc{padding:7px 9px;border-bottom:1px solid rgba(196,168,130,0.1);display:flex;align-items:center;gap:7px;transition:background 0.2s;}
+.lc.active{background:rgba(224,122,106,0.07);}
+.lc.hit{animation:lcHit 0.4s ease;}
+@keyframes lcHit{0%,100%{background:rgba(224,122,106,0.07);}50%{background:rgba(224,122,106,0.3);}}
+.lcn{font-family:var(--serif);font-size:16px;font-weight:700;min-width:20px;text-align:center;line-height:1;}
+.lci{flex:1;}
+.lcname{font-size:9px;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;}
+.lcproto{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:1px;}
+.lcbar{height:3px;background:rgba(196,168,130,0.18);border-radius:2px;margin-top:3px;overflow:hidden;}
+.lcfill{height:100%;border-radius:2px;transition:width 0.4s;}
 
-/* ── LAYER PANEL (left) ── */
-#layerPanel{
-  width:180px; flex-shrink:0;
-  background: rgba(15,23,36,0.95);
-  border-right: 1px solid rgba(110,169,191,0.18);
-  display:flex; flex-direction:column;
-  overflow:hidden;
-}
-.lp-title{
-  font-family:var(--orb); font-size:9px; letter-spacing:0.14em;
-  color: rgba(110,169,191,0.6); text-transform:uppercase;
-  padding:8px 12px 6px; border-bottom:1px solid rgba(110,169,191,0.15);
-}
-.layer-row{
-  display:flex; align-items:center; gap:8px;
-  padding:7px 12px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  transition: background 0.3s;
-  font-size:11px;
-}
-.layer-row.active{ background: rgba(110,169,191,0.1); }
-.layer-row.danger{ background: rgba(255,77,109,0.1); animation:dangerPulse 0.4s ease; }
-@keyframes dangerPulse{
-  0%,100%{background:rgba(255,77,109,0.1);}
-  50%{background:rgba(255,77,109,0.25);}
-}
-.lr-num{
-  font-family:var(--orb); font-size:13px; font-weight:900;
-  min-width:20px; text-align:center;
-}
-.lr-info{ display:flex; flex-direction:column; }
-.lr-name{ font-weight:700; font-size:10px; letter-spacing:0.06em; }
-.lr-proto{ font-family:var(--mono); font-size:9px; color:rgba(255,255,255,0.4); margin-top:1px; }
-.lr-hp{
-  margin-left:auto; font-family:var(--mono); font-size:10px;
-  display:flex; flex-direction:column; align-items:flex-end; gap:2px;
-}
-.lr-hp-bar{
-  width:36px; height:4px; background:rgba(255,255,255,0.1);
-  border-radius:2px; overflow:hidden;
-}
-.lr-hp-fill{ height:100%; border-radius:2px; transition:width 0.3s; }
+/* CANVAS */
+#cw{flex:1;position:relative;overflow:hidden;}
+canvas{display:block;width:100%;height:100%;}
 
-/* ── CANVAS AREA ── */
-#canvasWrap{
-  flex:1; position:relative; overflow:hidden;
-  background: var(--bg);
-}
-#gameCanvas{ display:block; width:100%; height:100%; }
+/* RIGHT PANEL */
+#rp{width:185px;flex-shrink:0;background:var(--warm);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;}
+.rps{padding:9px 11px;border-bottom:1px solid rgba(196,168,130,0.12);}
+.rph{font-size:9px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.dc{background:var(--rose-pale);border:1px solid rgba(224,122,106,0.22);border-radius:7px;padding:7px 9px;font-family:var(--mono);font-size:9px;line-height:1.9;}
+.dcl{color:var(--muted);font-size:8px;text-transform:uppercase;letter-spacing:0.05em;}
+.dcv{color:var(--brown);font-weight:700;}
+.dcw{color:var(--rose);font-weight:700;}
+.mwrap{margin-top:7px;}
+.mlbl{font-size:9px;color:var(--muted);margin-bottom:2px;font-family:var(--mono);display:flex;justify-content:space-between;}
+.mout{width:100%;height:7px;background:rgba(196,168,130,0.18);border-radius:3px;overflow:hidden;}
+.min{height:100%;border-radius:3px;transition:width 0.2s,background 0.3s;background:var(--sage);}
+.min.warn{background:var(--rose);}
+.legrow{display:flex;align-items:center;gap:7px;margin-bottom:4px;font-size:10px;color:var(--text);}
+.legico{font-size:13px;width:16px;text-align:center;}
+.ctrlg{display:grid;grid-template-columns:auto 1fr;gap:2px 7px;font-size:9px;}
+.ck{font-family:var(--mono);font-size:8px;background:var(--brown);color:#fff;border-radius:3px;padding:1px 5px;text-align:center;line-height:1.8;}
+.cd{color:var(--muted);line-height:1.8;}
+.fb{font-size:9px;color:var(--muted);line-height:1.7;background:rgba(196,168,130,0.08);border-left:2px solid var(--tan);padding:5px 7px;border-radius:0 4px 4px 0;}
 
-/* ── RIGHT PANEL ── */
-#rightPanel{
-  width:200px; flex-shrink:0;
-  background: rgba(15,23,36,0.95);
-  border-left:1px solid rgba(110,169,191,0.18);
-  display:flex; flex-direction:column; gap:0;
-  overflow-y: auto;
-  padding:0;
-}
-.rp-section{
-  padding:10px 12px;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-}
-.rp-title{
-  font-family:var(--orb); font-size:9px; letter-spacing:0.12em;
-  color:rgba(110,169,191,0.62); text-transform:uppercase; margin-bottom:8px;
-}
-.packet-info{
-  font-family:var(--mono); font-size:10px;
-  background:rgba(110,169,191,0.08); border:1px solid rgba(110,169,191,0.2);
-  border-radius:4px; padding:6px 8px; margin-bottom:4px;
-  line-height:1.6;
-}
-.packet-info .pi-label{ color:rgba(255,255,255,0.4); font-size:9px; }
-.packet-info .pi-val{ color:var(--green); font-weight:700; }
-.pi-mtu-warn{ color:var(--rose) !important; }
+/* OVERLAYS */
+.ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:100;background:rgba(253,246,238,0.97);backdrop-filter:blur(5px);}
+.ov h2{font-family:var(--serif);font-size:clamp(20px,3.2vw,36px);font-weight:700;color:var(--text);}
+.ov h2 em{color:var(--rose);font-style:italic;}
+.ov p{font-size:12px;color:var(--muted);text-align:center;max-width:340px;line-height:1.7;}
+.obtn{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:11px 26px;background:var(--rose);color:#fff;border:none;border-radius:7px;cursor:pointer;box-shadow:0 4px 14px rgba(224,122,106,0.35);transition:background 0.2s,transform 0.15s;}
+.obtn:hover{background:var(--rose-d);transform:translateY(-2px);}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:7px;width:100%;max-width:380px;}
+.icell{background:#fff;border:1px solid var(--border);border-radius:7px;padding:9px;font-size:10px;}
+.inum{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1;margin-bottom:2px;}
+.ilbl{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;}
+.lleg{font-family:var(--mono);font-size:9px;background:#fff;border:1px solid var(--border);border-radius:7px;padding:9px 12px;line-height:2.1;width:100%;max-width:380px;}
 
-.legend-item{
-  display:flex; align-items:center; gap:7px;
-  font-size:10px; color:rgba(255,255,255,0.65); margin-bottom:4px;
-}
-.legend-dot{
-  width:10px; height:10px; border-radius:2px; flex-shrink:0;
-}
-.controls-list{ font-size:10px; color:rgba(255,255,255,0.55); line-height:1.9; }
-.controls-list b{ color:var(--cyan); font-family:var(--mono); }
-
-.mtu-bar-wrap{ margin-top:6px; }
-.mtu-bar-label{ font-size:10px; color:rgba(255,255,255,0.5); margin-bottom:3px; font-family:var(--mono); }
-.mtu-bar-outer{
-  width:100%; height:10px;
-  background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden;
-}
-.mtu-bar-inner{
-  height:100%; border-radius:4px;
-  background: linear-gradient(90deg, var(--green), var(--gold));
-  transition: width 0.2s;
-}
-
-/* ── OVERLAYS ── */
-.overlay{
-  position:absolute; inset:0;
-  display:flex; flex-direction:column;
-  align-items:center; justify-content:center;
-  background: rgba(5,13,26,0.94);
-  z-index:100; gap:16px;
-  backdrop-filter:blur(4px);
-}
-.overlay h2{
-  font-family:var(--orb); font-size:clamp(18px,3vw,30px);
-  letter-spacing:0.08em;
-}
-.overlay p{
-  font-size:13px; color:rgba(255,255,255,0.65); text-align:center;
-  max-width:340px; line-height:1.7;
-}
-.overlay button, .btn{
-  font-family:var(--orb); font-size:12px; letter-spacing:0.1em;
-  padding:12px 28px; border:2px solid var(--cyan); background:transparent;
-  color:var(--cyan); cursor:pointer; border-radius:4px;
-  text-transform:uppercase;
-  transition: all 0.2s;
-  box-shadow: 0 0 8px rgba(110,169,191,0.2);
-}
-.overlay button:hover,.btn:hover{
-  background:rgba(110,169,191,0.14); box-shadow:0 0 14px rgba(110,169,191,0.28);
-}
-.score-breakdown{
-  font-family:var(--mono); font-size:11px; text-align:center;
-  background:rgba(110,169,191,0.08); border:1px solid rgba(110,169,191,0.22);
-  border-radius:6px; padding:12px 20px; line-height:2;
-  color:rgba(255,255,255,0.7);
-}
-.score-breakdown .big{ font-size:28px; color:var(--gold); font-family:var(--orb); }
-
-/* Layer flash notification */
-#layerFlash{
-  position:absolute; left:50%; top:20px; transform:translateX(-50%);
-  font-family:var(--orb); font-size:11px; letter-spacing:0.1em;
-  background:rgba(15,23,36,0.95); border:1px solid rgba(110,169,191,0.32);
-  color:var(--cyan); padding:7px 18px; border-radius:20px;
-  pointer-events:none; opacity:0; transition:opacity 0.3s;
-  z-index:50; white-space:nowrap;
-}
-#layerFlash.show{ opacity:1; }
-
-/* Scanline effect */
-#canvasWrap::after{
-  content:'';
-  position:absolute; inset:0; pointer-events:none;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.04) 2px,
-    rgba(0,0,0,0.04) 4px
-  );
-}
-
-#tutorialBox{
-  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
-  font-family:var(--mono); font-size:10px;
-  background:rgba(15,23,36,0.9); border:1px solid rgba(184,154,100,0.32);
-  color:rgba(184,154,100,0.92); padding:6px 14px; border-radius:4px;
-  pointer-events:none; z-index:50; letter-spacing:0.04em; white-space:nowrap;
-  transition:opacity 0.4s;
-}
+/* Flash */
+.flash{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;background:rgba(253,246,238,0.97);border:1px solid var(--border);color:var(--brown);padding:5px 14px;border-radius:18px;pointer-events:none;opacity:0;transition:opacity 0.3s;z-index:50;white-space:nowrap;box-shadow:0 2px 10px rgba(61,44,36,0.1);}
+.flash.on{opacity:1;}
 </style>
 </head>
 <body>
 
-<!-- ── HEADER HUD ── -->
-<div id="header">
-  <h1>🌐 PACKET DEFENDER — <span>ACS</span> NETWORKING</h1>
-  <div class="hud-row">
-    <div class="hud-item"><div class="hud-val" id="scoreDisplay">0</div>SCORE</div>
-    <div class="hud-item"><div class="hud-val" id="levelDisplay">1</div>LEVEL</div>
-    <div class="hud-item"><div class="hud-val" id="packetDisplay">0</div>PACKETS</div>
-    <div class="hud-item"><div id="livesDisplay"></div>LIVES</div>
-    <div class="hud-item"><div class="hud-val" id="waveDisplay">1</div>WAVE</div>
+<div id="hdr">
+  <h1>🎗️ ACS Body Map — <em>Data Defender</em></h1>
+  <div class="hrow">
+    <div class="hitem"><div class="hval" id="hScore">0</div>Score</div>
+    <div class="hitem"><div class="hval" id="hLevel">1</div>Level</div>
+    <div class="hitem"><div class="hval" id="hDel">0</div>Delivered</div>
+    <div class="hitem"><div id="hLives"></div>Lives</div>
+    <div class="hitem"><div class="hval" id="hWave">1</div>Wave</div>
   </div>
 </div>
 
-<div id="gameWrap">
-
-  <!-- ── LEFT: LAYER PANEL ── -->
-  <div id="layerPanel">
-    <div class="lp-title">TCP/IP Layers</div>
-    <div id="layerRows"></div>
+<div id="gw">
+  <div id="lp">
+    <div class="lph">TCP/IP Layers</div>
+    <div id="lcards"></div>
   </div>
 
-  <!-- ── CANVAS ── -->
-  <div id="canvasWrap">
-    <canvas id="gameCanvas"></canvas>
-    <div id="layerFlash"></div>
-    <div id="tutorialBox">← Move player with A/D or Arrow Keys. Collect packets! Avoid corrupted data.</div>
+  <div id="cw">
+    <canvas id="gc"></canvas>
+    <div class="flash" id="flashEl"></div>
 
-    <!-- START SCREEN -->
-    <div class="overlay" id="startScreen">
-      <h2 style="color:var(--cyan)">🌐 PACKET DEFENDER</h2>
-      <p style="color:rgba(184,154,100,0.92);font-size:12px;font-family:var(--mono)">
-        ACS Cancer Body Map — Networking Simulation
-      </p>
-      <p>
-        You are a <b style="color:var(--green)">TCP packet</b> carrying cancer data for the ACS Body Map.<br>
-        Navigate through all <b style="color:var(--cyan)">5 TCP/IP layers</b>, collect <b style="color:var(--gold)">data fragments</b>,
-        and reach the destination without exceeding the <b style="color:var(--rose)">MTU limit</b>.
-      </p>
-      <div style="font-family:var(--mono);font-size:11px;text-align:left;background:rgba(110,169,191,0.08);
-        border:1px solid rgba(110,169,191,0.22);border-radius:6px;padding:12px 16px;line-height:2;color:rgba(255,255,255,0.7);">
-        <b style="color:var(--cyan)">Layer 5</b> — APPLICATION  (HTTPS)<br>
-        <b style="color:var(--green)">Layer 4</b> — TRANSPORT   (TCP)<br>
-        <b style="color:var(--gold)">Layer 3</b> — NETWORK     (IP)<br>
-        <b style="color:var(--purple)">Layer 2</b> — DATA LINK  (Ethernet)<br>
-        <b style="color:var(--orange)">Layer 1</b> — PHYSICAL   (Signals)
+    <!-- START -->
+    <div class="ov" id="ovStart">
+      <div style="font-size:34px">🎗️</div>
+      <h2>ACS Body Map<br><em>Data Defender</em></h2>
+      <p>You are a cancer data packet. Travel through all <strong>5 TCP/IP layers</strong> to deliver critical cancer information to the ACS Body Map. Collect ribbon fragments, avoid corrupt packets, and don't exceed the <strong>1500B MTU limit!</strong></p>
+      <div class="lleg">
+        <span style="color:var(--l5)">■</span> Layer 5 — APPLICATION (HTTPS / cancer.org)<br>
+        <span style="color:var(--l4)">■</span> Layer 4 — TRANSPORT (TCP port 443)<br>
+        <span style="color:var(--l3)">■</span> Layer 3 — NETWORK (IP routing → GitHub Pages)<br>
+        <span style="color:var(--l2)">■</span> Layer 2 — DATA LINK (Ethernet / MAC)<br>
+        <span style="color:var(--l1)">■</span> Layer 1 — PHYSICAL (Wi-Fi signals / fiber)
       </div>
-      <button onclick="G.start()">▶ START TRANSMISSION</button>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)">1500</div><div class="ilbl">MTU Bytes</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)">80+</div><div class="ilbl">Cancer Types</div></div>
+        <div class="icell"><div class="inum" style="color:var(--tan)">TCP</div><div class="ilbl">Protocol</div></div>
+        <div class="icell"><div class="inum" style="color:var(--brown)">5</div><div class="ilbl">Layers</div></div>
+      </div>
+      <button class="obtn" onclick="G.start()">▶ Begin Transmission</button>
     </div>
 
     <!-- GAME OVER -->
-    <div class="overlay" id="gameOverScreen" style="display:none">
-      <h2 style="color:var(--rose)">⚠ PACKET LOST</h2>
-      <p>Connection dropped. Cancer data failed to reach the ACS Body Map.</p>
-      <div class="score-breakdown">
-        <div class="big" id="goScore">0</div>
-        <div id="goBreakdown">Packets delivered: 0</div>
+    <div class="ov" id="ovGameOver" style="display:none">
+      <div style="font-size:30px">💔</div>
+      <h2>Packet <em>Lost</em></h2>
+      <p>The cancer data never reached the ACS Body Map. TCP retransmit initiated.</p>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)" id="goSc">0</div><div class="ilbl">Score</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)" id="goDel">0</div><div class="ilbl">Delivered</div></div>
       </div>
-      <button onclick="G.reset()">⟳ RETRANSMIT (TCP Retry)</button>
+      <button class="obtn" onclick="G.reset()">↺ TCP Retry</button>
     </div>
 
-    <!-- WIN SCREEN -->
-    <div class="overlay" id="winScreen" style="display:none">
-      <h2 style="color:var(--green)">✓ TRANSMISSION COMPLETE</h2>
-      <p>All 5 TCP/IP layers traversed. Cancer data delivered to the ACS Body Map!</p>
-      <div class="score-breakdown">
-        <div class="big" id="winScore">0</div>
-        <div id="winBreakdown"></div>
+    <!-- WIN -->
+    <div class="ov" id="ovWin" style="display:none">
+      <div style="font-size:30px">✅</div>
+      <h2>Data <em>Delivered!</em></h2>
+      <p id="winMsg">Cancer data reached the ACS Body Map!</p>
+      <div class="igrid">
+        <div class="icell"><div class="inum" style="color:var(--rose)" id="winSc">0</div><div class="ilbl">Score</div></div>
+        <div class="icell"><div class="inum" style="color:var(--sage)" id="winDel">0</div><div class="ilbl">Packets</div></div>
       </div>
-      <button onclick="G.nextLevel()">► NEXT WAVE</button>
+      <button class="obtn" onclick="G.nextWave()">► Next Wave</button>
     </div>
   </div>
 
-  <!-- ── RIGHT PANEL ── -->
-  <div id="rightPanel">
-    <div class="rp-section">
-      <div class="rp-title">Current Packet</div>
-      <div class="packet-info">
-        <div class="pi-label">ACS Data</div>
-        <div class="pi-val" id="piData">BM_CANCERS[lung]</div>
-        <div class="pi-label">Size</div>
-        <div class="pi-val" id="piSize">0 bytes</div>
-        <div class="pi-label">MTU (1500B)</div>
-        <div id="piStatus" class="pi-val">OK</div>
+  <div id="rp">
+    <div class="rps">
+      <div class="rph">Current Packet</div>
+      <div class="dc">
+        <div class="dcl">ACS Data</div><div class="dcv" id="rpData">BM_CANCERS[lung]</div>
+        <div class="dcl">Size</div><div class="dcv" id="rpSize">0 B</div>
+        <div class="dcl">MTU Status</div><div class="dcv" id="rpStat">OK ✓</div>
       </div>
-      <div class="mtu-bar-wrap">
-        <div class="mtu-bar-label">MTU FILL <span id="mtuPct">0%</span></div>
-        <div class="mtu-bar-outer"><div class="mtu-bar-inner" id="mtuBar" style="width:0%"></div></div>
+      <div class="mwrap">
+        <div class="mlbl"><span>MTU Fill</span><span id="mPct">0%</span></div>
+        <div class="mout"><div class="min" id="mBar" style="width:0%"></div></div>
       </div>
     </div>
-    <div class="rp-section">
-      <div class="rp-title">Legend</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Data Fragment (+bytes)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div>NPC Router (guides)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>Corrupt Packet (avoid)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>AI Firewall (boss)</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Layer Checkpoint</div>
+    <div class="rps">
+      <div class="rph">Legend</div>
+      <div class="legrow"><span class="legico">🎗️</span>You — data packet</div>
+      <div class="legrow"><span class="legico">💛</span>Cancer data fragment</div>
+      <div class="legrow"><span class="legico">🔀</span>Router NPC (helper)</div>
+      <div class="legrow"><span class="legico">❌</span>Corrupt packet (avoid)</div>
+      <div class="legrow"><span class="legico">🤖</span>AI Firewall boss</div>
     </div>
-    <div class="rp-section">
-      <div class="rp-title">Controls</div>
-      <div class="controls-list">
-        <b>A / ←</b> Move left<br>
-        <b>D / →</b> Move right<br>
-        <b>W / ↑</b> Jump / ascend<br>
-        <b>S / ↓</b> Descend<br>
-        <b>SPACE</b> Fragment packet<br>
-        <b>P</b> Pause
+    <div class="rps">
+      <div class="rph">Controls</div>
+      <div class="ctrlg">
+        <div class="ck">A D</div><div class="cd">Move left / right</div>
+        <div class="ck">W S</div><div class="cd">Move up / down</div>
+        <div class="ck">SPC</div><div class="cd">Fragment packet</div>
+        <div class="ck">P</div><div class="cd">Pause</div>
       </div>
     </div>
-    <div class="rp-section">
-      <div class="rp-title">Layer Knowledge</div>
-      <div id="layerFact" style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.7;">
-        Click a hotspot or collect packets to learn networking facts.
-      </div>
+    <div class="rps">
+      <div class="rph">Layer Fact</div>
+      <div class="fb" id="factBox">Move your packet through the layers to learn how the ACS Body Map reaches users around the world.</div>
     </div>
   </div>
-
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  PACKET DEFENDER — NETWORKING EDUCATIONAL GAME
-//  ACS Body Map Project
-// ═══════════════════════════════════════════════════════
+const canvas=document.getElementById('gc'),ctx=canvas.getContext('2d'),wrap=document.getElementById('cw');
 
-const canvas  = document.getElementById('gameCanvas');
-const ctx     = canvas.getContext('2d');
-const wrap    = document.getElementById('canvasWrap');
-
-// ─── CONSTANTS ───────────────────────────────────────────────
-const MTU = 1500;
-const IP_HDR  = 20;
-const TCP_HDR = 20;
-const TLS_OH  = 29;
-const MSS = MTU - IP_HDR - TCP_HDR - TLS_OH;  // 1431 bytes usable
-
-const PALETTE = {
-  orange: '#b07d58',
-  purple: '#8771ab',
-  gold:   '#b89a64',
-  green:  '#6ea884',
-  cyan:   '#6ea9bf',
-  rose:   '#b56e79',
-  ink:    '#0f1724',
-};
-
-const LAYER_COLORS = [PALETTE.orange, PALETTE.purple, PALETTE.gold, PALETTE.green, PALETTE.cyan];
-const LAYER_DATA = [
-  { num:1, name:'PHYSICAL',    proto:'Signals/Bits',   color:PALETTE.orange, fact:'Layer 1 converts digital bits into physical signals — radio waves (Wi-Fi), light (fiber), or electrical voltages (Ethernet cable). Your laptop\'s Wi-Fi card broadcasts at 2.4GHz or 5GHz.' },
-  { num:2, name:'DATA LINK',   proto:'Ethernet/MAC',   color:PALETTE.purple, fact:'Layer 2 uses MAC addresses for hop-to-hop delivery. Each Ethernet frame knows the next router\'s MAC address, not the final destination. ACS Body Map frames use 48-bit MAC addresses.' },
-  { num:3, name:'NETWORK',     proto:'IP Routing',     color:PALETTE.gold, fact:'Layer 3 handles IP routing across the internet. Your packet travels from your laptop (192.168.x.x) to GitHub Pages servers (185.199.108.153) via multiple routers.' },
-  { num:4, name:'TRANSPORT',   proto:'TCP/Port 443',   color:PALETTE.green, fact:'Layer 4 TCP guarantees reliable delivery. Unlike UDP, TCP retransmits lost packets and reorders them. The ACS Body Map must receive ALL cancer data — TCP is essential.' },
-  { num:5, name:'APPLICATION', proto:'HTTPS/HTTP2',    color:PALETTE.cyan, fact:'Layer 5 is where HTTPS lives. TLS 1.3 encrypts your cancer research queries for privacy. HTTP/2 multiplexes multiple requests simultaneously for fast loading.' },
+const ACS_CANCERS=[
+  {id:'lung',      name:'Lung Cancer',       region:'Lung & Chest',   bytes:380},
+  {id:'breast',    name:'Breast Cancer',     region:'Breast',         bytes:420},
+  {id:'melanoma',  name:'Melanoma',          region:'Skin',           bytes:350},
+  {id:'colorectal',name:'Colorectal Cancer', region:'Digestive',      bytes:410},
+  {id:'brain',     name:'Glioblastoma',      region:'Brain & NS',     bytes:390},
+  {id:'leukemia',  name:'Leukemia',          region:'Blood & Lymph',  bytes:360},
+  {id:'pancreatic',name:'Pancreatic Cancer', region:'Pancreas',       bytes:430},
+  {id:'prostate',  name:'Prostate Cancer',   region:'Reproductive',   bytes:370},
+  {id:'thyroid',   name:'Thyroid Cancer',    region:'Endocrine',      bytes:310},
+  {id:'ovarian',   name:'Ovarian Cancer',    region:'Reproductive',   bytes:440},
+  {id:'bladder',   name:'Bladder Cancer',    region:'Urinary',        bytes:330},
+  {id:'hodgkin',   name:'Hodgkin Lymphoma',  region:'Blood & Lymph',  bytes:400},
 ];
 
-const ACS_DATA_NAMES = [
-  'BM_CANCERS[lung]','BM_CANCERS[breast]','BM_CANCERS[brain]',
-  'BM_CANCERS[skin]','BM_CANCERS[leukemia]','SVG:body_female',
-  'CSS:stylesheets','DNS:cancer.org','TLS:certificate',
-  'HTTP/2:headers','TCP:syn_packet','IP:routing_table',
+const LAYERS=[
+  {num:1,name:'PHYSICAL',   proto:'Wi-Fi / Fiber', color:'#e07a6a',fact:'Your Wi-Fi card converts the ACS cancer data into radio waves at 2.4–5 GHz. Fiber optic cables carry that same data as pulses of light across the internet backbone to GitHub Pages servers.'},
+  {num:2,name:'DATA LINK',  proto:'Ethernet / MAC',color:'#8aaa8c',fact:'Ethernet frames carry your packet hop-to-hop using MAC addresses. Every router between you and GitHub Pages unwraps and re-wraps the frame — like re-labeling a package at each post office stop.'},
+  {num:3,name:'NETWORK',    proto:'IP Routing',    color:'#c4a882',fact:'IP addresses route ACS data across the internet to GitHub Pages (185.199.108.153). Your request might cross 12+ routers using BGP to find the fastest path to the server.'},
+  {num:4,name:'TRANSPORT',  proto:'TCP : 443',     color:'#6b9fd4',fact:'TCP guarantees every cancer data packet arrives correctly and in order. If a packet drops, TCP retransmits it. The Body Map shows 80+ cancer types — TCP ensures none are missing.'},
+  {num:5,name:'APPLICATION',proto:'HTTPS / HTTP2', color:'#a07cc5',fact:'HTTPS with TLS 1.3 encrypts your cancer research so nobody can snoop. HTTP/2 loads HTML, CSS, the SVG body diagram, and BM_CANCERS data simultaneously — that is why pages load fast.'},
 ];
 
-// ─── GAME STATE ───────────────────────────────────────────────
-const G = {
-  running: false,
-  paused:  false,
-  score:   0,
-  lives:   3,
-  level:   1,
-  wave:    1,
-  packetsDelivered: 0,
-  currentBytes: 0,
-  currentDataName: ACS_DATA_NAMES[0],
-  currentLayer: 0,
-  layerHP: [100,100,100,100,100],
-  layerProgress: [0,0,0,0,0],
-  keys: {},
-  lastTime: 0,
-  animId: null,
-  tutorialShown: true,
-  totalPacketsThisLevel: 0,
+const MTU=1500,MSS=1431;
+
+const G={
+  running:false,paused:false,
+  score:0,lives:3,level:1,wave:1,
+  delivered:0,currentBytes:0,
+  currentCancer:ACS_CANCERS[0],
+  layerHP:[100,100,100,100,100],
+  keys:{},lastTime:0,animId:null,
 };
 
-// ─── ENTITIES ─────────────────────────────────────────────────
-let player, fragments, corruptPackets, routerNPCs, aiFirewall, checkpoints, particles;
+let player,frags,corrupt,routers,boss,particles;
 
-function initEntities() {
-  const W = canvas.width, H = canvas.height;
+function resize(){canvas.width=wrap.clientWidth;canvas.height=wrap.clientHeight;}
 
-  player = {
-    x: W/2, y: H - 80,
-    w: 28, h: 28,
-    vx: 0, vy: 0,
-    speed: 180,
-    onGround: false,
-    color: PALETTE.cyan,
-    trail: [],
-    shield: 0, // invincibility frames
-    layer: 0,
-  };
+function initEntities(){
+  const W=canvas.width,H=canvas.height;
+  player={x:W/2,y:H*0.85,w:34,h:22,vx:0,vy:0,speed:190,shield:0,trail:[],layer:0};
+  frags=[];corrupt=[];routers=[];boss=null;particles=[];
+  const diff=1+(G.level-1)*0.2+(G.wave-1)*0.12;
 
-  fragments = [];
-  corruptPackets = [];
-  routerNPCs = [];
-  aiFirewall = null;
-  checkpoints = [];
-  particles = [];
-
-  spawnWave();
-}
-
-// ─── LAYER LANES ──────────────────────────────────────────────
-function getLaneY(layerIdx) {
-  // 5 lanes stacked vertically
-  const H = canvas.height;
-  const laneH = H / 5;
-  return laneIdx => laneH * laneIdx + laneH / 2;
-}
-
-function getLaneForY(y) {
-  const H = canvas.height;
-  const laneH = H / 5;
-  return Math.max(0, Math.min(4, Math.floor(y / laneH)));
-}
-
-// ─── SPAWN WAVE ───────────────────────────────────────────────
-function spawnWave() {
-  const W = canvas.width, H = canvas.height;
-  const difficulty = 1 + (G.level - 1) * 0.25 + (G.wave - 1) * 0.15;
-  G.totalPacketsThisLevel = 0;
-
-  // Spawn data fragments (gold collectibles)
-  const fragCount = Math.min(6 + G.level * 2, 18);
-  for (let i = 0; i < fragCount; i++) {
-    fragments.push({
-      x: 60 + Math.random() * (W - 120),
-      y: 40 + Math.random() * (H - 80),
-      w: 20, h: 12,
-      bytes: Math.floor(100 + Math.random() * 400),
-      color: PALETTE.gold,
-      glow: 0,
-      label: Math.floor(100 + Math.random() * 400) + 'B',
-      id: Math.random(),
-      collected: false,
-    });
+  // Data fragments
+  const fc=Math.min(5+G.level*2,13);
+  for(let i=0;i<fc;i++){
+    const c=ACS_CANCERS[i%ACS_CANCERS.length];
+    frags.push({x:50+Math.random()*(W-100),y:40+Math.random()*(H-80),w:40,h:22,cancer:c,bytes:c.bytes,collected:false,bob:Math.random()*Math.PI*2,id:Math.random()});
   }
 
-  // Spawn corrupt packets (red — avoid)
-  const corruptCount = Math.min(2 + G.level, 8);
-  for (let i = 0; i < corruptCount; i++) {
-    const laneY = ((i % 5) / 5 + 0.1) * H;
-    corruptPackets.push({
-      x: Math.random() * W,
-      y: laneY,
-      w: 24, h: 24,
-      vx: (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 60 * difficulty),
-      vy: 0,
-      color: PALETTE.rose,
-      angle: 0,
-      label: 'ERR',
-    });
+  // Corrupt packets
+  const cc=Math.min(2+G.level,7);
+  for(let i=0;i<cc;i++){
+    const ly=(i/cc)*H+H/cc/2;
+    corrupt.push({x:Math.random()*W,y:ly+(Math.random()-0.5)*50,w:26,h:26,vx:(Math.random()>0.5?1:-1)*(55+Math.random()*55*diff),angle:0});
   }
 
-  // Spawn router NPCs (cyan — helpful guides)
-  for (let i = 0; i < 3; i++) {
-    routerNPCs.push({
-      x: 80 + i * (W - 160) / 2,
-      y: H * (0.2 + i * 0.25),
-      w: 32, h: 32,
-      vx: (i % 2 === 0 ? 1 : -1) * 30,
-      vy: Math.sin(i) * 15,
-      color: PALETTE.cyan,
-      message: ['Route via BGP','TCP SYN sent','MTU=1500'][i],
-      messageTimer: 0,
-      bobOffset: i * Math.PI * 0.66,
-    });
+  // Router NPCs
+  for(let i=0;i<3;i++){
+    routers.push({x:80+i*(W-160)/2,y:H*(0.2+i*0.28),w:34,h:34,vx:(i%2===0?1:-1)*28,bob:i*Math.PI*0.66,tip:['Route via BGP','TCP SYN-ACK','MTU=1500B'][i],tipTimer:0});
   }
 
-  // Spawn AI Firewall boss on wave 3+
-  if (G.wave >= 3 || G.level >= 2) {
-    aiFirewall = {
-      x: W / 2,
-      y: 60,
-      w: 60, h: 32,
-      vx: 80 + G.level * 15,
-      vy: 0,
-      hp: 3,
-      color: PALETTE.purple,
-      label: 'AI FIREWALL',
-      hitTimer: 0,
-      pattern: 0,
-      patternTimer: 0,
-    };
+  // Boss
+  if(G.wave>=3||G.level>=2){
+    boss={x:W/2,y:48,w:74,h:36,vx:70+G.level*10,hp:3,hitTimer:0,phase:0,phaseTimer:0};
   }
 
-  // Layer checkpoints (5 horizontal bands)
-  checkpoints = LAYER_DATA.map((ld, i) => {
-    const laneH = H / 5;
-    return {
-      layer: i,
-      y: laneH * i,
-      h: laneH,
-      color: ld.color,
-      activated: false,
-    };
-  });
-
-  // Randomize current data name
-  G.currentDataName = ACS_DATA_NAMES[Math.floor(Math.random() * ACS_DATA_NAMES.length)];
+  G.currentCancer=ACS_CANCERS[Math.floor(Math.random()*ACS_CANCERS.length)];
+  G.currentBytes=0;
 }
 
-// ─── CANVAS RESIZE ────────────────────────────────────────────
-function resizeCanvas() {
-  canvas.width  = wrap.clientWidth;
-  canvas.height = wrap.clientHeight;
+// Collision
+function hits(a,b){return a.x-a.w/2<b.x+b.w/2&&a.x+a.w/2>b.x-b.w/2&&a.y-a.h/2<b.y+b.h/2&&a.y+a.h/2>b.y-b.h/2;}
+function layerIdx(y){return Math.max(0,Math.min(4,Math.floor(y/canvas.height*5)));}
+
+// Flash
+let ftmr=null;
+function flash(msg,col='#6b4c3b'){
+  const el=document.getElementById('flashEl');
+  el.textContent=msg;el.style.color=col;el.style.borderColor=col+'44';
+  el.classList.add('on');clearTimeout(ftmr);
+  ftmr=setTimeout(()=>el.classList.remove('on'),2400);
 }
 
-// ─── INPUT ────────────────────────────────────────────────────
-document.addEventListener('keydown', e => {
-  G.keys[e.key] = true;
-  if (e.key === 'p' || e.key === 'P') {
-    if (G.running) { G.paused = !G.paused; }
-  }
-  e.preventDefault();
-}, { passive: false });
-document.addEventListener('keyup',  e => { G.keys[e.key] = false; });
-
-// ─── PARTICLE SYSTEM ──────────────────────────────────────────
-function spawnParticles(x, y, color, count=8) {
-  for (let i = 0; i < count; i++) {
-    const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
-    const speed = 60 + Math.random() * 80;
-    particles.push({
-      x, y,
-      vx: Math.cos(angle) * speed,
-      vy: Math.sin(angle) * speed,
-      color, life: 1, size: 2 + Math.random() * 3,
-    });
+function burst(x,y,col,n=10){
+  for(let i=0;i<n;i++){
+    const a=(Math.PI*2/n)*i,sp=50+Math.random()*80;
+    particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,col,life:1,r:2+Math.random()*3});
   }
 }
 
-// ─── FLASH NOTIFICATION ───────────────────────────────────────
-let flashTimeout = null;
-function showFlash(text, color=PALETTE.cyan) {
-  const el = document.getElementById('layerFlash');
-  el.textContent = text;
-  el.style.color = color;
-  el.style.borderColor = color + '66';
-  el.classList.add('show');
-  clearTimeout(flashTimeout);
-  flashTimeout = setTimeout(() => el.classList.remove('show'), 2200);
-}
+function update(dt){
+  if(!G.running||G.paused||!player)return;
+  const W=canvas.width,H=canvas.height,p=player;
 
-function setLayerFact(layerIdx) {
-  const el = document.getElementById('layerFact');
-  if (el && LAYER_DATA[layerIdx]) {
-    el.textContent = LAYER_DATA[layerIdx].fact;
-    el.style.color = LAYER_DATA[layerIdx].color + 'cc';
-  }
-}
+  p.vx=p.vy=0;
+  if(G.keys['a']||G.keys['A']||G.keys['ArrowLeft']) p.vx=-p.speed;
+  if(G.keys['d']||G.keys['D']||G.keys['ArrowRight'])p.vx= p.speed;
+  if(G.keys['w']||G.keys['W']||G.keys['ArrowUp'])   p.vy=-p.speed;
+  if(G.keys['s']||G.keys['S']||G.keys['ArrowDown']) p.vy= p.speed;
+  p.x=Math.max(p.w/2,Math.min(W-p.w/2,p.x+p.vx*dt));
+  p.y=Math.max(p.h/2,Math.min(H-p.h/2,p.y+p.vy*dt));
+  if(p.shield>0)p.shield--;
 
-// ─── UPDATE PANEL ─────────────────────────────────────────────
-function updateHUD() {
-  document.getElementById('scoreDisplay').textContent = G.score.toLocaleString();
-  document.getElementById('levelDisplay').textContent = G.level;
-  document.getElementById('packetDisplay').textContent = G.packetsDelivered;
-  document.getElementById('waveDisplay').textContent = G.wave;
+  p.trail.push({x:p.x,y:p.y});
+  if(p.trail.length>14)p.trail.shift();
 
-  const livesEl = document.getElementById('livesDisplay');
-  livesEl.innerHTML = '❤️'.repeat(Math.max(0,G.lives));
-
-  // Packet info
-  document.getElementById('piData').textContent = G.currentDataName;
-  document.getElementById('piSize').textContent = G.currentBytes + ' bytes';
-
-  const pct = Math.min(100, Math.round(G.currentBytes / MTU * 100));
-  document.getElementById('mtuPct').textContent = pct + '%';
-  document.getElementById('mtuBar').style.width = pct + '%';
-
-  const status = G.currentBytes > MTU ? 'OVERFLOW! FRAGMENT!' : G.currentBytes > MSS ? 'NEAR MTU' : 'OK';
-  const statusEl = document.getElementById('piStatus');
-  statusEl.textContent = status;
-  statusEl.className = G.currentBytes > MTU ? 'pi-val pi-mtu-warn' : 'pi-val';
-
-  // Layer rows
-  buildLayerPanel();
-}
-
-function buildLayerPanel() {
-  const container = document.getElementById('layerRows');
-  const rows = LAYER_DATA.slice().reverse(); // show 5→1 top-to-bottom
-
-  container.innerHTML = rows.map((ld, i) => {
-    const actualIdx = 4 - i;
-    const hp = G.layerHP[actualIdx];
-    const active = getLaneForY(player ? player.y : 0) === actualIdx;
-    return `
-    <div class="layer-row ${active ? 'active' : ''}" id="lrow${actualIdx}">
-      <div class="lr-num" style="color:${ld.color}">${ld.num}</div>
-      <div class="lr-info">
-        <div class="lr-name" style="color:${ld.color}">${ld.name}</div>
-        <div class="lr-proto">${ld.proto}</div>
-      </div>
-      <div class="lr-hp">
-        <div style="color:${ld.color};font-size:9px">${hp}%</div>
-        <div class="lr-hp-bar">
-          <div class="lr-hp-fill" style="width:${hp}%;background:${ld.color}"></div>
-        </div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ─── DRAWING ──────────────────────────────────────────────────
-function drawBackground() {
-  const W = canvas.width, H = canvas.height;
-  ctx.fillStyle = PALETTE.ink;
-  ctx.fillRect(0,0,W,H);
-
-  // Draw 5 layer lanes
-  const laneH = H / 5;
-  LAYER_DATA.forEach((ld, i) => {
-    const y = laneH * i;
-    // Lane background
-    const grad = ctx.createLinearGradient(0, y, W, y);
-    grad.addColorStop(0, ld.color + '08');
-    grad.addColorStop(0.5, ld.color + '04');
-    grad.addColorStop(1, ld.color + '08');
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, y, W, laneH);
-
-    // Lane border
-    ctx.strokeStyle = ld.color + '22';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([8,6]);
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(W, y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // Layer label (right side)
-    ctx.save();
-    ctx.globalAlpha = 0.15;
-    ctx.font = `bold ${Math.min(laneH * 0.55, 32)}px 'Orbitron', sans-serif`;
-    ctx.fillStyle = ld.color;
-    ctx.textAlign = 'right';
-    ctx.fillText(`L${ld.num} ${ld.name}`, W - 12, y + laneH * 0.62);
-    ctx.restore();
-
-    // MTU line indicator
-    const mtuX = (MSS / MTU) * W;
-    ctx.strokeStyle = PALETTE.gold + '40';
-    ctx.lineWidth = 1;
-    ctx.setLineDash([4,4]);
-    ctx.beginPath();
-    ctx.moveTo(mtuX, y);
-    ctx.lineTo(mtuX, y + laneH);
-    ctx.stroke();
-    ctx.setLineDash([]);
-  });
-
-  // Bottom lane border
-  ctx.strokeStyle = 'rgba(110,169,191,0.15)';
-  ctx.lineWidth=1;
-  ctx.beginPath();
-  ctx.moveTo(0,H); ctx.lineTo(W,H);
-  ctx.stroke();
-}
-
-function drawFragments() {
-  const now = Date.now() * 0.003;
-  fragments.forEach(f => {
-    if (f.collected) return;
-    f.glow = (Math.sin(now + f.id * 4) + 1) / 2;
-
-    ctx.save();
-    ctx.shadowColor = PALETTE.gold;
-    ctx.shadowBlur = 8 + f.glow * 8;
-    ctx.fillStyle = `rgba(184,154,100,${0.72 + f.glow * 0.2})`;
-    ctx.fillRect(f.x - f.w/2, f.y - f.h/2, f.w, f.h);
-
-    // Inner highlight
-    ctx.fillStyle = 'rgba(255,255,255,0.4)';
-    ctx.fillRect(f.x - f.w/2 + 2, f.y - f.h/2 + 2, f.w * 0.4, 3);
-
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = PALETTE.ink;
-    ctx.font = '8px Share Tech Mono';
-    ctx.textAlign = 'center';
-    ctx.fillText(f.label, f.x, f.y + 4);
-    ctx.restore();
-  });
-}
-
-function drawCorruptPackets() {
-  corruptPackets.forEach(cp => {
-    ctx.save();
-    ctx.translate(cp.x, cp.y);
-    ctx.rotate(cp.angle);
-    ctx.shadowColor = PALETTE.rose;
-    ctx.shadowBlur = 12;
-    ctx.fillStyle = PALETTE.rose;
-    ctx.fillRect(-cp.w/2, -cp.h/2, cp.w, cp.h);
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    ctx.font = 'bold 9px Share Tech Mono';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('ERR', 0, 0);
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  });
-}
-
-function drawRouterNPCs() {
-  const now = Date.now() * 0.002;
-  routerNPCs.forEach((r, i) => {
-    const bob = Math.sin(now + r.bobOffset) * 5;
-    ctx.save();
-    ctx.translate(r.x, r.y + bob);
-    ctx.shadowColor = r.color;
-    ctx.shadowBlur = 10;
-
-    // Router body
-    ctx.fillStyle = r.color + '33';
-    ctx.strokeStyle = r.color;
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.roundRect(-r.w/2, -r.h/2, r.w, r.h, 6);
-    ctx.fill();
-    ctx.stroke();
-
-    // Icon
-    ctx.fillStyle = r.color;
-    ctx.font = '14px serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🔀', 0, 0);
-
-    // Message bubble
-    if (r.messageTimer > 0) {
-      ctx.fillStyle = 'rgba(5,13,26,0.9)';
-      ctx.strokeStyle = r.color + '66';
-      ctx.lineWidth = 1;
-      const mw = 90, mh = 18;
-      ctx.beginPath();
-      ctx.roundRect(-mw/2, -r.h/2 - mh - 6, mw, mh, 3);
-      ctx.fill(); ctx.stroke();
-      ctx.fillStyle = r.color;
-      ctx.font = '8px Share Tech Mono';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(r.message, 0, -r.h/2 - 6 - mh/2);
-    }
-
-    ctx.shadowBlur = 0;
-    ctx.restore();
-  });
-}
-
-function drawAIFirewall() {
-  if (!aiFirewall) return;
-  const fw = aiFirewall;
-  const now = Date.now() * 0.003;
-
-  ctx.save();
-  ctx.translate(fw.x, fw.y);
-
-  const pulse = (Math.sin(now * 2) + 1) / 2;
-  ctx.shadowColor = fw.hitTimer > 0 ? '#ffffff' : PALETTE.purple;
-  ctx.shadowBlur = 15 + pulse * 10;
-
-  // Body
-  ctx.fillStyle = fw.hitTimer > 0 ? 'rgba(255,255,255,0.8)' : PALETTE.purple + '3d';
-  ctx.strokeStyle = fw.hitTimer > 0 ? '#ffffff' : PALETTE.purple;
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.roundRect(-fw.w/2, -fw.h/2, fw.w, fw.h, 4);
-  ctx.fill(); ctx.stroke();
-
-  ctx.fillStyle = fw.hitTimer > 0 ? PALETTE.ink : PALETTE.purple;
-  ctx.font = 'bold 9px Orbitron, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('AI FIREWALL', 0, 0);
-
-  // HP dots
-  for (let i = 0; i < 3; i++) {
-    ctx.beginPath();
-    ctx.arc(-10 + i*10, fw.h/2 + 8, 4, 0, Math.PI*2);
-    ctx.fillStyle = i < fw.hp ? PALETTE.purple : '#1f2330';
-    ctx.fill();
+  // Layer change
+  const nowL=4-layerIdx(p.y);
+  if(nowL!==p.layer){
+    p.layer=nowL;
+    const ld=LAYERS[nowL];
+    flash(`Layer ${ld.num}: ${ld.name} — ${ld.proto}`,ld.color);
+    const fb=document.getElementById('factBox');
+    fb.textContent=ld.fact;fb.style.borderLeftColor=ld.color;
+    updateLayerCards();
   }
 
-  ctx.shadowBlur = 0;
-  ctx.restore();
-}
-
-function drawPlayer() {
-  if (!player) return;
-  const p = player;
-
-  // Trail
-  p.trail.push({ x: p.x, y: p.y, t: 1 });
-  if (p.trail.length > 12) p.trail.shift();
-  p.trail.forEach((tp, i) => {
-    const alpha = (i / p.trail.length) * 0.35 * tp.t;
-    const size = p.w * (i / p.trail.length) * 0.6;
-    ctx.save();
-    ctx.globalAlpha = alpha;
-    ctx.fillStyle = p.shield > 0 ? PALETTE.gold : PALETTE.cyan;
-    ctx.shadowColor = ctx.fillStyle;
-    ctx.shadowBlur = 4;
-    ctx.fillRect(tp.x - size/2, tp.y - size/2, size, size);
-    ctx.restore();
-  });
-
-  // Shield glow
-  if (p.shield > 0) {
-    ctx.save();
-    ctx.globalAlpha = (p.shield % 10 < 5) ? 0.6 : 0.2;
-    ctx.strokeStyle = PALETTE.gold;
-    ctx.lineWidth = 2;
-    ctx.shadowColor = PALETTE.gold;
-    ctx.shadowBlur = 12;
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.w * 0.9, 0, Math.PI*2);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  // Player body
-  ctx.save();
-  ctx.shadowColor = PALETTE.cyan;
-  ctx.shadowBlur = 14;
-  ctx.fillStyle = PALETTE.cyan;
-
-  // Packet shape (rectangle with data hint)
-  const hw = p.w/2, hh = p.h/2;
-  ctx.beginPath();
-  ctx.roundRect(p.x - hw, p.y - hh, p.w, p.h, 5);
-  ctx.fill();
-
-  // Inner data lines
-  ctx.fillStyle = 'rgba(5,13,26,0.7)';
-  for (let i = 0; i < 4; i++) {
-    const lw = (3 + i * 3) + Math.sin(Date.now() * 0.005 + i) * 2;
-    ctx.fillRect(p.x - hw + 4, p.y - hh + 4 + i * 5, Math.min(lw, p.w - 8), 2);
-  }
-
-  ctx.shadowBlur = 0;
-  ctx.restore();
-}
-
-function drawParticles() {
-  particles.forEach(pt => {
-    ctx.save();
-    ctx.globalAlpha = pt.life;
-    ctx.fillStyle = pt.color;
-    ctx.shadowColor = pt.color;
-    ctx.shadowBlur = 6;
-    ctx.beginPath();
-    ctx.arc(pt.x, pt.y, pt.size * pt.life, 0, Math.PI*2);
-    ctx.fill();
-    ctx.restore();
-  });
-}
-
-function drawLayerCheckpoints() {
-  checkpoints.forEach(cp => {
-    if (cp.activated) return;
-    ctx.save();
-    ctx.globalAlpha = 0.12;
-    ctx.fillStyle = cp.color;
-    ctx.fillRect(0, cp.y, canvas.width, cp.h);
-    ctx.globalAlpha = 0.5;
-    ctx.restore();
-  });
-}
-
-// ─── COLLISION DETECTION ──────────────────────────────────────
-function rectsOverlap(ax,ay,aw,ah, bx,by,bw,bh) {
-  return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
-}
-
-function collidePlayer(obj) {
-  const p = player;
-  const hw = p.w/2, hh = p.h/2;
-  const ow = obj.w/2, oh = obj.h/2;
-  return rectsOverlap(p.x-hw,p.y-hh,p.w,p.h, obj.x-ow,obj.y-oh,obj.w,obj.h);
-}
-
-// ─── GAME LOGIC UPDATE ────────────────────────────────────────
-function update(dt) {
-  if (!G.running || G.paused || !player) return;
-
-  const W = canvas.width, H = canvas.height;
-  const p = player;
-
-  // Player movement
-  const spd = p.speed;
-  p.vx = 0;
-  if (G.keys['a'] || G.keys['A'] || G.keys['ArrowLeft'])  p.vx = -spd;
-  if (G.keys['d'] || G.keys['D'] || G.keys['ArrowRight']) p.vx = spd;
-  if (G.keys['w'] || G.keys['W'] || G.keys['ArrowUp'])    p.vy = -spd;
-  if (G.keys['s'] || G.keys['S'] || G.keys['ArrowDown'])  p.vy = spd;
-  else if (!(G.keys['w'] || G.keys['W'] || G.keys['ArrowUp'])) p.vy = 0;
-
-  p.x += p.vx * dt;
-  p.y += p.vy * dt;
-
-  // Bounds
-  p.x = Math.max(p.w/2, Math.min(W - p.w/2, p.x));
-  p.y = Math.max(p.h/2, Math.min(H - p.h/2, p.y));
-
-  // Shield tick
-  if (p.shield > 0) p.shield--;
-
-  // Determine current layer
-  const newLayer = getLaneForY(p.y);
-  if (newLayer !== p.layer) {
-    p.layer = newLayer;
-    const ld = LAYER_DATA[newLayer];
-    showFlash(`Layer ${ld.num}: ${ld.name} — ${ld.proto}`, ld.color);
-    setLayerFact(newLayer);
-  }
-
-  // ── Data Fragments collection ──
-  fragments.forEach(f => {
-    if (f.collected) return;
-    if (collidePlayer(f)) {
-      f.collected = true;
-      G.currentBytes += f.bytes;
-      G.score += f.bytes;
-      G.packetsDelivered++;
-      G.totalPacketsThisLevel++;
-      spawnParticles(f.x, f.y, PALETTE.gold, 8);
-
-      // MTU overflow check
-      if (G.currentBytes > MTU) {
-        showFlash('⚠ MTU EXCEEDED! Packet must be fragmented (SPACE)', PALETTE.orange);
-        G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 15);
-        damageLayerRow(p.layer);
-      }
-
-      // Update HUD
-      updateHUD();
-    }
-  });
-
-  // Fragment packet with SPACE
-  if (G.keys[' '] && G.currentBytes > MSS) {
-    G.keys[' '] = false;
-    G.score += 200;
-    const frags = Math.ceil(G.currentBytes / MSS);
-    showFlash(`✓ Fragmented into ${frags} packets (${MSS}B each)`, PALETTE.green);
-    spawnParticles(p.x, p.y, PALETTE.green, 14);
-    G.currentBytes = Math.floor(G.currentBytes / frags);
+  // SPACE to fragment
+  if(G.keys[' ']&&G.currentBytes>MSS){
+    G.keys[' ']=false;
+    const n=Math.ceil(G.currentBytes/MSS);
+    flash(`✓ Fragmented into ${n} packets of ${MSS}B (MSS)`, '#8aaa8c');
+    burst(p.x,p.y,'#8aaa8c',16);
+    G.score+=300;G.currentBytes=Math.floor(G.currentBytes/n);
     updateHUD();
   }
 
-  // ── Corrupt Packets ──
-  corruptPackets.forEach(cp => {
-    cp.x += cp.vx * dt;
-    cp.angle += 2 * dt;
-    if (cp.x < 0 || cp.x > W) cp.vx *= -1;
-    cp.y += Math.sin(Date.now() * 0.002 + cp.x * 0.01) * 20 * dt;
-
-    if (p.shield === 0 && collidePlayer(cp)) {
-      G.lives--;
-      p.shield = 90;
-      G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 20);
-      damageLayerRow(p.layer);
-      spawnParticles(p.x, p.y, PALETTE.rose, 16);
-      showFlash('⚠ CORRUPT PACKET HIT! Retransmitting...', PALETTE.rose);
-      updateHUD();
-      if (G.lives <= 0) G.end();
-    }
-  });
-
-  // ── Router NPCs ──
-  routerNPCs.forEach(r => {
-    r.x += r.vx * dt;
-    if (r.x < r.w || r.x > W - r.w) r.vx *= -1;
-    r.messageTimer = Math.max(0, r.messageTimer - dt);
-    if (Math.random() < 0.005) r.messageTimer = 2;
-
-    // NPC helps player
-    if (collidePlayer(r)) {
-      const dist = Math.hypot(p.x - r.x, p.y - r.y);
-      if (dist < 40 && p.shield === 0) {
-        G.score += 50;
-        r.messageTimer = 1.5;
-        spawnParticles(r.x, r.y, r.color, 4);
+  // Collect fragments
+  frags.forEach(f=>{
+    if(f.collected)return;
+    f.bob+=dt*2.2;
+    if(hits(p,f)){
+      f.collected=true;G.currentBytes+=f.bytes;G.score+=f.bytes;G.delivered++;
+      burst(f.x,f.y,'#c4a882',10);
+      flash(`📦 ${f.cancer.name} +${f.bytes}B → ${f.cancer.region}`, '#c4a882');
+      if(G.currentBytes>MTU){
+        flash('⚠ MTU exceeded! Press SPACE to fragment','#e07a6a');
+        G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-12);
+        hitCard(p.layer);
       }
+      updateHUD();
     }
   });
 
-  // ── AI Firewall boss ──
-  if (aiFirewall) {
-    const fw = aiFirewall;
-    fw.hitTimer = Math.max(0, fw.hitTimer - dt);
-    fw.patternTimer += dt;
-
-    // Movement patterns based on level
-    if (fw.patternTimer > 2) {
-      fw.pattern = (fw.pattern + 1) % 3;
-      fw.patternTimer = 0;
+  // Corrupt packets
+  corrupt.forEach(cp=>{
+    cp.x+=cp.vx*dt;cp.angle+=2.5*dt;
+    if(cp.x<0||cp.x>W)cp.vx*=-1;
+    cp.y+=Math.sin(Date.now()*0.002+cp.x*0.008)*16*dt;
+    if(p.shield===0&&hits(p,cp)){
+      G.lives--;p.shield=90;
+      G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-20);
+      hitCard(p.layer);burst(p.x,p.y,'#e07a6a',18);
+      flash('💥 Corrupt packet! TCP retransmitting...','#e07a6a');
+      updateHUD();if(G.lives<=0)G.end();
     }
-    if (fw.pattern === 0) {
-      fw.x += fw.vx * dt;
-      if (fw.x < fw.w || fw.x > W - fw.w) fw.vx *= -1;
-    } else if (fw.pattern === 1) {
-      fw.y += 40 * dt;
-      if (fw.y > H * 0.3) fw.y = 40;
-    } else {
-      fw.x += fw.vx * dt * 1.5;
-      fw.y = 60 + Math.sin(fw.patternTimer * 3) * 40;
-      if (fw.x < fw.w || fw.x > W - fw.w) fw.vx *= -1;
-    }
+  });
 
-    // Player-firewall collision
-    if (p.shield === 0 && collidePlayer(fw)) {
-      G.lives--;
-      p.shield = 100;
-      G.layerHP[4] = Math.max(0, G.layerHP[4] - 25);
-      damageLayerRow(4);
-      spawnParticles(fw.x, fw.y, PALETTE.purple, 20);
-      showFlash('🔴 AI FIREWALL BLOCKED YOU! TLS failed.', PALETTE.purple);
-      updateHUD();
-      if (G.lives <= 0) G.end();
-    }
+  // Router NPCs
+  routers.forEach(r=>{
+    r.x+=r.vx*dt;if(r.x<r.w||r.x>W-r.w)r.vx*=-1;
+    r.tipTimer=Math.max(0,r.tipTimer-dt);
+    if(Math.random()<0.004)r.tipTimer=2;
+    if(hits(p,r)&&p.shield===0){G.score+=25;r.tipTimer=1.8;burst(r.x,r.y,'#8aaa8c',4);}
+  });
 
-    // SPACE defeats firewall if no MTU overflow
-    if (G.keys[' '] && G.currentBytes <= MSS) {
-      const dist = Math.hypot(p.x - fw.x, p.y - fw.y);
-      if (dist < 80) {
-        G.keys[' '] = false;
-        fw.hp--;
-        fw.hitTimer = 0.3;
-        spawnParticles(fw.x, fw.y, PALETTE.purple, 20);
-        G.score += 500;
-        if (fw.hp <= 0) {
-          showFlash('✓ AI FIREWALL BYPASSED! TLS negotiated.', PALETTE.green);
-          spawnParticles(fw.x, fw.y, PALETTE.green, 30);
-          aiFirewall = null;
-          G.score += 1000;
+  // Boss
+  if(boss){
+    boss.hitTimer=Math.max(0,boss.hitTimer-dt);
+    boss.phaseTimer+=dt;
+    if(boss.phaseTimer>1.8){boss.phase=(boss.phase+1)%3;boss.phaseTimer=0;}
+    if(boss.phase===0){boss.x+=boss.vx*dt;if(boss.x<boss.w||boss.x>W-boss.w)boss.vx*=-1;}
+    else if(boss.phase===1){boss.y+=48*dt;if(boss.y>H*0.35)boss.y=40;}
+    else{boss.x+=boss.vx*1.6*dt;if(boss.x<boss.w||boss.x>W-boss.w)boss.vx*=-1;boss.y=48+Math.sin(boss.phaseTimer*3)*34;}
+
+    if(p.shield===0&&hits(p,boss)){
+      G.lives--;p.shield=100;G.layerHP[4]=Math.max(0,G.layerHP[4]-25);
+      hitCard(4);burst(boss.x,boss.y,'#a07cc5',20);
+      flash('🚫 Data Breach blocked HTTPS! TLS re-negotiating...','#a07cc5');
+      updateHUD();if(G.lives<=0)G.end();
+    }
+    if(G.keys[' ']&&G.currentBytes<=MSS){
+      const d=Math.hypot(p.x-boss.x,p.y-boss.y);
+      if(d<90){
+        G.keys[' ']=false;boss.hp--;boss.hitTimer=0.35;
+        burst(boss.x,boss.y,'#a07cc5',22);G.score+=600;
+        if(boss.hp<=0){
+          flash('✅ Data Breach defeated! TLS handshake complete.','#8aaa8c');
+          burst(boss.x,boss.y,'#8aaa8c',35);boss=null;G.score+=1500;
         } else {
-          showFlash(`AI Firewall HP: ${fw.hp}/3 — Keep attacking!`, PALETTE.purple);
+          flash(`Data Breach HP: ${boss.hp}/3 — send valid packets!`,'#a07cc5');
         }
         updateHUD();
       }
     }
   }
 
-  // Particles
-  particles.forEach(pt => {
-    pt.x += pt.vx * dt;
-    pt.y += pt.vy * dt;
-    pt.life -= dt * 1.5;
-    pt.vy += 30 * dt;
+  particles.forEach(pt=>{pt.x+=pt.vx*dt;pt.y+=pt.vy*dt;pt.life-=dt*1.6;pt.vy+=24*dt;});
+  for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);
+
+  if(frags.filter(f=>!f.collected).length===0&&!boss&&G.delivered>0)G.win();
+}
+
+function draw(){
+  if(!G.running)return;
+  const W=canvas.width,H=canvas.height,lh=H/5,now=Date.now()*0.003;
+
+  // Background
+  ctx.fillStyle='#fdf6ee';ctx.fillRect(0,0,W,H);
+
+  // Body silhouette (ACS theme)
+  ctx.save();ctx.globalAlpha=0.045;ctx.fillStyle='#6b4c3b';
+  const cx=W*0.5,cy=H*0.5,sc=Math.min(W,H)*0.5;
+  ctx.beginPath();ctx.arc(cx,cy-sc*0.38,sc*0.09,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(cx,cy+sc*0.02,sc*0.14,sc*0.27,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+
+  // 5 layer lanes (physical=bottom, app=top)
+  LAYERS.forEach((ld,i)=>{
+    const y=(4-i)*lh;
+    ctx.save();ctx.globalAlpha=0.07;ctx.fillStyle=ld.color;ctx.fillRect(0,y,W,lh);ctx.restore();
+    ctx.strokeStyle=ld.color+'44';ctx.lineWidth=1;ctx.setLineDash([6,5]);
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();ctx.setLineDash([]);
+    // Layer label
+    ctx.save();ctx.globalAlpha=0.11;ctx.fillStyle=ld.color;
+    ctx.font=`700 ${Math.min(lh*0.48,26)}px 'Cormorant Garamond',serif`;
+    ctx.textAlign='right';ctx.textBaseline='middle';
+    ctx.fillText(`L${ld.num} ${ld.name}`,W-12,y+lh/2);ctx.restore();
+    // Protocol left
+    ctx.save();ctx.globalAlpha=0.45;ctx.fillStyle=ld.color;
+    ctx.font=`700 9px 'Share Tech Mono',monospace`;ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(ld.proto,8,y+lh/2);ctx.restore();
+    // MSS line
+    ctx.save();ctx.globalAlpha=0.13;ctx.strokeStyle=ld.color;ctx.lineWidth=1;ctx.setLineDash([3,5]);
+    ctx.beginPath();ctx.moveTo((MSS/MTU)*W,y);ctx.lineTo((MSS/MTU)*W,y+lh);ctx.stroke();ctx.setLineDash([]);ctx.restore();
   });
-  for (let i = particles.length - 1; i >= 0; i--) {
-    if (particles[i].life <= 0) particles.splice(i, 1);
-  }
 
-  // ── Check wave complete ──
-  const remaining = fragments.filter(f => !f.collected).length;
-  if (remaining === 0 && G.totalPacketsThisLevel > 0) {
-    // All fragments collected
-    if (!aiFirewall) {
-      G.win();
+  // Fragments (cancer data ribbons)
+  frags.forEach(f=>{
+    if(f.collected)return;
+    const by=Math.sin(now+f.bob)*5;
+    ctx.save();ctx.translate(f.x,f.y+by);
+    ctx.shadowColor='#c4a882';ctx.shadowBlur=9+Math.sin(now+f.id*3)*4;
+    ctx.fillStyle='#fff9f3';ctx.strokeStyle='#c4a882';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.roundRect(-f.w/2,-f.h/2,f.w,f.h,4);ctx.fill();ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.font='11px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎗️',-f.w/2+9,0);
+    ctx.fillStyle='#6b4c3b';ctx.font=`700 8px 'Share Tech Mono',monospace`;ctx.fillText(f.cancer.id.toUpperCase(),5,-3);
+    ctx.fillStyle='#937468';ctx.font=`600 7px 'Nunito',sans-serif`;ctx.fillText(f.bytes+'B',5,5);
+    ctx.restore();
+  });
+
+  // Corrupt packets
+  corrupt.forEach(cp=>{
+    ctx.save();ctx.translate(cp.x,cp.y);ctx.rotate(cp.angle);
+    ctx.shadowColor='#e07a6a';ctx.shadowBlur=10;
+    ctx.fillStyle='#fce9e6';ctx.strokeStyle='#e07a6a';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(-cp.w/2,-cp.h/2,cp.w,cp.h,3);ctx.fill();ctx.stroke();
+    ctx.fillStyle='#e07a6a';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('✕',0,0);
+    ctx.shadowBlur=0;ctx.restore();
+  });
+
+  // Router NPCs
+  routers.forEach(r=>{
+    const by=Math.sin(now+r.bob)*5;
+    ctx.save();ctx.translate(r.x,r.y+by);
+    ctx.shadowColor='#8aaa8c';ctx.shadowBlur=8;
+    ctx.fillStyle='#eaf1ea';ctx.strokeStyle='#8aaa8c';ctx.lineWidth=2;
+    ctx.beginPath();ctx.roundRect(-r.w/2,-r.h/2,r.w,r.h,8);ctx.fill();ctx.stroke();
+    ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🔀',0,0);
+    if(r.tipTimer>0){
+      const tw=ctx.measureText(r.tip).width+16;
+      ctx.fillStyle='rgba(253,246,238,0.97)';ctx.strokeStyle='#8aaa8c55';ctx.lineWidth=1;
+      ctx.beginPath();ctx.roundRect(-tw/2,-r.h/2-20,tw,15,3);ctx.fill();ctx.stroke();
+      ctx.fillStyle='#8aaa8c';ctx.font=`700 8px 'Share Tech Mono',monospace`;ctx.textBaseline='middle';
+      ctx.fillText(r.tip,0,-r.h/2-12.5);
     }
+    ctx.shadowBlur=0;ctx.restore();
+  });
+
+  // Boss: AI Firewall / Data Breach
+  if(boss){
+    const ph=Math.sin(now*2.5)*0.5+0.5;
+    ctx.save();ctx.translate(boss.x,boss.y);
+    const bc=boss.hitTimer>0?'#ffffff':'#a07cc5';
+    ctx.shadowColor=bc;ctx.shadowBlur=16+ph*8;
+    ctx.fillStyle=boss.hitTimer>0?'rgba(255,255,255,0.92)':'rgba(160,124,197,0.13)';
+    ctx.strokeStyle=bc;ctx.lineWidth=2.5;
+    ctx.beginPath();ctx.roundRect(-boss.w/2,-boss.h/2,boss.w,boss.h,6);ctx.fill();ctx.stroke();
+    ctx.fillStyle=boss.hitTimer>0?'#3d2c24':'#a07cc5';
+    ctx.font=`800 9px 'Nunito',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('🤖 DATA BREACH',0,-6);
+    ctx.font=`700 8px 'Share Tech Mono',monospace`;
+    ctx.fillText(`HP: ${'●'.repeat(boss.hp)}${'○'.repeat(3-boss.hp)}`,0,6);
+    ctx.fillStyle='rgba(196,168,130,0.2)';ctx.beginPath();ctx.roundRect(-26,boss.h/2+5,52,5,2);ctx.fill();
+    ctx.fillStyle='#a07cc5';ctx.beginPath();ctx.roundRect(-26,boss.h/2+5,(boss.hp/3)*52,5,2);ctx.fill();
+    ctx.shadowBlur=0;ctx.restore();
   }
 
-  // Tutorial hide
-  if (G.totalPacketsThisLevel > 0 && G.tutorialShown) {
-    G.tutorialShown = false;
-    const tb = document.getElementById('tutorialBox');
-    if (tb) tb.style.opacity = '0';
+  // Particles
+  particles.forEach(pt=>{
+    ctx.save();ctx.globalAlpha=Math.max(0,pt.life);ctx.fillStyle=pt.col;
+    ctx.shadowColor=pt.col;ctx.shadowBlur=5;
+    ctx.beginPath();ctx.arc(pt.x,pt.y,pt.r*pt.life,0,Math.PI*2);ctx.fill();ctx.restore();
+  });
+
+  // Player (ribbon/packet)
+  const p=player;
+  p.trail.forEach((tp,i)=>{
+    ctx.save();ctx.globalAlpha=(i/p.trail.length)*0.28;ctx.fillStyle=p.shield>0?'#c4a882':'#6b9fd4';
+    ctx.shadowColor=ctx.fillStyle;ctx.shadowBlur=3;
+    const sz=p.w*(i/p.trail.length)*0.5;ctx.fillRect(tp.x-sz/2,tp.y-sz/2,sz,sz*0.65);ctx.restore();
+  });
+  if(p.shield>0){
+    ctx.save();ctx.globalAlpha=p.shield%12<6?0.55:0.12;ctx.strokeStyle='#c4a882';ctx.lineWidth=2;
+    ctx.shadowColor='#c4a882';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(p.x,p.y,p.w*0.82,0,Math.PI*2);ctx.stroke();ctx.restore();
+  }
+  ctx.save();ctx.shadowColor='#6b9fd4';ctx.shadowBlur=11;
+  ctx.fillStyle='#fff9f3';ctx.strokeStyle='#6b9fd4';ctx.lineWidth=2;
+  ctx.beginPath();ctx.roundRect(p.x-p.w/2,p.y-p.h/2,p.w,p.h,5);ctx.fill();ctx.stroke();
+  ctx.shadowBlur=0;ctx.font='12px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎗️',p.x-8,p.y);
+  ctx.fillStyle='rgba(107,156,212,0.55)';
+  for(let i=0;i<3;i++)ctx.fillRect(p.x+2,p.y-p.h/2+5+i*5,4+i*4,2);
+  ctx.restore();
+
+  if(G.paused){
+    ctx.save();ctx.fillStyle='rgba(253,246,238,0.82)';ctx.fillRect(0,0,W,H);
+    ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--brown').trim();
+    ctx.font=`700 20px 'Cormorant Garamond',serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('⏸ Paused — Press P to Resume',W/2,H/2);ctx.restore();
+  }
+  if(G.currentBytes>MTU){
+    ctx.save();ctx.globalAlpha=0.5+Math.sin(Date.now()*0.009)*0.45;ctx.fillStyle='#e07a6a';
+    ctx.font=`800 11px 'Nunito',sans-serif`;ctx.textAlign='center';
+    ctx.fillText('⚠ MTU OVERFLOW — Press SPACE to fragment!',W/2,20);ctx.restore();
   }
 }
 
-function damageLayerRow(layerIdx) {
-  const row = document.getElementById('lrow' + layerIdx);
-  if (row) {
-    row.classList.add('danger');
-    setTimeout(() => row.classList.remove('danger'), 800);
-  }
+function updateHUD(){
+  document.getElementById('hScore').textContent=G.score.toLocaleString();
+  document.getElementById('hLevel').textContent=G.level;
+  document.getElementById('hDel').textContent=G.delivered;
+  document.getElementById('hWave').textContent=G.wave;
+  document.getElementById('hLives').innerHTML='❤️'.repeat(Math.max(0,G.lives));
+  document.getElementById('rpData').textContent='BM_CANCERS['+G.currentCancer.id+']';
+  document.getElementById('rpSize').textContent=G.currentBytes+'B / '+MTU+'B MTU';
+  const pct=Math.min(100,Math.round(G.currentBytes/MTU*100));
+  document.getElementById('mPct').textContent=pct+'%';
+  const bar=document.getElementById('mBar');
+  bar.style.width=pct+'%';bar.className='min'+(G.currentBytes>MTU?' warn':'');
+  const st=G.currentBytes>MTU?'⚠ OVERFLOW':G.currentBytes>MSS?'NEAR LIMIT':'OK ✓';
+  const se=document.getElementById('rpStat');se.textContent=st;se.className=G.currentBytes>MTU?'dcw':'dcv';
+  updateLayerCards();
 }
 
-// ─── DRAW FRAME ───────────────────────────────────────────────
-function draw() {
-  if (!G.running && !G.paused) return;
-  const W = canvas.width, H = canvas.height;
-
-  drawBackground();
-  drawLayerCheckpoints();
-  drawFragments();
-  drawCorruptPackets();
-  drawRouterNPCs();
-  if (aiFirewall) drawAIFirewall();
-  drawParticles();
-  if (player) drawPlayer();
-
-  // Paused overlay
-  if (G.paused) {
-    ctx.save();
-    ctx.fillStyle = 'rgba(5,13,26,0.7)';
-    ctx.fillRect(0,0,W,H);
-    ctx.fillStyle = PALETTE.cyan;
-    ctx.font = 'bold 24px Orbitron, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('⏸ PAUSED — Press P to Resume', W/2, H/2);
-    ctx.restore();
-  }
-
-  // Score popups and MTU warning
-  if (G.currentBytes > MTU) {
-    ctx.save();
-    ctx.globalAlpha = 0.5 + Math.sin(Date.now()*0.008)*0.5;
-    ctx.fillStyle = PALETTE.rose;
-    ctx.font = 'bold 13px Orbitron, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('⚠ MTU OVERFLOW — Press SPACE to fragment!', W/2, 24);
-    ctx.restore();
-  }
+function updateLayerCards(){
+  const pL=player?(4-layerIdx(player.y)):0;
+  document.getElementById('lcards').innerHTML=LAYERS.slice().reverse().map((ld,ri)=>{
+    const i=4-ri,hp=G.layerHP[i],act=pL===i;
+    return `<div class="lc${act?' active':''}" id="lcard${i}">
+      <div class="lcn" style="color:${ld.color}">${ld.num}</div>
+      <div class="lci">
+        <div class="lcname" style="color:${ld.color}">${ld.name}</div>
+        <div class="lcproto">${ld.proto}</div>
+        <div class="lcbar"><div class="lcfill" style="width:${hp}%;background:${ld.color}"></div></div>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-// ─── GAME LOOP ────────────────────────────────────────────────
-function loop(ts) {
-  const dt = Math.min((ts - G.lastTime) / 1000, 0.05);
-  G.lastTime = ts;
-  update(dt);
-  draw();
-  G.animId = requestAnimationFrame(loop);
+function hitCard(i){
+  const c=document.getElementById('lcard'+i);
+  if(c){c.classList.add('hit');setTimeout(()=>c.classList.remove('hit'),800);}
 }
 
-// ─── GAME CONTROL ─────────────────────────────────────────────
-G.start = function() {
-  document.getElementById('startScreen').style.display = 'none';
-  resizeCanvas();
-  initEntities();
-  G.running = true;
-  G.paused  = false;
-  buildLayerPanel();
-  setLayerFact(0);
-  updateHUD();
-  G.lastTime = performance.now();
-  G.animId = requestAnimationFrame(loop);
+document.addEventListener('keydown',e=>{G.keys[e.key]=true;if((e.key==='p'||e.key==='P')&&G.running)G.paused=!G.paused;e.preventDefault();},{passive:false});
+document.addEventListener('keyup',e=>{G.keys[e.key]=false;});
+
+function loop(ts){
+  const dt=Math.min((ts-G.lastTime)/1000,0.05);G.lastTime=ts;
+  update(dt);draw();G.animId=requestAnimationFrame(loop);
+}
+
+G.start=function(){
+  document.getElementById('ovStart').style.display='none';
+  resize();initEntities();G.running=true;G.paused=false;
+  updateHUD();G.lastTime=performance.now();G.animId=requestAnimationFrame(loop);
 };
 
-G.end = function() {
-  G.running = false;
-  document.getElementById('goScore').textContent = G.score.toLocaleString();
-  document.getElementById('goBreakdown').innerHTML =
-    `Packets delivered: ${G.packetsDelivered}<br>Level reached: ${G.level}<br>Wave: ${G.wave}`;
-  document.getElementById('gameOverScreen').style.display = 'flex';
+G.end=function(){
+  G.running=false;
+  document.getElementById('goSc').textContent=G.score.toLocaleString();
+  document.getElementById('goDel').textContent=G.delivered;
+  document.getElementById('ovGameOver').style.display='flex';
 };
 
-G.win = function() {
-  G.running = false;
-  const bonusScore = G.wave * G.level * 200;
-  G.score += bonusScore;
-  document.getElementById('winScore').textContent = G.score.toLocaleString();
-  document.getElementById('winBreakdown').innerHTML =
-    `Wave ${G.wave} complete! Bonus: +${bonusScore}<br>Packets: ${G.packetsDelivered}<br>
-    Total bytes: ${G.currentBytes}B / MTU ${MTU}B`;
-  document.getElementById('winScreen').style.display = 'flex';
+G.win=function(){
+  G.running=false;const bonus=G.wave*G.level*250;G.score+=bonus;
+  document.getElementById('winSc').textContent=G.score.toLocaleString();
+  document.getElementById('winDel').textContent=G.delivered;
+  document.getElementById('winMsg').textContent=`Wave ${G.wave} complete! All cancer data delivered. Bonus +${bonus} pts`;
+  document.getElementById('ovWin').style.display='flex';
 };
 
-G.nextLevel = function() {
-  document.getElementById('winScreen').style.display = 'none';
-  G.wave++;
-  if (G.wave > 3) { G.wave = 1; G.level++; }
-  G.currentBytes = 0;
-  G.currentDataName = ACS_DATA_NAMES[Math.floor(Math.random() * ACS_DATA_NAMES.length)];
-  resizeCanvas();
-  initEntities();
-  G.running = true;
-  updateHUD();
-  showFlash(`Wave ${G.wave} — Level ${G.level} — TCP/IP Networking Challenge`, PALETTE.green);
+G.nextWave=function(){
+  document.getElementById('ovWin').style.display='none';
+  G.wave++;if(G.wave>3){G.wave=1;G.level++;}
+  resize();initEntities();G.running=true;
+  updateHUD();flash(`Wave ${G.wave} — Level ${G.level} — Transmitting ACS data...`,'#8aaa8c');
 };
 
-G.reset = function() {
+G.reset=function(){
   cancelAnimationFrame(G.animId);
-  document.getElementById('gameOverScreen').style.display = 'none';
-  G.score = 0; G.lives = 3; G.level = 1; G.wave = 1;
-  G.packetsDelivered = 0; G.currentBytes = 0;
-  G.layerHP = [100,100,100,100,100];
-  G.tutorialShown = true;
-  const tb = document.getElementById('tutorialBox');
-  if (tb) tb.style.opacity = '1';
-  resizeCanvas();
-  initEntities();
-  G.running = true;
-  updateHUD();
-  G.lastTime = performance.now();
-  G.animId = requestAnimationFrame(loop);
+  document.getElementById('ovGameOver').style.display='none';
+  G.score=0;G.lives=3;G.level=1;G.wave=1;G.delivered=0;G.currentBytes=0;
+  G.layerHP=[100,100,100,100,100];
+  resize();initEntities();G.running=true;
+  updateHUD();G.lastTime=performance.now();G.animId=requestAnimationFrame(loop);
 };
 
-// ─── INIT ─────────────────────────────────────────────────────
-window.addEventListener('resize', () => {
-  resizeCanvas();
-  if (!player) return;
-  // Keep player in bounds after resize
-  player.x = Math.max(player.w/2, Math.min(canvas.width - player.w/2, player.x));
-  player.y = Math.max(player.h/2, Math.min(canvas.height - player.h/2, player.y));
+window.addEventListener('resize',()=>{
+  resize();
+  if(player){
+    player.x=Math.max(player.w/2,Math.min(canvas.width-player.w/2,player.x));
+    player.y=Math.max(player.h/2,Math.min(canvas.height-player.h/2,player.y));
+  }
 });
 
-resizeCanvas();
-buildLayerPanel();
-updateHUD();
+resize();updateLayerCards();updateHUD();
 </script>
 </body>
 </html>
