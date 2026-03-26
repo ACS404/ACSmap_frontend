@@ -14,13 +14,12 @@
 #   in _config.yml. It will appear in your document head meta (for Google search
 #   results) and in your feed.xml site description.
 
-title: Open Coding 
+title: Cancermap 
 description: "Class of 2026"
-owner_name: John Mortensen
-github_username: jm1021 
-github_repo: "portfolio" 
-baseurl: "/ACSmap_frontend" 
-url: https://ACS404.github.io
+owner_name: Not_Found
+github_username: anwitabandaru-gif 
+github_repo: "ACSmap_frontend" 
+baseurl: "" 
 future: true
 
 # Build settings
