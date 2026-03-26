@@ -91,7 +91,7 @@ canvas{display:block;width:100%;height:100%;}
 <body>
 
 <div id="hdr">
-  <h1>🎗️ ACS Body Map — <em>Data Defender</em></h1>
+  <h1>ACS Body Map — <em>Data Defender</em></h1>
   <div class="hrow">
     <div class="hitem"><div class="hval" id="hScore">0</div>Score</div>
     <div class="hitem"><div class="hval" id="hLevel">1</div>Level</div>
@@ -113,7 +113,7 @@ canvas{display:block;width:100%;height:100%;}
 
     <!-- START -->
     <div class="ov" id="ovStart">
-      <div style="font-size:34px">🎗️</div>
+      <div style="font-size:20px;font-family:var(--mono);letter-spacing:0.12em;color:var(--rose)">ACS DATA</div>
       <h2>ACS Body Map<br><em>Data Defender</em></h2>
       <p>You are a cancer data packet. Travel through all <strong>5 TCP/IP layers</strong> to deliver critical cancer information to the ACS Body Map. Collect ribbon fragments, avoid corrupt packets, and don't exceed the <strong>1500B MTU limit!</strong></p>
       <div class="lleg">
@@ -134,7 +134,7 @@ canvas{display:block;width:100%;height:100%;}
 
     <!-- GAME OVER -->
     <div class="ov" id="ovGameOver" style="display:none">
-      <div style="font-size:30px">💔</div>
+      <div style="font-size:18px;font-family:var(--mono);letter-spacing:0.1em;color:var(--rose)">TRANSMISSION FAILED</div>
       <h2>Packet <em>Lost</em></h2>
       <p>The cancer data never reached the ACS Body Map. TCP retransmit initiated.</p>
       <div class="igrid">
@@ -146,7 +146,7 @@ canvas{display:block;width:100%;height:100%;}
 
     <!-- WIN -->
     <div class="ov" id="ovWin" style="display:none">
-      <div style="font-size:30px">✅</div>
+      <div style="font-size:18px;font-family:var(--mono);letter-spacing:0.1em;color:var(--sage)">TRANSMISSION COMPLETE</div>
       <h2>Data <em>Delivered!</em></h2>
       <p id="winMsg">Cancer data reached the ACS Body Map!</p>
       <div class="igrid">
@@ -163,7 +163,7 @@ canvas{display:block;width:100%;height:100%;}
       <div class="dc">
         <div class="dcl">ACS Data</div><div class="dcv" id="rpData">BM_CANCERS[lung]</div>
         <div class="dcl">Size</div><div class="dcv" id="rpSize">0 B</div>
-        <div class="dcl">MTU Status</div><div class="dcv" id="rpStat">OK ✓</div>
+        <div class="dcl">MTU Status</div><div class="dcv" id="rpStat">OK</div>
       </div>
       <div class="mwrap">
         <div class="mlbl"><span>MTU Fill</span><span id="mPct">0%</span></div>
@@ -172,11 +172,11 @@ canvas{display:block;width:100%;height:100%;}
     </div>
     <div class="rps">
       <div class="rph">Legend</div>
-      <div class="legrow"><span class="legico">🎗️</span>You — data packet</div>
-      <div class="legrow"><span class="legico">💛</span>Cancer data fragment</div>
-      <div class="legrow"><span class="legico">🔀</span>Router NPC (helper)</div>
-      <div class="legrow"><span class="legico">❌</span>Corrupt packet (avoid)</div>
-      <div class="legrow"><span class="legico">🤖</span>AI Firewall boss</div>
+      <div class="legrow"><span class="legico">PKT</span>You — data packet</div>
+      <div class="legrow"><span class="legico">DAT</span>Cancer data fragment</div>
+      <div class="legrow"><span class="legico">RTR</span>Router NPC (helper)</div>
+      <div class="legrow"><span class="legico">ERR</span>Corrupt packet (avoid)</div>
+      <div class="legrow"><span class="legico">AI</span>AI Firewall boss</div>
     </div>
     <div class="rps">
       <div class="rph">Controls</div>
@@ -320,7 +320,7 @@ function update(dt){
   if(G.keys[' ']&&G.currentBytes>MSS){
     G.keys[' ']=false;
     const n=Math.ceil(G.currentBytes/MSS);
-    flash(`✓ Fragmented into ${n} packets of ${MSS}B (MSS)`, '#8aaa8c');
+    flash(`Fragmented into ${n} packets of ${MSS}B (MSS)`, '#8aaa8c');
     burst(p.x,p.y,'#8aaa8c',16);
     G.score+=300;G.currentBytes=Math.floor(G.currentBytes/n);
     updateHUD();
@@ -333,9 +333,9 @@ function update(dt){
     if(hits(p,f)){
       f.collected=true;G.currentBytes+=f.bytes;G.score+=f.bytes;G.delivered++;
       burst(f.x,f.y,'#c4a882',10);
-      flash(`📦 ${f.cancer.name} +${f.bytes}B → ${f.cancer.region}`, '#c4a882');
+      flash(`${f.cancer.name} +${f.bytes}B -> ${f.cancer.region}`, '#c4a882');
       if(G.currentBytes>MTU){
-        flash('⚠ MTU exceeded! Press SPACE to fragment','#e07a6a');
+        flash('MTU exceeded! Press SPACE to fragment','#e07a6a');
         G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-12);
         hitCard(p.layer);
       }
@@ -352,7 +352,7 @@ function update(dt){
       G.lives--;p.shield=90;
       G.layerHP[p.layer]=Math.max(0,G.layerHP[p.layer]-20);
       hitCard(p.layer);burst(p.x,p.y,'#e07a6a',18);
-      flash('💥 Corrupt packet! TCP retransmitting...','#e07a6a');
+      flash('Corrupt packet! TCP retransmitting...','#e07a6a');
       updateHUD();if(G.lives<=0)G.end();
     }
   });
@@ -377,7 +377,7 @@ function update(dt){
     if(p.shield===0&&hits(p,boss)){
       G.lives--;p.shield=100;G.layerHP[4]=Math.max(0,G.layerHP[4]-25);
       hitCard(4);burst(boss.x,boss.y,'#a07cc5',20);
-      flash('🚫 Data Breach blocked HTTPS! TLS re-negotiating...','#a07cc5');
+      flash('Data Breach blocked HTTPS! TLS re-negotiating...','#a07cc5');
       updateHUD();if(G.lives<=0)G.end();
     }
     if(G.keys[' ']&&G.currentBytes<=MSS){
@@ -386,7 +386,7 @@ function update(dt){
         G.keys[' ']=false;boss.hp--;boss.hitTimer=0.35;
         burst(boss.x,boss.y,'#a07cc5',22);G.score+=600;
         if(boss.hp<=0){
-          flash('✅ Data Breach defeated! TLS handshake complete.','#8aaa8c');
+          flash('Data Breach defeated! TLS handshake complete.','#8aaa8c');
           burst(boss.x,boss.y,'#8aaa8c',35);boss=null;G.score+=1500;
         } else {
           flash(`Data Breach HP: ${boss.hp}/3 — send valid packets!`,'#a07cc5');
@@ -445,7 +445,7 @@ function draw(){
     ctx.fillStyle='#fff9f3';ctx.strokeStyle='#c4a882';ctx.lineWidth=1.5;
     ctx.beginPath();ctx.roundRect(-f.w/2,-f.h/2,f.w,f.h,4);ctx.fill();ctx.stroke();
     ctx.shadowBlur=0;
-    ctx.font='11px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎗️',-f.w/2+9,0);
+    ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('DAT',-f.w/2+10,0);
     ctx.fillStyle='#6b4c3b';ctx.font=`700 8px 'Share Tech Mono',monospace`;ctx.fillText(f.cancer.id.toUpperCase(),5,-3);
     ctx.fillStyle='#937468';ctx.font=`600 7px 'Nunito',sans-serif`;ctx.fillText(f.bytes+'B',5,5);
     ctx.restore();
@@ -468,7 +468,7 @@ function draw(){
     ctx.shadowColor='#8aaa8c';ctx.shadowBlur=8;
     ctx.fillStyle='#eaf1ea';ctx.strokeStyle='#8aaa8c';ctx.lineWidth=2;
     ctx.beginPath();ctx.roundRect(-r.w/2,-r.h/2,r.w,r.h,8);ctx.fill();ctx.stroke();
-    ctx.font='16px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🔀',0,0);
+    ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('RTR',0,0);
     if(r.tipTimer>0){
       const tw=ctx.measureText(r.tip).width+16;
       ctx.fillStyle='rgba(253,246,238,0.97)';ctx.strokeStyle='#8aaa8c55';ctx.lineWidth=1;
@@ -490,7 +490,7 @@ function draw(){
     ctx.beginPath();ctx.roundRect(-boss.w/2,-boss.h/2,boss.w,boss.h,6);ctx.fill();ctx.stroke();
     ctx.fillStyle=boss.hitTimer>0?'#3d2c24':'#a07cc5';
     ctx.font=`800 9px 'Nunito',sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('🤖 DATA BREACH',0,-6);
+    ctx.fillText('AI DATA BREACH',0,-6);
     ctx.font=`700 8px 'Share Tech Mono',monospace`;
     ctx.fillText(`HP: ${'●'.repeat(boss.hp)}${'○'.repeat(3-boss.hp)}`,0,6);
     ctx.fillStyle='rgba(196,168,130,0.2)';ctx.beginPath();ctx.roundRect(-26,boss.h/2+5,52,5,2);ctx.fill();
@@ -519,7 +519,7 @@ function draw(){
   ctx.save();ctx.shadowColor='#6b9fd4';ctx.shadowBlur=11;
   ctx.fillStyle='#fff9f3';ctx.strokeStyle='#6b9fd4';ctx.lineWidth=2;
   ctx.beginPath();ctx.roundRect(p.x-p.w/2,p.y-p.h/2,p.w,p.h,5);ctx.fill();ctx.stroke();
-  ctx.shadowBlur=0;ctx.font='12px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🎗️',p.x-8,p.y);
+  ctx.shadowBlur=0;ctx.font='10px Share Tech Mono';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('PKT',p.x-7,p.y);
   ctx.fillStyle='rgba(107,156,212,0.55)';
   for(let i=0;i<3;i++)ctx.fillRect(p.x+2,p.y-p.h/2+5+i*5,4+i*4,2);
   ctx.restore();
@@ -533,7 +533,7 @@ function draw(){
   if(G.currentBytes>MTU){
     ctx.save();ctx.globalAlpha=0.5+Math.sin(Date.now()*0.009)*0.45;ctx.fillStyle='#e07a6a';
     ctx.font=`800 11px 'Nunito',sans-serif`;ctx.textAlign='center';
-    ctx.fillText('⚠ MTU OVERFLOW — Press SPACE to fragment!',W/2,20);ctx.restore();
+    ctx.fillText('MTU OVERFLOW - Press SPACE to fragment!',W/2,20);ctx.restore();
   }
 }
 
@@ -542,14 +542,14 @@ function updateHUD(){
   document.getElementById('hLevel').textContent=G.level;
   document.getElementById('hDel').textContent=G.delivered;
   document.getElementById('hWave').textContent=G.wave;
-  document.getElementById('hLives').innerHTML='❤️'.repeat(Math.max(0,G.lives));
+  document.getElementById('hLives').textContent='L'.repeat(Math.max(0,G.lives));
   document.getElementById('rpData').textContent='BM_CANCERS['+G.currentCancer.id+']';
   document.getElementById('rpSize').textContent=G.currentBytes+'B / '+MTU+'B MTU';
   const pct=Math.min(100,Math.round(G.currentBytes/MTU*100));
   document.getElementById('mPct').textContent=pct+'%';
   const bar=document.getElementById('mBar');
   bar.style.width=pct+'%';bar.className='min'+(G.currentBytes>MTU?' warn':'');
-  const st=G.currentBytes>MTU?'⚠ OVERFLOW':G.currentBytes>MSS?'NEAR LIMIT':'OK ✓';
+  const st=G.currentBytes>MTU?'OVERFLOW':G.currentBytes>MSS?'NEAR LIMIT':'OK';
   const se=document.getElementById('rpStat');se.textContent=st;se.className=G.currentBytes>MTU?'dcw':'dcv';
   updateLayerCards();
 }
