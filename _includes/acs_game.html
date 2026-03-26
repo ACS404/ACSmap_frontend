@@ -1,0 +1,1249 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Packet Defender — Networking Game</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600;700&display=swap');
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+  --bg:        #050d1a;
+  --bg2:       #091426;
+  --lane0:     #0d1f3c;
+  --lane1:     #0d2b2b;
+  --lane2:     #1a1a0d;
+  --lane3:     #1a0d1a;
+  --lane4:     #0d0d1a;
+  --cyan:      #00f5ff;
+  --green:     #00ff88;
+  --gold:      #ffd700;
+  --rose:      #ff4d6d;
+  --purple:    #bf5fff;
+  --orange:    #ff8c42;
+  --mono:      'Share Tech Mono', monospace;
+  --orb:       'Orbitron', sans-serif;
+  --exo:       'Exo 2', sans-serif;
+}
+
+body{
+  background: var(--bg);
+  color: #e0e8f0;
+  font-family: var(--exo);
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── HEADER ── */
+#header{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:10px 20px;
+  background: linear-gradient(135deg, #050d1a, #091836);
+  border-bottom: 1px solid rgba(0,245,255,0.2);
+  flex-shrink:0;
+}
+#header h1{
+  font-family:var(--orb); font-size:15px; letter-spacing:0.12em;
+  color: var(--cyan); text-shadow: 0 0 12px rgba(0,245,255,0.5);
+}
+#header h1 span{ color: var(--rose); }
+.hud-row{ display:flex; gap:20px; align-items:center; }
+.hud-item{
+  display:flex; flex-direction:column; align-items:center;
+  font-family:var(--mono); font-size:11px; color: rgba(255,255,255,0.5);
+  letter-spacing:0.08em; text-transform:uppercase;
+}
+.hud-val{
+  font-family:var(--orb); font-size:16px; font-weight:700;
+  color: var(--gold); text-shadow: 0 0 8px rgba(255,215,0,0.4);
+}
+#livesDisplay span{ color: var(--rose); font-size:14px; margin:0 1px; }
+
+/* ── MAIN GAME AREA ── */
+#gameWrap{
+  display:flex; flex:1; overflow:hidden;
+  min-height: 0;
+}
+
+/* ── LAYER PANEL (left) ── */
+#layerPanel{
+  width:180px; flex-shrink:0;
+  background: rgba(5,13,26,0.95);
+  border-right: 1px solid rgba(0,245,255,0.15);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.lp-title{
+  font-family:var(--orb); font-size:9px; letter-spacing:0.14em;
+  color: rgba(0,245,255,0.5); text-transform:uppercase;
+  padding:8px 12px 6px; border-bottom:1px solid rgba(0,245,255,0.1);
+}
+.layer-row{
+  display:flex; align-items:center; gap:8px;
+  padding:7px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.04);
+  transition: background 0.3s;
+  font-size:11px;
+}
+.layer-row.active{ background: rgba(0,245,255,0.06); }
+.layer-row.danger{ background: rgba(255,77,109,0.1); animation:dangerPulse 0.4s ease; }
+@keyframes dangerPulse{
+  0%,100%{background:rgba(255,77,109,0.1);}
+  50%{background:rgba(255,77,109,0.25);}
+}
+.lr-num{
+  font-family:var(--orb); font-size:13px; font-weight:900;
+  min-width:20px; text-align:center;
+}
+.lr-info{ display:flex; flex-direction:column; }
+.lr-name{ font-weight:700; font-size:10px; letter-spacing:0.06em; }
+.lr-proto{ font-family:var(--mono); font-size:9px; color:rgba(255,255,255,0.4); margin-top:1px; }
+.lr-hp{
+  margin-left:auto; font-family:var(--mono); font-size:10px;
+  display:flex; flex-direction:column; align-items:flex-end; gap:2px;
+}
+.lr-hp-bar{
+  width:36px; height:4px; background:rgba(255,255,255,0.1);
+  border-radius:2px; overflow:hidden;
+}
+.lr-hp-fill{ height:100%; border-radius:2px; transition:width 0.3s; }
+
+/* ── CANVAS AREA ── */
+#canvasWrap{
+  flex:1; position:relative; overflow:hidden;
+  background: var(--bg);
+}
+#gameCanvas{ display:block; width:100%; height:100%; }
+
+/* ── RIGHT PANEL ── */
+#rightPanel{
+  width:200px; flex-shrink:0;
+  background: rgba(5,13,26,0.95);
+  border-left:1px solid rgba(0,245,255,0.15);
+  display:flex; flex-direction:column; gap:0;
+  overflow-y: auto;
+  padding:0;
+}
+.rp-section{
+  padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.rp-title{
+  font-family:var(--orb); font-size:9px; letter-spacing:0.12em;
+  color:rgba(0,245,255,0.5); text-transform:uppercase; margin-bottom:8px;
+}
+.packet-info{
+  font-family:var(--mono); font-size:10px;
+  background:rgba(0,245,255,0.05); border:1px solid rgba(0,245,255,0.15);
+  border-radius:4px; padding:6px 8px; margin-bottom:4px;
+  line-height:1.6;
+}
+.packet-info .pi-label{ color:rgba(255,255,255,0.4); font-size:9px; }
+.packet-info .pi-val{ color:var(--green); font-weight:700; }
+.pi-mtu-warn{ color:var(--rose) !important; }
+
+.legend-item{
+  display:flex; align-items:center; gap:7px;
+  font-size:10px; color:rgba(255,255,255,0.65); margin-bottom:4px;
+}
+.legend-dot{
+  width:10px; height:10px; border-radius:2px; flex-shrink:0;
+}
+.controls-list{ font-size:10px; color:rgba(255,255,255,0.55); line-height:1.9; }
+.controls-list b{ color:var(--cyan); font-family:var(--mono); }
+
+.mtu-bar-wrap{ margin-top:6px; }
+.mtu-bar-label{ font-size:10px; color:rgba(255,255,255,0.5); margin-bottom:3px; font-family:var(--mono); }
+.mtu-bar-outer{
+  width:100%; height:10px;
+  background:rgba(255,255,255,0.08); border-radius:4px; overflow:hidden;
+}
+.mtu-bar-inner{
+  height:100%; border-radius:4px;
+  background: linear-gradient(90deg, var(--green), var(--gold));
+  transition: width 0.2s;
+}
+
+/* ── OVERLAYS ── */
+.overlay{
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background: rgba(5,13,26,0.94);
+  z-index:100; gap:16px;
+  backdrop-filter:blur(4px);
+}
+.overlay h2{
+  font-family:var(--orb); font-size:clamp(18px,3vw,30px);
+  letter-spacing:0.08em;
+}
+.overlay p{
+  font-size:13px; color:rgba(255,255,255,0.65); text-align:center;
+  max-width:340px; line-height:1.7;
+}
+.overlay button, .btn{
+  font-family:var(--orb); font-size:12px; letter-spacing:0.1em;
+  padding:12px 28px; border:2px solid var(--cyan); background:transparent;
+  color:var(--cyan); cursor:pointer; border-radius:4px;
+  text-transform:uppercase;
+  transition: all 0.2s;
+  box-shadow: 0 0 12px rgba(0,245,255,0.2);
+}
+.overlay button:hover,.btn:hover{
+  background:rgba(0,245,255,0.12); box-shadow:0 0 24px rgba(0,245,255,0.4);
+}
+.score-breakdown{
+  font-family:var(--mono); font-size:11px; text-align:center;
+  background:rgba(0,245,255,0.05); border:1px solid rgba(0,245,255,0.2);
+  border-radius:6px; padding:12px 20px; line-height:2;
+  color:rgba(255,255,255,0.7);
+}
+.score-breakdown .big{ font-size:28px; color:var(--gold); font-family:var(--orb); }
+
+/* Layer flash notification */
+#layerFlash{
+  position:absolute; left:50%; top:20px; transform:translateX(-50%);
+  font-family:var(--orb); font-size:11px; letter-spacing:0.1em;
+  background:rgba(5,13,26,0.95); border:1px solid rgba(0,245,255,0.3);
+  color:var(--cyan); padding:7px 18px; border-radius:20px;
+  pointer-events:none; opacity:0; transition:opacity 0.3s;
+  z-index:50; white-space:nowrap;
+}
+#layerFlash.show{ opacity:1; }
+
+/* Scanline effect */
+#canvasWrap::after{
+  content:'';
+  position:absolute; inset:0; pointer-events:none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.04) 2px,
+    rgba(0,0,0,0.04) 4px
+  );
+}
+
+#tutorialBox{
+  position:absolute; bottom:12px; left:50%; transform:translateX(-50%);
+  font-family:var(--mono); font-size:10px;
+  background:rgba(5,13,26,0.9); border:1px solid rgba(255,215,0,0.25);
+  color:rgba(255,215,0,0.8); padding:6px 14px; border-radius:4px;
+  pointer-events:none; z-index:50; letter-spacing:0.04em; white-space:nowrap;
+  transition:opacity 0.4s;
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER HUD ── -->
+<div id="header">
+  <h1>🌐 PACKET DEFENDER — <span>ACS</span> NETWORKING</h1>
+  <div class="hud-row">
+    <div class="hud-item"><div class="hud-val" id="scoreDisplay">0</div>SCORE</div>
+    <div class="hud-item"><div class="hud-val" id="levelDisplay">1</div>LEVEL</div>
+    <div class="hud-item"><div class="hud-val" id="packetDisplay">0</div>PACKETS</div>
+    <div class="hud-item"><div id="livesDisplay"></div>LIVES</div>
+    <div class="hud-item"><div class="hud-val" id="waveDisplay">1</div>WAVE</div>
+  </div>
+</div>
+
+<div id="gameWrap">
+
+  <!-- ── LEFT: LAYER PANEL ── -->
+  <div id="layerPanel">
+    <div class="lp-title">TCP/IP Layers</div>
+    <div id="layerRows"></div>
+  </div>
+
+  <!-- ── CANVAS ── -->
+  <div id="canvasWrap">
+    <canvas id="gameCanvas"></canvas>
+    <div id="layerFlash"></div>
+    <div id="tutorialBox">← Move player with A/D or Arrow Keys. Collect packets! Avoid corrupted data.</div>
+
+    <!-- START SCREEN -->
+    <div class="overlay" id="startScreen">
+      <h2 style="color:var(--cyan)">🌐 PACKET DEFENDER</h2>
+      <p style="color:rgba(255,215,0,0.85);font-size:12px;font-family:var(--mono)">
+        ACS Cancer Body Map — Networking Simulation
+      </p>
+      <p>
+        You are a <b style="color:var(--green)">TCP packet</b> carrying cancer data for the ACS Body Map.<br>
+        Navigate through all <b style="color:var(--cyan)">5 TCP/IP layers</b>, collect <b style="color:var(--gold)">data fragments</b>,
+        and reach the destination without exceeding the <b style="color:var(--rose)">MTU limit</b>.
+      </p>
+      <div style="font-family:var(--mono);font-size:11px;text-align:left;background:rgba(0,245,255,0.05);
+        border:1px solid rgba(0,245,255,0.2);border-radius:6px;padding:12px 16px;line-height:2;color:rgba(255,255,255,0.7);">
+        <b style="color:var(--cyan)">Layer 5</b> — APPLICATION  (HTTPS)<br>
+        <b style="color:var(--green)">Layer 4</b> — TRANSPORT   (TCP)<br>
+        <b style="color:var(--gold)">Layer 3</b> — NETWORK     (IP)<br>
+        <b style="color:var(--purple)">Layer 2</b> — DATA LINK  (Ethernet)<br>
+        <b style="color:var(--orange)">Layer 1</b> — PHYSICAL   (Signals)
+      </div>
+      <button onclick="G.start()">▶ START TRANSMISSION</button>
+    </div>
+
+    <!-- GAME OVER -->
+    <div class="overlay" id="gameOverScreen" style="display:none">
+      <h2 style="color:var(--rose)">⚠ PACKET LOST</h2>
+      <p>Connection dropped. Cancer data failed to reach the ACS Body Map.</p>
+      <div class="score-breakdown">
+        <div class="big" id="goScore">0</div>
+        <div id="goBreakdown">Packets delivered: 0</div>
+      </div>
+      <button onclick="G.reset()">⟳ RETRANSMIT (TCP Retry)</button>
+    </div>
+
+    <!-- WIN SCREEN -->
+    <div class="overlay" id="winScreen" style="display:none">
+      <h2 style="color:var(--green)">✓ TRANSMISSION COMPLETE</h2>
+      <p>All 5 TCP/IP layers traversed. Cancer data delivered to the ACS Body Map!</p>
+      <div class="score-breakdown">
+        <div class="big" id="winScore">0</div>
+        <div id="winBreakdown"></div>
+      </div>
+      <button onclick="G.nextLevel()">► NEXT WAVE</button>
+    </div>
+  </div>
+
+  <!-- ── RIGHT PANEL ── -->
+  <div id="rightPanel">
+    <div class="rp-section">
+      <div class="rp-title">Current Packet</div>
+      <div class="packet-info">
+        <div class="pi-label">ACS Data</div>
+        <div class="pi-val" id="piData">BM_CANCERS[lung]</div>
+        <div class="pi-label">Size</div>
+        <div class="pi-val" id="piSize">0 bytes</div>
+        <div class="pi-label">MTU (1500B)</div>
+        <div id="piStatus" class="pi-val">OK</div>
+      </div>
+      <div class="mtu-bar-wrap">
+        <div class="mtu-bar-label">MTU FILL <span id="mtuPct">0%</span></div>
+        <div class="mtu-bar-outer"><div class="mtu-bar-inner" id="mtuBar" style="width:0%"></div></div>
+      </div>
+    </div>
+    <div class="rp-section">
+      <div class="rp-title">Legend</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--gold)"></div>Data Fragment (+bytes)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cyan)"></div>NPC Router (guides)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div>Corrupt Packet (avoid)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--purple)"></div>AI Firewall (boss)</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--green)"></div>Layer Checkpoint</div>
+    </div>
+    <div class="rp-section">
+      <div class="rp-title">Controls</div>
+      <div class="controls-list">
+        <b>A / ←</b> Move left<br>
+        <b>D / →</b> Move right<br>
+        <b>W / ↑</b> Jump / ascend<br>
+        <b>S / ↓</b> Descend<br>
+        <b>SPACE</b> Fragment packet<br>
+        <b>P</b> Pause
+      </div>
+    </div>
+    <div class="rp-section">
+      <div class="rp-title">Layer Knowledge</div>
+      <div id="layerFact" style="font-size:10px;color:rgba(255,255,255,0.55);line-height:1.7;">
+        Click a hotspot or collect packets to learn networking facts.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PACKET DEFENDER — NETWORKING EDUCATIONAL GAME
+//  ACS Body Map Project
+// ═══════════════════════════════════════════════════════
+
+const canvas  = document.getElementById('gameCanvas');
+const ctx     = canvas.getContext('2d');
+const wrap    = document.getElementById('canvasWrap');
+
+// ─── CONSTANTS ───────────────────────────────────────────────
+const MTU = 1500;
+const IP_HDR  = 20;
+const TCP_HDR = 20;
+const TLS_OH  = 29;
+const MSS = MTU - IP_HDR - TCP_HDR - TLS_OH;  // 1431 bytes usable
+
+const LAYER_COLORS = ['#ff8c42','#bf5fff','#ffd700','#00ff88','#00f5ff'];
+const LAYER_DATA = [
+  { num:1, name:'PHYSICAL',    proto:'Signals/Bits',   color:'#ff8c42', fact:'Layer 1 converts digital bits into physical signals — radio waves (Wi-Fi), light (fiber), or electrical voltages (Ethernet cable). Your laptop\'s Wi-Fi card broadcasts at 2.4GHz or 5GHz.' },
+  { num:2, name:'DATA LINK',   proto:'Ethernet/MAC',   color:'#bf5fff', fact:'Layer 2 uses MAC addresses for hop-to-hop delivery. Each Ethernet frame knows the next router\'s MAC address, not the final destination. ACS Body Map frames use 48-bit MAC addresses.' },
+  { num:3, name:'NETWORK',     proto:'IP Routing',     color:'#ffd700', fact:'Layer 3 handles IP routing across the internet. Your packet travels from your laptop (192.168.x.x) to GitHub Pages servers (185.199.108.153) via multiple routers.' },
+  { num:4, name:'TRANSPORT',   proto:'TCP/Port 443',   color:'#00ff88', fact:'Layer 4 TCP guarantees reliable delivery. Unlike UDP, TCP retransmits lost packets and reorders them. The ACS Body Map must receive ALL cancer data — TCP is essential.' },
+  { num:5, name:'APPLICATION', proto:'HTTPS/HTTP2',    color:'#00f5ff', fact:'Layer 5 is where HTTPS lives. TLS 1.3 encrypts your cancer research queries for privacy. HTTP/2 multiplexes multiple requests simultaneously for fast loading.' },
+];
+
+const ACS_DATA_NAMES = [
+  'BM_CANCERS[lung]','BM_CANCERS[breast]','BM_CANCERS[brain]',
+  'BM_CANCERS[skin]','BM_CANCERS[leukemia]','SVG:body_female',
+  'CSS:stylesheets','DNS:cancer.org','TLS:certificate',
+  'HTTP/2:headers','TCP:syn_packet','IP:routing_table',
+];
+
+// ─── GAME STATE ───────────────────────────────────────────────
+const G = {
+  running: false,
+  paused:  false,
+  score:   0,
+  lives:   3,
+  level:   1,
+  wave:    1,
+  packetsDelivered: 0,
+  currentBytes: 0,
+  currentDataName: ACS_DATA_NAMES[0],
+  currentLayer: 0,
+  layerHP: [100,100,100,100,100],
+  layerProgress: [0,0,0,0,0],
+  keys: {},
+  lastTime: 0,
+  animId: null,
+  tutorialShown: true,
+  totalPacketsThisLevel: 0,
+};
+
+// ─── ENTITIES ─────────────────────────────────────────────────
+let player, fragments, corruptPackets, routerNPCs, aiFirewall, checkpoints, particles;
+
+function initEntities() {
+  const W = canvas.width, H = canvas.height;
+
+  player = {
+    x: W/2, y: H - 80,
+    w: 28, h: 28,
+    vx: 0, vy: 0,
+    speed: 180,
+    onGround: false,
+    color: '#00f5ff',
+    trail: [],
+    shield: 0, // invincibility frames
+    layer: 0,
+  };
+
+  fragments = [];
+  corruptPackets = [];
+  routerNPCs = [];
+  aiFirewall = null;
+  checkpoints = [];
+  particles = [];
+
+  spawnWave();
+}
+
+// ─── LAYER LANES ──────────────────────────────────────────────
+function getLaneY(layerIdx) {
+  // 5 lanes stacked vertically
+  const H = canvas.height;
+  const laneH = H / 5;
+  return laneIdx => laneH * laneIdx + laneH / 2;
+}
+
+function getLaneForY(y) {
+  const H = canvas.height;
+  const laneH = H / 5;
+  return Math.max(0, Math.min(4, Math.floor(y / laneH)));
+}
+
+// ─── SPAWN WAVE ───────────────────────────────────────────────
+function spawnWave() {
+  const W = canvas.width, H = canvas.height;
+  const difficulty = 1 + (G.level - 1) * 0.25 + (G.wave - 1) * 0.15;
+  G.totalPacketsThisLevel = 0;
+
+  // Spawn data fragments (gold collectibles)
+  const fragCount = Math.min(6 + G.level * 2, 18);
+  for (let i = 0; i < fragCount; i++) {
+    fragments.push({
+      x: 60 + Math.random() * (W - 120),
+      y: 40 + Math.random() * (H - 80),
+      w: 20, h: 12,
+      bytes: Math.floor(100 + Math.random() * 400),
+      color: '#ffd700',
+      glow: 0,
+      label: Math.floor(100 + Math.random() * 400) + 'B',
+      id: Math.random(),
+      collected: false,
+    });
+  }
+
+  // Spawn corrupt packets (red — avoid)
+  const corruptCount = Math.min(2 + G.level, 8);
+  for (let i = 0; i < corruptCount; i++) {
+    const laneY = ((i % 5) / 5 + 0.1) * H;
+    corruptPackets.push({
+      x: Math.random() * W,
+      y: laneY,
+      w: 24, h: 24,
+      vx: (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 60 * difficulty),
+      vy: 0,
+      color: '#ff4d6d',
+      angle: 0,
+      label: 'ERR',
+    });
+  }
+
+  // Spawn router NPCs (cyan — helpful guides)
+  for (let i = 0; i < 3; i++) {
+    routerNPCs.push({
+      x: 80 + i * (W - 160) / 2,
+      y: H * (0.2 + i * 0.25),
+      w: 32, h: 32,
+      vx: (i % 2 === 0 ? 1 : -1) * 30,
+      vy: Math.sin(i) * 15,
+      color: '#00f5ff',
+      message: ['Route via BGP','TCP SYN sent','MTU=1500'][i],
+      messageTimer: 0,
+      bobOffset: i * Math.PI * 0.66,
+    });
+  }
+
+  // Spawn AI Firewall boss on wave 3+
+  if (G.wave >= 3 || G.level >= 2) {
+    aiFirewall = {
+      x: W / 2,
+      y: 60,
+      w: 60, h: 32,
+      vx: 80 + G.level * 15,
+      vy: 0,
+      hp: 3,
+      color: '#bf5fff',
+      label: 'AI FIREWALL',
+      hitTimer: 0,
+      pattern: 0,
+      patternTimer: 0,
+    };
+  }
+
+  // Layer checkpoints (5 horizontal bands)
+  checkpoints = LAYER_DATA.map((ld, i) => {
+    const laneH = H / 5;
+    return {
+      layer: i,
+      y: laneH * i,
+      h: laneH,
+      color: ld.color,
+      activated: false,
+    };
+  });
+
+  // Randomize current data name
+  G.currentDataName = ACS_DATA_NAMES[Math.floor(Math.random() * ACS_DATA_NAMES.length)];
+}
+
+// ─── CANVAS RESIZE ────────────────────────────────────────────
+function resizeCanvas() {
+  canvas.width  = wrap.clientWidth;
+  canvas.height = wrap.clientHeight;
+}
+
+// ─── INPUT ────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  G.keys[e.key] = true;
+  if (e.key === 'p' || e.key === 'P') {
+    if (G.running) { G.paused = !G.paused; }
+  }
+  e.preventDefault();
+}, { passive: false });
+document.addEventListener('keyup',  e => { G.keys[e.key] = false; });
+
+// ─── PARTICLE SYSTEM ──────────────────────────────────────────
+function spawnParticles(x, y, color, count=8) {
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 / count) * i + Math.random() * 0.5;
+    const speed = 60 + Math.random() * 80;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      color, life: 1, size: 2 + Math.random() * 3,
+    });
+  }
+}
+
+// ─── FLASH NOTIFICATION ───────────────────────────────────────
+let flashTimeout = null;
+function showFlash(text, color='#00f5ff') {
+  const el = document.getElementById('layerFlash');
+  el.textContent = text;
+  el.style.color = color;
+  el.style.borderColor = color + '66';
+  el.classList.add('show');
+  clearTimeout(flashTimeout);
+  flashTimeout = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function setLayerFact(layerIdx) {
+  const el = document.getElementById('layerFact');
+  if (el && LAYER_DATA[layerIdx]) {
+    el.textContent = LAYER_DATA[layerIdx].fact;
+    el.style.color = LAYER_DATA[layerIdx].color + 'cc';
+  }
+}
+
+// ─── UPDATE PANEL ─────────────────────────────────────────────
+function updateHUD() {
+  document.getElementById('scoreDisplay').textContent = G.score.toLocaleString();
+  document.getElementById('levelDisplay').textContent = G.level;
+  document.getElementById('packetDisplay').textContent = G.packetsDelivered;
+  document.getElementById('waveDisplay').textContent = G.wave;
+
+  const livesEl = document.getElementById('livesDisplay');
+  livesEl.innerHTML = '❤️'.repeat(Math.max(0,G.lives));
+
+  // Packet info
+  document.getElementById('piData').textContent = G.currentDataName;
+  document.getElementById('piSize').textContent = G.currentBytes + ' bytes';
+
+  const pct = Math.min(100, Math.round(G.currentBytes / MTU * 100));
+  document.getElementById('mtuPct').textContent = pct + '%';
+  document.getElementById('mtuBar').style.width = pct + '%';
+
+  const status = G.currentBytes > MTU ? 'OVERFLOW! FRAGMENT!' : G.currentBytes > MSS ? 'NEAR MTU' : 'OK';
+  const statusEl = document.getElementById('piStatus');
+  statusEl.textContent = status;
+  statusEl.className = G.currentBytes > MTU ? 'pi-val pi-mtu-warn' : 'pi-val';
+
+  // Layer rows
+  buildLayerPanel();
+}
+
+function buildLayerPanel() {
+  const container = document.getElementById('layerRows');
+  const rows = LAYER_DATA.slice().reverse(); // show 5→1 top-to-bottom
+
+  container.innerHTML = rows.map((ld, i) => {
+    const actualIdx = 4 - i;
+    const hp = G.layerHP[actualIdx];
+    const active = getLaneForY(player ? player.y : 0) === actualIdx;
+    return `
+    <div class="layer-row ${active ? 'active' : ''}" id="lrow${actualIdx}">
+      <div class="lr-num" style="color:${ld.color}">${ld.num}</div>
+      <div class="lr-info">
+        <div class="lr-name" style="color:${ld.color}">${ld.name}</div>
+        <div class="lr-proto">${ld.proto}</div>
+      </div>
+      <div class="lr-hp">
+        <div style="color:${ld.color};font-size:9px">${hp}%</div>
+        <div class="lr-hp-bar">
+          <div class="lr-hp-fill" style="width:${hp}%;background:${ld.color}"></div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ─── DRAWING ──────────────────────────────────────────────────
+function drawBackground() {
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#050d1a';
+  ctx.fillRect(0,0,W,H);
+
+  // Draw 5 layer lanes
+  const laneH = H / 5;
+  LAYER_DATA.forEach((ld, i) => {
+    const y = laneH * i;
+    // Lane background
+    const grad = ctx.createLinearGradient(0, y, W, y);
+    grad.addColorStop(0, ld.color + '08');
+    grad.addColorStop(0.5, ld.color + '04');
+    grad.addColorStop(1, ld.color + '08');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, y, W, laneH);
+
+    // Lane border
+    ctx.strokeStyle = ld.color + '22';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([8,6]);
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    ctx.lineTo(W, y);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Layer label (right side)
+    ctx.save();
+    ctx.globalAlpha = 0.15;
+    ctx.font = `bold ${Math.min(laneH * 0.55, 32)}px 'Orbitron', sans-serif`;
+    ctx.fillStyle = ld.color;
+    ctx.textAlign = 'right';
+    ctx.fillText(`L${ld.num} ${ld.name}`, W - 12, y + laneH * 0.62);
+    ctx.restore();
+
+    // MTU line indicator
+    const mtuX = (MSS / MTU) * W;
+    ctx.strokeStyle = '#ffd70033';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4,4]);
+    ctx.beginPath();
+    ctx.moveTo(mtuX, y);
+    ctx.lineTo(mtuX, y + laneH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // Bottom lane border
+  ctx.strokeStyle = 'rgba(0,245,255,0.1)';
+  ctx.lineWidth=1;
+  ctx.beginPath();
+  ctx.moveTo(0,H); ctx.lineTo(W,H);
+  ctx.stroke();
+}
+
+function drawFragments() {
+  const now = Date.now() * 0.003;
+  fragments.forEach(f => {
+    if (f.collected) return;
+    f.glow = (Math.sin(now + f.id * 4) + 1) / 2;
+
+    ctx.save();
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 8 + f.glow * 8;
+    ctx.fillStyle = `rgba(255,215,0,${0.7 + f.glow * 0.3})`;
+    ctx.fillRect(f.x - f.w/2, f.y - f.h/2, f.w, f.h);
+
+    // Inner highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.fillRect(f.x - f.w/2 + 2, f.y - f.h/2 + 2, f.w * 0.4, 3);
+
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = '#050d1a';
+    ctx.font = '8px Share Tech Mono';
+    ctx.textAlign = 'center';
+    ctx.fillText(f.label, f.x, f.y + 4);
+    ctx.restore();
+  });
+}
+
+function drawCorruptPackets() {
+  corruptPackets.forEach(cp => {
+    ctx.save();
+    ctx.translate(cp.x, cp.y);
+    ctx.rotate(cp.angle);
+    ctx.shadowColor = '#ff4d6d';
+    ctx.shadowBlur = 12;
+    ctx.fillStyle = '#ff4d6d';
+    ctx.fillRect(-cp.w/2, -cp.h/2, cp.w, cp.h);
+    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    ctx.font = 'bold 9px Share Tech Mono';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('ERR', 0, 0);
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  });
+}
+
+function drawRouterNPCs() {
+  const now = Date.now() * 0.002;
+  routerNPCs.forEach((r, i) => {
+    const bob = Math.sin(now + r.bobOffset) * 5;
+    ctx.save();
+    ctx.translate(r.x, r.y + bob);
+    ctx.shadowColor = r.color;
+    ctx.shadowBlur = 10;
+
+    // Router body
+    ctx.fillStyle = r.color + '33';
+    ctx.strokeStyle = r.color;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(-r.w/2, -r.h/2, r.w, r.h, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    // Icon
+    ctx.fillStyle = r.color;
+    ctx.font = '14px serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🔀', 0, 0);
+
+    // Message bubble
+    if (r.messageTimer > 0) {
+      ctx.fillStyle = 'rgba(5,13,26,0.9)';
+      ctx.strokeStyle = r.color + '66';
+      ctx.lineWidth = 1;
+      const mw = 90, mh = 18;
+      ctx.beginPath();
+      ctx.roundRect(-mw/2, -r.h/2 - mh - 6, mw, mh, 3);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = r.color;
+      ctx.font = '8px Share Tech Mono';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(r.message, 0, -r.h/2 - 6 - mh/2);
+    }
+
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  });
+}
+
+function drawAIFirewall() {
+  if (!aiFirewall) return;
+  const fw = aiFirewall;
+  const now = Date.now() * 0.003;
+
+  ctx.save();
+  ctx.translate(fw.x, fw.y);
+
+  const pulse = (Math.sin(now * 2) + 1) / 2;
+  ctx.shadowColor = fw.hitTimer > 0 ? '#ffffff' : '#bf5fff';
+  ctx.shadowBlur = 15 + pulse * 10;
+
+  // Body
+  ctx.fillStyle = fw.hitTimer > 0 ? 'rgba(255,255,255,0.8)' : '#bf5fff33';
+  ctx.strokeStyle = fw.hitTimer > 0 ? '#ffffff' : '#bf5fff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(-fw.w/2, -fw.h/2, fw.w, fw.h, 4);
+  ctx.fill(); ctx.stroke();
+
+  ctx.fillStyle = fw.hitTimer > 0 ? '#050d1a' : '#bf5fff';
+  ctx.font = 'bold 9px Orbitron, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('AI FIREWALL', 0, 0);
+
+  // HP dots
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(-10 + i*10, fw.h/2 + 8, 4, 0, Math.PI*2);
+    ctx.fillStyle = i < fw.hp ? '#bf5fff' : '#1a1a2e';
+    ctx.fill();
+  }
+
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+function drawPlayer() {
+  if (!player) return;
+  const p = player;
+
+  // Trail
+  p.trail.push({ x: p.x, y: p.y, t: 1 });
+  if (p.trail.length > 12) p.trail.shift();
+  p.trail.forEach((tp, i) => {
+    const alpha = (i / p.trail.length) * 0.35 * tp.t;
+    const size = p.w * (i / p.trail.length) * 0.6;
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.fillStyle = p.shield > 0 ? '#ffd700' : '#00f5ff';
+    ctx.shadowColor = ctx.fillStyle;
+    ctx.shadowBlur = 4;
+    ctx.fillRect(tp.x - size/2, tp.y - size/2, size, size);
+    ctx.restore();
+  });
+
+  // Shield glow
+  if (p.shield > 0) {
+    ctx.save();
+    ctx.globalAlpha = (p.shield % 10 < 5) ? 0.6 : 0.2;
+    ctx.strokeStyle = '#ffd700';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = '#ffd700';
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.w * 0.9, 0, Math.PI*2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Player body
+  ctx.save();
+  ctx.shadowColor = '#00f5ff';
+  ctx.shadowBlur = 14;
+  ctx.fillStyle = '#00f5ff';
+
+  // Packet shape (rectangle with data hint)
+  const hw = p.w/2, hh = p.h/2;
+  ctx.beginPath();
+  ctx.roundRect(p.x - hw, p.y - hh, p.w, p.h, 5);
+  ctx.fill();
+
+  // Inner data lines
+  ctx.fillStyle = 'rgba(5,13,26,0.7)';
+  for (let i = 0; i < 4; i++) {
+    const lw = (3 + i * 3) + Math.sin(Date.now() * 0.005 + i) * 2;
+    ctx.fillRect(p.x - hw + 4, p.y - hh + 4 + i * 5, Math.min(lw, p.w - 8), 2);
+  }
+
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+function drawParticles() {
+  particles.forEach(pt => {
+    ctx.save();
+    ctx.globalAlpha = pt.life;
+    ctx.fillStyle = pt.color;
+    ctx.shadowColor = pt.color;
+    ctx.shadowBlur = 6;
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, pt.size * pt.life, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+function drawLayerCheckpoints() {
+  checkpoints.forEach(cp => {
+    if (cp.activated) return;
+    ctx.save();
+    ctx.globalAlpha = 0.12;
+    ctx.fillStyle = cp.color;
+    ctx.fillRect(0, cp.y, canvas.width, cp.h);
+    ctx.globalAlpha = 0.5;
+    ctx.restore();
+  });
+}
+
+// ─── COLLISION DETECTION ──────────────────────────────────────
+function rectsOverlap(ax,ay,aw,ah, bx,by,bw,bh) {
+  return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
+}
+
+function collidePlayer(obj) {
+  const p = player;
+  const hw = p.w/2, hh = p.h/2;
+  const ow = obj.w/2, oh = obj.h/2;
+  return rectsOverlap(p.x-hw,p.y-hh,p.w,p.h, obj.x-ow,obj.y-oh,obj.w,obj.h);
+}
+
+// ─── GAME LOGIC UPDATE ────────────────────────────────────────
+function update(dt) {
+  if (!G.running || G.paused || !player) return;
+
+  const W = canvas.width, H = canvas.height;
+  const p = player;
+
+  // Player movement
+  const spd = p.speed;
+  p.vx = 0;
+  if (G.keys['a'] || G.keys['A'] || G.keys['ArrowLeft'])  p.vx = -spd;
+  if (G.keys['d'] || G.keys['D'] || G.keys['ArrowRight']) p.vx = spd;
+  if (G.keys['w'] || G.keys['W'] || G.keys['ArrowUp'])    p.vy = -spd;
+  if (G.keys['s'] || G.keys['S'] || G.keys['ArrowDown'])  p.vy = spd;
+  else if (!(G.keys['w'] || G.keys['W'] || G.keys['ArrowUp'])) p.vy = 0;
+
+  p.x += p.vx * dt;
+  p.y += p.vy * dt;
+
+  // Bounds
+  p.x = Math.max(p.w/2, Math.min(W - p.w/2, p.x));
+  p.y = Math.max(p.h/2, Math.min(H - p.h/2, p.y));
+
+  // Shield tick
+  if (p.shield > 0) p.shield--;
+
+  // Determine current layer
+  const newLayer = getLaneForY(p.y);
+  if (newLayer !== p.layer) {
+    p.layer = newLayer;
+    const ld = LAYER_DATA[newLayer];
+    showFlash(`Layer ${ld.num}: ${ld.name} — ${ld.proto}`, ld.color);
+    setLayerFact(newLayer);
+  }
+
+  // ── Data Fragments collection ──
+  fragments.forEach(f => {
+    if (f.collected) return;
+    if (collidePlayer(f)) {
+      f.collected = true;
+      G.currentBytes += f.bytes;
+      G.score += f.bytes;
+      G.packetsDelivered++;
+      G.totalPacketsThisLevel++;
+      spawnParticles(f.x, f.y, '#ffd700', 8);
+
+      // MTU overflow check
+      if (G.currentBytes > MTU) {
+        showFlash('⚠ MTU EXCEEDED! Packet must be fragmented (SPACE)', '#ff8c42');
+        G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 15);
+        damageLayerRow(p.layer);
+      }
+
+      // Update HUD
+      updateHUD();
+    }
+  });
+
+  // Fragment packet with SPACE
+  if (G.keys[' '] && G.currentBytes > MSS) {
+    G.keys[' '] = false;
+    G.score += 200;
+    const frags = Math.ceil(G.currentBytes / MSS);
+    showFlash(`✓ Fragmented into ${frags} packets (${MSS}B each)`, '#00ff88');
+    spawnParticles(p.x, p.y, '#00ff88', 14);
+    G.currentBytes = Math.floor(G.currentBytes / frags);
+    updateHUD();
+  }
+
+  // ── Corrupt Packets ──
+  corruptPackets.forEach(cp => {
+    cp.x += cp.vx * dt;
+    cp.angle += 2 * dt;
+    if (cp.x < 0 || cp.x > W) cp.vx *= -1;
+    cp.y += Math.sin(Date.now() * 0.002 + cp.x * 0.01) * 20 * dt;
+
+    if (p.shield === 0 && collidePlayer(cp)) {
+      G.lives--;
+      p.shield = 90;
+      G.layerHP[p.layer] = Math.max(0, G.layerHP[p.layer] - 20);
+      damageLayerRow(p.layer);
+      spawnParticles(p.x, p.y, '#ff4d6d', 16);
+      showFlash('⚠ CORRUPT PACKET HIT! Retransmitting...', '#ff4d6d');
+      updateHUD();
+      if (G.lives <= 0) G.end();
+    }
+  });
+
+  // ── Router NPCs ──
+  routerNPCs.forEach(r => {
+    r.x += r.vx * dt;
+    if (r.x < r.w || r.x > W - r.w) r.vx *= -1;
+    r.messageTimer = Math.max(0, r.messageTimer - dt);
+    if (Math.random() < 0.005) r.messageTimer = 2;
+
+    // NPC helps player
+    if (collidePlayer(r)) {
+      const dist = Math.hypot(p.x - r.x, p.y - r.y);
+      if (dist < 40 && p.shield === 0) {
+        G.score += 50;
+        r.messageTimer = 1.5;
+        spawnParticles(r.x, r.y, r.color, 4);
+      }
+    }
+  });
+
+  // ── AI Firewall boss ──
+  if (aiFirewall) {
+    const fw = aiFirewall;
+    fw.hitTimer = Math.max(0, fw.hitTimer - dt);
+    fw.patternTimer += dt;
+
+    // Movement patterns based on level
+    if (fw.patternTimer > 2) {
+      fw.pattern = (fw.pattern + 1) % 3;
+      fw.patternTimer = 0;
+    }
+    if (fw.pattern === 0) {
+      fw.x += fw.vx * dt;
+      if (fw.x < fw.w || fw.x > W - fw.w) fw.vx *= -1;
+    } else if (fw.pattern === 1) {
+      fw.y += 40 * dt;
+      if (fw.y > H * 0.3) fw.y = 40;
+    } else {
+      fw.x += fw.vx * dt * 1.5;
+      fw.y = 60 + Math.sin(fw.patternTimer * 3) * 40;
+      if (fw.x < fw.w || fw.x > W - fw.w) fw.vx *= -1;
+    }
+
+    // Player-firewall collision
+    if (p.shield === 0 && collidePlayer(fw)) {
+      G.lives--;
+      p.shield = 100;
+      G.layerHP[4] = Math.max(0, G.layerHP[4] - 25);
+      damageLayerRow(4);
+      spawnParticles(fw.x, fw.y, '#bf5fff', 20);
+      showFlash('🔴 AI FIREWALL BLOCKED YOU! TLS failed.', '#bf5fff');
+      updateHUD();
+      if (G.lives <= 0) G.end();
+    }
+
+    // SPACE defeats firewall if no MTU overflow
+    if (G.keys[' '] && G.currentBytes <= MSS) {
+      const dist = Math.hypot(p.x - fw.x, p.y - fw.y);
+      if (dist < 80) {
+        G.keys[' '] = false;
+        fw.hp--;
+        fw.hitTimer = 0.3;
+        spawnParticles(fw.x, fw.y, '#bf5fff', 20);
+        G.score += 500;
+        if (fw.hp <= 0) {
+          showFlash('✓ AI FIREWALL BYPASSED! TLS negotiated.', '#00ff88');
+          spawnParticles(fw.x, fw.y, '#00ff88', 30);
+          aiFirewall = null;
+          G.score += 1000;
+        } else {
+          showFlash(`AI Firewall HP: ${fw.hp}/3 — Keep attacking!`, '#bf5fff');
+        }
+        updateHUD();
+      }
+    }
+  }
+
+  // Particles
+  particles.forEach(pt => {
+    pt.x += pt.vx * dt;
+    pt.y += pt.vy * dt;
+    pt.life -= dt * 1.5;
+    pt.vy += 30 * dt;
+  });
+  for (let i = particles.length - 1; i >= 0; i--) {
+    if (particles[i].life <= 0) particles.splice(i, 1);
+  }
+
+  // ── Check wave complete ──
+  const remaining = fragments.filter(f => !f.collected).length;
+  if (remaining === 0 && G.totalPacketsThisLevel > 0) {
+    // All fragments collected
+    if (!aiFirewall) {
+      G.win();
+    }
+  }
+
+  // Tutorial hide
+  if (G.totalPacketsThisLevel > 0 && G.tutorialShown) {
+    G.tutorialShown = false;
+    const tb = document.getElementById('tutorialBox');
+    if (tb) tb.style.opacity = '0';
+  }
+}
+
+function damageLayerRow(layerIdx) {
+  const row = document.getElementById('lrow' + layerIdx);
+  if (row) {
+    row.classList.add('danger');
+    setTimeout(() => row.classList.remove('danger'), 800);
+  }
+}
+
+// ─── DRAW FRAME ───────────────────────────────────────────────
+function draw() {
+  if (!G.running && !G.paused) return;
+  const W = canvas.width, H = canvas.height;
+
+  drawBackground();
+  drawLayerCheckpoints();
+  drawFragments();
+  drawCorruptPackets();
+  drawRouterNPCs();
+  if (aiFirewall) drawAIFirewall();
+  drawParticles();
+  if (player) drawPlayer();
+
+  // Paused overlay
+  if (G.paused) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(5,13,26,0.7)';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#00f5ff';
+    ctx.font = 'bold 24px Orbitron, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('⏸ PAUSED — Press P to Resume', W/2, H/2);
+    ctx.restore();
+  }
+
+  // Score popups and MTU warning
+  if (G.currentBytes > MTU) {
+    ctx.save();
+    ctx.globalAlpha = 0.5 + Math.sin(Date.now()*0.008)*0.5;
+    ctx.fillStyle = '#ff4d6d';
+    ctx.font = 'bold 13px Orbitron, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('⚠ MTU OVERFLOW — Press SPACE to fragment!', W/2, 24);
+    ctx.restore();
+  }
+}
+
+// ─── GAME LOOP ────────────────────────────────────────────────
+function loop(ts) {
+  const dt = Math.min((ts - G.lastTime) / 1000, 0.05);
+  G.lastTime = ts;
+  update(dt);
+  draw();
+  G.animId = requestAnimationFrame(loop);
+}
+
+// ─── GAME CONTROL ─────────────────────────────────────────────
+G.start = function() {
+  document.getElementById('startScreen').style.display = 'none';
+  resizeCanvas();
+  initEntities();
+  G.running = true;
+  G.paused  = false;
+  buildLayerPanel();
+  setLayerFact(0);
+  updateHUD();
+  G.lastTime = performance.now();
+  G.animId = requestAnimationFrame(loop);
+};
+
+G.end = function() {
+  G.running = false;
+  document.getElementById('goScore').textContent = G.score.toLocaleString();
+  document.getElementById('goBreakdown').innerHTML =
+    `Packets delivered: ${G.packetsDelivered}<br>Level reached: ${G.level}<br>Wave: ${G.wave}`;
+  document.getElementById('gameOverScreen').style.display = 'flex';
+};
+
+G.win = function() {
+  G.running = false;
+  const bonusScore = G.wave * G.level * 200;
+  G.score += bonusScore;
+  document.getElementById('winScore').textContent = G.score.toLocaleString();
+  document.getElementById('winBreakdown').innerHTML =
+    `Wave ${G.wave} complete! Bonus: +${bonusScore}<br>Packets: ${G.packetsDelivered}<br>
+    Total bytes: ${G.currentBytes}B / MTU ${MTU}B`;
+  document.getElementById('winScreen').style.display = 'flex';
+};
+
+G.nextLevel = function() {
+  document.getElementById('winScreen').style.display = 'none';
+  G.wave++;
+  if (G.wave > 3) { G.wave = 1; G.level++; }
+  G.currentBytes = 0;
+  G.currentDataName = ACS_DATA_NAMES[Math.floor(Math.random() * ACS_DATA_NAMES.length)];
+  resizeCanvas();
+  initEntities();
+  G.running = true;
+  updateHUD();
+  showFlash(`Wave ${G.wave} — Level ${G.level} — TCP/IP Networking Challenge`, '#00ff88');
+};
+
+G.reset = function() {
+  cancelAnimationFrame(G.animId);
+  document.getElementById('gameOverScreen').style.display = 'none';
+  G.score = 0; G.lives = 3; G.level = 1; G.wave = 1;
+  G.packetsDelivered = 0; G.currentBytes = 0;
+  G.layerHP = [100,100,100,100,100];
+  G.tutorialShown = true;
+  const tb = document.getElementById('tutorialBox');
+  if (tb) tb.style.opacity = '1';
+  resizeCanvas();
+  initEntities();
+  G.running = true;
+  updateHUD();
+  G.lastTime = performance.now();
+  G.animId = requestAnimationFrame(loop);
+};
+
+// ─── INIT ─────────────────────────────────────────────────────
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  if (!player) return;
+  // Keep player in bounds after resize
+  player.x = Math.max(player.w/2, Math.min(canvas.width - player.w/2, player.x));
+  player.y = Math.max(player.h/2, Math.min(canvas.height - player.h/2, player.y));
+});
+
+resizeCanvas();
+buildLayerPanel();
+updateHUD();
+</script>
+</body>
+</html>
