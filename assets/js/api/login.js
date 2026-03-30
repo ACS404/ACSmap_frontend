@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <button class="dropbtn">${data.name}</button>
                         <div class="dropdown-content hidden">
                             ${rolesHTML}
-                            <a href="${baseurl}/profile">Profile</a>
+                            <a href="/profile">Profile</a>
                             <div class="dropdown-divider"></div>
-                            <a href="${baseurl}/logout">Logout</a>
+                            <a href="/logout">Logout</a>
                         </div>
                     </div>
                 `;
