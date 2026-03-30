@@ -704,10 +704,10 @@ async function acsChatSend() {
 
   try {
     const response = await fetch(`${pythonURI}/api/acs-chat`, {
-  ...fetchOptions,
-  method: 'POST',
-  body: JSON.stringify({ type: 'information', message })
-});
+      ...fetchOptions,
+      method: 'POST',
+      body: JSON.stringify({ type: 'information', message })
+    });
 
     if (!response.ok) {
       const err = await response.json().catch(() => ({}));
@@ -750,6 +750,10 @@ function acsChatClear() {
   document.getElementById('acsChatStatus').style.display = 'none';
   acsRenderPrompts('');
 }
+
+// Expose handlers
+window.acsChatSend = acsChatSend;
+window.acsChatClear = acsChatClear;
 
 document.addEventListener('DOMContentLoaded', () => {
   acsRenderPrompts('');
