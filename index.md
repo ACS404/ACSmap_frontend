@@ -722,7 +722,7 @@ async function acsChatSend() {
 
     const aiBubble = document.createElement('div');
     aiBubble.className = 'acs-bubble acs-bubble-ai';
-    aiBubble.innerHTML = `<strong>📚 ACS Info</strong>${data.answer}`;
+    aiBubble.innerHTML = `<strong> ACS Info</strong>${data.answer}`;
 
     logEl.appendChild(userBubble);
     logEl.appendChild(aiBubble);
