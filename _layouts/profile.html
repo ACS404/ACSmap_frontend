@@ -1428,18 +1428,18 @@ function fmtFreq(f) {
 ═══════════════════════════════════════════════════════════ -->
 <script>
 const TN_CATS = [
-  { key:'general',     label:'General',     emoji:'📌' },
-  { key:'side_effect', label:'Side Effect', emoji:'⚠️' },
-  { key:'reminder',    label:'Reminder',    emoji:'🔔' },
-  { key:'dosage',      label:'Dosage',      emoji:'💊' },
-  { key:'symptom',     label:'Symptom',     emoji:'🌡️' },
+  { key:'general',     label:'General'     },
+  { key:'side_effect', label:'Side Effect' },
+  { key:'reminder',    label:'Reminder'    },
+  { key:'dosage',      label:'Dosage'      },
+  { key:'symptom',     label:'Symptom'     },
 ];
 
 let _tnDate    = _tnIsoToday();
 let _tnNotes   = [];
 let _tnCat     = 'general';
 let _tnFilter  = 'all';
-let _tnInited  = false;   // true once the Notes tab has been opened
+let _tnInited  = false;
 
 /* ── Tab switching ── */
 window.tnSwitchTab = function(tab) {
@@ -1471,11 +1471,11 @@ window._tnDateChanged = function(dt) {
 function _tnRefreshMeds() {
   const sel  = document.getElementById('tnMedSel');
   const meds = window._txTreatments || [];
-  sel.innerHTML = '<option value="">📅 Day note (no specific medication)</option>';
+  sel.innerHTML = '<option value="">Day note (no specific medication)</option>';
   meds.forEach(m => {
     const o = document.createElement('option');
     o.value = m.id;
-    o.textContent = '💊 ' + m.medication_name + (m.dosage ? ' (' + m.dosage + ')' : '');
+    o.textContent = m.medication_name + (m.dosage ? ' (' + m.dosage + ')' : '');
     sel.appendChild(o);
   });
 }
@@ -1484,7 +1484,7 @@ function _tnRefreshMeds() {
 function _tnBuildCats() {
   document.getElementById('tnCatRow').innerHTML = TN_CATS.map(c =>
     `<div class="tn-cat-chip${c.key === _tnCat ? ' active' : ''}"
-          onclick="_tnPickCat('${c.key}')">${c.emoji} ${c.label}</div>`
+          onclick="_tnPickCat('${c.key}')">${c.label}</div>`
   ).join('');
 }
 window._tnPickCat = function(key) { _tnCat = key; _tnBuildCats(); };
@@ -1510,7 +1510,7 @@ function _tnFetchOpts(extra) {
 
 async function _tnLoad() {
   document.getElementById('tnList').innerHTML =
-    '<div class="tn-empty-note"><div class="tn-empty-note-icon">⏳</div>Loading…</div>';
+    '<div class="tn-empty-note"><div class="tn-empty-note-icon"></div>Loading...</div>';
   try {
     const r = await fetch(`${_tnApi()}?date=${_tnDate}`,
                           _tnFetchOpts({ method:'GET' }));
@@ -1537,7 +1537,7 @@ function _tnRender() {
   let shown  = _tnFilter === 'all' ? _tnNotes : _tnNotes.filter(n => n.category === _tnFilter);
 
   if (!shown.length) {
-    list.innerHTML = `<div class="tn-empty-note"><div class="tn-empty-note-icon">📋</div>
+    list.innerHTML = `<div class="tn-empty-note"><div class="tn-empty-note-icon"></div>
       No${_tnFilter !== 'all' ? ' ' + _tnFilter.replace('_',' ') : ''} notes for this day yet.</div>`;
     return;
   }
@@ -1550,11 +1550,11 @@ function _tnRender() {
                         .toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) : '';
     return `
       <div class="tn-note" data-cat="${n.category||'general'}">
-        <span class="tn-note-badge ${n.category||'general'}">${cat.emoji} ${cat.label}</span>
-        ${med ? `<div class="tn-note-med">💊 ${_tnEsc(med.medication_name)}</div>` : ''}
+        <span class="tn-note-badge ${n.category||'general'}">${cat.label}</span>
+        ${med ? `<div class="tn-note-med">${_tnEsc(med.medication_name)}</div>` : ''}
         <div class="tn-note-text">${_tnEsc(n.content)}</div>
         ${ts ? `<div class="tn-note-time">${ts}</div>` : ''}
-        <button class="tn-del" onclick="_tnDel(${n.id})" title="Delete note">✕</button>
+        <button class="tn-del" onclick="_tnDel(${n.id})" title="Delete note">x</button>
       </div>`;
   }).join('');
 }
@@ -1589,7 +1589,7 @@ window.tnSave = async function() {
 
     if (r.ok) {
       document.getElementById('tnText').value = '';
-      status.textContent = '✓ Note saved!';
+      status.textContent = 'Note saved!';
       status.className = 'tn-status';
       await _tnLoad();
       setTimeout(() => { status.textContent = ''; }, 2500);
