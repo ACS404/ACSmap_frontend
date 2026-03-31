@@ -1,7 +1,7 @@
 ---
 layout: opencs
 permalink: /cellgame
-title: Cell Cycle RPG
+title: Cell Game
 ---
 
 <div id="cellgame-root"></div>

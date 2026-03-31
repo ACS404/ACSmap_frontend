@@ -1,7 +1,7 @@
 ---
 layout: opencs
-title: Cell Cycle
-permalink: /cyclegame
+title: Cell Lab
+permalink: /celllab
 ---
 
 <html lang="en">
