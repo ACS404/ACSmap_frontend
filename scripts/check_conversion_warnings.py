@@ -163,7 +163,7 @@ def main():
     ]
     
     total_notebooks = len(notebook_files)
-    print(f"🔍 Checking {total_notebooks} notebooks for real build warnings...")
+    print(f" Checking {total_notebooks} notebooks for real build warnings...")
     
     problematic_notebooks = []
     all_issues = {}
@@ -191,7 +191,7 @@ def main():
             eta = (total_notebooks - processed) / rate if rate > 0 else 0
             
             current_file = Path(result['path']).name
-            print(f"\r🔍 {processed}/{total_notebooks} ({processed/total_notebooks*100:.1f}%) "
+            print(f"\r {processed}/{total_notebooks} ({processed/total_notebooks*100:.1f}%) "
                   f"| {rate:.1f}/s | ETA: {eta:.0f}s | {current_file[:40]}", 
                   end='', flush=True)
             
@@ -199,7 +199,7 @@ def main():
                 rel_path = Path(result['path']).relative_to(base_dir)
                 issue_count = len(result['issues'])
                 
-                print(f"\n📝 {len(problematic_notebooks) + 1}. {rel_path} ({issue_count} warnings)")
+                print(f"\n {len(problematic_notebooks) + 1}. {rel_path} ({issue_count} warnings)")
                 
                 # Group issues by category and count them
                 issue_counts = {}
@@ -211,7 +211,7 @@ def main():
                 
                 # Show counts per category for this notebook
                 for category, messages in issue_counts.items():
-                    print(f"    🔸 {category}: {len(messages)} occurrence(s)")
+                    print(f"     {category}: {len(messages)} occurrence(s)")
                     # Show first message as example
                     if messages:
                         first_msg = messages[0]
@@ -224,7 +224,7 @@ def main():
                 
             elif result['error']:
                 rel_path = Path(result['path']).relative_to(base_dir)
-                print(f"\n❌ Error checking {rel_path}: {result['error']}")
+                print(f"\n Error checking {rel_path}: {result['error']}")
     
     print("\n")  # New line after progress
     
@@ -232,7 +232,7 @@ def main():
     
     if problematic_notebooks:
         total_issues = sum(len(issues) for issues in all_issues.values())
-        print(f"⚠️ Found {len(problematic_notebooks)} notebooks with {total_issues} total warnings:")
+        print(f" Found {len(problematic_notebooks)} notebooks with {total_issues} total warnings:")
         
         # Summarize issue types across all notebooks
         issue_summary = {}
@@ -247,11 +247,11 @@ def main():
                     notebooks_per_issue[issue_key] = set()
                 notebooks_per_issue[issue_key].add(str(rel_path))
         
-        print(f"\n📊 Overall Warning Summary:")
+        print(f"\n Overall Warning Summary:")
         for issue_type in sorted(issue_summary.keys()):
             count = issue_summary[issue_type]
             affected_notebooks = len(notebooks_per_issue[issue_type])
-            print(f"  🔹 {issue_type}: {count} issues across {affected_notebooks} notebook(s)")
+            print(f"   {issue_type}: {count} issues across {affected_notebooks} notebook(s)")
         
         # Show fix recommendations for different issue types
         fixable_issues = []
@@ -261,14 +261,14 @@ def main():
             fixable_issues.append(f"{issue_summary['UnicodeEncodeError']} UnicodeEncodeError")
         
         if fixable_issues:
-            print(f"\n💡 Run 'make convert-fix' to fix {', '.join(fixable_issues)} issues")
+            print(f"\n Run 'make convert-fix' to fix {', '.join(fixable_issues)} issues")
         
         # Add detailed notebook list at the end
         if len(issue_summary) == 1:
             issue_type_name = list(issue_summary.keys())[0]
-            print(f"\n📝 Notebooks with {issue_type_name} Issues:")
+            print(f"\n Notebooks with {issue_type_name} Issues:")
         else:
-            print(f"\n📝 Notebooks with Issues:")
+            print(f"\n Notebooks with Issues:")
         notebook_list = []
         for notebook_path, issues_list in all_issues.items():
             rel_path = Path(notebook_path).relative_to(base_dir)
@@ -297,7 +297,7 @@ def main():
             
             total_warnings += warning_count
         
-        print(f"\n📊 Summary:")
+        print(f"\n Summary:")
         print(f"- **Total notebooks with issues**: {len(notebook_list)}")
         print(f"- **Total issues**: {total_warnings}")
         if notebook_list:
@@ -313,13 +313,13 @@ def main():
             if fixable_types:
                 print(f"- **Fixable issue types**: {', '.join(fixable_types)} can be automatically fixed with `make convert-fix`")
     else:
-        print("✅ No build warnings found")
+        print(" No build warnings found")
     
-    print(f"⏱️  Completed in {elapsed_total:.1f}s ({rate:.1f} notebooks/sec)")
+    print(f"⏱  Completed in {elapsed_total:.1f}s ({rate:.1f} notebooks/sec)")
     
     # If --fix argument provided, fix the issues
     if len(sys.argv) > 1 and sys.argv[1] == "--fix" and problematic_notebooks:
-        print(f"\n🔧 Attempting to fix issues in {len(problematic_notebooks)} notebooks...")
+        print(f"\n Attempting to fix issues in {len(problematic_notebooks)} notebooks...")
         
         fixed_count = 0
         total_fixes = 0
@@ -330,16 +330,16 @@ def main():
             
             if fix_result['success'] and fix_result['fixed']:
                 rel_path = Path(fix_result['path']).relative_to(base_dir)
-                print(f"✅ Fixed {rel_path}: {', '.join(fix_result['fixed'])}")
+                print(f" Fixed {rel_path}: {', '.join(fix_result['fixed'])}")
                 fixed_count += 1
                 total_fixes += len(fix_result['fixed'])
             elif fix_result['error']:
                 rel_path = Path(fix_result['path']).relative_to(base_dir)
-                print(f"❌ Error fixing {rel_path}: {fix_result['error']}")
+                print(f" Error fixing {rel_path}: {fix_result['error']}")
         
-        print(f"\n🎉 Successfully applied {total_fixes} fixes to {fixed_count} notebooks")
+        print(f"\n Successfully applied {total_fixes} fixes to {fixed_count} notebooks")
         if fixed_count < len(problematic_notebooks):
-            print(f"ℹ️  {len(problematic_notebooks) - fixed_count} notebooks had issues that couldn't be automatically fixed")
+            print(f"ℹ  {len(problematic_notebooks) - fixed_count} notebooks had issues that couldn't be automatically fixed")
 
 if __name__ == "__main__":
     main()

@@ -16,7 +16,7 @@
 
     <div class="lesson-submit-controls">
         <button class="lesson-submit-btn" title="Submit all challenges">
-            <span class="btn-icon">📤</span>
+            <span class="btn-icon"></span>
             <span class="btn-text">Submit All Challenges</span>
         </button>
         <span class="submit-status"></span>
@@ -251,7 +251,7 @@
             const count = Object.keys(challenges).length;
 
             if (count === 0) {
-                statusSpan.textContent = '⚠️ No challenges to submit';
+                statusSpan.textContent = ' No challenges to submit';
                 statusSpan.className = 'submit-status error';
                 return;
             }
@@ -274,15 +274,15 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    statusSpan.textContent = `✅ Successfully submitted ${count} challenges!`;
+                    statusSpan.textContent = ` Successfully submitted ${count} challenges!`;
                     statusSpan.className = 'submit-status success';
                 } else {
-                    statusSpan.textContent = '❌ ' + (result.error || 'Submission failed');
+                    statusSpan.textContent = ' ' + (result.error || 'Submission failed');
                     statusSpan.className = 'submit-status error';
                 }
             } catch (error) {
                 console.error('Submission error:', error);
-                statusSpan.textContent = '❌ Network error - please try again';
+                statusSpan.textContent = ' Network error - please try again';
                 statusSpan.className = 'submit-status error';
             } finally {
                 submitBtn.disabled = false;

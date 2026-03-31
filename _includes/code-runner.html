@@ -24,8 +24,8 @@
     <div class="control-panel">
       <button class="runBtn" title="Run">▶</button>
       <button class="copyBtn" title="Copy Code">⎘</button>
-      <button class="saveBtn" title="Save Code">💾</button>
-      <button class="clearStorageBtn" title="Clear Storage">🗑</button>
+      <button class="saveBtn" title="Save Code"></button>
+      <button class="clearStorageBtn" title="Clear Storage"></button>
       <select class="languageSelect">
         <option value="python">Python</option>
         <option value="java">Java</option>
@@ -144,7 +144,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     execTimeSpan.textContent = '';
     const btn = container.querySelector('.clearStorageBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✔';
+    btn.textContent = '';
     setTimeout(() => {
       btn.textContent = originalText;
     }, 2000);
@@ -156,7 +156,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     localStorage.setItem(storageKey, code);
     const btn = container.querySelector('.saveBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✔';
+    btn.textContent = '';
     setTimeout(() => {
       btn.textContent = originalText;
     }, 2000);
@@ -168,7 +168,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     navigator.clipboard.writeText(code).then(() => {
       const btn = container.querySelector('.copyBtn');
       const originalText = btn.textContent;
-      btn.textContent = '✔';
+      btn.textContent = '';
       setTimeout(() => {
         btn.textContent = originalText;
       }, 2000);
@@ -181,7 +181,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     const icon = container.querySelector('.copyOutputBtn');
     const original = icon.textContent;
     navigator.clipboard.writeText(output).then(() => {
-      icon.textContent = '✔';
+      icon.textContent = '';
       setTimeout(() => {
         icon.textContent = original;
       }, 1200);
@@ -198,7 +198,7 @@ import { pythonURI, javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api
     /*
     const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1";
     if (lang === "javascript" && !isLocalhost) {
-      outputDiv.textContent = "⚠️ JavaScript execution is only available on localhost.";
+      outputDiv.textContent = " JavaScript execution is only available on localhost.";
       execTimeSpan.textContent = '';
       return;
     }

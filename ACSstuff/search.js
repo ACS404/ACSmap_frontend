@@ -43,7 +43,7 @@
 
     /* magnifier icon */
     #bm-search-wrap::before {
-      content: '🔍';
+      content: '';
       font-size: 13px;
       position: absolute;
       left: 12px;
@@ -284,7 +284,7 @@
     const shown = hits.slice(0, 10);
     results.innerHTML = shown.map((entry, i) => {
       const sys = (typeof BM_SYSTEMS !== 'undefined') ? BM_SYSTEMS[entry.hotspot.system] : null;
-      const icon = sys ? sys.icon : '🔬';
+      const icon = sys ? sys.icon : '';
       const color = sys ? sys.color : '#937468';
       const tagHtml = entry.tags
         .map(t => `<span class="bm-sr-tag">${t}</span>`)

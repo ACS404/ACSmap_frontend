@@ -167,7 +167,7 @@
                 // Send completion to backend
                 sendLessonCompletion(lessonId, questName, moduleName);
                 
-                console.log('📚 Lesson completed:', lessonId);
+                console.log(' Lesson completed:', lessonId);
             });
         });
     }
@@ -219,7 +219,7 @@
         
         // Debug logging
         if (ENHANCED_CONFIG.eventTrackingEnabled) {
-            console.log(`📊 Event recorded: ${eventType}`, event);
+            console.log(` Event recorded: ${eventType}`, event);
         }
         
         // If batch is getting large, send immediately
@@ -236,10 +236,10 @@
         
         // Make sure we have a UID
         if (!enhancedAnalyticsState.uid) {
-            console.warn('⚠️ No UID available, trying to fetch...');
+            console.warn(' No UID available, trying to fetch...');
             await fetchUserUID();
             if (!enhancedAnalyticsState.uid) {
-                console.error('❌ Could not fetch user UID, events not sent');
+                console.error(' Could not fetch user UID, events not sent');
                 return;
             }
         }
@@ -276,7 +276,7 @@
             if (response.ok) {
                 // Clear sent events
                 enhancedAnalyticsState.events = [];
-                console.log('✅ Event batch sent successfully');
+                console.log(' Event batch sent successfully');
             } else {
                 console.error('Failed to send event batch:', response.status);
             }
@@ -369,11 +369,11 @@
             if (response.ok) {
                 const data = await response.json();
                 enhancedAnalyticsState.uid = data.uid;
-                console.log(`👤 User UID fetched: ${enhancedAnalyticsState.uid}`);
+                console.log(` User UID fetched: ${enhancedAnalyticsState.uid}`);
                 return enhancedAnalyticsState.uid;
             }
         } catch (e) {
-            console.warn('⚠️ Could not fetch user UID:', e);
+            console.warn(' Could not fetch user UID:', e);
         }
         return null;
     }
@@ -384,7 +384,7 @@
     function initEnhancedTracking() {
         if (!ENHANCED_CONFIG.eventTrackingEnabled) return;
         
-        console.log('🚀 Initializing enhanced analytics tracking...');
+        console.log(' Initializing enhanced analytics tracking...');
         
         // Fetch user UID first
         fetchUserUID();

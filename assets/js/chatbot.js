@@ -40,7 +40,7 @@ elements.deleteChat.addEventListener("click", async (event) => {
   
   await fetchData(`${urls.clearHistory}${elements.personid.value}`, "DELETE"); // Send a DELETE request to clear chat history
   elements.chat.innerHTML = ""; // Clear the chat display area
-  appendMessage(assets.botName, assets.botImg, "left", "Your chat history has been cleared! Go ahead and send me a new message. 😄", assets.botTitle, "", formatDate(new Date())); // Inform the user that the chat history is cleared
+  appendMessage(assets.botName, assets.botImg, "left", "Your chat history has been cleared! Go ahead and send me a new message. ", assets.botTitle, "", formatDate(new Date())); // Inform the user that the chat history is cleared
 });
 
 // Event listener for the retrieve chat history button

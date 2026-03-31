@@ -18,9 +18,9 @@
     <div class="control-panel">
       <span class="lineCount">Lines: 1</span>
       <span class="charCount">Characters: 0</span>
-      <button class="copyBtn" title="Copy Code">📋 Copy</button>
-      <button class="saveBtn" title="Save Code">💾 Save</button>
-      <button class="clearStorageBtn" title="Clear Storage">🗑️ Clear</button>
+      <button class="copyBtn" title="Copy Code"> Copy</button>
+      <button class="saveBtn" title="Save Code"> Save</button>
+      <button class="clearStorageBtn" title="Clear Storage"> Clear</button>
     </div>
   </div>
 
@@ -110,7 +110,7 @@
     stopGame();
     const btn = container.querySelector('.clearStorageBtn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = '✔ Cleared';
+    btn.innerHTML = ' Cleared';
     setTimeout(() => {
       btn.innerHTML = originalText;
     }, 2000);
@@ -122,7 +122,7 @@
     localStorage.setItem(storageKey, code);
     const btn = container.querySelector('.saveBtn');
     const originalText = btn.innerHTML;
-    btn.innerHTML = '✔ Saved';
+    btn.innerHTML = ' Saved';
     setTimeout(() => {
       btn.innerHTML = originalText;
     }, 2000);
@@ -134,7 +134,7 @@
     navigator.clipboard.writeText(code).then(() => {
       const btn = container.querySelector('.copyBtn');
       const originalText = btn.innerHTML;
-      btn.innerHTML = '✔ Copied';
+      btn.innerHTML = ' Copied';
       setTimeout(() => {
         btn.innerHTML = originalText;
       }, 2000);

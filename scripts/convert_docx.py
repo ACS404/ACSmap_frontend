@@ -28,14 +28,14 @@ except ImportError:
         sys.path.append(os.path.dirname(os.path.abspath(__file__)))
         from frontmatter_manager import FrontMatterManager
     except ImportError:
-        print("❌ FrontMatterManager not found. Please ensure frontmatter_manager.py is in the scripts directory.")
+        print(" FrontMatterManager not found. Please ensure frontmatter_manager.py is in the scripts directory.")
         FrontMatterManager = None
 
 try:
     import mammoth
     from PIL import Image
 except ImportError:
-    print("❌ Required packages not found.")
+    print(" Required packages not found.")
     print("Please install dependencies:")
     print("   pip install mammoth pillow python-docx")
     print("   or run: pip install -r requirements.txt")
@@ -62,7 +62,7 @@ class DocxConverter:
                 self.fm_manager = FrontMatterManager(self.docx_dir)
                 # print(f"  FrontMatterManager initialized for {self.docx_dir}")
             except Exception as e:
-                print(f"  ⚠️ FrontMatterManager failed to initialize: {e}")
+                print(f"   FrontMatterManager failed to initialize: {e}")
                 self.fm_manager = None
         else:
             self.fm_manager = None
@@ -161,10 +161,10 @@ class DocxConverter:
                             
                             print(f"  Extracted: {image_name} ({len(image_data):,} bytes)")
                         else:
-                            print(f"  ❌ Failed to write: {image_name}")
+                            print(f"   Failed to write: {image_name}")
                         
         except Exception as e:
-            print(f"  ⚠️ Warning: Could not extract images from {docx_path}: {e}")
+            print(f"   Warning: Could not extract images from {docx_path}: {e}")
             
         return images_found
 
@@ -223,7 +223,7 @@ class DocxConverter:
                     # Use sequential mapping if we have extracted images
                     if images and image_counter < len(images):
                         current_image = images[image_counter]
-                        print(f"   🔗 Image {image_counter + 1}: {current_image['original']} -> {current_image['relative_path']}")
+                        print(f"    Image {image_counter + 1}: {current_image['original']} -> {current_image['relative_path']}")
                         
                         image_counter += 1
                         return {
@@ -254,7 +254,7 @@ class DocxConverter:
                         }
                     
                     # No images available - create placeholder
-                    print(f"    ⚠️ No images available, using placeholder")
+                    print(f"     No images available, using placeholder")
                     return {
                         "src": f"/images/docx/{doc_name}_placeholder.png",
                         "alt": image.alt_text or "Image not found"
@@ -271,7 +271,7 @@ class DocxConverter:
                     from markdownify import markdownify as md
                     markdown_content = md(result.value, heading_style="ATX")
                 except ImportError:
-                    print("  ⚠️ markdownify not available, falling back to direct conversion")
+                    print("   markdownify not available, falling back to direct conversion")
                     # Fallback to direct markdown conversion
                     result_md = mammoth.convert_to_markdown(
                         docx_file,
@@ -290,7 +290,7 @@ class DocxConverter:
                 print(f"  Images in markdown: {image_count}")
                 
         except Exception as e:
-            print(f"  ❌ Error converting {docx_path}: {e}")
+            print(f"   Error converting {docx_path}: {e}")
             return None
         
         # Clean up the markdown
@@ -352,7 +352,7 @@ permalink: {frontmatter_dict.get('permalink', f'/docx/{doc_name}/')}
                 print(f"  Using enhanced front matter from config")
                 
             except Exception as e:
-                print(f"  ⚠️ Front matter generation failed: {e}")
+                print(f"   Front matter generation failed: {e}")
                 self.fm_manager = None  # Disable for subsequent files
         
         if not self.fm_manager:
@@ -408,7 +408,7 @@ permalink: /docx/{doc_name}/
                                                Used when config files change.
         """
         if not self.docx_dir.exists():
-            print(f"❌ DOCX directory not found: {self.docx_dir}")
+            print(f" DOCX directory not found: {self.docx_dir}")
             return []
         
         # Use recursive glob to find all DOCX files
@@ -416,10 +416,10 @@ permalink: /docx/{doc_name}/
             # Convert relative path to absolute and verify it's within _docx
             target_path = self.docx_dir / target_dir
             if not target_path.exists():
-                print(f"❌ Target directory not found: {target_path}")
+                print(f" Target directory not found: {target_path}")
                 return []
             if not str(target_path).startswith(str(self.docx_dir)):
-                print(f"❌ Target directory must be within {self.docx_dir}")
+                print(f" Target directory must be within {self.docx_dir}")
                 return []
             
             print(f"Targeting directory: {target_path}")
@@ -511,9 +511,9 @@ permalink: /docx/{doc_name}/
                         if result:
                             results.append(result)
                             converted_count += 1
-                            print(f"✅ Completed: {docx_file.name}")
+                            print(f" Completed: {docx_file.name}")
                     except Exception as exc:
-                        print(f"❌ Error converting {docx_file.name}: {exc}")
+                        print(f" Error converting {docx_file.name}: {exc}")
         else:
             # Single file or no files - use sequential processing
             for docx_file in files_to_convert:

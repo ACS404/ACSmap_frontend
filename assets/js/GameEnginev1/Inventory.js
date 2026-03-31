@@ -535,7 +535,7 @@ class Inventory {
                 id: 'meteor_key',
                 name: 'Meteor Key',
                 description: 'A special key earned by completing meteor challenges.',
-                emoji: '🌠',
+                emoji: '',
                 stackable: false,
                 value: 2000
             });
@@ -553,7 +553,7 @@ class Inventory {
                 id: 'meteor_key',
                 name: 'Meteor Key',
                 description: 'A special key earned by completing meteor challenges.',
-                emoji: '🌠',
+                emoji: '',
                 stackable: false,
                 value: 2000
             };
@@ -570,7 +570,7 @@ class Inventory {
                     id: `achievement_${achievementId}`,
                     name: achievementId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()),
                     description: `Achievement earned: ${achievementId.replace(/_/g, ' ')}`,
-                    emoji: '🏆',
+                    emoji: '',
                     stackable: false,
                     value: 500
                 });
@@ -587,7 +587,7 @@ class Inventory {
                     id: `level_${levelId}`,
                     name: `${levelId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Badge`,
                     description: `Completed ${levelId.replace(/_/g, ' ')} level`,
-                    emoji: '🎖️',
+                    emoji: '',
                     stackable: false,
                     value: 1000
                 });
@@ -604,7 +604,7 @@ class Inventory {
                     id: `quiz_${quizId}`,
                     name: `${quizId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Certificate`,
                     description: `Completed ${quizId.replace(/_/g, ' ')} quiz`,
-                    emoji: '📜',
+                    emoji: '',
                     stackable: false,
                     value: 500
                 });
@@ -688,7 +688,7 @@ class Inventory {
             
             const emoji = document.createElement("div");
             emoji.className = "item-emoji";
-            emoji.textContent = item.emoji || "❓";
+            emoji.textContent = item.emoji || "";
             slot.appendChild(emoji);
 
             if (item.quantity > 1) {
@@ -926,7 +926,7 @@ class Inventory {
                     <div class="manual-page" data-page="1">
                         <h3>Market Analysis Basics</h3>
                         <div class="tip-section">
-                            <h4>📈 Understanding Market Trends</h4>
+                            <h4> Understanding Market Trends</h4>
                             <p>• Learn to identify market trends using price charts</p>
                             <p>• Study support and resistance levels</p>
                             <p>• Analyze trading volume patterns</p>
@@ -934,7 +934,7 @@ class Inventory {
                             <p>• Use multiple timeframes for confirmation</p>
                         </div>
                         <div class="tip-section">
-                            <h4>📊 Technical Indicators</h4>
+                            <h4> Technical Indicators</h4>
                             <p>• Moving Averages (MA, EMA)</p>
                             <p>• Relative Strength Index (RSI)</p>
                             <p>• MACD and Bollinger Bands</p>
@@ -942,7 +942,7 @@ class Inventory {
                             <p>• Volume Profile and OBV</p>
                         </div>
                         <div class="tip-section">
-                            <h4>📰 Fundamental Analysis</h4>
+                            <h4> Fundamental Analysis</h4>
                             <p>• Company financial statements</p>
                             <p>• Industry trends and news</p>
                             <p>• Economic indicators</p>
@@ -953,7 +953,7 @@ class Inventory {
                     <div class="manual-page" data-page="2" style="display: none;">
                         <h3>Risk Management Strategies</h3>
                         <div class="tip-section">
-                            <h4>💰 Position Sizing</h4>
+                            <h4> Position Sizing</h4>
                             <p>• Never risk more than 1-2% per trade</p>
                             <p>• Calculate position size based on risk</p>
                             <p>• Use stop-loss orders effectively</p>
@@ -961,7 +961,7 @@ class Inventory {
                             <p>• Consider leverage and margin requirements</p>
                         </div>
                         <div class="tip-section">
-                            <h4>🎯 Portfolio Management</h4>
+                            <h4> Portfolio Management</h4>
                             <p>• Diversify across different assets</p>
                             <p>• Balance risk and reward</p>
                             <p>• Regular portfolio rebalancing</p>
@@ -969,7 +969,7 @@ class Inventory {
                             <p>• Risk-adjusted returns calculation</p>
                         </div>
                         <div class="tip-section">
-                            <h4>🛡️ Risk Control</h4>
+                            <h4> Risk Control</h4>
                             <p>• Set maximum drawdown limits</p>
                             <p>• Use trailing stops</p>
                             <p>• Implement hedging strategies</p>
@@ -981,7 +981,7 @@ class Inventory {
                     <div class="manual-page" data-page="3" style="display: none;">
                         <h3>Advanced Trading Strategies</h3>
                         <div class="tip-section">
-                            <h4>⚡ Day Trading</h4>
+                            <h4> Day Trading</h4>
                             <p>• Quick profit taking</p>
                             <p>• Managing multiple positions</p>
                             <p>• Risk management in fast markets</p>
@@ -989,7 +989,7 @@ class Inventory {
                             <p>• High-frequency trading basics</p>
                         </div>
                         <div class="tip-section">
-                            <h4>📈 Swing Trading</h4>
+                            <h4> Swing Trading</h4>
                             <p>• Holding positions for days/weeks</p>
                             <p>• Trend following strategies</p>
                             <p>• Managing longer-term positions</p>
@@ -997,7 +997,7 @@ class Inventory {
                             <p>• Mean reversion strategies</p>
                         </div>
                         <div class="tip-section">
-                            <h4>🎯 Options Trading</h4>
+                            <h4> Options Trading</h4>
                             <p>• Understanding options basics</p>
                             <p>• Call and put strategies</p>
                             <p>• Options Greeks</p>
@@ -1009,7 +1009,7 @@ class Inventory {
                     <div class="manual-page" data-page="4" style="display: none;">
                         <h3>Psychology & Mindset</h3>
                         <div class="tip-section">
-                            <h4>🧠 Trading Psychology</h4>
+                            <h4> Trading Psychology</h4>
                             <p>• Control emotions during trades</p>
                             <p>• Develop a trading routine</p>
                             <p>• Learn from losses and wins</p>
@@ -1017,7 +1017,7 @@ class Inventory {
                             <p>• Building trading confidence</p>
                         </div>
                         <div class="tip-section">
-                            <h4>📝 Trading Journal</h4>
+                            <h4> Trading Journal</h4>
                             <p>• Record all trades and outcomes</p>
                             <p>• Analyze patterns in success/failure</p>
                             <p>• Continuous improvement process</p>
@@ -1025,7 +1025,7 @@ class Inventory {
                             <p>• Strategy optimization</p>
                         </div>
                         <div class="tip-section">
-                            <h4>🎯 Trading Plan</h4>
+                            <h4> Trading Plan</h4>
                             <p>• Define trading goals</p>
                             <p>• Set up trading rules</p>
                             <p>• Create entry/exit criteria</p>
@@ -1149,7 +1149,7 @@ class Inventory {
             id: 'roi_calculator',
             name: 'ROI Calculator',
             description: 'Calculate Return on Investment for your trades.',
-            emoji: '📊',
+            emoji: '',
             stackable: false,
             value: 300,
             isCalculator: true
@@ -1159,7 +1159,7 @@ class Inventory {
             id: 'stock_certificate',
             name: 'Stock Certificate',
             description: 'A valuable stock certificate that can be traded for profit.',
-            emoji: '📈',
+            emoji: '',
             stackable: true,
             value: 1000,
             quantity: 5
@@ -1169,7 +1169,7 @@ class Inventory {
             id: 'bond',
             name: 'Government Bond',
             description: 'A safe investment that provides steady returns.',
-            emoji: '💵',
+            emoji: '',
             stackable: true,
             value: 500,
             quantity: 3
@@ -1179,7 +1179,7 @@ class Inventory {
             id: 'trading_boost',
             name: 'Trading Boost',
             description: 'Increases trading profits by 50% for 30 seconds.',
-            emoji: '⚡',
+            emoji: '',
             stackable: true,
             value: 200,
             quantity: 2
@@ -1189,7 +1189,7 @@ class Inventory {
             id: 'speed_boost',
             name: 'Speed Boost',
             description: 'Increases movement speed by 25% for 20 seconds.',
-            emoji: '🚀',
+            emoji: '',
             stackable: true,
             value: 150,
             quantity: 2
@@ -1199,7 +1199,7 @@ class Inventory {
             id: 'trading_manual',
             name: 'Trading Manual',
             description: 'A comprehensive guide to advanced trading strategies.',
-            emoji: '📚',
+            emoji: '',
             stackable: false,
             value: 3000,
             quantity: 1

@@ -58,7 +58,7 @@ show_reading_time: false
   display: flex; align-items: center; gap: 8px;
 }
 #body-map-root .hero-eyebrow::before {
-  content: '♥'; font-size: 10px;
+  content: ''; font-size: 10px;
   width: 20px; height: 20px; background: var(--rose);
   border-radius: 50%; display: flex; align-items: center;
   justify-content: center; flex-shrink: 0;
@@ -932,8 +932,8 @@ show_reading_time: false
         <span class="bookmarks-count" id="bmBookmarksCount">0</span>
       </button>
       <div class="gender-toggle">
-        <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')">♀ Female</button>
-        <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')">♂ Male</button>
+        <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')"> Female</button>
+        <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')"> Male</button>
       </div>
     </div>
   </div>
@@ -957,7 +957,7 @@ show_reading_time: false
     <div class="info-panel" id="bmInfoPanel">
       <div id="bmPanelContent">
         <div class="empty-state">
-          <div class="empty-icon">🔬</div>
+          <div class="empty-icon"></div>
           <div class="empty-title">Select a body region</div>
           <div class="empty-sub">Click any pulsing hotspot on the diagram to explore cancer types for that area.</div>
         </div>
@@ -971,7 +971,7 @@ show_reading_time: false
 <aside class="bookmarks-drawer" id="bmBookmarksDrawer" aria-label="My Bookmarks">
   <div class="bookmarks-head">
     <div class="bookmarks-title">My Bookmarks</div>
-    <button type="button" class="bookmarks-close" onclick="bmCloseBookmarks()">✕</button>
+    <button type="button" class="bookmarks-close" onclick="bmCloseBookmarks()"></button>
   </div>
   <div class="bookmarks-body" id="bmBookmarksBody"></div>
 </aside>
@@ -1268,7 +1268,7 @@ async function acsChatSend() {
 
     const aiBubble = document.createElement('div');
     aiBubble.className = 'acs-bubble acs-bubble-ai';
-    aiBubble.innerHTML = `<strong>📚 ACS Info</strong>${data.answer}`;
+    aiBubble.innerHTML = `<strong> ACS Info</strong>${data.answer}`;
 
     logEl.appendChild(userBubble);
     logEl.appendChild(aiBubble);
@@ -1322,19 +1322,19 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
 const BM_SYSTEMS = {
-  head_neck:    { label:'Head & Neck',           color:'#c45e4a', icon:'🗣️' },
-  lung_chest:   { label:'Lung & Chest',           color:'#6a9fd8', icon:'🫁' },
-  breast:       { label:'Breast',                 color:'#d97fb8', icon:'🎗️' },
-  digestive:    { label:'Digestive System',       color:'#c49a3c', icon:'🩺' },
-  urinary:      { label:'Urinary System',         color:'#7a9e7e', icon:'💧' },
-  reproductive: { label:'Reproductive System',    color:'#a07cc5', icon:'🌸' },
-  endocrine:    { label:'Endocrine System',       color:'#d4845a', icon:'⚗️' },
-  skin:         { label:'Skin',                   color:'#bca36d', icon:'☀️' },
-  bone_soft:    { label:'Bone & Soft Tissue',     color:'#7a8fa6', icon:'🦴' },
-  eye:          { label:'Eye',                    color:'#5aabb5', icon:'👁️' },
-  brain_ns:     { label:'Brain & Nervous System', color:'#9b7ec8', icon:'🧠' },
-  blood_lymph:  { label:'Blood & Lymph',          color:'#e07a6a', icon:'🩸' },
-  other:        { label:'Other Cancers',          color:'#937468', icon:'🔬' },
+  head_neck:    { label:'Head & Neck',           color:'#c45e4a', icon:'' },
+  lung_chest:   { label:'Lung & Chest',           color:'#6a9fd8', icon:'' },
+  breast:       { label:'Breast',                 color:'#d97fb8', icon:'' },
+  digestive:    { label:'Digestive System',       color:'#c49a3c', icon:'' },
+  urinary:      { label:'Urinary System',         color:'#7a9e7e', icon:'' },
+  reproductive: { label:'Reproductive System',    color:'#a07cc5', icon:'' },
+  endocrine:    { label:'Endocrine System',       color:'#d4845a', icon:'' },
+  skin:         { label:'Skin',                   color:'#bca36d', icon:'' },
+  bone_soft:    { label:'Bone & Soft Tissue',     color:'#7a8fa6', icon:'' },
+  eye:          { label:'Eye',                    color:'#5aabb5', icon:'' },
+  brain_ns:     { label:'Brain & Nervous System', color:'#9b7ec8', icon:'' },
+  blood_lymph:  { label:'Blood & Lymph',          color:'#e07a6a', icon:'' },
+  other:        { label:'Other Cancers',          color:'#937468', icon:'' },
 };
 
 const BM_CANCERS = {
@@ -2274,7 +2274,7 @@ function bmActivateHotspot(id) {
           <div class="cancer-row">
             <a href="${c.link}" target="_blank" class="cancer-name-link">${c.name}</a>
             <span class="cancer-right">
-              <button class="bookmark-icon-btn ${bmIsBookmarked(cid) ? 'active' : ''}" type="button" onclick="bmToggleBookmark('${cid}', event)" title="${bmIsBookmarked(cid) ? 'Remove bookmark' : 'Save bookmark'}">★</button>
+              <button class="bookmark-icon-btn ${bmIsBookmarked(cid) ? 'active' : ''}" type="button" onclick="bmToggleBookmark('${cid}', event)" title="${bmIsBookmarked(cid) ? 'Remove bookmark' : 'Save bookmark'}"></button>
               <span class="cancer-arrow">→</span>
             </span>
           </div>

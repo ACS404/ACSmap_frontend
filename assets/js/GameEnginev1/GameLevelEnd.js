@@ -252,7 +252,7 @@ class GameLevelEnd {
                     deathMessage.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.5)';
                     deathMessage.style.width = '400px';
                     deathMessage.innerHTML = `
-                        <div style="margin-bottom: 20px;">☠️ YOU DIED ☠️</div>
+                        <div style="margin-bottom: 20px;"> YOU DIED </div>
                         <div style="font-size: 16px; margin-bottom: 20px;">The Enderman got you!</div>
                         <div style="font-size: 14px;">Respawning in 2 seconds...</div>
                     `;

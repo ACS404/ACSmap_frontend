@@ -314,13 +314,13 @@ layout: opencs
 </style>
 
 <button class="chat-toggle-btn" id="chatToggle">
-    💬
+    
 </button>
 
 <!-- Chat Modal -->
 <div class="chat-modal" id="chatModal">
         <div class="chat-header">
-            <h3>🔥 Pyre Assistant</h3>
+            <h3> Pyre Assistant</h3>
             <button class="close-btn" id="closeChat">×</button>
         </div>
         
@@ -376,7 +376,7 @@ layout: opencs
             } else {
                 chatModal.classList.remove('open');
                 chatToggle.classList.remove('active');
-                chatToggle.innerHTML = '💬';
+                chatToggle.innerHTML = '';
             }
         }
 
@@ -530,7 +530,7 @@ layout: opencs
                 messageElement.appendChild(img);
             } else {
                 const fileInfo = document.createElement('div');
-                fileInfo.textContent = `📎 ${file.name}`;
+                fileInfo.textContent = ` ${file.name}`;
                 fileInfo.style.marginBottom = '8px';
                 messageElement.appendChild(fileInfo);
             }

@@ -8,7 +8,7 @@
 -->
 <div class="challenge-submit-container" id="submit-{{ include.runner_id }}" data-runner-id="{{ include.runner_id }}">
   <button class="challenge-submit-btn" title="Submit this challenge">
-    <span class="btn-icon">📤</span>
+    <span class="btn-icon"></span>
     <span class="btn-text">Submit Challenge</span>
   </button>
   <span class="submit-status"></span>
@@ -122,13 +122,13 @@ import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'
   async function submitChallenge() {
     const code = getCodeFromRunner();
     if (code === null) {
-      statusSpan.textContent = '❌ Could not get code';
+      statusSpan.textContent = ' Could not get code';
       statusSpan.className = 'submit-status error';
       return;
     }
     
     if (!code.trim()) {
-      statusSpan.textContent = '⚠️ No code to submit';
+      statusSpan.textContent = ' No code to submit';
       statusSpan.className = 'submit-status error';
       return;
     }
@@ -152,7 +152,7 @@ import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'
       const result = await response.json();
       
       if (response.ok) {
-        statusSpan.textContent = '✅ Submitted!';
+        statusSpan.textContent = ' Submitted!';
         statusSpan.className = 'submit-status success';
         
         // Clear success message after 3 seconds
@@ -160,12 +160,12 @@ import { javaURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js'
           statusSpan.textContent = '';
         }, 3000);
       } else {
-        statusSpan.textContent = '❌ ' + (result.error || 'Submission failed');
+        statusSpan.textContent = ' ' + (result.error || 'Submission failed');
         statusSpan.className = 'submit-status error';
       }
     } catch (error) {
       console.error('Submission error:', error);
-      statusSpan.textContent = '❌ Network error';
+      statusSpan.textContent = ' Network error';
       statusSpan.className = 'submit-status error';
     } finally {
       submitBtn.disabled = false;

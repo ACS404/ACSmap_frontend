@@ -28,67 +28,67 @@ export const CANCER_SYSTEMS = {
   head_neck: {
     label: 'Head & Neck',
     color: '#e07a6a',   // rose
-    icon: '🗣️',
+    icon: '',
   },
   lung_chest: {
     label: 'Lung & Chest',
     color: '#6a9fd8',   // sky blue
-    icon: '🫁',
+    icon: '',
   },
   breast: {
     label: 'Breast',
     color: '#d97fb8',   // pink
-    icon: '🎗️',
+    icon: '',
   },
   digestive: {
     label: 'Digestive System',
     color: '#c49a3c',   // amber
-    icon: '🫃',
+    icon: '',
   },
   urinary: {
     label: 'Urinary System',
     color: '#7a9e7e',   // sage
-    icon: '🫘',
+    icon: '',
   },
   reproductive: {
     label: 'Reproductive System',
     color: '#a07cc5',   // lavender
-    icon: '🌸',
+    icon: '',
   },
   endocrine: {
     label: 'Endocrine System',
     color: '#d4845a',   // terracotta
-    icon: '⚗️',
+    icon: '',
   },
   skin: {
     label: 'Skin',
     color: '#c4a35a',   // tan
-    icon: '☀️',
+    icon: '',
   },
   bone_soft: {
     label: 'Bone & Soft Tissue',
     color: '#7a8fa6',   // steel blue
-    icon: '🦴',
+    icon: '',
   },
   eye: {
     label: 'Eye',
     color: '#5aabb5',   // teal
-    icon: '👁️',
+    icon: '',
   },
   brain_ns: {
     label: 'Brain & Nervous System',
     color: '#9b7ec8',   // purple
-    icon: '🧠',
+    icon: '',
   },
   blood_lymph: {
     label: 'Blood & Lymph',
     color: '#c45e4a',   // crimson
-    icon: '🩸',
+    icon: '',
   },
   other: {
     label: 'Other Cancers',
     color: '#888888',
-    icon: '🔬',
+    icon: '',
   },
 };
 

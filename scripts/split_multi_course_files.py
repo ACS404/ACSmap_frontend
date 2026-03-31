@@ -114,7 +114,7 @@ def create_course_specific_file(original_path, front_matter, body_content, cours
     else:
         create_markdown_course_file(original_path, course_file_path, new_front_matter)
     
-    print(f"✓ Created course-specific file: {course_file_path}")
+    print(f" Created course-specific file: {course_file_path}")
     return course_file_path
 
 def create_markdown_course_file(original_path, course_file_path, new_front_matter):
@@ -159,7 +159,7 @@ def create_content_only_file(original_path, body_content):
         with open(content_file_path, 'w', encoding='utf-8') as f:
             f.write(body_content)
         
-        print(f"✓ Created content file: {content_file_path}")
+        print(f" Created content file: {content_file_path}")
         return content_file_path
     return None
 
@@ -173,7 +173,7 @@ def find_and_split_multi_course_files():
             directories.append(dir_path)
     
     if not directories:
-        print("❌ Neither _posts nor _notebooks directory found")
+        print(" Neither _posts nor _notebooks directory found")
         return
     
     processed_files = []
@@ -206,14 +206,14 @@ def find_and_split_multi_course_files():
                         processed_files.append(str(file_path))
                 
                 except Exception as e:
-                    print(f"❌ Error processing {file_path}: {e}")
+                    print(f" Error processing {file_path}: {e}")
     
     if processed_files:
-        print(f"\n✅ Successfully processed {len(processed_files)} multi-course files:")
+        print(f"\n Successfully processed {len(processed_files)} multi-course files:")
         for file_path in processed_files:
             print(f"   - {file_path}")
     else:
-        print("\n✅ No multi-course files found to split")
+        print("\n No multi-course files found to split")
 
 def clean_split_files():
     """Remove all generated course-specific and content files."""
@@ -235,11 +235,11 @@ def clean_split_files():
                     removed_files.append(str(file_path))
     
     if removed_files:
-        print(f"✅ Cleaned {len(removed_files)} generated files")
+        print(f" Cleaned {len(removed_files)} generated files")
         for file_path in removed_files:
             print(f"   - {file_path}")
     else:
-        print("✅ No generated files to clean")
+        print(" No generated files to clean")
 
 def main():
     """Main function to run the multi-course file splitter."""

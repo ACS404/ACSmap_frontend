@@ -7,7 +7,7 @@ BASHRC="$HOME/.bashrc"
 GEM_HOME="/opt/gems"
 
 log() {
-    echo "=== ✅ $1 ==="
+    echo "===  $1 ==="
 }
 
 add_to_bashrc() {

@@ -55,85 +55,85 @@ human(gender = "female", organ_df = my_organ_df)
 Here is a complete list of the organs that are available:
 
     #>                           Male Female
-    #> adipose_tissue              ✅     ✅
-    #> adrenal_gland               ✅     ✅
-    #> amygdala                    ✅     ✅
-    #> aorta                       ✅     ✅
-    #> appendix                    ✅     ✅
-    #> atrial_appendage            ✅     ✅
-    #> bladder                     ✅     ✅
-    #> bone                        ✅     ✅
-    #> bone_marrow                 ✅     ✅
-    #> brain                       ✅     ✅
-    #> breast                      ✅     ✅
-    #> bronchus                    ✅     ✅
-    #> caecum                      ✅     ✅
-    #> cartilage                   ✅     ✅
-    #> cerebellar_hemisphere       ✅     ✅
-    #> cerebellum                  ✅     ✅
-    #> cerebral_cortex             ✅     ✅
-    #> circulatory_system          ✅     ✅
-    #> colon                       ✅     ✅
-    #> coronary_artery             ✅     ✅
-    #> diaphragm                   ✅     ✅
-    #> duodenum                    ✅     ✅
-    #> ectocervix                  ❌     ✅
-    #> endometrium                 ❌     ✅
-    #> epididymis                  ✅     ❌
-    #> esophagus                   ✅     ✅
-    #> eye                         ✅     ✅
-    #> fallopian_tube              ❌     ✅
-    #> frontal_cortex              ✅     ✅
-    #> gall_bladder                ✅     ✅
-    #> gastroesophageal_junction   ✅     ✅
-    #> heart                       ✅     ✅
-    #> ileum                       ✅     ✅
-    #> kidney                      ✅     ✅
-    #> left_atrium                 ✅     ✅
-    #> left_ventricle              ✅     ✅
-    #> liver                       ✅     ✅
-    #> lung                        ✅     ✅
-    #> lymph_node                  ✅     ✅
-    #> mitral_valve                ✅     ✅
-    #> nasal_pharynx               ✅     ✅
-    #> nasal_septum                ✅     ✅
-    #> nerve                       ✅     ✅
-    #> nose                        ✅     ✅
-    #> oral_cavity                 ✅     ✅
-    #> ovary                       ❌     ✅
-    #> pancreas                    ✅     ✅
-    #> parotid_gland               ✅     ✅
-    #> penis                       ✅     ❌
-    #> pituitary_gland             ✅     ✅
-    #> placenta                    ❌     ✅
-    #> pleura                      ✅     ✅
-    #> prefrontal_cortex           ✅     ✅
-    #> prostate_gland              ✅     ❌
-    #> pulmonary_valve             ✅     ✅
-    #> rectum                      ✅     ✅
-    #> renal_cortex                ✅     ✅
-    #> salivary_gland              ✅     ✅
-    #> seminal_vesicle             ✅     ❌
-    #> skeletal_muscle             ✅     ✅
-    #> skin                        ✅     ✅
-    #> small_intestine             ✅     ✅
-    #> smooth_muscle               ✅     ✅
-    #> spinal_cord                 ✅     ✅
-    #> spleen                      ✅     ✅
-    #> stomach                     ✅     ✅
-    #> submandibular_gland         ✅     ✅
-    #> temporal_lobe               ✅     ✅
-    #> testis                      ✅     ❌
-    #> throat                      ✅     ✅
-    #> thyroid_gland               ✅     ✅
-    #> tongue                      ✅     ✅
-    #> tonsil                      ✅     ✅
-    #> trachea                     ✅     ✅
-    #> tricuspid_valve             ✅     ✅
-    #> uterine_cervix              ❌     ✅
-    #> uterus                      ❌     ✅
-    #> vagina                      ❌     ✅
-    #> vas_deferens                ✅     ❌
+    #> adipose_tissue                   
+    #> adrenal_gland                    
+    #> amygdala                         
+    #> aorta                            
+    #> appendix                         
+    #> atrial_appendage                 
+    #> bladder                          
+    #> bone                             
+    #> bone_marrow                      
+    #> brain                            
+    #> breast                           
+    #> bronchus                         
+    #> caecum                           
+    #> cartilage                        
+    #> cerebellar_hemisphere            
+    #> cerebellum                       
+    #> cerebral_cortex                  
+    #> circulatory_system               
+    #> colon                            
+    #> coronary_artery                  
+    #> diaphragm                        
+    #> duodenum                         
+    #> ectocervix                       
+    #> endometrium                      
+    #> epididymis                       
+    #> esophagus                        
+    #> eye                              
+    #> fallopian_tube                   
+    #> frontal_cortex                   
+    #> gall_bladder                     
+    #> gastroesophageal_junction        
+    #> heart                            
+    #> ileum                            
+    #> kidney                           
+    #> left_atrium                      
+    #> left_ventricle                   
+    #> liver                            
+    #> lung                             
+    #> lymph_node                       
+    #> mitral_valve                     
+    #> nasal_pharynx                    
+    #> nasal_septum                     
+    #> nerve                            
+    #> nose                             
+    #> oral_cavity                      
+    #> ovary                            
+    #> pancreas                         
+    #> parotid_gland                    
+    #> penis                            
+    #> pituitary_gland                  
+    #> placenta                         
+    #> pleura                           
+    #> prefrontal_cortex                
+    #> prostate_gland                   
+    #> pulmonary_valve                  
+    #> rectum                           
+    #> renal_cortex                     
+    #> salivary_gland                   
+    #> seminal_vesicle                  
+    #> skeletal_muscle                  
+    #> skin                             
+    #> small_intestine                  
+    #> smooth_muscle                    
+    #> spinal_cord                      
+    #> spleen                           
+    #> stomach                          
+    #> submandibular_gland              
+    #> temporal_lobe                    
+    #> testis                           
+    #> throat                           
+    #> thyroid_gland                    
+    #> tongue                           
+    #> tonsil                           
+    #> trachea                          
+    #> tricuspid_valve                  
+    #> uterine_cervix                   
+    #> uterus                           
+    #> vagina                           
+    #> vas_deferens                     
 
 Here is a very simple shiny app using the `human` widget:
 

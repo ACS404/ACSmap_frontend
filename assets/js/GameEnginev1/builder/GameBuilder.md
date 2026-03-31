@@ -50,7 +50,7 @@ permalink: /gamebuilder
 <!-- title banner for the GameBuilder page -->
 <div class="gamebuilder-title">
   {{page.title}}
-  <a href="{{site.baseurl}}/gamebuilder/doc" target="_blank" rel="noopener noreferrer">📜</a>
+  <a href="{{site.baseurl}}/gamebuilder/doc" target="_blank" rel="noopener noreferrer"></a>
 </div>
 
 <!-- Ensure GameTemplatesV1 is available as a global by loading templates.js -->
@@ -74,7 +74,7 @@ permalink: /gamebuilder
                 <span>Assets</span>
                 <div class="panel-controls">
                     <span class="step-indicator" id="step-indicator-mini">Step 1/2</span>
-                    <button id="btn-confirm" class="icon-btn" data-tooltip="Confirm Step">✓</button>
+                    <button id="btn-confirm" class="icon-btn" data-tooltip="Confirm Step"></button>
                     <button id="btn-refresh-assets" class="icon-btn" data-tooltip="Refresh Assets">⟳</button>
                     <button id="btn-help" class="icon-btn" data-tooltip="Help">?</button>
                 </div>

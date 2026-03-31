@@ -251,10 +251,10 @@ active_tab: dashboard
                             });
                         }
                         if (!res.ok) throw new Error('Failed to update');
-                        statusEl.textContent = '✅ Updated successfully!';
+                        statusEl.textContent = ' Updated successfully!';
                         hasExistingEval = true; // Now we have data
                     } catch (e) {
-                        statusEl.textContent = '❌ Error updating.';
+                        statusEl.textContent = ' Error updating.';
                     }
                     updateBtn.disabled = false;
                 };
@@ -274,7 +274,7 @@ active_tab: dashboard
                 <!-- Language/Translation Section (moved to top) -->
                 <div class="p-4 rounded-lg bg-neutral-800 border border-neutral-700">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="font-medium">🌐 Language Translation</h3>
+                        <h3 class="font-medium"> Language Translation</h3>
                     </div>
                     <p class="text-sm text-neutral-400 mb-4">Translate the entire site into your preferred language. Use "Save All" below to apply, or "Reset" to return to English.</p>
                     <div class="flex flex-col gap-4">
@@ -282,26 +282,26 @@ active_tab: dashboard
                             <label class="text-sm text-neutral-400">Site Language</label>
                             <select id="pref-language" class="w-full bg-neutral-700 text-white rounded px-2 py-2 mt-1">
                                 <option value="">Default (English - No Translation)</option>
-                                <option value="es">🇪🇸 Spanish (Español)</option>
-                                <option value="fr">🇫🇷 French (Français)</option>
-                                <option value="de">🇩🇪 German (Deutsch)</option>
-                                <option value="it">🇮🇹 Italian (Italiano)</option>
-                                <option value="pt">🇵🇹 Portuguese (Português)</option>
-                                <option value="ru">🇷🇺 Russian (Русский)</option>
-                                <option value="zh-CN">🇨🇳 Chinese Simplified (简体中文)</option>
-                                <option value="zh-TW">🇹🇼 Chinese Traditional (繁體中文)</option>
-                                <option value="ja">🇯🇵 Japanese (日本語)</option>
-                                <option value="ko">🇰🇷 Korean (한국어)</option>
-                                <option value="ar">🇸🇦 Arabic (العربية)</option>
-                                <option value="hi">🇮🇳 Hindi (हिन्दी)</option>
-                                <option value="vi">🇻🇳 Vietnamese (Tiếng Việt)</option>
-                                <option value="th">🇹🇭 Thai (ไทย)</option>
-                                <option value="nl">🇳🇱 Dutch (Nederlands)</option>
-                                <option value="pl">🇵🇱 Polish (Polski)</option>
-                                <option value="tr">🇹🇷 Turkish (Türkçe)</option>
-                                <option value="uk">🇺🇦 Ukrainian (Українська)</option>
-                                <option value="he">🇮🇱 Hebrew (עברית)</option>
-                                <option value="fa">🇮🇷 Persian (فارسی)</option>
+                                <option value="es"> Spanish (Español)</option>
+                                <option value="fr"> French (Français)</option>
+                                <option value="de"> German (Deutsch)</option>
+                                <option value="it"> Italian (Italiano)</option>
+                                <option value="pt"> Portuguese (Português)</option>
+                                <option value="ru"> Russian (Русский)</option>
+                                <option value="zh-CN"> Chinese Simplified (简体中文)</option>
+                                <option value="zh-TW"> Chinese Traditional (繁體中文)</option>
+                                <option value="ja"> Japanese (日本語)</option>
+                                <option value="ko"> Korean (한국어)</option>
+                                <option value="ar"> Arabic (العربية)</option>
+                                <option value="hi"> Hindi (हिन्दी)</option>
+                                <option value="vi"> Vietnamese (Tiếng Việt)</option>
+                                <option value="th"> Thai (ไทย)</option>
+                                <option value="nl"> Dutch (Nederlands)</option>
+                                <option value="pl"> Polish (Polski)</option>
+                                <option value="tr"> Turkish (Türkçe)</option>
+                                <option value="uk"> Ukrainian (Українська)</option>
+                                <option value="he"> Hebrew (עברית)</option>
+                                <option value="fa"> Persian (فارسی)</option>
                             </select>
                         </div>
                         <p class="text-xs text-neutral-500">Translation powered by Google Translate.</p>

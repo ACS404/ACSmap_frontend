@@ -673,7 +673,7 @@ function openReusableModal(modalId, frameId, url) {
 
     // Add close button
     const closeBtn = document.createElement("button");
-    closeBtn.innerText = "✖";
+    closeBtn.innerText = "";
     closeBtn.style.position = "absolute";
     closeBtn.style.top = "10px";
     closeBtn.style.right = "10px";

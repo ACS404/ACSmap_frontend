@@ -4,7 +4,7 @@ set -ex
 BASHRC="$HOME/.zshrc"
 
 log() {
-    echo "=== ✅ $1 ==="
+    echo "===  $1 ==="
 }
 
 add_to_bashrc() {

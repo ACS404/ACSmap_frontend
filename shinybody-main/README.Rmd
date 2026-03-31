@@ -65,8 +65,8 @@ Here is a complete list of the organs that are available:
 ```{r, echo = FALSE}
 data.frame(
   row.names = shinybody::shinybody_organs$organ,
-  Male = ifelse(shinybody::shinybody_organs$male, "✅", "❌"),
-  Female = ifelse(shinybody::shinybody_organs$female, "✅", "❌")
+  Male = ifelse(shinybody::shinybody_organs$male, "", ""),
+  Female = ifelse(shinybody::shinybody_organs$female, "", "")
 )
 ```
 

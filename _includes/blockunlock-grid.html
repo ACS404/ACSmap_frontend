@@ -3,17 +3,17 @@
     <div id="tutorial-content">
         <h1>How To Play</h1>
         
-        <h2>🎯 Goal</h2>
+        <h2> Goal</h2>
         <p>Get the KEY to touch the DOOR to complete the level!</p>
         
-        <h2>🖱️ Selecting Tiles</h2>
+        <h2> Selecting Tiles</h2>
         <ul>
             <li><strong>Click</strong> any tile in the green area to select it</li>
             <li>Selected tiles get a yellow outline</li>
             <li>You can only select tiles inside the green area</li>
         </ul>
         
-        <h2>🎨 Adding Tiles</h2>
+        <h2> Adding Tiles</h2>
         <p><strong>Step 1:</strong> Click an empty green space<br>
         <strong>Step 2:</strong> Press a number key to place a tile:</p>
         <ul>
@@ -24,7 +24,7 @@
             <li><strong>5</strong> - Slider (Slides across the grid)</li>
         </ul>
         
-        <h2>⌨️ Keyboard Controls</h2>
+        <h2>⌨ Keyboard Controls</h2>
         <ul>
             <li><strong>←↑↓→</strong> - Move selected tiles</li>
             <li><strong>Q</strong> - Rotate tile left</li>
@@ -33,10 +33,10 @@
             <li><strong>ESC</strong> - Stop pushers</li>
         </ul>
         
-        <h2>🎮 Button Controls</h2>
+        <h2> Button Controls</h2>
         <ul>
             <li><strong>← Prev Level / Next Level →</strong> - Change levels</li>
-            <li><strong>🔄 Reset Level</strong> - Restart current level</li>
+            <li><strong> Reset Level</strong> - Restart current level</li>
             <li><strong>Rotate CW / CCW</strong> - Rotate selected tile</li>
             <li><strong>Start Pushers</strong> - Make pusher tiles move</li>
             <li><strong>Stop Pushers</strong> - Stop all pusher movement</li>
@@ -50,7 +50,7 @@
     <div id="level-info">Level 1 of 3</div>
     <button id="prev-level">← Prev Level</button>
     <button id="next-level">Next Level →</button>
-    <button id="reset-level">🔄 Reset Level</button>
+    <button id="reset-level"> Reset Level</button>
     <button id="rotate-cw">Rotate CW</button>
     <button id="rotate-ccw">Rotate CCW</button>
     <button id="start-pushers">Start Pushers (O)</button>
@@ -127,7 +127,7 @@ const levelLoader = new LevelLoader(g, container, cells);
 
 // Set up level completion callback
 g.onLevelComplete = () => {
-    console.log("=== 🎉 LEVEL COMPLETION TRIGGERED 🎉 ===");
+    console.log("===  LEVEL COMPLETION TRIGGERED  ===");
     
     // Stop all pushers immediately
     g.stopAllPushers();
@@ -140,7 +140,7 @@ g.onLevelComplete = () => {
         
         if (!hasNext) {
             console.log("No more levels - game complete!");
-            alert("🎉 Congratulations! You completed all levels!");
+            alert(" Congratulations! You completed all levels!");
         } else {
             console.log("Next level loaded, updating display...");
             updateLevelDisplay();

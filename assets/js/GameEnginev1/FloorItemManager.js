@@ -56,7 +56,7 @@ class FloorItemManager {
             id: 'test-emoji',
             name: 'Test Emoji',
             description: 'A test emoji item',
-            emoji: '🎮',
+            emoji: '',
             stackable: true,
             value: 100,
             quantity: 1

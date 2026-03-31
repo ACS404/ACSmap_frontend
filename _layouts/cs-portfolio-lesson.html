@@ -147,11 +147,11 @@ layout: opencs
         {{ content }}
       </div>
 
-      <!-- ✅ Modular File Upload Box -->
+      <!--  Modular File Upload Box -->
       {% if page.enable_upload %}
       <hr>
       <div class="file-upload-section">
-        <h3>📁 File Upload</h3>
+        <h3> File Upload</h3>
         <div class="upload-box" onclick="document.getElementById('fileInput').click()">
           <p>Click or drag a file to upload</p>
           <input type="file" id="fileInput" />
@@ -185,7 +185,7 @@ layout: opencs
         });
       </script>
       {% endif %}
-      <!-- ✅ End of Modular Upload -->
+      <!--  End of Modular Upload -->
 
       <!-- Navigation buttons -->
       <div class="max-w-5xl mx-auto mt-16 mb-8">
@@ -229,7 +229,7 @@ layout: opencs
 
       <!-- Completion notification toast -->
       <div id="completion-toast" class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg transform translate-y-32 transition-transform duration-300 z-50" style="display: none;">
-        <span class="font-semibold">✓ Lesson {{ page.submodule }} completed!</span>
+        <span class="font-semibold"> Lesson {{ page.submodule }} completed!</span>
       </div>
     </div>
   </div>

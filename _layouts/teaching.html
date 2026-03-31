@@ -388,7 +388,7 @@ layout: opencs
     }
 
     .key-points li::before {
-        content: "✓";
+        content: "";
         color: #38a169;
         font-weight: bold;
         position: absolute;
@@ -533,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const copyButton = document.createElement('button');
-        copyButton.textContent = '📋 Copy';
+        copyButton.textContent = ' Copy';
         copyButton.style.cssText = `
             position: absolute;
             top: 10px;
@@ -552,10 +552,10 @@ document.addEventListener('DOMContentLoaded', function() {
         block.appendChild(copyButton);
         
         copyButton.addEventListener('click', function() {
-            const codeText = block.textContent.replace('📋 Copy', '').trim();
+            const codeText = block.textContent.replace(' Copy', '').trim();
             navigator.clipboard.writeText(codeText);
-            copyButton.textContent = '✅ Copied!';
-            setTimeout(() => copyButton.textContent = '📋 Copy', 2000);
+            copyButton.textContent = ' Copied!';
+            setTimeout(() => copyButton.textContent = ' Copy', 2000);
         });
     });
 

@@ -536,7 +536,7 @@ class GameLevelDesert {
         hitbox: { widthPercentage: 0.1, heightPercentage: 0.2 },
         // Add dialogues array for random messages
         dialogues: [
-            "To the moon! 🚀 Crypto prices are always on a wild ride.",
+            "To the moon!  Crypto prices are always on a wild ride.",
             "Have you heard of blockchain? It's the technology behind cryptocurrencies.",
             "Bitcoin was created by someone called Satoshi Nakamoto.",
             "Mining crypto uses a lot of computing power.",

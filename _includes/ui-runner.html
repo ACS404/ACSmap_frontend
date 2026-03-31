@@ -10,8 +10,8 @@
       <button class="runBtn" title="Run">▶</button>
       <button class="stopBtn" title="Stop">■</button>
       <button class="copyBtn" title="Copy Code">⎘</button>
-      <button class="saveBtn" title="Save Code">💾</button>
-      <button class="clearStorageBtn" title="Clear Storage">🗑</button>
+      <button class="saveBtn" title="Save Code"></button>
+      <button class="clearStorageBtn" title="Clear Storage"></button>
     </div>
     <textarea class="editor-textarea"></textarea>
     <div class="control-panel">
@@ -96,7 +96,7 @@
     stopExecution();
     const btn = container.querySelector('.clearStorageBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✔';
+    btn.textContent = '';
     setTimeout(() => {
       btn.textContent = originalText;
     }, 2000);
@@ -108,7 +108,7 @@
     localStorage.setItem(storageKey, code);
     const btn = container.querySelector('.saveBtn');
     const originalText = btn.textContent;
-    btn.textContent = '✔';
+    btn.textContent = '';
     setTimeout(() => {
       btn.textContent = originalText;
     }, 2000);
@@ -120,7 +120,7 @@
     navigator.clipboard.writeText(code).then(() => {
       const btn = container.querySelector('.copyBtn');
       const originalText = btn.textContent;
-      btn.textContent = '✔';
+      btn.textContent = '';
       setTimeout(() => {
         btn.textContent = originalText;
       }, 2000);

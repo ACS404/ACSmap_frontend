@@ -494,7 +494,7 @@ class FinancialAdvisor extends Npc {
                         justify-content: center;
                         margin-right: 12px;
                         font-size: 14px;
-                    ">📊</span>
+                    "></span>
                     Financial Intelligence Center
                 </h2>
                 
@@ -543,7 +543,7 @@ class FinancialAdvisor extends Npc {
                             color: #888;
                         ">
                             <span style="margin-right: 8px;">
-                                <i style="margin-right: 4px;">📅</i>${randomNews.date}
+                                <i style="margin-right: 4px;"></i>${randomNews.date}
                             </span>
                         </div>
                     </div>
@@ -591,7 +591,7 @@ class FinancialAdvisor extends Npc {
                                 display: flex;
                                 align-items: center;
                             ">
-                                <i style="margin-right: 5px;">📰</i>
+                                <i style="margin-right: 5px;"></i>
                                 Source: <strong style="margin-left: 4px;">${randomNews.source}</strong>
                             </span>
                         </div>
@@ -630,7 +630,7 @@ class FinancialAdvisor extends Npc {
                                 justify-content: center;
                                 margin-right: 10px;
                                 font-size: 12px;
-                            ">📈</span>
+                            "></span>
                             Live Market Data
                         </h3>
                         
@@ -759,7 +759,7 @@ class FinancialAdvisor extends Npc {
                             justify-content: center;
                             margin-right: 10px;
                             font-size: 12px;
-                        ">💡</span>
+                        "></span>
                         Financial Insight
                     </h3>
                     

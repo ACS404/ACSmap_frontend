@@ -469,7 +469,7 @@
             }).join('\n\n');
             
             events.push({
-              title: `[${priority}] 📚 Week ${weekNum} Formative - ${courseName}`,
+              title: `[${priority}]  Week ${weekNum} Formative - ${courseName}`,
               description: `Reading Materials:\n\n${lessonItems}`,
               date: readingDate,
               period: courseName,
@@ -503,7 +503,7 @@
             }).join('\n\n');
             
             events.push({
-              title: `[${priority}] 📝 Week ${weekNum} Summative - ${courseName}`,
+              title: `[${priority}]  Week ${weekNum} Summative - ${courseName}`,
               description: `Assessments Due:\n\n${assignmentItems}`,
               date: assessmentDate,
               period: courseName,
@@ -547,11 +547,11 @@
       console.log(`Successfully added ${successCount}/${events.length} events`);
       
       if (successCount === events.length) {
-        showDateStatus(statusEl, `✓ Added ${successCount} events to calendar!`, 'success');
+        showDateStatus(statusEl, ` Added ${successCount} events to calendar!`, 'success');
       } else if (successCount > 0) {
-        showDateStatus(statusEl, `⚠ Added ${successCount}/${events.length} events`, 'warning');
+        showDateStatus(statusEl, ` Added ${successCount}/${events.length} events`, 'warning');
       } else {
-        showDateStatus(statusEl, '✗ Failed to add events. Are you logged in?', 'error');
+        showDateStatus(statusEl, ' Failed to add events. Are you logged in?', 'error');
       }
       
     } catch (error) {
@@ -593,14 +593,14 @@
 
         // Formative event title patterns (with all priority levels)
         ['P0', 'P1', 'P2', 'P3'].forEach(p => {
-          eventTitlesToDelete.push(`[${p}] 📚 Week ${weekNum} Formative - ${courseName}`);
-          eventTitlesToDelete.push(`[${p}] 📝 Week ${weekNum} Summative - ${courseName}`);
+          eventTitlesToDelete.push(`[${p}]  Week ${weekNum} Formative - ${courseName}`);
+          eventTitlesToDelete.push(`[${p}]  Week ${weekNum} Summative - ${courseName}`);
         });
         // Also include old format without priority for backwards compatibility
-        eventTitlesToDelete.push(`📚 Week ${weekNum} Formative - ${courseName}`);
+        eventTitlesToDelete.push(` Week ${weekNum} Formative - ${courseName}`);
         
         // Summative event title pattern
-        eventTitlesToDelete.push(`📝 Week ${weekNum} Summative - ${courseName}`);
+        eventTitlesToDelete.push(` Week ${weekNum} Summative - ${courseName}`);
       }
       
       console.log(`Deleting ${eventTitlesToDelete.length} potential events for ${sprintKey}`);
@@ -644,9 +644,9 @@
       console.log(`Successfully deleted ${deletedCount} events`);
       
       if (deletedCount > 0) {
-        showDateStatus(statusEl, `✓ Removed ${deletedCount} events from calendar!`, 'success');
+        showDateStatus(statusEl, ` Removed ${deletedCount} events from calendar!`, 'success');
       } else {
-        showDateStatus(statusEl, '⚠ No events found to remove', 'warning');
+        showDateStatus(statusEl, ' No events found to remove', 'warning');
       }
       
     } catch (error) {
@@ -943,12 +943,12 @@
       
       for (let weekNum = startWeek; weekNum <= endWeek; weekNum++) {
         priorities.forEach(p => {
-          eventTitlesToCheck.push(`[${p}] 📚 Week ${weekNum} Formative - ${courseName}`);
-          eventTitlesToCheck.push(`[${p}] 📝 Week ${weekNum} Summative - ${courseName}`);
+          eventTitlesToCheck.push(`[${p}]  Week ${weekNum} Formative - ${courseName}`);
+          eventTitlesToCheck.push(`[${p}]  Week ${weekNum} Summative - ${courseName}`);
         });
         // Also check old format
-        eventTitlesToCheck.push(`📚 Week ${weekNum} Formative - ${courseName}`);
-        eventTitlesToCheck.push(`📝 Week ${weekNum} Summative - ${courseName}`);
+        eventTitlesToCheck.push(` Week ${weekNum} Formative - ${courseName}`);
+        eventTitlesToCheck.push(` Week ${weekNum} Summative - ${courseName}`);
       }
       
       // Note: Duplicate checking not available - events will be created/updated as needed
@@ -1134,7 +1134,7 @@
           }).join('\n\n');
           
           events.push({
-            title: `[${priority}] 📚 Week ${weekNum} Formative - ${courseName}`,
+            title: `[${priority}]  Week ${weekNum} Formative - ${courseName}`,
             description: `Reading Materials:\n\n${lessonItems}`,
             date: readingDate,
             period: courseName,
@@ -1150,7 +1150,7 @@
           }).join('\n\n');
           
           events.push({
-            title: `[${priority}] 📝 Week ${weekNum} Summative - ${courseName}`,
+            title: `[${priority}]  Week ${weekNum} Summative - ${courseName}`,
             description: `Assessments Due:\n\n${assignmentItems}`,
             date: assessmentDate,
             period: courseName,
@@ -1186,21 +1186,21 @@
       
       // Show toast notification for visibility
       if (successCount === events.length) {
-        showToastNotification(`✓ Synced ${successCount} events to calendar!`, 'success');
+        showToastNotification(` Synced ${successCount} events to calendar!`, 'success');
       } else if (successCount > 0) {
-        showToastNotification(`⚠ Synced ${successCount}/${events.length} events`, 'warning');
+        showToastNotification(` Synced ${successCount}/${events.length} events`, 'warning');
       } else {
-        showToastNotification('✗ Failed to sync events. Are you logged in?', 'error');
+        showToastNotification(' Failed to sync events. Are you logged in?', 'error');
       }
       
       // Also update the dropdown status (visible when dropdown is opened)
       const statusEl = document.querySelector(`.sprint-date-status[data-sprint="${sprintKey}"]`);
       if (successCount === events.length) {
-        showDateStatus(statusEl, `✓ Synced ${successCount} events to calendar!`, 'success');
+        showDateStatus(statusEl, ` Synced ${successCount} events to calendar!`, 'success');
       } else if (successCount > 0) {
-        showDateStatus(statusEl, `⚠ Synced ${successCount}/${events.length} events`, 'warning');
+        showDateStatus(statusEl, ` Synced ${successCount}/${events.length} events`, 'warning');
       } else {
-        showDateStatus(statusEl, '✗ Failed to sync events. Are you logged in?', 'error');
+        showDateStatus(statusEl, ' Failed to sync events. Are you logged in?', 'error');
       }
       
     } catch (error) {
@@ -1237,17 +1237,17 @@
         // Add formative event titles if any items selected
         if (weekData.formative.length > 0) {
           priorities.forEach(p => {
-            titlesToDelete.push(`[${p}] 📚 Week ${weekNum} Formative - ${courseName}`);
+            titlesToDelete.push(`[${p}]  Week ${weekNum} Formative - ${courseName}`);
           });
-          titlesToDelete.push(`📚 Week ${weekNum} Formative - ${courseName}`);
+          titlesToDelete.push(` Week ${weekNum} Formative - ${courseName}`);
         }
         
         // Add summative event titles if any items selected
         if (weekData.summative.length > 0) {
           priorities.forEach(p => {
-            titlesToDelete.push(`[${p}] 📝 Week ${weekNum} Summative - ${courseName}`);
+            titlesToDelete.push(`[${p}]  Week ${weekNum} Summative - ${courseName}`);
           });
-          titlesToDelete.push(`📝 Week ${weekNum} Summative - ${courseName}`);
+          titlesToDelete.push(` Week ${weekNum} Summative - ${courseName}`);
         }
       });
       
@@ -1289,17 +1289,17 @@
       
       // Show toast notification for visibility
       if (deletedCount > 0) {
-        showToastNotification(`✓ Removed ${deletedCount} events from calendar!`, 'success');
+        showToastNotification(` Removed ${deletedCount} events from calendar!`, 'success');
       } else {
-        showToastNotification('⚠ No events found to remove', 'warning');
+        showToastNotification(' No events found to remove', 'warning');
       }
       
       // Also update the dropdown status (visible when dropdown is opened)
       const statusEl = document.querySelector(`.sprint-date-status[data-sprint="${sprintKey}"]`);
       if (deletedCount > 0) {
-        showDateStatus(statusEl, `✓ Removed ${deletedCount} events from calendar!`, 'success');
+        showDateStatus(statusEl, ` Removed ${deletedCount} events from calendar!`, 'success');
       } else {
-        showDateStatus(statusEl, '⚠ No events found to remove', 'warning');
+        showDateStatus(statusEl, ' No events found to remove', 'warning');
       }
       
     } catch (error) {

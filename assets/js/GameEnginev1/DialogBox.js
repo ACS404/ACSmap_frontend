@@ -132,7 +132,7 @@ function showDialogBox(title, message, options = []) {
   innerContainer.appendChild(scanline);
 
   const titleElement = document.createElement('h2');
-  titleElement.innerText = '★ ' + title + ' ★';
+  titleElement.innerText = ' ' + title + ' ';
   titleElement.style.marginBottom = '20px';
   titleElement.style.color = '#ffeb3b';
   titleElement.style.fontSize = '16px';
@@ -278,7 +278,7 @@ export function showYellenModal(url) {
 
     // Close button
     const closeBtn = document.createElement("button");
-    closeBtn.innerText = "✖";
+    closeBtn.innerText = "";
     closeBtn.style.position = "absolute";
     closeBtn.style.top = "10px";
     closeBtn.style.right = "10px";

@@ -280,7 +280,7 @@ layout: cs-portfolio-lesson
     }
 </style>
 
-<button class="chat-toggle-btn" id="chatToggle">💬</button>
+<button class="chat-toggle-btn" id="chatToggle"></button>
 
 <div class="chat-modal" id="chatModal">
     <div class="chat-header">
@@ -291,7 +291,7 @@ layout: cs-portfolio-lesson
     <div class="chat-body">
         <div class="messages-container" id="messagesContainer">
             <div class="instructions">
-                <h4>Welcome to the Certification Guide! 🎓</h4>
+                <h4>Welcome to the Certification Guide! </h4>
                 <ul>
                     <li>Learn about your earned certificates & badges</li>
                     <li>Get help adding certifications to LinkedIn</li>
@@ -434,7 +434,7 @@ Your name is Certification Guide Bot. Help users showcase their achievements!`;
         } else {
             chatModal.classList.remove('open');
             chatToggle.classList.remove('active');
-            chatToggle.innerHTML = '💬';
+            chatToggle.innerHTML = '';
         }
     }
 

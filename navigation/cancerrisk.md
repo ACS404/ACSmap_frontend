@@ -359,7 +359,7 @@ title: Risk Calculator
 
     <!-- SECTION 2: LIFESTYLE -->
     <div class="section-heading" id="section-lifestyle">
-      <span class="section-icon">☕︎</span><span id="heading-lifestyle">Lifestyle Factors</span>
+      <span class="section-icon">︎</span><span id="heading-lifestyle">Lifestyle Factors</span>
     </div>
     <div class="field">
       <label id="label-smoking">Smoking Status</label>
@@ -410,7 +410,7 @@ title: Risk Calculator
 
     <!-- SECTION 3: MEDICAL HISTORY -->
     <div class="section-heading" id="section-medical">
-      <span class="section-icon">⚕</span><span id="heading-medical">Medical History</span>
+      <span class="section-icon"></span><span id="heading-medical">Medical History</span>
     </div>
     <p class="card-sub" style="margin-top:-10px;margin-bottom:16px" id="medical-subtext">Toggle any conditions that apply to you</p>
     <div class="toggles-grid">
@@ -454,7 +454,7 @@ title: Risk Calculator
 
     <!-- SECTION 4: ENVIRONMENTAL -->
     <div class="section-heading" id="section-environmental">
-      <span class="section-icon">☀</span><span id="heading-environmental">Environmental Exposures</span>
+      <span class="section-icon"></span><span id="heading-environmental">Environmental Exposures</span>
     </div>
     <p class="card-sub" style="margin-top:-10px;margin-bottom:16px" id="environmental-subtext">Toggle any exposures that apply to you</p>
     <div class="toggles-grid">
@@ -470,7 +470,7 @@ title: Risk Calculator
 
     <!-- SECTION 5: CANCER TYPES -->
     <div class="section-heading" id="section-cancertypes">
-      <span class="section-icon">⚲</span><span id="heading-cancer-types">Cancer Types of Interest</span>
+      <span class="section-icon"></span><span id="heading-cancer-types">Cancer Types of Interest</span>
     </div>
     <p class="card-sub" style="margin-top:-10px;margin-bottom:8px" id="cancer-types-subtext">Select specific cancers to get individual lifetime risk estimates</p>
     <p class="optional-note" id="cancer-types-note">Optional: leave unselected for overall relative risk only</p>
@@ -1483,7 +1483,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="rcc-header-sub">Personalized to your profile</div>
       </div>
     </div>
-    <button class="rcc-close-btn" onclick="rccToggle()">✕</button>
+    <button class="rcc-close-btn" onclick="rccToggle()"></button>
   </div>
 
   <div class="rcc-context-bar" id="rccContextBar">
@@ -1723,7 +1723,7 @@ function rccAddBubble(type, text) {
   const el = document.createElement('div');
   el.className = `rcc-bubble rcc-bubble-${type}`;
   if (type === 'ai') {
-    el.innerHTML = `<b>📚 ACS Assistant</b>${text}`;
+    el.innerHTML = `<b> ACS Assistant</b>${text}`;
   } else {
     el.textContent = text;
   }

@@ -280,7 +280,7 @@ layout: cs-portfolio-lesson
     }
 </style>
 
-<button class="chat-toggle-btn" id="chatToggle">💬</button>
+<button class="chat-toggle-btn" id="chatToggle"></button>
 
 <div class="chat-modal" id="chatModal">
     <div class="chat-header">
@@ -291,7 +291,7 @@ layout: cs-portfolio-lesson
     <div class="chat-body">
         <div class="messages-container" id="messagesContainer">
             <div class="instructions">
-                <h4>Welcome to the Analytics Guide! 📊</h4>
+                <h4>Welcome to the Analytics Guide! </h4>
                 <ul>
                     <li>Learn how to read your analytics dashboard</li>
                     <li>Understand your study metrics & progress</li>
@@ -542,7 +542,7 @@ Your name is Analytics Guide Bot. Be helpful and make analytics easy to understa
         } else {
             chatModal.classList.remove('open');
             chatToggle.classList.remove('active');
-            chatToggle.innerHTML = '💬';
+            chatToggle.innerHTML = '';
         }
     }
 

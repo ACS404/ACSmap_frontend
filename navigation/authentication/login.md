@@ -248,7 +248,7 @@ show_reading_time: false
 
   <!-- ── Login Card ── -->
   <div class="login-card">
-    <div class="card-eyebrow">♥ Welcome back</div>
+    <div class="card-eyebrow"> Welcome back</div>
     <h1>Sign In</h1>
     <p class="card-sub">Enter your credentials to continue</p>
     <hr>
@@ -268,7 +268,7 @@ show_reading_time: false
 
   <!-- ── Sign Up Card ── -->
   <div class="signup-card">
-    <div class="card-eyebrow">✦ New here</div>
+    <div class="card-eyebrow"> New here</div>
     <h1>Create Account</h1>
     <p class="card-sub">Join the ACS community today</p>
     <hr>
@@ -348,7 +348,7 @@ show_reading_time: false
                 messageEl.style.background = 'var(--sage-pale)';
                 messageEl.style.color = 'var(--sage)';
                 messageEl.style.borderColor = 'var(--sage-light)';
-                messageEl.textContent = '✓ Login successful! Redirecting…';
+                messageEl.textContent = ' Login successful! Redirecting…';
                 messageEl.style.display = 'block';
                 setTimeout(() => { window.location.href = '{{site.baseurl}}/'; }, 900);
             } else {
@@ -393,7 +393,7 @@ show_reading_time: false
                 throw new Error(errorData.message || `Signup failed: ${response.status}`);
             }
             await response.json();
-            messageEl.textContent = "✓ Account created! You can now log in.";
+            messageEl.textContent = " Account created! You can now log in.";
             messageEl.style.display = 'block';
             document.getElementById("signupForm").reset();
             setTimeout(() => {

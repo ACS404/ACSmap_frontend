@@ -26,7 +26,7 @@ watch-files:
 			echo $$(date +%s) > /tmp/.jekyll_regenerating; \
 		elif echo "$$line" | grep -q "\.\.\.done in"; then \
 			rm -f /tmp/.jekyll_regenerating; \
-			echo "  ✓ $$line"; \
+			echo "   $$line"; \
 		elif echo "$$line" | grep -q "_notebooks/.*\.ipynb"; then \
 			echo "$$line"; \
 			notebook=$$(echo "$$line" | grep -o '_notebooks/[^[:space:]]*\.ipynb'); \
@@ -57,8 +57,8 @@ use-minima:
 	@cp _themes/minima/opencs.html _layouts/opencs.html
 	@cp _themes/minima/page.html _layouts/page.html
 	@cp _themes/minima/post.html _layouts/post.html
-	@$(PYTHON) scripts/update_color_map.py minima || echo "⚠ Color map update failed, continuing..."
-	@echo "✓ Minima theme activated"
+	@$(PYTHON) scripts/update_color_map.py minima || echo " Color map update failed, continuing..."
+	@echo " Minima theme activated"
 
 use-cayman:
 	@echo "Switching to Cayman theme..."
@@ -67,8 +67,8 @@ use-cayman:
 	@cp _themes/cayman/opencs.html _layouts/opencs.html
 	@cp _themes/cayman/page.html _layouts/page.html
 	@cp _themes/cayman/post.html _layouts/post.html
-	@$(PYTHON) scripts/update_color_map.py cayman || echo "⚠ Color map update failed, continuing..."
-	@echo "✓ Cayman theme activated"
+	@$(PYTHON) scripts/update_color_map.py cayman || echo " Color map update failed, continuing..."
+	@echo " Cayman theme activated"
 
 use-hydejack:
 	@echo "Switching to Hydejack theme..."
@@ -77,8 +77,8 @@ use-hydejack:
 	@cp _themes/hydejack/opencs.html _layouts/opencs.html
 	@cp _themes/hydejack/page.html _layouts/page.html
 	@cp _themes/hydejack/post.html _layouts/post.html
-	@$(PYTHON) scripts/update_color_map.py hydejack || echo "⚠ Color map update failed, continuing..."
-	@echo "✓ Hydejack theme activated"
+	@$(PYTHON) scripts/update_color_map.py hydejack || echo " Color map update failed, continuing..."
+	@echo " Hydejack theme activated"
 
 use-so-simple:
 	@cp _themes/so-simple/_config.yml _config.yml
@@ -141,7 +141,7 @@ split-courses:
 	@python3 scripts/split_multi_course_files.py
 
 clean-courses:
-	@echo "🧹 Cleaning course-specific files..."
+	@echo " Cleaning course-specific files..."
 	@python3 scripts/split_multi_course_files.py clean
 
 # Notebook and DOCX conversion
@@ -171,7 +171,7 @@ convert-docx:
 convert-docx-config:
 	@if [ -d "_docx" ] && [ "$(shell ls -A _docx 2>/dev/null)" ]; then \
 		if [ -n "$(CONFIG_FILE)" ]; then \
-			echo "🔧 Config file changed: $(CONFIG_FILE)"; \
+			echo " Config file changed: $(CONFIG_FILE)"; \
 			$(PYTHON) scripts/convert_docx.py --config-changed "$(CONFIG_FILE)"; \
 		else \
 			$(PYTHON) scripts/convert_docx.py; \
@@ -378,5 +378,5 @@ convert-check:
 
 convert-fix:
 	@echo "Running conversion fixes..."
-	@echo "️Fixing notebooks with known warnings or errors..."
+	@echo "Fixing notebooks with known warnings or errors..."
 	@$(PYTHON) scripts/check_conversion_warnings.py --fix

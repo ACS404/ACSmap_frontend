@@ -404,7 +404,7 @@ class StatsManager {
         // Add a pin button with retro styling
         const pinButton = document.createElement('button');
         pinButton.id = 'stats-pin-btn';
-        pinButton.innerHTML = '📌';
+        pinButton.innerHTML = '';
         pinButton.title = 'Pin/unpin';
         Object.assign(pinButton.style, {
             position: 'absolute',
@@ -767,11 +767,11 @@ class StatsManager {
         }
         
         // Build notification content
-        const cookieEmoji = reward.includes('quiz') || reward.includes('question') ? '🧠' : 
-                           reward.includes('dialogue') || reward.includes('talk') ? '💬' : 
-                           reward.includes('casino') || reward.includes('game') ? '🎰' :
-                           reward.includes('computer') || reward.includes('tech') ? '💻' :
-                           reward.includes('bank') || reward.includes('finance') ? '🏦' : '🍪';
+        const cookieEmoji = reward.includes('quiz') || reward.includes('question') ? '' : 
+                           reward.includes('dialogue') || reward.includes('talk') ? '' : 
+                           reward.includes('casino') || reward.includes('game') ? '' :
+                           reward.includes('computer') || reward.includes('tech') ? '' :
+                           reward.includes('bank') || reward.includes('finance') ? '' : '';
         const npcDisplayName = npcId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
         
         notification.innerHTML = `
@@ -781,7 +781,7 @@ class StatsManager {
                     <span class="notification-icon" style="font-size: 28px;">${cookieEmoji}</span>
                     <div style="flex: 1;">
                         <div style="color: #ffd700; font-size: 14px; margin-bottom: 5px;">
-                            🎉 COOKIE EARNED!
+                             COOKIE EARNED!
                         </div>
                         <div style="color: #fff; font-size: 10px; line-height: 1.4;">
                             <strong>${npcDisplayName}</strong><br>
@@ -797,7 +797,7 @@ class StatsManager {
                     <!-- Objective section -->
                     <div style="background: rgba(76, 175, 80, 0.1); border: 2px solid #4CAF50; border-radius: 10px; padding: 15px;">
                         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                            <span style="font-size: 16px;">🎯</span>
+                            <span style="font-size: 16px;"></span>
                             <span style="color: #4CAF50; font-size: 11px;">NEW OBJECTIVE</span>
                         </div>
                         <div class="objective-text" style="color: #fff; font-size: 9px; line-height: 1.5; overflow: hidden; white-space: nowrap;">
@@ -1006,7 +1006,7 @@ class StatsManager {
         // Create the toggle button
         const audioButton = document.createElement('button');
         audioButton.id = 'audio-toggle-button';
-        audioButton.innerHTML = isAudioEnabled ? '🔊' : '🔇';
+        audioButton.innerHTML = isAudioEnabled ? '' : '';
         audioButton.title = isAudioEnabled ? 'Click to mute audio' : 'Click to enable audio';
         audioButton.style.cssText = `
             background: #000;
@@ -1044,7 +1044,7 @@ class StatsManager {
             localStorage.setItem('gameAudioEnabled', newState.toString());
             
             // Update button appearance
-            audioButton.innerHTML = newState ? '🔊' : '🔇';
+            audioButton.innerHTML = newState ? '' : '';
             audioButton.title = newState ? 'Click to mute audio' : 'Click to enable audio';
             audioLabel.textContent = newState ? 'AUDIO ON' : 'AUDIO OFF';
             
@@ -1147,7 +1147,7 @@ class StatsManager {
             animation: audioFeedback 0.5s ease-out;
             box-shadow: 0 0 20px rgba(${isEnabled ? '76, 175, 80' : '244, 67, 54'}, 0.5);
         `;
-        feedback.textContent = isEnabled ? '🔊 AUDIO ENABLED' : '🔇 AUDIO DISABLED';
+        feedback.textContent = isEnabled ? ' AUDIO ENABLED' : ' AUDIO DISABLED';
         
         document.body.appendChild(feedback);
         
@@ -1859,7 +1859,7 @@ class QuizManager {
             const allQuestions = response?.questions || [];
     
             if (allQuestions.length === 0) {
-                alert(`✅ You've already completed all of ${npcCategory}'s questions!`);
+                alert(` You've already completed all of ${npcCategory}'s questions!`);
                 return;
             }
     
@@ -1868,7 +1868,7 @@ class QuizManager {
             quiz.openPanel(npcCategory, callback, allQuestions);
         } catch (error) {
             console.error("Error during NPC quiz attempt:", error);
-            alert("⚠️ There was a problem loading the quiz. Please try again.");
+            alert(" There was a problem loading the quiz. Please try again.");
         }
     }
 }
@@ -2117,35 +2117,35 @@ class FinTech extends Game {
             </style>
             <div class="scanline"></div>
             <h2 class="modal-title">
-                <span style="color: #4CAF50;">⚡</span> HOW TO PLAY <span style="color: #4CAF50;">⚡</span>
+                <span style="color: #4CAF50;"></span> HOW TO PLAY <span style="color: #4CAF50;"></span>
             </h2>
             <div class="instruction-box">
-                <span class="instruction-icon">🎮</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Movement:</span>
                 <span>WASD or Arrow Keys to move</span>
             </div>
             <div class="instruction-box">
-                <span class="instruction-icon">🗣️</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Interact:</span>
                 <span>Press E near NPCs</span>
             </div>
             <div class="instruction-box">
-                <span class="instruction-icon">📊</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Stats:</span>
                 <span>Click stats icon (top-right)</span>
             </div>
             <div class="instruction-box">
-                <span class="instruction-icon">🎒</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Inventory:</span>
                 <span>Press I to view items</span>
             </div>
             <div class="instruction-box">
-                <span class="instruction-icon">💰</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Goal:</span>
                 <span>Learn finance & earn money!</span>
             </div>
             <div class="instruction-box">
-                <span class="instruction-icon">❓</span>
+                <span class="instruction-icon"></span>
                 <span class="instruction-label">Help:</span>
                 <span>Press H to show this menu</span>
             </div>
@@ -2153,7 +2153,7 @@ class FinTech extends Game {
             <!-- NPC Cookies Section -->
             <div class="instruction-box" style="flex-direction: column; align-items: flex-start;">
                 <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <span class="instruction-icon">🍪</span>
+                    <span class="instruction-icon"></span>
                     <span class="instruction-label">NPC Cookies Earned:</span>
                 </div>
                 <div id="npcCookiesDisplay" style="font-size: 0.6em; line-height: 1.4; color: #fff;">
@@ -2206,7 +2206,7 @@ class FinTech extends Game {
         }
         
         return Object.entries(cookies).map(([npcId, reward]) => {
-            const emoji = '✅'; // Consistent emoji since all cookies are now "completed"
+            const emoji = ''; // Consistent emoji since all cookies are now "completed"
             return `<span style="color: #4CAF50;">${emoji} ${npcId.replace(/-/g, ' ')}: completed</span>`;
         }).join('<br>');
     }
@@ -2362,11 +2362,11 @@ class FinTech extends Game {
             `;
             
             if (isCompleted) {
-                controllerEmoji.textContent = '🎮'; // Completed controller
+                controllerEmoji.textContent = ''; // Completed controller
                 controllerEmoji.className = isNewlyCompleted ? 'controller-completed controller-new' : 'controller-completed';
                 controllerEmoji.title = `${waypointNpcs[i]} - Completed!`;
             } else {
-                controllerEmoji.textContent = '🕹️'; // Pending controller (different style)
+                controllerEmoji.textContent = ''; // Pending controller (different style)
                 controllerEmoji.className = 'controller-pending';
                 controllerEmoji.title = `${waypointNpcs[i]} - Not completed yet`;
             }
@@ -2395,11 +2395,11 @@ class FinTech extends Game {
         }
         
         // Update text
-        progressText.textContent = `🎮 ${completedNpcs}/${totalNpcs} Controllers Earned (${Math.round(progressPercentage)}%)`;
+        progressText.textContent = ` ${completedNpcs}/${totalNpcs} Controllers Earned (${Math.round(progressPercentage)}%)`;
 
         // Special effect when completed
         if (completedNpcs === totalNpcs) {
-            progressText.textContent = '🎉 ALL CONTROLLERS UNLOCKED! 🎉';
+            progressText.textContent = ' ALL CONTROLLERS UNLOCKED! ';
             progressText.style.color = '#ffd700';
             
             // Add celebration effect to all controllers
@@ -2511,7 +2511,7 @@ class FinTech extends Game {
         // Create the toggle button
         const audioButton = document.createElement('button');
         audioButton.id = 'audio-toggle-button';
-        audioButton.innerHTML = isAudioEnabled ? '🔊' : '🔇';
+        audioButton.innerHTML = isAudioEnabled ? '' : '';
         audioButton.title = isAudioEnabled ? 'Click to mute audio' : 'Click to enable audio';
         audioButton.style.cssText = `
             background: #000;
@@ -2549,7 +2549,7 @@ class FinTech extends Game {
             localStorage.setItem('gameAudioEnabled', newState.toString());
             
             // Update button appearance
-            audioButton.innerHTML = newState ? '🔊' : '🔇';
+            audioButton.innerHTML = newState ? '' : '';
             audioButton.title = newState ? 'Click to mute audio' : 'Click to enable audio';
             audioLabel.textContent = newState ? 'AUDIO ON' : 'AUDIO OFF';
             
@@ -2652,7 +2652,7 @@ class FinTech extends Game {
             animation: audioFeedback 0.5s ease-out;
             box-shadow: 0 0 20px rgba(${isEnabled ? '76, 175, 80' : '244, 67, 54'}, 0.5);
         `;
-        feedback.textContent = isEnabled ? '🔊 AUDIO ENABLED' : '🔇 AUDIO DISABLED';
+        feedback.textContent = isEnabled ? ' AUDIO ENABLED' : ' AUDIO DISABLED';
         
         document.body.appendChild(feedback);
         

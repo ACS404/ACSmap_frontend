@@ -148,11 +148,11 @@ async function submitFeedback() {
   const statusText = document.getElementById('statusText');
 
   if (selectedFeedback === 'up') {
-    statusText.textContent = 'Thank you for your positive feedback! 🎉';
+    statusText.textContent = 'Thank you for your positive feedback! ';
     statusDiv.style.background = 'rgba(76, 175, 80, 0.15)';
     statusDiv.style.borderLeftColor = '#4CAF50';
   } else {
-    statusText.textContent = 'Thank you for helping us improve! 🚀';
+    statusText.textContent = 'Thank you for helping us improve! ';
     statusDiv.style.background = 'rgba(255, 152, 0, 0.15)';
     statusDiv.style.borderLeftColor = '#ff9800';
   }
@@ -312,7 +312,7 @@ function selectFeedback(type) {
   // Define values
   const entryId = "entry.2118665550";
   const baseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfLtJ379pka0HiBUrKfhg3iMoqNe_CTq8GyKh4Teb4aXq3VEA/viewform?usp=pp_url";
-  const feedbackValue = type === 'up' ? 'Great! 👍' : 'Needs Improvement 👎';
+  const feedbackValue = type === 'up' ? 'Great! ' : 'Needs Improvement ';
   const formUrl = `${baseUrl}&${entryId}=${encodeURIComponent(feedbackValue)}`;
 
   // Show Google Form

@@ -4,7 +4,7 @@ export const defaultItems = {
         id: "stock_certificate",
         name: "Stock Certificate",
         description: "A valuable stock certificate that can be traded for profit.",
-        emoji: "📈",
+        emoji: "",
         stackable: true,
         value: 1000
     },
@@ -12,7 +12,7 @@ export const defaultItems = {
         id: "bond",
         name: "Government Bond",
         description: "A safe investment that provides steady returns.",
-        emoji: "💵",
+        emoji: "",
         stackable: true,
         value: 500
     },
@@ -22,7 +22,7 @@ export const defaultItems = {
         id: "trading_boost",
         name: "Trading Boost",
         description: "Increases trading profits by 50% for 30 seconds.",
-        emoji: "⚡",
+        emoji: "",
         stackable: true,
         value: 200
     },
@@ -30,7 +30,7 @@ export const defaultItems = {
         id: "speed_boost",
         name: "Speed Boost",
         description: "Increases movement speed by 25% for 20 seconds.",
-        emoji: "🚀",
+        emoji: "",
         stackable: true,
         value: 150
     },
@@ -40,7 +40,7 @@ export const defaultItems = {
         id: "rare_coin",
         name: "Rare Coin",
         description: "A valuable collectible coin with historical significance.",
-        emoji: "🪙",
+        emoji: "",
         stackable: false,
         value: 5000
     },
@@ -48,7 +48,7 @@ export const defaultItems = {
         id: "trading_manual",
         name: "Trading Manual",
         description: "A comprehensive guide to advanced trading strategies.",
-        emoji: "📚",
+        emoji: "",
         stackable: false,
         value: 3000
     },
@@ -58,7 +58,7 @@ export const defaultItems = {
         id: "calculator",
         name: "Financial Calculator",
         description: "Helps calculate complex financial metrics.",
-        emoji: "🧮",
+        emoji: "",
         stackable: false,
         value: 1000
     },
@@ -66,7 +66,7 @@ export const defaultItems = {
         id: "market_scanner",
         name: "Market Scanner",
         description: "Reveals market trends and opportunities.",
-        emoji: "🔍",
+        emoji: "",
         stackable: false,
         value: 2000
     },
@@ -74,7 +74,7 @@ export const defaultItems = {
         id: "roi_calculator",
         name: "ROI Calculator",
         description: "Calculate Return on Investment for your trades.",
-        emoji: "📊",
+        emoji: "",
         stackable: false,
         value: 300,
         isCalculator: true

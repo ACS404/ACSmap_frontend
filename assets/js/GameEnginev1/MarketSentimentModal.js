@@ -41,13 +41,13 @@ class MarketSentimentModal {
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="sentiment" id="bullish" value="bullish" required>
                         <label class="form-check-label" for="bullish">
-                          Bullish 📈
+                          Bullish 
                         </label>
                       </div>
                       <div class="form-check">
                         <input class="form-check-input" type="radio" name="sentiment" id="bearish" value="bearish" required>
                         <label class="form-check-label" for="bearish">
-                          Bearish 📉
+                          Bearish 
                         </label>
                       </div>
                     </div>

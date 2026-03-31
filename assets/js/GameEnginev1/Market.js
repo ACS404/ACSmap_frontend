@@ -12,7 +12,7 @@ class Market {
       this.startMonitoring();
     }
   
-    // 🟢 Create the floating market status indicator
+    //  Create the floating market status indicator
     createStatusElement() {
       const status = document.createElement('div');
       status.id = 'marketStatusIndicator';
@@ -30,19 +30,19 @@ class Market {
         boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
         transition: 'background-color 0.3s ease',
       });
-      status.textContent = '📈 Market Stable';
+      status.textContent = ' Market Stable';
       document.body.appendChild(status);
       return status;
     }
   
-    // 🔁 Periodically check if the market should crash
+    //  Periodically check if the market should crash
     startMonitoring() {
       this.interval = setInterval(() => {
         this.checkForCrash();
       }, this.checkIntervalMs);
     }
   
-    // 🛑 Stop checking (e.g., when game is paused)
+    //  Stop checking (e.g., when game is paused)
     stopMonitoring() {
       if (this.interval) {
         clearInterval(this.interval);
@@ -50,44 +50,44 @@ class Market {
       }
     }
   
-    // 🎯 Random chance to crash
+    //  Random chance to crash
     checkForCrash() {
       if (!this.crashed && Math.random() < this.crashProbability) {
         this.crashMarket();
       }
     }
   
-    // 💥 Crash the market
+    //  Crash the market
     crashMarket() {
       this.crashed = true;
       this.balance *= 0.0085;
       this.updateStatus();
-      console.warn("💥 The market has crashed!");
-      alert(`💥 The market crashed! Your new balance is $${this.getBalance()}`);
+      console.warn(" The market has crashed!");
+      alert(` The market crashed! Your new balance is $${this.getBalance()}`);
     }
   
-    // 🔁 Update the floating status indicator
+    //  Update the floating status indicator
     updateStatus() {
       if (this.crashed) {
-        this.statusElement.textContent = '💥 Market Crashed';
+        this.statusElement.textContent = ' Market Crashed';
         this.statusElement.style.backgroundColor = '#F44336';
       } else {
-        this.statusElement.textContent = '📈 Market Stable';
+        this.statusElement.textContent = ' Market Stable';
         this.statusElement.style.backgroundColor = '#4CAF50';
       }
     }
   
-    // 💰 Add money to balance (e.g., after quiz success)
+    //  Add money to balance (e.g., after quiz success)
     addEarnings(amount) {
       this.balance += amount;
     }
   
-    // 📊 Get current balance
+    //  Get current balance
     getBalance() {
       return this.balance.toFixed(2);
     }
   
-    // 🔄 Reset crash flag (if you want to revive the market)
+    //  Reset crash flag (if you want to revive the market)
     resetCrash() {
       this.crashed = false;
       this.updateStatus();

@@ -59,7 +59,7 @@ comments: true
   display: flex; align-items: center; gap: 8px;
 }
 #body-map-root .hero-eyebrow::before {
-  content: '♥'; font-size: 10px;
+  content: ''; font-size: 10px;
   width: 20px; height: 20px; background: var(--rose);
   border-radius: 50%; display: flex; align-items: center;
   justify-content: center; flex-shrink: 0;
@@ -423,8 +423,8 @@ comments: true
   <div class="gender-row">
     <div class="section-eyebrow">Interactive Body Map</div>
     <div class="gender-toggle">
-      <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')">♀ Female</button>
-      <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')">♂ Male</button>
+      <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')"> Female</button>
+      <button class="gender-btn" id="bm-btn-male" onclick="bmSwitchGender('male')"> Male</button>
     </div>
   </div>
 
@@ -447,7 +447,7 @@ comments: true
     <div class="info-panel" id="bmInfoPanel">
       <div id="bmPanelContent">
         <div class="empty-state">
-          <div class="empty-icon">🔬</div>
+          <div class="empty-icon"></div>
           <div class="empty-title">Select a body region</div>
           <div class="empty-sub">Click any pulsing hotspot on the diagram to explore cancer types for that area.</div>
         </div>
@@ -781,19 +781,19 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // ─── DATA ──────────────────────────────────────────────────────────────────
 const BM_SYSTEMS = {
-  head_neck:    { label:'Head & Neck',           color:'#c45e4a', icon:'🗣️' },
-  lung_chest:   { label:'Lung & Chest',           color:'#6a9fd8', icon:'🫁' },
-  breast:       { label:'Breast',                 color:'#d97fb8', icon:'🎗️' },
-  digestive:    { label:'Digestive System',       color:'#c49a3c', icon:'🩺' },
-  urinary:      { label:'Urinary System',         color:'#7a9e7e', icon:'💧' },
-  reproductive: { label:'Reproductive System',    color:'#a07cc5', icon:'🌸' },
-  endocrine:    { label:'Endocrine System',       color:'#d4845a', icon:'⚗️' },
-  skin:         { label:'Skin',                   color:'#bca36d', icon:'☀️' },
-  bone_soft:    { label:'Bone & Soft Tissue',     color:'#7a8fa6', icon:'🦴' },
-  eye:          { label:'Eye',                    color:'#5aabb5', icon:'👁️' },
-  brain_ns:     { label:'Brain & Nervous System', color:'#9b7ec8', icon:'🧠' },
-  blood_lymph:  { label:'Blood & Lymph',          color:'#e07a6a', icon:'🩸' },
-  other:        { label:'Other Cancers',          color:'#937468', icon:'🔬' },
+  head_neck:    { label:'Head & Neck',           color:'#c45e4a', icon:'' },
+  lung_chest:   { label:'Lung & Chest',           color:'#6a9fd8', icon:'' },
+  breast:       { label:'Breast',                 color:'#d97fb8', icon:'' },
+  digestive:    { label:'Digestive System',       color:'#c49a3c', icon:'' },
+  urinary:      { label:'Urinary System',         color:'#7a9e7e', icon:'' },
+  reproductive: { label:'Reproductive System',    color:'#a07cc5', icon:'' },
+  endocrine:    { label:'Endocrine System',       color:'#d4845a', icon:'' },
+  skin:         { label:'Skin',                   color:'#bca36d', icon:'' },
+  bone_soft:    { label:'Bone & Soft Tissue',     color:'#7a8fa6', icon:'' },
+  eye:          { label:'Eye',                    color:'#5aabb5', icon:'' },
+  brain_ns:     { label:'Brain & Nervous System', color:'#9b7ec8', icon:'' },
+  blood_lymph:  { label:'Blood & Lymph',          color:'#e07a6a', icon:'' },
+  other:        { label:'Other Cancers',          color:'#937468', icon:'' },
 };
 
 const BM_CANCERS = {

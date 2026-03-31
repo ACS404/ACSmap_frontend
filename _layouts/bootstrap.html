@@ -53,7 +53,7 @@ layout: opencs
   
   <!-- Theme Toggle Button -->
   <div class="d-flex justify-content-end p-3">
-    <button id="theme-toggle" class="btn btn-outline-secondary">🌙 Dark Mode</button>
+    <button id="theme-toggle" class="btn btn-outline-secondary"> Dark Mode</button>
   </div>
   {{ content }}
 </div>
@@ -66,7 +66,7 @@ layout: opencs
   function setTheme(theme) {
       body.setAttribute("data-bs-theme", theme);
       localStorage.setItem("theme", theme);
-      toggleButton.innerHTML = theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+      toggleButton.innerHTML = theme === "dark" ? " Light Mode" : " Dark Mode";
   }
 
   // Load saved theme

@@ -342,37 +342,37 @@ class MarketEvents {
         `;
 
         // Add frog emojis based on event type
-        let frogEmoji = '🐸';
+        let frogEmoji = '';
         switch(event.type) {
             case this.eventTypes.MARKET_CRASH:
-                frogEmoji = '🐸💥';
+                frogEmoji = '';
                 break;
             case this.eventTypes.BULL_RUN:
-                frogEmoji = '🐸🚀';
+                frogEmoji = '';
                 break;
             case this.eventTypes.EARNINGS_SEASON:
-                frogEmoji = '🐸📊';
+                frogEmoji = '';
                 break;
             case this.eventTypes.FED_ANNOUNCEMENT:
-                frogEmoji = '🐸🏦';
+                frogEmoji = '';
                 break;
             case this.eventTypes.MERGER_NEWS:
-                frogEmoji = '🐸🤝';
+                frogEmoji = '';
                 break;
             case this.eventTypes.IPO:
-                frogEmoji = '🐸📈';
+                frogEmoji = '';
                 break;
             case this.eventTypes.NATURAL_DISASTER:
-                frogEmoji = '🐸🌪️';
+                frogEmoji = '';
                 break;
             case this.eventTypes.POLITICAL_EVENT:
-                frogEmoji = '🐸🏛️';
+                frogEmoji = '';
                 break;
             case this.eventTypes.TECH_BREAKTHROUGH:
-                frogEmoji = '🐸💻';
+                frogEmoji = '';
                 break;
             case this.eventTypes.REGULATORY_CHANGE:
-                frogEmoji = '🐸📜';
+                frogEmoji = '';
                 break;
         }
 
@@ -414,7 +414,7 @@ class MarketEvents {
         // Add frog emoji to visual effects
         const frogEmoji = document.createElement('div');
         frogEmoji.className = 'frog-emoji';
-        frogEmoji.textContent = '🐸';
+        frogEmoji.textContent = '';
         frogEmoji.style.cssText = `
             position: absolute;
             font-size: 24px;

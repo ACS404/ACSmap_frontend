@@ -24,7 +24,7 @@ class StockMoodModal {
   
       this.modal.innerHTML = `
         <div style="margin-bottom: 12px; font-size: 16px; font-weight: 600; color: #333;">
-          📈 How are you feeling about the stock market today?
+           How are you feeling about the stock market today?
         </div>
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <button data-mood="Good" style="padding: 10px; background-color: #4CAF50; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">Good</button>
@@ -39,7 +39,7 @@ class StockMoodModal {
       });
   
       document.body.appendChild(this.modal);
-      console.log("📊 Stock Mood Modal created successfully.");
+      console.log(" Stock Mood Modal created successfully.");
     }
   
     async handleMoodClick(mood) {
@@ -58,10 +58,10 @@ class StockMoodModal {
         if (!response.ok) throw new Error('Failed to send mood');
         const result = await response.json();
         alert(`Thanks for your response: ${mood}`);
-        console.log("✅ Mood successfully sent to backend:", result);
+        console.log(" Mood successfully sent to backend:", result);
   
       } catch (err) {
-        console.error("❌ Error sending mood:", err);
+        console.error(" Error sending mood:", err);
         alert("Oops! Something went wrong while submitting your mood.");
       }
     }

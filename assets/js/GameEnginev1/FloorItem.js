@@ -86,7 +86,7 @@ class FloorItem {
                 id: 'test_emoji',
                 name: 'Test Emoji',
                 description: 'A test item to verify inventory pickup functionality.',
-                emoji: '🎮',
+                emoji: '',
                 stackable: true,
                 value: 50,
                 quantity: 1
@@ -95,7 +95,7 @@ class FloorItem {
                 id: 'gold_coin',
                 name: 'Gold Coin',
                 description: 'A valuable gold coin.',
-                emoji: '🪙',
+                emoji: '',
                 stackable: true,
                 value: 100,
                 quantity: 1
@@ -104,7 +104,7 @@ class FloorItem {
                 id: 'health_potion',
                 name: 'Health Potion',
                 description: 'Restores 50 HP.',
-                emoji: '🧪',
+                emoji: '',
                 stackable: true,
                 value: 50,
                 quantity: 1
@@ -113,7 +113,7 @@ class FloorItem {
                 id: 'trading_boost',
                 name: 'Trading Boost',
                 description: 'Increases trading profits by 50% for 30 seconds.',
-                emoji: '⚡',
+                emoji: '',
                 stackable: true,
                 value: 200,
                 quantity: 1
@@ -122,7 +122,7 @@ class FloorItem {
                 id: 'speed_boost',
                 name: 'Speed Boost',
                 description: 'Increases movement speed by 25% for 20 seconds.',
-                emoji: '🚀',
+                emoji: '',
                 stackable: true,
                 value: 150,
                 quantity: 1

@@ -31,14 +31,14 @@ layout: opencs
 
     <!-- Time Tracker -->
     {% if page.enable_timer %}
-    <h4>⏱️ Study Time</h4>
+    <h4>⏱ Study Time</h4>
     <div class="time-display"><span id="total-time">0:00</span></div>
     <div id="timer-status" class="timer-status">Active</div>
     {% endif %}
 
     <!-- Progress -->
     {% if page.enable_progress %}
-    <h4>📊 Your Progress</h4>
+    <h4> Your Progress</h4>
     <div class="progress-bar"><div class="progress-fill" id="lesson-progress"></div></div>
     <p id="progress-text">0% complete</p>
     <button id="reset-progress" class="btn small-btn">Reset Progress</button>
@@ -46,7 +46,7 @@ layout: opencs
 
     <!-- Badges -->
     {% if page.enable_badges %}
-    <h4>🏅 Your Badges</h4>
+    <h4> Your Badges</h4>
     <p id="badges">No badges yet...</p>
     {% endif %}
   </aside>
@@ -85,7 +85,7 @@ layout: opencs
     
     <hr>
     <div class="flashcards-section">
-      <h3>🗂️ Flashcards</h3>
+      <h3> Flashcards</h3>
       
       {% if cards %}
       <div style="width: 100%; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-bottom: 1rem; overflow: hidden;">
@@ -128,11 +128,11 @@ layout: opencs
         <button class="btn" id="prev-btn" onclick="navigateCards('prev')" disabled>⬅ Previous</button>
         
         <div class="flashcard-actions">
-          <button class="btn know-btn" onclick="markCard('know')">✓</button>
+          <button class="btn know-btn" onclick="markCard('know')"></button>
           <button class="btn review-btn" onclick="markCard('review')">↻</button>
         </div>
         
-        <button class="btn" id="next-btn" onclick="navigateCards('next')">Next ➡</button>
+        <button class="btn" id="next-btn" onclick="navigateCards('next')">Next </button>
       </div>
       
       {% else %}
@@ -147,7 +147,7 @@ layout: opencs
     {% if page.enable_sandbox %}
     <hr>
     <div class="sandbox">
-      <h3>🖥️ Try It Yourself</h3>
+      <h3> Try It Yourself</h3>
       <textarea id="sandbox-code">{{ page.sandbox_code | default: "// Type your code here" }}</textarea>
       <button id="run-sandbox">Run Code</button>
       <pre id="sandbox-output"></pre>
@@ -191,7 +191,7 @@ layout: opencs
     {% if page.enable_quiz %}
     <hr>
     <div class="lesson-quiz">
-      <h3>📝 Quick Check</h3>
+      <h3> Quick Check</h3>
       <p>{{ page.quiz_prompt | default: "What did you learn?" }}</p>
       <textarea id="reflection-box"></textarea>
       <button id="save-reflection">Save</button>
@@ -218,7 +218,7 @@ layout: opencs
     {% if page.resources %}
     <hr>
     <div class="resources">
-      <h3>📚 Resources</h3>
+      <h3> Resources</h3>
       <ul>
         {% for r in page.resources %}
           <li><a href="{{ r.url }}" target="_blank">{{ r.text }}</a></li>
@@ -230,7 +230,7 @@ layout: opencs
     {% if page.prev_url or page.next_url %}
     <div class="lesson-nav">
       {% if page.prev_url %}<a href="{{ page.prev_url }}" class="btn">⬅ Previous</a>{% endif %}
-      {% if page.next_url %}<a href="{{ page.next_url }}" class="btn">Next ➡</a>{% endif %}
+      {% if page.next_url %}<a href="{{ page.next_url }}" class="btn">Next </a>{% endif %}
     </div>
     {% endif %}
   </main>

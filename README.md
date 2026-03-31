@@ -351,7 +351,7 @@ OCS is grounded in a **Connectivist philosophy**, recognizing that:
 - Teach students to **evaluate digital sources**, verify code, and contribute to public knowledge
 - Incorporate **AI tools** for coding, writing, design, reflection, and peer modeling
 
-✅ **Connectivism provides the underlying philosophy** that unifies Merrill’s structure, Fink’s depth, UDL’s accessibility, and Agile’s team-based iteration — all in a digital, networked world.
+ **Connectivism provides the underlying philosophy** that unifies Merrill’s structure, Fink’s depth, UDL’s accessibility, and Agile’s team-based iteration — all in a digital, networked world.
 
 ---
 

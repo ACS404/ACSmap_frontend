@@ -438,13 +438,13 @@ permalink: /titanic/predictor
   <header class="page-header">
     <p class="eyebrow">April 15, 1912 &mdash; North Atlantic</p>
     <h1>Would You Have <span>Survived</span>?</h1>
-    <div class="divider">⚓</div>
+    <div class="divider"></div>
     <p>A machine learning model trained on Titanic passenger data predicts your fate aboard the RMS Titanic.</p>
   </header>
 
   <!-- Input Form -->
   <div class="card" style="animation-delay:.1s">
-    <div class="card-title"><span class="icon">🚢</span> Passenger Details</div>
+    <div class="card-title"><span class="icon"></span> Passenger Details</div>
     <form id="titanic-form" onsubmit="return false;">
       <div class="form-grid">
 
@@ -465,11 +465,11 @@ permalink: /titanic/predictor
           <div class="radio-group">
             <div class="radio-btn">
               <input type="radio" name="sex" id="sex-female" value="female" checked>
-              <label for="sex-female">♀ Female</label>
+              <label for="sex-female"> Female</label>
             </div>
             <div class="radio-btn">
               <input type="radio" name="sex" id="sex-male" value="male">
-              <label for="sex-male">♂ Male</label>
+              <label for="sex-male"> Male</label>
             </div>
           </div>
         </div>
@@ -526,7 +526,7 @@ permalink: /titanic/predictor
         <!-- Submit -->
         <div class="field full">
           <button class="predict-btn" id="predict-btn" onclick="predict()">
-            <span>⚓ Predict My Fate</span>
+            <span> Predict My Fate</span>
           </button>
           <div class="error-msg" id="error-msg"></div>
         </div>
@@ -538,10 +538,10 @@ permalink: /titanic/predictor
   <!-- Result Section -->
   <section id="result-section">
     <div class="result-card">
-      <div class="card-title"><span class="icon">📜</span> The Verdict</div>
+      <div class="card-title"><span class="icon"></span> The Verdict</div>
 
       <div class="verdict">
-        <div class="verdict-icon" id="verdict-icon">⚓</div>
+        <div class="verdict-icon" id="verdict-icon"></div>
         <div class="verdict-label">Survival Assessment</div>
         <div class="verdict-title" id="verdict-title">—</div>
         <div class="verdict-subtitle" id="verdict-subtitle">—</div>
@@ -626,7 +626,7 @@ permalink: /titanic/predictor
       showError(`Could not reach the prediction server. Is your backend running?\n${err.message}`);
     } finally {
       btn.classList.remove('loading');
-      btn.querySelector('span').textContent = '⚓ Predict My Fate';
+      btn.querySelector('span').textContent = ' Predict My Fate';
     }
   }
 
@@ -636,7 +636,7 @@ permalink: /titanic/predictor
     const survived = survive >= 0.5;
 
     // Show verdict
-    document.getElementById('verdict-icon').textContent  = survived ? '🧊' : '💀';
+    document.getElementById('verdict-icon').textContent  = survived ? '' : '';
     document.getElementById('verdict-title').textContent  = survived ? 'You Survived' : 'You Perished';
     document.getElementById('verdict-title').className   = 'verdict-title ' + (survived ? 'survived' : 'perished');
     document.getElementById('verdict-subtitle').textContent = survived

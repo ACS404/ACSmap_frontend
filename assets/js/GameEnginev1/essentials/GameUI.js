@@ -63,7 +63,7 @@ export default class GameUI {
         centerContainer.className = "game-footer-center";
 
         // Create Home button
-        const homeButton = this.createButton("homeButton", "🏠", () => {
+        const homeButton = this.createButton("homeButton", "", () => {
             window.location.href = this.config.homeUrl;
         });
         homeButton.setAttribute("aria-label", "Home");
@@ -198,7 +198,7 @@ export default class GameUI {
         // Modal title
         const title = document.createElement("h2");
         title.className = "game-modal-title";
-        title.innerText = "🎮 CHEATS MENU 🎮";
+        title.innerText = " CHEATS MENU ";
         
         // Cheats container
         const cheatsContainer = document.createElement("div");
@@ -210,7 +210,7 @@ export default class GameUI {
         
         const levelTitle = document.createElement("h3");
         levelTitle.className = "game-section-title";
-        levelTitle.innerText = "🚪 LEVEL SELECT 🚪";
+        levelTitle.innerText = " LEVEL SELECT ";
         levelSelectSection.appendChild(levelTitle);
         
         // Get levels from game control
@@ -242,7 +242,7 @@ export default class GameUI {
         // Close button
         const closeButton = document.createElement("button");
         closeButton.className = "game-modal-close";
-        closeButton.innerText = "✖ Close";
+        closeButton.innerText = " Close";
         closeButton.onclick = () => {
             modal.style.display = "none";
         };
@@ -287,7 +287,7 @@ export default class GameUI {
         // Modal title
         const title = document.createElement("h2");
         title.className = "game-modal-title";
-        title.innerText = "ℹ️ GAME INFO ℹ️";
+        title.innerText = "ℹ GAME INFO ℹ";
 
         // Info container
         const infoContainer = document.createElement("div");
@@ -308,7 +308,7 @@ export default class GameUI {
         // Close button
         const closeButton = document.createElement("button");
         closeButton.className = "game-modal-close";
-        closeButton.innerText = "✖ Close";
+        closeButton.innerText = " Close";
         closeButton.onclick = () => {
             modal.style.display = "none";
         };

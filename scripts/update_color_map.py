@@ -416,7 +416,7 @@ class ColorMapUpdater:
                 # Log error but continue processing other files
                 print(f"   Error reading {scss_file}: {e}")
         
-        print(f"   ✓ Found {len(self.all_colors)} unique color variable(s)\n")
+        print(f"    Found {len(self.all_colors)} unique color variable(s)\n")
         
         # Step 4: Generate all output files
         self.write_map_file()

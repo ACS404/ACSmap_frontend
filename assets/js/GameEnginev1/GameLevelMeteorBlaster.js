@@ -638,7 +638,7 @@ class GameLevelMeteorBlaster {
     keyMsg.style.borderRadius = "10px"
     keyMsg.style.border = "2px solid #FFD700"
     keyMsg.innerHTML = `
-      🎉 CONGRATULATIONS! 🎉<br>
+       CONGRATULATIONS! <br>
       You've earned the key!<br>
       <span style="font-size: 24px; color: #00FF00">Key: ${cookieValue}</span><br>
       <span style="font-size: 20px; color: #FFA500">Page will refresh in 5 seconds...</span>

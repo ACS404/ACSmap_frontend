@@ -107,7 +107,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Total Time Spent</h3>
-                            <span class="text-blue-400">⏱️</span>
+                            <span class="text-blue-400">⏱</span>
                         </div>
                         <div class="text-3xl font-bold text-white">${summary.totalTimeFormatted || '0h'}</div>
                         <p class="text-xs text-neutral-500 mt-2">${summary.totalTimeSpentSeconds || 0} seconds total</p>
@@ -117,7 +117,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Lessons Viewed</h3>
-                            <span class="text-green-400">📚</span>
+                            <span class="text-green-400"></span>
                         </div>
                         <div class="text-3xl font-bold text-white">${summary.totalLessonsViewed || 0}</div>
                         <p class="text-xs text-neutral-500 mt-2">unique lessons</p>
@@ -127,7 +127,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Modules Viewed</h3>
-                            <span class="text-purple-400">🎯</span>
+                            <span class="text-purple-400"></span>
                         </div>
                         <div class="text-3xl font-bold text-white">${summary.totalModulesViewed || 0}</div>
                         <p class="text-xs text-neutral-500 mt-2">unique modules</p>
@@ -137,7 +137,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Copy-Paste Attempts</h3>
-                            <span class="text-orange-400">📋</span>
+                            <span class="text-orange-400"></span>
                         </div>
                         <div class="text-3xl font-bold text-white">${summary.totalCopyPasteAttempts || 0}</div>
                         <p class="text-xs text-neutral-500 mt-2">times copied content</p>
@@ -147,7 +147,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Average Accuracy</h3>
-                            <span class="text-yellow-400">✅</span>
+                            <span class="text-yellow-400"></span>
                         </div>
                         <div class="text-3xl font-bold text-white">${(summary.averageAccuracyPercentage || 0).toFixed(1)}%</div>
                         <p class="text-xs text-neutral-500 mt-2">on assessments</p>
@@ -157,7 +157,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <div class="flex items-start justify-between mb-2">
                             <h3 class="text-neutral-300 font-medium">Quests Engaged</h3>
-                            <span class="text-red-400">🚀</span>
+                            <span class="text-red-400"></span>
                         </div>
                         <div class="text-3xl font-bold text-white">${(summary.engagedQuests && summary.engagedQuests.length) || 0}</div>
                         <p class="text-xs text-neutral-500 mt-2">active quests</p>
@@ -182,7 +182,7 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
 
                 <!-- Help Section -->
                 <div class="bg-blue-900/20 border border-blue-700/50 rounded-lg p-6 mt-6">
-                    <h3 class="text-lg font-semibold text-blue-300 mb-2">📊 Understanding Your Analytics</h3>
+                    <h3 class="text-lg font-semibold text-blue-300 mb-2"> Understanding Your Analytics</h3>
                     <ul class="text-sm text-neutral-300 space-y-2">
                         <li>• <strong>Time Spent:</strong> Total hours/minutes spent on the platform</li>
                         <li>• <strong>Lessons Viewed:</strong> Number of unique lessons you've accessed</li>
@@ -203,10 +203,10 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
      */
     function formatQuestName(questName) {
         const names = {
-            'cs-portfolio-quest': '💻 CS Portfolio Quest',
-            'digital-famine': '🎬 Digital Famine',
-            'west-coast': '🌴 West Coast Adventure',
-            'plagiarism': '📋 Plagiarism Detective'
+            'cs-portfolio-quest': ' CS Portfolio Quest',
+            'digital-famine': ' Digital Famine',
+            'west-coast': ' West Coast Adventure',
+            'plagiarism': ' Plagiarism Detective'
         };
         return names[questName] || questName;
     }
@@ -276,14 +276,14 @@ export async function initOCSAnalyticsDashboard(pythonURI, javaURI, fetchOptions
                     <div class="bg-neutral-800 border border-neutral-700 rounded-lg p-6">
                         <h3 class="text-neutral-300 text-sm font-medium mb-2">Status</h3>
                         <div class="text-xl font-bold ${questData.questCompleted ? 'text-green-400' : 'text-yellow-400'}">
-                            ${questData.questCompleted ? '✓ Completed' : 'In Progress'}
+                            ${questData.questCompleted ? ' Completed' : 'In Progress'}
                         </div>
                     </div>
                 </div>
 
                 <!-- Copy-Paste Analysis -->
                 <div class="bg-orange-900/20 border border-orange-700/50 rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-orange-300 mb-2">📋 Copy-Paste Activity</h3>
+                    <h3 class="text-lg font-semibold text-orange-300 mb-2"> Copy-Paste Activity</h3>
                     <p class="text-neutral-300 text-2xl font-bold">${questData.totalCopyPasteAttempts || 0} attempts</p>
                     <p class="text-xs text-neutral-400 mt-2">
                         Copy-paste attempts are tracked to understand your coding approach. 

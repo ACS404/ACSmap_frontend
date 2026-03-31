@@ -747,7 +747,7 @@ title: Treatment Tracker
   <!-- Header -->
   <div class="tx-header">
     <div class="tx-header-left">
-      <h1 class="tx-page-title"> ⚕ Treatment Tracker</h1>
+      <h1 class="tx-page-title">  Treatment Tracker</h1>
       <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
     </div>
     <button class="tx-add-btn" onclick="txOpenAdd()">+ Add Medication</button>
@@ -776,7 +776,7 @@ title: Treatment Tracker
           <span class="meds-count" id="medsCount" style="display:none;"></span>
         </div>
         <div id="medsList">
-          <div class="tx-empty"><div class="tx-empty-icon">⛨</div>Loading…</div>
+          <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
         </div>
       </div>
 
@@ -788,10 +788,10 @@ title: Treatment Tracker
       <!-- Tab bar -->
       <div class="tx-tabs">
         <button class="tx-tab-btn active" id="tabScheduleBtn" onclick="tnSwitchTab('schedule')">
-          🗒 Schedule
+           Schedule
         </button>
         <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
-          ✎𓂃 Notes
+          𓂃 Notes
           <span class="tx-tab-badge" id="tnBadge"></span>
         </button>
       </div>
@@ -809,7 +809,7 @@ title: Treatment Tracker
           <div class="tx-progress-count" id="txProgressCount">0 / 0</div>
         </div>
         <div id="chkList">
-          <div class="tx-empty"><div class="tx-empty-icon">⛨</div>Loading…</div>
+          <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
         </div>
       </div>
 
@@ -839,7 +839,7 @@ title: Treatment Tracker
         <!-- Notes list -->
         <div class="tn-list-wrap" id="tnList">
           <div class="tn-empty-note">
-            <div class="tn-empty-note-icon">✎𓂃</div>
+            <div class="tn-empty-note-icon">𓂃</div>
             No notes yet for this day.
           </div>
         </div>
@@ -859,7 +859,7 @@ title: Treatment Tracker
 
     <div class="modal-header">
       <div class="modal-title" id="modalHeading">Add Medication</div>
-      <button class="modal-close" onclick="txCloseModal()">✕</button>
+      <button class="modal-close" onclick="txCloseModal()"></button>
     </div>
 
     <!-- Medication name + AI lookup -->
@@ -872,7 +872,7 @@ title: Treatment Tracker
                onkeydown="if(event.key==='Enter')txLookupNow()">
         <button type="button" class="time-add-btn" onclick="txLookupNow()"
                 title="Look up medication info" style="white-space:nowrap;">
-          🔍︎ Look Up
+          ︎ Look Up
         </button>
       </div>
       <div class="ai-loading" id="aiLoading">
@@ -1013,7 +1013,7 @@ function renderMedsList() {
     badge.style.display = 'none';
     el.innerHTML = `
       <div class="tx-empty">
-        <div class="tx-empty-icon">💊</div>
+        <div class="tx-empty-icon"></div>
         No medications added yet.<br>
         Click <strong>+ Add Medication</strong> to start tracking.
       </div>`;
@@ -1035,8 +1035,8 @@ function renderMedsList() {
         </div>
       </div>
       <div class="med-actions">
-        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})">🖋</button>
-        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})">🗑</button>
+        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})"></button>
+        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})"></button>
       </div>
     </div>`).join('');
 }
@@ -1168,7 +1168,7 @@ async function renderChecklist(dt) {
     <div class="chk-item ${item.taken ? 'taken' : ''}"
          onclick="window.txToggle(${idx})"
          data-idx="${idx}">
-      <div class="chk-box">${item.taken ? '✓' : ''}</div>
+      <div class="chk-box">${item.taken ? '' : ''}</div>
       <div class="chk-info">
         <div class="chk-name">${esc(item.m.medication_name)}</div>
         <div class="chk-time">${item.m.dosage ? esc(item.m.dosage) + ' · ' : ''}${fmtTime(item.ts)}</div>
@@ -1212,7 +1212,7 @@ function renderTimesChips() {
     chosenTimes.map((t, i) => `
       <div class="t-chip">
         ${fmtTime(t)}
-        <button onclick="window.txRemoveTime(${i})">✕</button>
+        <button onclick="window.txRemoveTime(${i})"></button>
       </div>`).join('');
 }
 

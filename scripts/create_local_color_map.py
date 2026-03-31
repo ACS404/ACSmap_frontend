@@ -36,7 +36,7 @@ class LocalColorMapper:
         total_vars = 0
         for colors_file in color_files:
             if colors_file.exists():
-                print(f"📋 Found existing colors file: {colors_file}")
+                print(f" Found existing colors file: {colors_file}")
                 content = colors_file.read_text()
                 # Match $variable: value;
                 pattern = r'\$([a-zA-Z0-9_-]+)\s*:\s*([^;]+);'
@@ -48,7 +48,7 @@ class LocalColorMapper:
                 print(f"   Found {vars_in_file} variables in this file")
                 total_vars += vars_in_file
         
-        print(f"✅ Total existing color variables: {total_vars}")
+        print(f" Total existing color variables: {total_vars}")
     
     def normalize_color(self, color):
         """Normalize color values for comparison"""
@@ -106,7 +106,7 @@ class LocalColorMapper:
     
     def scan_scss_files(self):
         """Scan all local SCSS files for color values"""
-        print("\n🔍 Scanning local SCSS files for colors...")
+        print("\n Scanning local SCSS files for colors...")
         
         scss_files = list(self.scss_dir.rglob('*.scss'))
         
@@ -156,9 +156,9 @@ class LocalColorMapper:
                             self.component_colors[component][context].add(normalized_color)
             
             except Exception as e:
-                print(f"  ⚠️ Error reading {relative_path}: {e}")
+                print(f"   Error reading {relative_path}: {e}")
         
-        print(f"✅ Found {len(self.colors)} unique colors across all files")
+        print(f" Found {len(self.colors)} unique colors across all files")
     
     def generate_variable_name(self, color, component, context, usage_count):
         """Generate semantic variable name for a color"""
@@ -224,7 +224,7 @@ class LocalColorMapper:
     
     def generate_color_map(self):
         """Generate the root color map"""
-        print("\n📝 Generating unified color map...")
+        print("\n Generating unified color map...")
         
         output = """// AUTO-GENERATED ROOT COLOR MAP FOR LOCAL STYLING
 // This file contains all color variables used across the local repository
@@ -369,19 +369,19 @@ class LocalColorMapper:
     
     def run(self, output_file='_sass/root-color-map.scss'):
         """Run the full color extraction and map generation"""
-        print("🎨 Creating Local Root Color Map\n")
+        print(" Creating Local Root Color Map\n")
         print("=" * 50)
         
         # Step 1: Extract existing variables
-        print("\n📋 Step 1: Extracting existing color variables...")
+        print("\n Step 1: Extracting existing color variables...")
         self.extract_existing_variables()
         
         # Step 2: Scan all SCSS files
-        print("\n🔍 Step 2: Scanning all local SCSS files...")
+        print("\n Step 2: Scanning all local SCSS files...")
         self.scan_scss_files()
         
         # Step 3: Generate the color map
-        print("\n📝 Step 3: Generating color map...")
+        print("\n Step 3: Generating color map...")
         color_map_content = self.generate_color_map()
         
         # Step 4: Write the file
@@ -389,18 +389,18 @@ class LocalColorMapper:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         output_path.write_text(color_map_content)
         
-        print(f"✅ Color map written to: {output_file}")
+        print(f" Color map written to: {output_file}")
         
         # Step 5: Create usage report
-        print("\n📊 Step 4: Creating usage report...")
+        print("\n Step 4: Creating usage report...")
         report_content = self.create_usage_report()
         report_path = Path('local-color-usage-report.md')
         report_path.write_text(report_content)
         
-        print(f"✅ Usage report written to: {report_path}")
+        print(f" Usage report written to: {report_path}")
         
         print("\n" + "=" * 50)
-        print("🎉 Done! Next steps:")
+        print(" Done! Next steps:")
         print("   1. Review the generated color map: _sass/root-color-map.scss")
         print("   2. Check the usage report: local-color-usage-report.md")
         print("   3. Optionally refactor SCSS files to use the new variables")
