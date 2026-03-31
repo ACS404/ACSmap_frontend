@@ -305,18 +305,19 @@ comments: true
 }
 #body-map-root .cat-heading {
   font-family: var(--serif); font-size: clamp(28px,3vw,42px);
-  font-weight: 700; color: var(--text); margin-bottom: 6px;
+  font-weight: 700; color: var(--text); margin-bottom: 6px; padding-left: 46px;
 }
 #body-map-root .cat-sub {
-  font-size: 14px; color: var(--muted); margin-bottom: 36px; line-height: 1.6;
+  font-size: 14px; color: var(--muted); margin-bottom: 36px; line-height: 1.6; padding-left: 46px;
 }
 #body-map-root .cat-divider {
-  height: 1px; background: var(--border); margin-bottom: 36px;
+  height: 1px; background: var(--border); margin-bottom: 36px; padding-left: 66px;
 }
 #body-map-root .sys-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 16px;
+  gap: 16px; 
+  padding-left: 50px;
 }
 #body-map-root .sys-card {
   background: var(--warm-white);
@@ -771,7 +772,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <!-- ── CATEGORIES GRID ───────────────────────────────────── -->
 <div class="categories-section">
-  <div class="cat-divider" style="margin-top:48px"></div>
   <h2 class="cat-heading">Browse by Body System</h2>
   <p class="cat-sub">All 13 body systems covered — click any card to jump to that region on the diagram above.</p>
   <div class="sys-grid" id="bmSysGrid"></div>
