@@ -38,14 +38,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
             } else {
-                loginArea.innerHTML = `<a href="${baseurl}/login">Login</a>`;
+                loginArea.innerHTML = `<a href="/login">Login</a>`;
             }
             loginArea.style.opacity = '1';
         })
         .catch(err => {
             console.error("Error fetching credentials:", err);
             const loginArea = document.getElementById('loginArea');
-            if (loginArea) loginArea.innerHTML = `<a href="${baseurl}/login">Login</a>`;
+            if (loginArea) loginArea.innerHTML = `<a href="/login">Login</a>`;
         });
 });
 

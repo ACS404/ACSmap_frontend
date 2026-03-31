@@ -1501,10 +1501,10 @@ window._tnSetFilter = function(key) { _tnFilter = key; _tnBuildFilters(); _tnRen
 
 /* ── Fetch notes ── */
 function _tnApi() {
-  return (window._txPythonURI || 'http://localhost:8009') + '/api/treatment/notes';
+  return window._txPythonURI + '/api/treatment/notes';
 }
 function _tnFetchOpts(extra) {
-  const base = window._txFetchOptions || { credentials:'include', headers:{'Content-Type':'application/json'} };
+  const base = window._txFetchOptions;
   return Object.assign({}, base, extra);
 }
 
