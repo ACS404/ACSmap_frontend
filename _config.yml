@@ -113,5 +113,5 @@ minima:
   nav_pages:
     - navigation/blog.md
     - navigation/cyclegame.md
-    - navigation/about.md
+    - navigation/map.md
     - navigation/cancerrisk.md

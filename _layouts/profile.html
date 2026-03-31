@@ -788,10 +788,10 @@ title: Treatment Tracker
       <!-- Tab bar -->
       <div class="tx-tabs">
         <button class="tx-tab-btn active" id="tabScheduleBtn" onclick="tnSwitchTab('schedule')">
-          📅 Schedule
+          🗒 Schedule
         </button>
         <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
-          📝 Notes
+          ✎𓂃 Notes
           <span class="tx-tab-badge" id="tnBadge"></span>
         </button>
       </div>
@@ -821,7 +821,7 @@ title: Treatment Tracker
           <span class="tn-form-date" id="tnFormDate">Notes for today</span>
 
           <select class="tn-sel" id="tnMedSel">
-            <option value="">📅 Day note (no specific medication)</option>
+            <option value="">Day note (no specific medication)</option>
           </select>
 
           <div class="tn-cat-row" id="tnCatRow"></div>
@@ -839,7 +839,7 @@ title: Treatment Tracker
         <!-- Notes list -->
         <div class="tn-list-wrap" id="tnList">
           <div class="tn-empty-note">
-            <div class="tn-empty-note-icon">📋</div>
+            <div class="tn-empty-note-icon">✎𓂃</div>
             No notes yet for this day.
           </div>
         </div>
@@ -872,7 +872,7 @@ title: Treatment Tracker
                onkeydown="if(event.key==='Enter')txLookupNow()">
         <button type="button" class="time-add-btn" onclick="txLookupNow()"
                 title="Look up medication info" style="white-space:nowrap;">
-          🔍 Look Up
+          🔍︎ Look Up
         </button>
       </div>
       <div class="ai-loading" id="aiLoading">
@@ -1035,8 +1035,8 @@ function renderMedsList() {
         </div>
       </div>
       <div class="med-actions">
-        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})">✏️</button>
-        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})">🗑️</button>
+        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})">🖋</button>
+        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})">🗑</button>
       </div>
     </div>`).join('');
 }
@@ -1085,7 +1085,22 @@ function activeMedsForDate(dt) {
   return treatments.filter(m => {
     const s = m.start_date ? new Date(m.start_date + 'T00:00:00').getTime() : 0;
     const e = m.end_date   ? new Date(m.end_date   + 'T00:00:00').getTime() : Infinity;
-    return ms >= s && ms <= e;
+    if (ms < s || ms > e) return false;
+
+    // Frequency gating
+    if (m.frequency === 'weekly') {
+      // Only show on the same day of week as the start date
+      const startDow = new Date(m.start_date + 'T00:00:00').getDay();
+      return dt.getDay() === startDow;
+    }
+
+    if (m.frequency === 'as_needed') {
+      // Only show if a log entry exists for this day — don't pre-populate calendar
+      return false;
+    }
+
+    // daily, twice_daily, three_times — show every day in range
+    return true;
   });
 }
 
@@ -1110,7 +1125,7 @@ async function renderChecklist(dt) {
     prog.style.display = 'none';
     list.innerHTML = `
       <div class="tx-empty">
-        <div class="tx-empty-icon">🌿</div>
+        <div class="tx-empty-icon"> 𓆉 𓆝 𓆡</div>
         No medications scheduled for this day.
       </div>`;
     return;

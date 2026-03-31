@@ -152,10 +152,10 @@ body {
 
   .wrapper {
     max-width: 1200px;
-    padding: 0 48px;
+    padding: 0 0px !important;
 
     @media (max-width: 768px) {
-      padding: 0 20px;
+      padding: 0 0px;
     }
   }
 }
