@@ -419,7 +419,7 @@ const CellGame = (() => {
     if (game.p53Timer>0) game.p53Timer--; else game.p53Active=false;
 
     // Move player
-    const speed = 2.2;
+    const speed = 6.2;
     let dx=0,dy=0;
     if (game.keys['ArrowLeft']||game.keys['KeyA']) dx-=speed;
     if (game.keys['ArrowRight']||game.keys['KeyD']) dx+=speed;
