@@ -1,7 +1,7 @@
 ---
 layout: opencs
 title: Cell Cycle
-permalink: /cyclegame/
+permalink: /cyclegame
 ---
 
 <html lang="en">
