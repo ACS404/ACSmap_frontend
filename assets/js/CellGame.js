@@ -411,15 +411,17 @@ const CellGame = (() => {
   }
 
   // ─── Main update ──────────────────────────────────────────────────────────
-  function update(game, uiEl, overlayEl) {
+  function update(game, uiEl, overlayEl, dt = 1) {
     const W = game.canvas.width, H = game.canvas.height;
     const checkpointX = W * 0.89;
-    game.frameCount++;
-    if (game.repairCooldown>0) game.repairCooldown--;
-    if (game.p53Timer>0) game.p53Timer--; else game.p53Active=false;
+    game.frameCount += dt;
+    // Scale cooldowns/timers by dt so they drain at the same real-world rate
+    // regardless of monitor refresh rate
+    if (game.repairCooldown>0) game.repairCooldown -= dt;
+    if (game.p53Timer>0) game.p53Timer -= dt; else game.p53Active=false;
 
-    // Move player
-    const speed = 6.2;
+    // Move player — 3.5 px/frame at 60 fps, scaled by dt
+    const speed = 3.5 * dt;
     let dx=0,dy=0;
     if (game.keys['ArrowLeft']||game.keys['KeyA']) dx-=speed;
     if (game.keys['ArrowRight']||game.keys['KeyD']) dx+=speed;
@@ -442,7 +444,7 @@ const CellGame = (() => {
     // Entity updates
     for (const e of game.entities) {
       if (e.type==='mutagen') {
-        e.x+=e.vx; e.y+=e.vy; e.angle+=0.04;
+        e.x+=e.vx*dt; e.y+=e.vy*dt; e.angle+=0.04*dt;
         if (e.x<30||e.x>W-30) e.vx*=-1;
         if (e.y<30||e.y>H-30) e.vy*=-1;
         if (!e.hit&&Math.hypot(game.player.x-e.x,game.player.y-e.y)<ps+e.size) {
@@ -457,7 +459,7 @@ const CellGame = (() => {
           updateUI(game,uiEl);
         }
       } else if (e.type==='nutrient'&&!e.collected) {
-        e.bob+=0.06;
+        e.bob+=0.06*dt;
         if(Math.hypot(game.player.x-e.x,game.player.y-e.y)<ps+e.size+4){
           e.collected=true; game.nutrients++; game.score+=10;
           if(e.label==='A'){game.damage=Math.max(0,game.damage-5);game.dna=Math.min(100,game.dna+5);}
@@ -480,9 +482,13 @@ const CellGame = (() => {
       passCheckpoint(game,uiEl,overlayEl);
     }
 
-    // Particles & floats
-    game.particles=game.particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.life--;p.vx*=0.9;p.vy*=0.9;return p.life>0;});
-    game.floatTexts=game.floatTexts.filter(f=>{f.y-=0.7;f.life--;return f.life>0;});
+    // Particles & floats — all scaled by dt so they run at the same real-world rate
+    game.particles=game.particles.filter(p=>{
+      p.x+=p.vx*dt; p.y+=p.vy*dt; p.life-=dt;
+      p.vx*=Math.pow(0.9,dt); p.vy*=Math.pow(0.9,dt);
+      return p.life>0;
+    });
+    game.floatTexts=game.floatTexts.filter(f=>{f.y-=0.7*dt; f.life-=dt; return f.life>0;});
   }
 
   // ─── Checkpoint & end ────────────────────────────────────────────────────
@@ -685,13 +691,18 @@ const CellGame = (() => {
   // ─── Game loop ────────────────────────────────────────────────────────────
   function loop(game, uiEl, overlayEl) {
     if(game.animId) cancelAnimationFrame(game.animId);
-    const tick = () => {
+    let lastTime = null;
+    const tick = (timestamp) => {
       if(!game.running) return;
-      update(game, uiEl, overlayEl);
+      // Delta time normalized to 60fps (16.67ms). Clamped so a tab
+      // becoming visible after being hidden doesn't cause a huge jump.
+      const dt = lastTime === null ? 1 : Math.min((timestamp - lastTime) / 16.667, 3);
+      lastTime = timestamp;
+      update(game, uiEl, overlayEl, dt);
       draw(game);
       game.animId = requestAnimationFrame(tick);
     };
-    tick();
+    game.animId = requestAnimationFrame(tick);
   }
 
   // ─── CSS injection ────────────────────────────────────────────────────────
