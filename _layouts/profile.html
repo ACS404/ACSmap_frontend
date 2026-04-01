@@ -1231,18 +1231,11 @@ title: Treatment Tracker
     </div>
 
     <!-- Medication name + AI lookup -->
-<div class="f-group">
+    <div class="f-group">
       <label class="f-label">Medication Name *</label>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input type="text" class="f-input" id="fMedName"
-               placeholder="e.g. Metformin, Lisinopril, Aspirin…"
-               style="flex:1;"
-               onkeydown="if(event.key==='Enter')txLookupNow()">
-        <button type="button" class="time-add-btn" onclick="txLookupNow()"
-                title="Look up medication info" style="white-space:nowrap;">
-          🔍︎ Look Up
-        </button>
-      </div>
+      <input type="text" class="f-input" id="fMedName"
+             placeholder="e.g. Metformin, Lisinopril, Aspirin…"
+             oninput="txDebounceLookup(this.value)">
       <div class="ai-loading" id="aiLoading">
         <div class="ai-spin"></div> Looking up medication…
       </div>
