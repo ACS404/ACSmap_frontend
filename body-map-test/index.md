@@ -2891,7 +2891,7 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section report-section-questions">
       <h3 class="report-section-icon">Questions for Your Doctor</h3>
       <div class="report-question-form">
-        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); bmAddQuestionFromReport();}"></textarea>
         <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
       ${questionHtml}
