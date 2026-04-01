@@ -718,6 +718,7 @@ const CellGame = (() => {
         margin: 0 auto;
         padding: 0 0 2rem;
         box-sizing: border-box;
+        padding-top: 30px;
       }
       .cg-card {
         background: ${C.panel};
