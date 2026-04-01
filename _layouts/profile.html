@@ -64,6 +64,80 @@ title: Treatment Tracker
   box-shadow: 0 6px 20px rgba(196,94,74,0.35);
 }
 
+.tx-head-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tx-bookmarks-btn {
+  background: var(--cream);
+  color: var(--text-main);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+.tx-bookmarks-btn:hover {
+  background: var(--tan-light);
+  border-color: var(--tan);
+  transform: translateY(-1px);
+}
+
+.tx-bookmark-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--rose);
+}
+
+.tx-bmk-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tx-bmk-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tx-bmk-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tx-bmk-item {
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.tx-bmk-item a {
+  color: var(--text-main);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tx-bmk-item a:hover { color: var(--terracotta); }
+
+.tx-bmk-meta {
+  margin-top: 3px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
 /* ── Two-column grid ── */
 .tx-grid {
   display: grid;
@@ -750,7 +824,13 @@ title: Treatment Tracker
       <h1 class="tx-page-title">  Treatment Tracker</h1>
       <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
     </div>
-    <button class="tx-add-btn" onclick="txOpenAdd()">+ Add Medication</button>
+    <div class="tx-head-actions">
+      <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()">
+        <span class="tx-bookmark-dot"></span>
+        Cancer Bookmarks
+      </button>
+      <button class="tx-add-btn" onclick="txOpenAdd()">+ Add Medication</button>
+    </div>
   </div>
 
   <!-- Two-column layout -->
@@ -777,6 +857,20 @@ title: Treatment Tracker
         </div>
         <div id="medsList">
           <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
+        </div>
+      </div>
+
+      <div class="tx-card" id="txBookmarksCard" style="margin-top:22px;">
+        <div class="tx-bmk-head">
+          <div class="tx-section-title">Bookmarked Cancer Types</div>
+          <span class="tx-bmk-count" id="txBmkCount">0 saved</span>
+        </div>
+        <div class="tx-bmk-list" id="txBmkList">
+          <div class="tx-empty">
+            <div class="tx-empty-icon"></div>
+            No bookmarks yet.<br>
+            Save cancer types from the Body Map to see them here.
+          </div>
         </div>
       </div>
 
@@ -955,6 +1049,7 @@ const MONTHS  = ['January','February','March','April','May','June',
 const DOW_ABR = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 const PALETTE = ['#e07a6a','#c4a882','#8aaa8c','#6b9ecf',
                  '#c987b8','#e8b86d','#937468','#b8ceb9'];
+const CANCER_BOOKMARKS_KEY = 'acsCancerBookmarks';
 
 /* ─── State ─────────────────────────────────────────────── */
 let treatments   = [];          // active treatments for this user
@@ -972,6 +1067,7 @@ let lookupTimer  = null;
 document.addEventListener('DOMContentLoaded', async () => {
   await loadUser();
   await loadTreatments();
+  loadCancerBookmarks();
   renderCalendar();
   await renderChecklist(selectedDate);
   buildSwatches();
@@ -981,7 +1077,58 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('txOverlay').addEventListener('click', e => {
     if (e.target === document.getElementById('txOverlay')) txCloseModal();
   });
+
+  // Keep bookmarks list in sync if changed in another tab/page
+  window.addEventListener('storage', (e) => {
+    if (e.key === CANCER_BOOKMARKS_KEY) loadCancerBookmarks();
+  });
 });
+
+window.txJumpToBookmarks = function() {
+  const card = document.getElementById('txBookmarksCard');
+  if (!card) return;
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+function readCancerBookmarks() {
+  const raw = localStorage.getItem(CANCER_BOOKMARKS_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function loadCancerBookmarks() {
+  const list = document.getElementById('txBmkList');
+  const count = document.getElementById('txBmkCount');
+  if (!list || !count) return;
+
+  const bookmarks = readCancerBookmarks();
+  count.textContent = `${bookmarks.length} saved`;
+
+  if (!bookmarks.length) {
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No bookmarks yet.<br>
+        Save cancer types from the Body Map to see them here.
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = bookmarks.map(item => {
+    const targetUrl = item.regionId
+      ? `{{site.baseurl}}/body-map-test/?region=${encodeURIComponent(item.regionId)}`
+      : (item.link || '{{site.baseurl}}/body-map-test/');
+    return `
+      <div class="tx-bmk-item">
+        <a href="${targetUrl}">${esc(item.name || item.id || 'Cancer type')}</a>
+        <div class="tx-bmk-meta">${esc(item.regionLabel || 'Body Map Region')}</div>
+      </div>`;
+  }).join('');
+}
 
 /* ─── User info ─────────────────────────────────────────── */
 async function loadUser() {
