@@ -2698,7 +2698,7 @@ function bmRenderPersonalizedReport(reportData) {
         const target = item.regionId
           ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
           : (item.link || '#');
-        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a>${item.regionLabel ? ` · ${esc(item.regionLabel)}` : ''}</li>`;
+        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a></li>`;
       }).join('')
     : `<li>${bmReportText('noBookmarks')}</li>`;
 
