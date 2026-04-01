@@ -866,8 +866,14 @@ show_reading_time: false
   word-break: break-word;
 }
 #body-map-root .report-cancer-list a {
-  color: #285f95;
+  color: #000;
   font-weight: 700;
+}
+
+#body-map-root .report-section-bookmarks a,
+#body-map-root .report-bullet-list a {
+  color: #000;
+  font-weight: 600;
 }
 #body-map-root .report-actions {
   display: flex;
