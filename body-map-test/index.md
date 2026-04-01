@@ -690,7 +690,7 @@ show_reading_time: false
 }
 #body-map-root .report-meta {
   font-size: 12px;
-  color: #4b5f73;
+  color: #000;
   line-height: 1.6;
   text-align: right;
 }
@@ -742,7 +742,7 @@ show_reading_time: false
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 10px;
-  color: #1d3550;
+  color: #000;
 }
 #body-map-root .report-clinical-note {
   border: 1px solid #cfe0f1;
@@ -751,7 +751,7 @@ show_reading_time: false
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 12px;
-  color: #294664;
+  color: #000;
   line-height: 1.55;
 }
 #body-map-root .report-kv {
@@ -769,14 +769,14 @@ show_reading_time: false
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #607387;
+  color: #000;
   font-weight: 700;
 }
 #body-map-root .report-kv-value {
   margin-top: 4px;
   font-size: 15px;
   font-weight: 700;
-  color: #1a2b3c;
+  color: #000;
 }
 #body-map-root .report-region {
   border-top: 1px dashed rgba(196,168,130,0.35);
@@ -798,7 +798,7 @@ show_reading_time: false
 #body-map-root .report-bullet-list {
   margin: 0;
   padding-left: 18px;
-  color: #22384d;
+  color: #000;
   line-height: 1.7;
   font-size: 13px;
 }
@@ -810,6 +810,17 @@ show_reading_time: false
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
+#body-map-root .report-qa-group + .report-qa-group {
+  margin-top: 14px;
+}
+#body-map-root .report-qa-group-title {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
 #body-map-root .report-qa-item {
   background: #f9fbfd;
   border: 1px solid #d9e2eb;
@@ -820,14 +831,14 @@ show_reading_time: false
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #607387;
+  color: #000;
   font-weight: 700;
 }
 #body-map-root .report-qa-value {
   margin-top: 4px;
   font-size: 14px;
   font-weight: 600;
-  color: #1a2b3c;
+  color: #000;
   line-height: 1.45;
   word-break: break-word;
 }
@@ -914,8 +925,8 @@ show_reading_time: false
 #body-map-root .report-tx-detail { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
 
 /* ── Sub-labels & notes ─── */
-#body-map-root .report-sec-sub { font-size: 12px; color: var(--muted); margin: -4px 0 10px; }
-#body-map-root .report-sec-note { font-size: 13px; color: var(--muted); font-style: italic; margin: 4px 0; }
+#body-map-root .report-sec-sub { font-size: 12px; color: #000; margin: -4px 0 10px; }
+#body-map-root .report-sec-note { font-size: 13px; color: #000; font-style: italic; margin: 4px 0; }
 
 #body-map-root .report-notes-grid {
   display: grid;
@@ -1879,6 +1890,11 @@ const BM_REPORT_I18N = {
     signatureDate: 'Date',
     notebookNotes: 'Digital Notebook Notes',
     noNotebookNotes: 'No saved chatbot notes yet. Save assistant answers using the + button in the risk chatbot.',
+    categoryDemographics: 'Demographics',
+    categoryLifestyle: 'Lifestyle',
+    categoryMedicalRisks: 'Medical Risk Factors',
+    categoryEnvironmental: 'Environmental Exposure',
+    categoryCancerInterests: 'Cancer Interests',
   },
   es: {
     reportTitle: 'Informe personalizado de riesgo de cáncer',
@@ -1938,6 +1954,11 @@ const BM_REPORT_I18N = {
     signatureDate: 'Fecha',
     notebookNotes: 'Notas del cuaderno digital',
     noNotebookNotes: 'Aún no hay notas guardadas del chatbot. Guarde respuestas del asistente con el botón + en el chatbot de riesgo.',
+    categoryDemographics: 'Datos demográficos',
+    categoryLifestyle: 'Estilo de vida',
+    categoryMedicalRisks: 'Factores de riesgo médicos',
+    categoryEnvironmental: 'Exposición ambiental',
+    categoryCancerInterests: 'Intereses de cáncer',
   },
 };
 
@@ -2181,28 +2202,28 @@ function bmNormalizeGenderLabel(rawGender) {
 }
 
 const BM_RISK_QUESTION_FIELDS = [
-  ['age', 'Age'],
-  ['sex', 'Biological Sex'],
-  ['race', 'Race / Ethnicity'],
-  ['smoking_status', 'Smoking Status'],
-  ['pack_years', 'Pack Years'],
-  ['bmi_category', 'BMI Category'],
-  ['alcohol_consumption', 'Alcohol Consumption'],
-  ['physical_activity', 'Physical Activity'],
-  ['diet_quality', 'Diet Quality'],
-  ['family_history', 'Family History of Cancer'],
-  ['diabetes', 'Type 2 Diabetes'],
-  ['hepatitis', 'Hepatitis B/C'],
-  ['hpv', 'HPV Infection'],
-  ['h_pylori', 'H. pylori Infection'],
-  ['ibd', 'Inflammatory Bowel Disease'],
-  ['radiation_history', 'Prior Radiation Therapy'],
-  ['immunosuppression', 'Immunosuppression'],
-  ['precancerous_lesions', 'Precancerous Lesions'],
-  ['occupational_exposure', 'Occupational Chemical Exposure'],
-  ['uv_exposure', 'High UV / Sun Exposure'],
-  ['selected_cancer_types', 'Selected Cancer Types'],
-  ['cancer_types', 'Selected Cancer Types'],
+  ['age', 'Age', 'categoryDemographics'],
+  ['sex', 'Biological Sex', 'categoryDemographics'],
+  ['race', 'Race / Ethnicity', 'categoryDemographics'],
+  ['smoking_status', 'Smoking Status', 'categoryLifestyle'],
+  ['pack_years', 'Pack Years', 'categoryLifestyle'],
+  ['bmi_category', 'BMI Category', 'categoryLifestyle'],
+  ['alcohol_consumption', 'Alcohol Consumption', 'categoryLifestyle'],
+  ['physical_activity', 'Physical Activity', 'categoryLifestyle'],
+  ['diet_quality', 'Diet Quality', 'categoryLifestyle'],
+  ['family_history', 'Family History of Cancer', 'categoryMedicalRisks'],
+  ['diabetes', 'Type 2 Diabetes', 'categoryMedicalRisks'],
+  ['hepatitis', 'Hepatitis B/C', 'categoryMedicalRisks'],
+  ['hpv', 'HPV Infection', 'categoryMedicalRisks'],
+  ['h_pylori', 'H. pylori Infection', 'categoryMedicalRisks'],
+  ['ibd', 'Inflammatory Bowel Disease', 'categoryMedicalRisks'],
+  ['radiation_history', 'Prior Radiation Therapy', 'categoryMedicalRisks'],
+  ['immunosuppression', 'Immunosuppression', 'categoryMedicalRisks'],
+  ['precancerous_lesions', 'Precancerous Lesions', 'categoryMedicalRisks'],
+  ['occupational_exposure', 'Occupational Chemical Exposure', 'categoryEnvironmental'],
+  ['uv_exposure', 'High UV / Sun Exposure', 'categoryEnvironmental'],
+  ['selected_cancer_types', 'Selected Cancer Types', 'categoryCancerInterests'],
+  ['cancer_types', 'Selected Cancer Types', 'categoryCancerInterests'],
 ];
 
 function bmFormatQuestionValue(value) {
@@ -2213,19 +2234,33 @@ function bmFormatQuestionValue(value) {
 }
 
 function bmBuildQuestionnaireResponses(profile) {
-  const rows = [];
+  const rowsByCategory = new Map();
   const seen = new Set();
 
-  BM_RISK_QUESTION_FIELDS.forEach(([key, label]) => {
+  BM_RISK_QUESTION_FIELDS.forEach(([key, label, categoryKey]) => {
     if (!profile || seen.has(label)) return;
     const raw = profile[key];
     const formatted = bmFormatQuestionValue(raw);
     if (!formatted) return;
     seen.add(label);
-    rows.push({ label, value: formatted });
+    if (!rowsByCategory.has(categoryKey)) rowsByCategory.set(categoryKey, []);
+    rowsByCategory.get(categoryKey).push({ label, value: formatted });
   });
 
-  return rows;
+  const orderedCategories = [
+    'categoryDemographics',
+    'categoryLifestyle',
+    'categoryMedicalRisks',
+    'categoryEnvironmental',
+    'categoryCancerInterests'
+  ];
+
+  return orderedCategories
+    .map(categoryKey => ({
+      title: bmReportText(categoryKey),
+      rows: rowsByCategory.get(categoryKey) || []
+    }))
+    .filter(group => group.rows.length > 0);
 }
 
 function bmNormalizeRegionKey(input) {
@@ -2608,10 +2643,17 @@ function bmRenderPersonalizedReport(reportData) {
     : `<li>${bmReportText('noHighRiskCancers')}</li>`;
 
   const questionnaireRows = (reportData.questionnaireResponses || []).length
-    ? reportData.questionnaireResponses.map(row => `
-      <div class="report-qa-item">
-        <div class="report-qa-label">${esc(row.label)}</div>
-        <div class="report-qa-value">${esc(row.value)}</div>
+    ? reportData.questionnaireResponses.map(group => `
+      <div class="report-qa-group">
+        <div class="report-qa-group-title">${esc(group.title)}</div>
+        <div class="report-qa-grid">
+          ${group.rows.map(row => `
+            <div class="report-qa-item">
+              <div class="report-qa-label">${esc(row.label)}</div>
+              <div class="report-qa-value">${esc(row.value)}</div>
+            </div>
+          `).join('')}
+        </div>
       </div>
     `).join('')
     : `<p class="report-sec-note">${bmReportText('notAssessed')}</p>`;
@@ -2648,7 +2690,7 @@ function bmRenderPersonalizedReport(reportData) {
   sections.push(`
     <section class="report-section">
       <h3>${bmReportText('questionnaireResponses')}</h3>
-      <div class="report-qa-grid">${questionnaireRows}</div>
+      ${questionnaireRows}
     </section>`);
 
   sections.push(`
