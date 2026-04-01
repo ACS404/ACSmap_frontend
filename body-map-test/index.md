@@ -1031,80 +1031,45 @@ show_reading_time: false
    PROFESSIONAL REPORT REDESIGN
 ═══════════════════════════════════════════════════════════ */
 
-/* Section Headers with Icons */
+/* Clinical section headers */
 #body-map-root .report-section-icon {
-  font-size: 18px !important;
+  font-size: 15px !important;
   font-weight: 700 !important;
-  margin-bottom: 14px !important;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #000 !important;
+  margin-bottom: 12px !important;
+  color: #111 !important;
+  letter-spacing: 0.01em;
 }
 
-/* Professional Section Styles */
-#body-map-root .report-section-summary {
-  background: linear-gradient(135deg, #f8fafc 0%, #fbfdff 100%);
-  border-color: #dbe7f0;
-}
-
-#body-map-root .report-section-risk {
-  border-top: 4px solid #e07a6a;
-  background: #fef9f7;
-}
-
-#body-map-root .report-section-treatment {
-  border-top: 4px solid #8aaa8c;
-  background: #f7fbf9;
-}
-
-#body-map-root .report-section-assessment {
-  border-top: 4px solid #c4a882;
-  background: #fef9f5;
-}
-
-#body-map-root .report-section-factors {
-  border-top: 4px solid #6b9ecf;
-  background: #f7fafd;
-}
-
-#body-map-root .report-section-screening {
-  border-top: 4px solid #c45e4a;
-  background: #fef8f7;
-}
-
-#body-map-root .report-section-bookmarks {
-  border-top: 4px solid #c4a882;
-  background: #fef9f5;
-}
-
-#body-map-root .report-section-questions {
-  border-top: 4px solid #6b9ecf;
-  background: #f7fafd;
-}
-
+/* Clinical section surfaces */
+#body-map-root .report-section-summary,
+#body-map-root .report-section-risk,
+#body-map-root .report-section-treatment,
+#body-map-root .report-section-assessment,
+#body-map-root .report-section-bookmarks,
+#body-map-root .report-section-questions,
 #body-map-root .report-section-notes {
-  border-top: 4px solid #8aaa8c;
-  background: #f7fbf9;
+  background: #fff;
+  border: 1px solid #d6dce3;
+  border-radius: 6px;
 }
 
-/* Professional Table */
+/* Clinical table */
 #body-map-root .report-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border: 1px solid #d9e2eb;
-  border-radius: 8px;
+  border: 1px solid #cfd6de;
+  border-radius: 4px;
   overflow: hidden;
 }
 
 #body-map-root .report-table thead {
-  background: #f5f9fc;
-  border-bottom: 2px solid #d9e2eb;
+  background: #f3f5f7;
+  border-bottom: 1px solid #cfd6de;
 }
 
 #body-map-root .report-table th {
-  padding: 12px;
+  padding: 10px 12px;
   text-align: left;
   font-size: 11px;
   font-weight: 700;
@@ -1114,95 +1079,41 @@ show_reading_time: false
 }
 
 #body-map-root .report-table td {
-  padding: 12px;
+  padding: 10px 12px;
   font-size: 13px;
   color: #000;
-  border-top: 1px solid #e9ecf1;
+  border-top: 1px solid #e1e6eb;
 }
 
 #body-map-root .report-table tbody tr:hover {
-  background: #f9fbfd;
+  background: #f8fafb;
 }
 
-/* Styled Lists */
+/* Clinical lists */
 #body-map-root .report-styled-list {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  padding-left: 18px;
+  list-style: disc;
 }
 
 #body-map-root .report-styled-list li {
-  padding: 10px 0;
-  padding-left: 24px;
-  position: relative;
+  padding: 6px 0;
   font-size: 13px;
   color: #000;
-  line-height: 1.6;
-  border-bottom: 1px solid rgba(196,168,130,0.15);
+  line-height: 1.5;
 }
 
-#body-map-root .report-styled-list li:last-child {
-  border-bottom: none;
-}
-
-#body-map-root .report-styled-list li::before {
-  content: '✓';
-  position: absolute;
-  left: 0;
-  color: #8aaa8c;
-  font-weight: 700;
-  font-size: 14px;
-}
-
-/* Badge Grid */
-#body-map-root .report-badge-grid {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin: 12px 0;
-}
-
-#body-map-root .report-badge-alert {
-  display: inline-block;
-  background: linear-gradient(135deg, #fce9e6 0%, #faf0ed 100%);
-  color: #c45e4a;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid #f5d5ce;
-}
-
-#body-map-root .report-badge-link {
-  display: inline-block;
-  background: linear-gradient(135deg, #e8f0f8 0%, #f0f5fb 100%);
-  color: #2f6ea6;
-  padding: 8px 14px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid #d5e3f0;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-#body-map-root .report-badge-link:hover {
-  background: linear-gradient(135deg, #dae8f2 0%, #e8eef8 100%);
-  border-color: #c1d8e8;
-}
-
-/* Empty State */
+/* Empty states */
 #body-map-root .report-empty-state {
-  padding: 16px;
-  text-align: center;
-  background: rgba(196,168,130,0.05);
-  border-radius: 8px;
-  color: #937468;
+  padding: 10px 12px;
+  border: 1px dashed #cfd6de;
+  background: #fbfcfd;
+  color: #5d6975;
   font-size: 12px;
-  font-style: italic;
+  font-style: normal;
 }
 
-/* QA Section */
+/* QA rows */
 #body-map-root .report-qa-section {
   margin-bottom: 16px;
 }
@@ -1214,8 +1125,8 @@ show_reading_time: false
   letter-spacing: 0.05em;
   color: #000;
   margin-bottom: 10px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #d9e2eb;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #d6dce3;
 }
 
 #body-map-root .report-qa-table {
@@ -1224,10 +1135,10 @@ show_reading_time: false
 }
 
 #body-map-root .report-qa-row {
-  background: #f9fbfd;
-  border: 1px solid #d9e2eb;
-  border-radius: 6px;
-  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #d6dce3;
+  border-radius: 4px;
+  padding: 9px 10px;
   display: grid;
   grid-template-columns: 140px 1fr;
   gap: 12px;
@@ -1238,13 +1149,13 @@ show_reading_time: false
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #5f7285;
+  color: #4e5964;
 }
 
 #body-map-root .report-qa-row-value {
   font-size: 13px;
   color: #000;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 /* ── Loading state ─── */
@@ -2900,9 +2811,9 @@ function bmRenderPersonalizedReport(reportData) {
       </table>`
     : `<div class="report-empty-state">No medications tracked yet.</div>`;
 
-  // Build high-risk cancers as professional badges
+  // Build high-risk cancers
   const highRiskHtml = (reportData.highRiskCancers || []).length
-    ? `<div class="report-badge-grid">${reportData.highRiskCancers.map(name => `<span class="report-badge-alert">${esc(name)}</span>`).join('')}</div>`
+    ? `<ul class="report-bullet-list">${reportData.highRiskCancers.map(name => `<li>${esc(name)}</li>`).join('')}</ul>`
     : `<div class="report-empty-state">No high-risk cancers identified based on current assessment.</div>`;
 
   // Build questionnaire responses as styled cards
@@ -2922,25 +2833,15 @@ function bmRenderPersonalizedReport(reportData) {
     `).join('')
     : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
 
-  // Build bookmarks as badges
+  // Build bookmarked concerns
   const bookmarkHtml = (reportData.bookmarks || []).length
-    ? `<div class="report-badge-grid">${reportData.bookmarks.map(item => {
+    ? `<ul class="report-bullet-list">${reportData.bookmarks.map(item => {
         const target = item.regionId
           ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
           : (item.link || '#');
-        return `<a href="${esc(target)}" class="report-badge-link">${esc(item.name || item.id)}</a>`;
-      }).join('')}</div>`
+        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a></li>`;
+      }).join('')}</ul>`
     : `<div class="report-empty-state">No cancer bookmarks yet.</div>`;
-
-  // Build risk factors as styled list
-  const riskFactorHtml = (reportData.riskFactorNotes || []).length
-    ? `<ul class="report-styled-list">${reportData.riskFactorNotes.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')}</ul>`
-    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
-
-  // Build screening recommendations as styled list
-  const screeningHtml = (reportData.screeningRecommendations || []).length
-    ? `<ul class="report-styled-list">${reportData.screeningRecommendations.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')}</ul>`
-    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
 
   // Build questions list
   const questionHtml = (reportData.userQuestions || []).length
@@ -2954,10 +2855,53 @@ function bmRenderPersonalizedReport(reportData) {
 
   const sections = [];
 
-  // Patient Summary Section
+  // Clinical Risk Profile Section
+  sections.push(`
+    <section class="report-section report-section-risk">
+      <h3 class="report-section-icon">Clinical Risk Profile</h3>
+      ${highRiskHtml}
+    </section>`);
+
+  // Questionnaire Section
+  if ((reportData.questionnaireResponses || []).length) {
+    sections.push(`
+      <section class="report-section report-section-assessment">
+        <h3 class="report-section-icon">Risk Assessment Responses</h3>
+        ${questionnaireHtml}
+      </section>`);
+  }
+
+  // Bookmarked Concerns Section
+  if ((reportData.bookmarks || []).length) {
+    sections.push(`
+      <section class="report-section report-section-bookmarks">
+        <h3 class="report-section-icon">Bookmarked Cancer Concerns</h3>
+        ${bookmarkHtml}
+      </section>`);
+  }
+
+  // Questions Section
+  sections.push(`
+    <section class="report-section report-section-questions">
+      <h3 class="report-section-icon">Questions for Your Doctor</h3>
+      <div class="report-question-form">
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
+        <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
+      </div>
+      ${questionHtml}
+    </section>`);
+
+  // Notes Section
+  sections.push(`
+    <section class="report-section report-section-notes">
+      <h3 class="report-section-icon">Clinical Notes</h3>
+      ${profileNoteHtml}
+    </section>`);
+
+  // Patient Summary Section (moved lower per layout request)
   sections.push(`
     <section class="report-section report-section-summary">
-      <h3 class="report-section-icon">👤 ${bmReportText('patientSummary')}</h3>
+      <h3 class="report-section-icon">Patient Summary</h3>
       <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
       <div class="report-kv">
         <div class="report-kv-item">
@@ -2979,69 +2923,12 @@ function bmRenderPersonalizedReport(reportData) {
       </div>
     </section>`);
 
-  // Risk Assessment Section
-  sections.push(`
-    <section class="report-section report-section-risk">
-      <h3 class="report-section-icon">⚠️ ${bmReportText('highRiskCancers')}</h3>
-      ${highRiskHtml}
-    </section>`);
-
-  // Treatment Plan Section
+  // Treatment Plan Section (moved lower per layout request)
   sections.push(`
     <section class="report-section report-section-treatment">
-      <h3 class="report-section-icon">💊 ${bmReportText('treatmentPlan')}</h3>
+      <h3 class="report-section-icon">Current Treatment Plan</h3>
       <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
       ${treatmentTable}
-    </section>`);
-
-  // Questionnaire Section
-  if ((reportData.questionnaireResponses || []).length) {
-    sections.push(`
-      <section class="report-section report-section-assessment">
-        <h3 class="report-section-icon">📋 ${bmReportText('questionnaireResponses')}</h3>
-        ${questionnaireHtml}
-      </section>`);
-  }
-
-  // Risk Factors Section
-  sections.push(`
-    <section class="report-section report-section-factors">
-      <h3 class="report-section-icon">🔍 ${bmReportText('riskFactorNotes')}</h3>
-      ${riskFactorHtml}
-    </section>`);
-
-  // Screening Recommendations Section
-  sections.push(`
-    <section class="report-section report-section-screening">
-      <h3 class="report-section-icon">📅 ${bmReportText('screeningPoints')}</h3>
-      ${screeningHtml}
-    </section>`);
-
-  // Bookmarked Concerns Section
-  if ((reportData.bookmarks || []).length) {
-    sections.push(`
-      <section class="report-section report-section-bookmarks">
-        <h3 class="report-section-icon">📌 ${bmReportText('bookmarkedConcerns')}</h3>
-        ${bookmarkHtml}
-      </section>`);
-  }
-
-  // Questions Section
-  sections.push(`
-    <section class="report-section report-section-questions">
-      <h3 class="report-section-icon">❓ ${bmReportText('userQuestions')}</h3>
-      <div class="report-question-form">
-        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
-        <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
-      </div>
-      ${questionHtml}
-    </section>`);
-
-  // Notes Section
-  sections.push(`
-    <section class="report-section report-section-notes">
-      <h3 class="report-section-icon">📝 ${bmReportText('notebookNotes')}</h3>
-      ${profileNoteHtml}
     </section>`);
 
   content.innerHTML = sections.join('');
@@ -3081,7 +2968,6 @@ function bmDownloadPersonalizedReport() {
 
 // ─── SEARCH ────────────────────────────────────────────────────────────────
 function bmSearchCancers(query) {
-  const results = document.getElementById('bmSearchResults');
   const q = query.toLowerCase().trim();
   if (q.length < 2) { results.classList.remove('open'); return; }
 
