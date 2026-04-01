@@ -1062,6 +1062,231 @@ title: Treatment Tracker
 }
 .f-submit:hover { background: var(--terracotta); transform: translateY(-1px); }
 .f-submit:disabled { background: var(--tan-light); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   GENETIC RISK CALCULATOR STYLES
+═══════════════════════════════════════════════════════════ */
+.risk-section-wrapper {
+  background: var(--warm-white);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-top: 32px;
+  overflow: hidden;
+}
+
+.risk-section-header {
+  padding: 20px 28px;
+  background: linear-gradient(135deg, rgba(196,168,130,0.08) 0%, rgba(224,122,106,0.05) 100%);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.risk-section-header:hover {
+  background: linear-gradient(135deg, rgba(196,168,130,0.12) 0%, rgba(224,122,106,0.08) 100%);
+}
+
+.risk-section-toggle {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.risk-section-toggle.open {
+  transform: rotate(90deg);
+}
+
+.risk-section-content {
+  padding: 28px;
+  background: var(--warm-white);
+}
+
+.risk-card {
+  background: #fff;
+  border: 1px solid var(--tan-light);
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.risk-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin: 0 0 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--rose-pale);
+}
+
+.risk-form-group {
+  margin-bottom: 16px;
+}
+
+.risk-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.risk-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 8px;
+}
+
+.risk-checkbox-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.risk-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.risk-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--rose);
+}
+
+.risk-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--tan-light);
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text-main);
+  background: #fff;
+  cursor: pointer;
+  font-family: var(--sans);
+}
+
+.risk-select:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(224,122,106,0.1);
+}
+
+.risk-calc-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--rose);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.12s;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(224,122,106,0.3);
+}
+
+.risk-calc-btn:hover {
+  background: var(--terracotta);
+  transform: translateY(-2px);
+}
+
+.risk-calc-btn:active {
+  transform: translateY(0);
+}
+
+/* Risk Scores Grid */
+.risk-scores-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.risk-score-card {
+  background: linear-gradient(135deg, var(--cream) 0%, var(--warm-white) 100%);
+  border: 2px solid var(--tan-light);
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+}
+
+.risk-score-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.risk-score-gauge {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.risk-score-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+.risk-score-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.risk-level-low { color: #6b9ecf; }
+.risk-level-moderate { color: #c4a882; }
+.risk-level-high { color: #e07a6a; }
+
+/* Roadmap Timeline */
+.roadmap-item {
+  background: #fff;
+  border-left: 4px solid var(--rose);
+  padding: 14px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+}
+
+.roadmap-title {
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+  font-size: 13px;
+}
+
+.roadmap-age {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.roadmap-recommendation {
+  font-size: 12px;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.roadmap-recommendation strong {
+  color: var(--terra);
+}
 </style>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -1217,6 +1442,119 @@ title: Treatment Tracker
     </div><!-- /right -->
 
   </div><!-- /tx-grid -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       GENETIC RISK CALCULATOR & PREVENTION ROADMAP
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="risk-section-wrapper">
+    <div class="risk-section-header" onclick="window.toggleRiskSection()">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span class="risk-section-toggle" id="riskToggle">▶</span>
+        <h3 style="margin:0; font-size:18px; color:var(--text-main);">Genetic Risk & Prevention Roadmap</h3>
+      </div>
+      <span style="font-size:12px; color:var(--text-muted); font-weight:500;">Personalized based on your family history & lifestyle</span>
+    </div>
+
+    <div class="risk-section-content" id="riskSectionContent" style="display:none;">
+      
+      <!-- STEP 1: Family History -->
+      <div class="risk-card">
+        <h4 class="risk-card-title">Step 1: Family History</h4>
+        <div class="risk-form-group">
+          <label class="risk-label">Any family members with cancer?</label>
+          <div class="risk-checkbox-group" id="familyHistoryGroup">
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="breast"> Breast Cancer
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="colon"> Colorectal
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="ovarian"> Ovarian/Endometrial
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="prostate"> Prostate
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="pancreas"> Pancreatic
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="melanoma"> Melanoma
+            </label>
+            <label class="risk-checkbox-label">
+              <input type="checkbox" value="lung"> Lung
+            </label>
+          </div>
+          <small style="color:var(--text-muted);">Parent, sibling, or grandparent with any of these</small>
+        </div>
+      </div>
+
+      <!-- STEP 2: Lifestyle Factors -->
+      <div class="risk-card">
+        <h4 class="risk-card-title">Step 2: Lifestyle Factors</h4>
+        <div class="risk-form-row">
+          <div class="risk-form-group">
+            <label class="risk-label">Smoking Status</label>
+            <select class="risk-select" id="riskSmoking">
+              <option value="never">Never smoked</option>
+              <option value="former">Former smoker</option>
+              <option value="current">Current smoker</option>
+            </select>
+          </div>
+          <div class="risk-form-group">
+            <label class="risk-label">Alcohol Use</label>
+            <select class="risk-select" id="riskAlcohol">
+              <option value="none">None</option>
+              <option value="light">Light (1-3 drinks/week)</option>
+              <option value="moderate">Moderate (4-7 drinks/week)</option>
+              <option value="heavy">Heavy (8+ drinks/week)</option>
+            </select>
+          </div>
+        </div>
+        <div class="risk-form-row">
+          <div class="risk-form-group">
+            <label class="risk-label">Physical Activity</label>
+            <select class="risk-select" id="riskActivity">
+              <option value="high">High (5+ days/week)</option>
+              <option value="moderate">Moderate (3-4 days/week)</option>
+              <option value="low">Low (1-2 days/week)</option>
+              <option value="none">Sedentary</option>
+            </select>
+          </div>
+          <div class="risk-form-group">
+            <label class="risk-label">BMI Category</label>
+            <select class="risk-select" id="riskBMI">
+              <option value="normal">Normal (18.5-24.9)</option>
+              <option value="overweight">Overweight (25-29.9)</option>
+              <option value="obese">Obese (30+)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calculate Button -->
+      <button class="risk-calc-btn" onclick="window.calculateRiskScores()">Calculate My Risk Profile</button>
+
+      <!-- RESULTS -->
+      <div id="riskResultsContainer" style="display:none;">
+        
+        <!-- Risk Scores Grid -->
+        <div class="risk-card">
+          <h4 class="risk-card-title">Your Cancer Risk Scores</h4>
+          <div class="risk-scores-grid" id="riskScoresGrid"></div>
+        </div>
+
+        <!-- Personalized Prevention Roadmap -->
+        <div class="risk-card">
+          <h4 class="risk-card-title">🗺️ Your Prevention Roadmap</h4>
+          <div id="roadmapContent"></div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
 </div><!-- /tx-app -->
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -2011,6 +2349,215 @@ function fmtTime(t) {
 function fmtFreq(f) {
   return { daily:'Daily', twice_daily:'Twice Daily', three_times:'3× Daily',
            weekly:'Weekly', as_needed:'As Needed' }[f] || f;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   GENETIC RISK CALCULATOR FUNCTIONS
+═══════════════════════════════════════════════════════════ */
+
+window.toggleRiskSection = function() {
+  const content = document.getElementById('riskSectionContent');
+  const toggle = document.getElementById('riskToggle');
+  const isOpen = content.style.display !== 'none';
+  content.style.display = isOpen ? 'none' : 'block';
+  toggle.classList.toggle('open', !isOpen);
+};
+
+window.calculateRiskScores = function() {
+  // Get family history
+  const familyCheckboxes = document.querySelectorAll('#familyHistoryGroup input[type="checkbox"]:checked');
+  const familyHistory = Array.from(familyCheckboxes).map(cb => cb.value);
+  
+  // Get lifestyle
+  const smoking = document.getElementById('riskSmoking').value;
+  const alcohol = document.getElementById('riskAlcohol').value;
+  const activity = document.getElementById('riskActivity').value;
+  const bmi = document.getElementById('riskBMI').value;
+  
+  // Calculate risk scores for various cancers
+  const risks = calculateIndividualRisks(familyHistory, smoking, alcohol, activity, bmi);
+  
+  // Display results
+  displayRiskScores(risks);
+  displayRoadmap(risks, familyHistory);
+  
+  document.getElementById('riskResultsContainer').style.display = 'block';
+  document.getElementById('riskResultsContainer').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+};
+
+function calculateIndividualRisks(familyHistory, smoking, alcohol, activity, bmi) {
+  const baselineRisks = {
+    breast: 13,
+    colon: 5,
+    lung: 5,
+    ovarian: 1,
+    prostate: 13,
+    pancreas: 2,
+    skin: 3
+  };
+  
+  const risks = {};
+  
+  // Breast cancer
+  risks.breast = baselineRisks.breast;
+  if (familyHistory.includes('breast')) risks.breast += 30;
+  if (bmi === 'obese') risks.breast += 15;
+  if (alcohol !== 'none') risks.breast += 5;
+  
+  // Colorectal cancer
+  risks.colon = baselineRisks.colon;
+  if (familyHistory.includes('colon')) risks.colon += 25;
+  if (bmi === 'obese') risks.colon += 10;
+  if (activity === 'none') risks.colon += 10;
+  
+  // Lung cancer
+  risks.lung = baselineRisks.lung;
+  if (smoking === 'current') risks.lung += 40;
+  if (smoking === 'former') risks.lung += 15;
+  if (familyHistory.includes('lung')) risks.lung += 20;
+  
+  // Ovarian/Endometrial
+  risks.ovarian = baselineRisks.ovarian;
+  if (familyHistory.includes('ovarian')) risks.ovarian += 25;
+  if (bmi === 'obese') risks.ovarian += 20;
+  
+  // Prostate
+  risks.prostate = baselineRisks.prostate;
+  if (familyHistory.includes('prostate')) risks.prostate += 35;
+  
+  // Pancreatic
+  risks.pancreas = baselineRisks.pancreas;
+  if (familyHistory.includes('pancreas')) risks.pancreas += 30;
+  if (smoking === 'current') risks.pancreas += 20;
+  
+  // Skin (Melanoma)
+  risks.skin = baselineRisks.skin;
+  if (familyHistory.includes('melanoma')) risks.skin += 30;
+  
+  // Cap at 100
+  Object.keys(risks).forEach(key => {
+    risks[key] = Math.min(risks[key], 100);
+  });
+  
+  return risks;
+}
+
+function displayRiskScores(risks) {
+  const grid = document.getElementById('riskScoresGrid');
+  const cancerLabels = {
+    breast: 'Breast',
+    colon: 'Colorectal',
+    lung: 'Lung',
+    ovarian: 'Ovarian',
+    prostate: 'Prostate',
+    pancreas: 'Pancreatic',
+    skin: 'Skin (Melanoma)'
+  };
+  
+  grid.innerHTML = Object.entries(risks).map(([key, value]) => {
+    const level = value < 15 ? 'low' : value < 30 ? 'moderate' : 'high';
+    const color = level === 'low' ? '#6b9ecf' : level === 'moderate' ? '#c4a882' : '#e07a6a';
+    
+    return `
+      <div class="risk-score-card">
+        <div class="risk-score-label">${cancerLabels[key]}</div>
+        <div class="risk-score-gauge">
+          <div class="risk-score-bar" style="width:${value}%; background:${color};"></div>
+        </div>
+        <div class="risk-score-value risk-level-${level}">${value}%</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function displayRoadmap(risks, familyHistory) {
+  const content = document.getElementById('roadmapContent');
+  const screeningRecommendations = [];
+  
+  // Breast cancer screening
+  if (risks.breast > 15) {
+    screeningRecommendations.push({
+      age: 'Age 40+',
+      title: 'Annual Mammogram',
+      rec: 'Discuss starting mammograms with doctor. Self-exams monthly.'
+    });
+  } else {
+    screeningRecommendations.push({
+      age: 'Age 50+',
+      title: 'Mammogram (Average Risk)',
+      rec: 'Routine screening every 1-2 years'
+    });
+  }
+  
+  // Colorectal screening
+  if (familyHistory.includes('colon')) {
+    screeningRecommendations.push({
+      age: 'Age 40+',
+      title: 'Colonoscopy',
+      rec: 'Begin screening 10 years before relative\'s diagnosis. Every 5-10 years.'
+    });
+  } else {
+    screeningRecommendations.push({
+      age: 'Age 45-50',
+      title: 'Colonoscopy (Average Risk)',
+      rec: 'Initial screening, then every 10 years if normal'
+    });
+  }
+  
+  // Lung cancer screening
+  if (risks.lung > 20) {
+    screeningRecommendations.push({
+      age: 'Age 55-80',
+      title: 'Low-Dose CT Scan',
+      rec: 'Annual scans if 30+ pack-year smoking history. Discuss benefits vs. risks.'
+    });
+  }
+  
+  // Prostate screening
+  if (risks.prostate > 20) {
+    screeningRecommendations.push({
+      age: 'Age 40-50',
+      title: 'PSA Test Discussion',
+      rec: 'Shared decision-making with doctor about screening benefits/risks'
+    });
+  }
+  
+  // Prevention actions
+  const preventionActions = [
+    { title: 'Maintain Healthy Weight', desc: 'Reducing BMI lowers breast, colon, ovarian risk by 10-20%' },
+    { title: 'Get Regular Exercise', desc: '150 min moderate activity/week reduces colon cancer risk by 15-20%' },
+    { title: 'Limit Alcohol', desc: 'Reducing alcohol intake lowers breast cancer risk by up to 10%' },
+    { title: 'Avoid Smoking', desc: 'Quitting smoking dramatically reduces lung and other cancer risks' },
+    { title: 'Eat More Plants', desc: 'High-fiber diet with fruits/vegetables supports protective microbiome' },
+    { title: 'Protect Skin', desc: 'SPF 30+ daily and avoid midday sun reduces melanoma risk by 40%' }
+  ];
+  
+  const html = `
+    <div style="margin-bottom:24px;">
+      <h5 style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:14px;">Recommended Screenings</h5>
+      ${screeningRecommendations.map(item => `
+        <div class="roadmap-item">
+          <div class="roadmap-age">${item.age}</div>
+          <div class="roadmap-title">${item.title}</div>
+          <div class="roadmap-recommendation">${item.rec}</div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div>
+      <h5 style="font-size:14px; font-weight:700; color:var(--text-main); margin-bottom:14px;">Lifestyle Actions to Reduce Risk</h5>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        ${preventionActions.map(action => `
+          <div style="background:#fafafa; padding:12px; border-radius:8px; border-left:3px solid var(--rose);">
+            <div style="font-weight:600; font-size:12px; color:var(--terra); margin-bottom:4px;">${action.title}</div>
+            <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">${action.desc}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  
+  content.innerHTML = html;
 }
 </script>
 
