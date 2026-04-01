@@ -1072,7 +1072,37 @@ window.predictRisk = async function() {
       throw new Error(err.error || res.statusText);
     }
 
-    displayResults(await res.json());
+    const riskResult = await res.json();
+    // ── Save to localStorage for Personalized Report ──────────────────
+    try {
+      const cancersNorm = riskResult.cancer_type_risks
+        ? Object.entries(riskResult.cancer_type_risks).map(([id, info]) => ({
+            id, name: info.label,
+            score: info.lifetime_risk_pct != null ? info.lifetime_risk_pct / 100 : null,
+            level: info.risk_level, applicable: info.applicable
+          })).filter(c => c.applicable !== false)
+        : [];
+      localStorage.setItem('mlCancerRiskResults', JSON.stringify({
+        ...riskResult,
+        cancers: cancersNorm,
+        profile: payload,
+        savedAt: new Date().toISOString()
+      }));
+      localStorage.setItem('acsUserProfile', JSON.stringify({
+        age: state.age, sex: state.sex, race: state.race,
+        smoking_status: state.smoking_status, pack_years: state.pack_years,
+        bmi_category: state.bmi_category, alcohol_consumption: state.alcohol_consumption,
+        physical_activity: state.physical_activity, diet_quality: state.diet_quality,
+        family_history: state.family_history, diabetes: state.diabetes,
+        hepatitis: state.hepatitis, hpv: state.hpv, h_pylori: state.h_pylori,
+        ibd: state.ibd, radiation_history: state.radiation_history,
+        immunosuppression: state.immunosuppression,
+        precancerous_lesions: state.precancerous_lesions,
+        occupational_exposure: state.occupational_exposure,
+        uv_exposure: state.uv_exposure
+      }));
+    } catch(_) {}
+    displayResults(riskResult);
   } catch(e) {
     resultsCard.innerHTML = `<div class="card-sub" style="color:var(--terracotta);padding:20px">
       Error: ${e.message}. ${t('errorHint')}

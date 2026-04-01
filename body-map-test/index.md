@@ -823,22 +823,95 @@ show_reading_time: false
   border-color: var(--rose-light);
 }
 
+/* ── Overall Risk Hero ─── */
+#body-map-root .report-section-hero { text-align: center; }
+#body-map-root .report-rr-wrap { padding: 16px 0 8px; }
+#body-map-root .report-rr-number {
+  font-family: var(--serif);
+  font-size: clamp(56px, 12vw, 96px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+#body-map-root .report-rr-x { font-size: 0.38em; vertical-align: top; margin-top: 0.2em; opacity: 0.7; }
+#body-map-root .report-rr-sub { font-family: var(--serif); font-size: 16px; font-style: italic; color: var(--muted); margin: 6px 0 12px; }
+#body-map-root .report-rr-badge {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
+  text-transform: uppercase; padding: 5px 18px; border-radius: 20px;
+}
+#body-map-root .report-rr-badge-high     { background: #fce9e6; color: #c45e4a; }
+#body-map-root .report-rr-badge-mod      { background: #fff3e0; color: #9b6a00; }
+#body-map-root .report-rr-badge-low      { background: #eaf1ea; color: #4a7a4c; }
+
+/* ── Cancer Type Breakdown ─── */
+#body-map-root .report-ct-grid { display: grid; gap: 10px; margin-top: 4px; }
+#body-map-root .report-ct-row { padding: 10px 0; border-top: 1px dashed rgba(196,168,130,0.3); }
+#body-map-root .report-ct-row:first-child { border-top: 0; }
+#body-map-root .report-ct-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+#body-map-root .report-ct-stats { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+#body-map-root .report-ct-stats strong { color: var(--text); }
+#body-map-root .report-ct-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; }
+#body-map-root .report-ct-badge-high { background: #fce9e6; color: #c45e4a; }
+#body-map-root .report-ct-badge-mod  { background: #fff3e0; color: #9b6a00; }
+#body-map-root .report-ct-badge-low  { background: #eaf1ea; color: #4a7a4c; }
+#body-map-root .report-ct-bar-track { height: 5px; background: rgba(196,168,130,0.2); border-radius: 3px; overflow: hidden; }
+#body-map-root .report-ct-bar-fill  { height: 100%; border-radius: 3px; }
+#body-map-root .report-ct-bar-high     { background: #c45e4a; }
+#body-map-root .report-ct-bar-moderate { background: #d9a566; }
+#body-map-root .report-ct-bar-low      { background: #8aaa8c; }
+
+/* ── Treatment Tracker Rows ─── */
+#body-map-root .report-tx-row {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0; border-top: 1px dashed rgba(196,168,130,0.3);
+}
+#body-map-root .report-tx-row:first-of-type { border-top: 0; }
+#body-map-root .report-tx-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+#body-map-root .report-tx-name { font-size: 14px; font-weight: 700; color: var(--text); }
+#body-map-root .report-tx-detail { font-size: 12px; color: var(--muted); margin-top: 2px; line-height: 1.5; }
+
+/* ── Sub-labels & notes ─── */
+#body-map-root .report-sec-sub { font-size: 12px; color: var(--muted); margin: -4px 0 10px; }
+#body-map-root .report-sec-note { font-size: 13px; color: var(--muted); font-style: italic; margin: 4px 0; }
+
+/* ── Loading state ─── */
+#body-map-root .report-loading {
+  padding: 48px 20px; text-align: center;
+  font-size: 14px; color: var(--muted);
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+}
+#body-map-root .report-loading-dots span {
+  display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--rose);
+  animation: bm-dot-pulse 1.2s ease-in-out infinite;
+}
+#body-map-root .report-loading-dots span:nth-child(2) { animation-delay: .2s; }
+#body-map-root .report-loading-dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes bm-dot-pulse { 0%,100%{opacity:.25;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+
 @media print {
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   #body-map-root .acs-hero,
   #body-map-root .main-section,
   #body-map-root .categories-section,
-  #body-map-root .acs-chat-section,
-  #body-map-root .report-actions {
+  #body-map-root .acs-chat-section {
     display: none !important;
   }
+  #body-map-root .report-actions { display: none !important; }
   #body-map-root .report-view {
     display: block !important;
     padding: 0 !important;
   }
-  #body-map-root .report-card {
-    box-shadow: none;
-    border: 0;
-  }
+  #body-map-root .report-card { box-shadow: none; border: 0; }
+  /* Hide site nav/footer when printing from the report page */
+  .bm-print-report header,
+  .bm-print-report footer,
+  .bm-print-report nav,
+  .bm-print-report .progress-sidebar { display: none !important; }
+  .bm-print-report #body-map-root .acs-hero,
+  .bm-print-report #body-map-root .main-section,
+  .bm-print-report #body-map-root .categories-section { display: none !important; }
+  .bm-print-report #body-map-root .report-view { display: block !important; padding: 0 !important; }
 }
 
 /* ── RESPONSIVE ───────────────────────────────────────── */
@@ -1177,6 +1250,8 @@ show_reading_time: false
 
 <script type="module">
 import { pythonURI, fetchOptions } from '{{site.baseurl}}/assets/js/api/config.js';
+window._bmPythonURI    = pythonURI;
+window._bmFetchOptions = fetchOptions;
 
 const ACS_PROMPTS = [
   { text: "What are the early signs of breast cancer?",           keywords: ["breast"] },
@@ -1620,6 +1695,16 @@ const BM_REPORT_I18N = {
     noCancerTypeList: 'No explicit cancer-type list was found in risk calculator storage yet.',
     riskFactorNotes: 'Personal Risk Factor Notes',
     screeningPoints: 'Recommended Screening Discussion Points',
+    overallRiskScore: 'Overall Cancer Risk Score',
+    timesPopAvg: 'times the population average',
+    notAssessed: 'Not yet assessed — complete the Risk Calculator first.',
+    riskBreakdown: 'Cancer Type Risk Breakdown',
+    lifetimeRisk: 'Lifetime Risk',
+    treatmentPlan: 'Current Treatment Plan',
+    treatmentTrackerNote: 'Loaded from your Treatment Tracker',
+    noTreatments: 'No medications found in your Treatment Tracker.',
+    started: 'Started',
+    ends: 'Ends',
     backToMap: 'Back to Body Map',
     downloadPdf: 'Download PDF',
     reportLanguage: 'Report language',
@@ -1643,6 +1728,16 @@ const BM_REPORT_I18N = {
     noCancerTypeList: 'Aún no se encontró una lista explícita de tipos de cáncer en la calculadora de riesgo.',
     riskFactorNotes: 'Notas sobre factores de riesgo personales',
     screeningPoints: 'Puntos recomendados para conversar sobre detección',
+    overallRiskScore: 'Puntuación general de riesgo de cáncer',
+    timesPopAvg: 'veces el promedio de la población',
+    notAssessed: 'Aún no evaluado — complete primero la Calculadora de Riesgo.',
+    riskBreakdown: 'Desglose del riesgo por tipo de cáncer',
+    lifetimeRisk: 'Riesgo de por vida',
+    treatmentPlan: 'Plan de Tratamiento Actual',
+    treatmentTrackerNote: 'Cargado desde su Seguimiento de Tratamiento',
+    noTreatments: 'No se encontraron medicamentos en su Seguimiento de Tratamiento.',
+    started: 'Inicio',
+    ends: 'Fin',
     backToMap: 'Volver al Mapa Corporal',
     downloadPdf: 'Descargar PDF',
     reportLanguage: 'Idioma del informe',
@@ -1692,17 +1787,16 @@ function bmUpdateReportLanguageUI() {
   });
 }
 
+let _bmCachedReportData = null;
+
 function bmSetReportLanguage(lang) {
   const normalized = lang === 'es' ? 'es' : 'en';
-  if (normalized === bmReportLanguage) {
-    bmUpdateReportLanguageUI();
-    return;
-  }
+  if (normalized === bmReportLanguage) { bmUpdateReportLanguageUI(); return; }
   bmReportLanguage = normalized;
   localStorage.setItem(BM_REPORT_LANGUAGE_KEY, bmReportLanguage);
   bmUpdateReportLanguageUI();
-  if (document.getElementById('body-map-root')?.classList.contains('report-mode')) {
-    bmRenderPersonalizedReport();
+  if (document.getElementById('body-map-root')?.classList.contains('report-mode') && _bmCachedReportData) {
+    bmRenderPersonalizedReport(_bmCachedReportData);
   }
 }
 
@@ -1816,6 +1910,23 @@ function bmNormalizeRegionKey(input) {
 function bmExtractElevatedRegions(riskData) {
   const elevated = new Map();
 
+  // ── Handle actual ML API cancer_type_risks output ──────────────────────
+  if (riskData?.cancer_type_risks && typeof riskData.cancer_type_risks === 'object') {
+    Object.entries(riskData.cancer_type_risks).forEach(([cancerType, info]) => {
+      if (!info || info.applicable === false) return;
+      const level = String(info.risk_level || '').toLowerCase();
+      if (!['high', 'moderate'].includes(level)) return;
+      const mapped = bmNormalizeRegionKey(cancerType.replace(/_/g, ' '));
+      if (mapped && !elevated.has(mapped)) {
+        elevated.set(mapped, {
+          regionId: mapped,
+          level,
+          score: info.relative_risk ? info.relative_risk / 4 : 0,
+        });
+      }
+    });
+  }
+
   if (Array.isArray(riskData?.regions)) {
     riskData.regions.forEach(region => {
       const score = Number(region.score ?? region.riskScore ?? 0);
@@ -1869,6 +1980,14 @@ function bmExtractElevatedRegions(riskData) {
 }
 
 function bmDeriveRiskFactorNotes(profile, riskData) {
+  // Use actual ML model risk factors if available
+  if (Array.isArray(riskData?.risk_factors) && riskData.risk_factors.length > 0) {
+    return riskData.risk_factors
+      .filter(rf => rf.impact === 'high' || rf.impact === 'moderate')
+      .slice(0, 8)
+      .map(rf => `${rf.factor}: ${rf.detail}`);
+  }
+
   const factors = [];
   const aggregate = [];
 
@@ -1922,19 +2041,44 @@ function bmGetRecommendedScreenings(profile, elevatedRegions) {
   return screenings;
 }
 
-function bmGetPrototypeReportData() {
-  const profileSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
+async function bmFetchReportData() {
+  // ── 1. Read risk results from localStorage (saved by cancerrisk.md) ────
   const riskSource = bmReadStorageObject(BM_RISK_SOURCE_KEYS);
+  const profileStorageSource = bmReadStorageObject(BM_LOGIN_SOURCE_KEYS);
 
-  const fullName = bmPickFirstDefined(profileSource, ['fullName', 'name', 'displayName'], 'ACS Patient');
-  const age = bmPickFirstDefined(profileSource, ['age'], 'Not provided');
-  const genderRaw = bmPickFirstDefined(profileSource, ['gender', 'sex'], bmGender);
+  // ── 2. Fetch real user profile + treatments from backend ────────────────
+  const pyURI    = window._bmPythonURI;
+  const fetchOpts = window._bmFetchOptions;
+  let apiProfile   = {};
+  let apiTreatments = [];
+
+  if (pyURI) {
+    try {
+      const r = await fetch(`${pyURI}/api/id`, fetchOpts);
+      if (r.ok) apiProfile = await r.json();
+    } catch(_) {}
+    try {
+      const r = await fetch(`${pyURI}/api/treatments`, fetchOpts);
+      if (r.ok) apiTreatments = await r.json();
+    } catch(_) {}
+  }
+
+  // ── 3. Resolve identity fields ──────────────────────────────────────────
+  const fullName = apiProfile.name
+    || bmPickFirstDefined(profileStorageSource, ['fullName', 'name', 'displayName'], 'ACS Patient');
+  const ageRaw = riskSource?.profile?.age || apiProfile.age
+    || bmPickFirstDefined(profileStorageSource, ['age'], 'Not provided');
+  const age = ageRaw || 'Not provided';
+  const genderRaw = riskSource?.profile?.sex || apiProfile.gender
+    || bmPickFirstDefined(profileStorageSource, ['gender', 'sex'], bmGender);
   const genderLabel = String(genderRaw || '').toLowerCase().includes('male') ? 'Male' :
                       String(genderRaw || '').toLowerCase().includes('female') ? 'Female' : 'Not provided';
 
+  // ── 4. Derive report sections ───────────────────────────────────────────
+  const riskProfile = { ...(riskSource?.profile || {}), ...profileStorageSource };
   const elevatedRegions = bmExtractElevatedRegions(riskSource);
-  const riskFactorNotes = bmDeriveRiskFactorNotes(profileSource, riskSource);
-  const screeningRecommendations = bmGetRecommendedScreenings({ ...profileSource, age, gender: genderLabel }, elevatedRegions);
+  const riskFactorNotes = bmDeriveRiskFactorNotes(riskProfile, riskSource);
+  const screeningRecommendations = bmGetRecommendedScreenings({ ...riskProfile, age, gender: genderLabel }, elevatedRegions);
   const calculatorCancers = bmExtractRiskCalculatorCancers(riskSource, elevatedRegions);
 
   return {
@@ -1942,12 +2086,16 @@ function bmGetPrototypeReportData() {
     age,
     gender: genderLabel,
     dateISO: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-    profileSource,
     riskSource,
     elevatedRegions,
     calculatorCancers,
     riskFactorNotes,
     screeningRecommendations,
+    apiTreatments: Array.isArray(apiTreatments) ? apiTreatments : [],
+    overallRR: riskSource?.overall_relative_risk ?? null,
+    cancerTypeRisks: riskSource?.cancer_type_risks ?? null,
+    riskFactorsRaw: riskSource?.risk_factors ?? [],
+    hasRiskData: !!(riskSource && bmHasMeaningfulData(riskSource)),
   };
 }
 
@@ -2037,8 +2185,7 @@ function bmRegionCancersForReport(regionId) {
   });
 }
 
-function bmRenderPersonalizedReport() {
-  const reportData = bmGetPrototypeReportData();
+function bmRenderPersonalizedReport(reportData) {
   const meta = document.getElementById('bmReportMeta');
   const content = document.getElementById('bmReportContent');
   const title = document.getElementById('bmReportTitle');
@@ -2051,59 +2198,67 @@ function bmRenderPersonalizedReport() {
   if (backBtn) backBtn.textContent = bmReportText('backToMap');
   if (downloadBtn) downloadBtn.textContent = bmReportText('downloadPdf');
 
+  const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const translatedName = bmTranslateReportSentence(reportData.fullName);
   const translatedGender = bmTranslateReportSentence(reportData.gender);
 
   meta.innerHTML = `
     <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
-    <div><strong>${bmReportText('document')}:</strong> ACS-RISK-PROTOTYPE</div>
-    <div><strong>${bmReportText('preparedFor')}:</strong> ${translatedName}</div>
+    <div><strong>${bmReportText('document')}:</strong> ACS-RISK-REPORT</div>
+    <div><strong>${bmReportText('preparedFor')}:</strong> ${esc(translatedName)}</div>
   `;
 
-  const elevatedRegionBlocks = reportData.elevatedRegions.map(region => {
-    const hs = BM_HOTSPOTS.find(h => h.id === region.regionId);
-    const label = hs ? hs.label : region.regionId;
-    const cancers = bmRegionCancersForReport(region.regionId).slice(0, 6);
-    const items = cancers.length
-      ? cancers.map(c => `<li><a href="${c.link}" target="_blank" rel="noopener">${c.name}</a> — ${bmReportText('watchFor')}: ${c.tags.slice(0, 3).join(', ')}</li>`).join('')
-      : `<li>${bmReportText('noMappedCancers')}</li>`;
+  const rr = reportData.overallRR;
+  const overallRRBlock = `
+    <section class="report-section report-section-hero">
+      <h3>${bmReportText('overallRiskScore')}</h3>
+      ${rr != null
+        ? `<div class="report-rr-wrap"><div class="report-rr-number">${rr.toFixed(1)}<span class="report-rr-x">×</span></div><div class="report-rr-sub">${bmReportText('timesPopAvg')}</div></div>`
+        : `<p class="report-sec-note">${bmReportText('notAssessed')}</p>`}
+    </section>`;
 
-    return `
-      <div class="report-region">
-        <div class="report-region-title">${label} · ${bmReportText('riskLevel')}: ${region.level || 'elevated'}</div>
-        <ul class="report-cancer-list">${items}</ul>
-      </div>
-    `;
-  }).join('');
+  const treatmentRows = (reportData.apiTreatments || []).length
+    ? reportData.apiTreatments.map(tx => `
+      <div class="report-tx-row">
+        <div class="report-tx-dot" style="background:${esc(tx.color || '#c4a882')}"></div>
+        <div class="report-tx-info">
+          <div class="report-tx-name">${esc(tx.medication_name)}</div>
+          <div class="report-tx-detail">${esc(tx.dosage || '')} ${esc(tx.frequency || '')}</div>
+        </div>
+      </div>`).join('')
+    : `<p class="report-sec-note">${bmReportText('noTreatments')}</p>`;
+
+  const cancerRows = reportData.calculatorCancers.length
+    ? reportData.calculatorCancers.map(item => {
+        const scoreText = Number.isFinite(item.score)
+          ? ` · ${bmReportText('score')}: ${Math.round(item.score * (item.score <= 1 ? 100 : 1))}${item.score <= 1 ? '%' : ''}`
+          : '';
+        const levelText = item.level ? ` · ${bmReportText('level')}: ${esc(item.level)}` : '';
+        return `<li>${esc(item.name)}${levelText}${scoreText}</li>`;
+      }).join('')
+    : `<li>${bmReportText('noCancerTypeList')}</li>`;
 
   content.innerHTML = `
     <section class="report-section">
       <h3>${bmReportText('patientSummary')}</h3>
       <div class="report-kv">
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('name')}</div><div class="report-kv-value">${translatedName}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('age')}</div><div class="report-kv-value">${reportData.age}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('gender')}</div><div class="report-kv-value">${translatedGender}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('name')}</div><div class="report-kv-value">${esc(translatedName)}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('age')}</div><div class="report-kv-value">${esc(String(reportData.age))}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('gender')}</div><div class="report-kv-value">${esc(translatedGender)}</div></div>
       </div>
     </section>
 
-    <section class="report-section">
-      <h3>${bmReportText('elevatedRiskRegions')}</h3>
-      ${elevatedRegionBlocks}
-    </section>
+    ${overallRRBlock}
 
     <section class="report-section">
       <h3>${bmReportText('riskCalculatorResults')}</h3>
-      <ul class="report-bullet-list">
-        ${reportData.calculatorCancers.length
-          ? reportData.calculatorCancers.map(item => {
-              const scoreText = Number.isFinite(item.score)
-                ? ` · ${bmReportText('score')}: ${Math.round(item.score * (item.score <= 1 ? 100 : 1))}${item.score <= 1 ? '%' : ''}`
-                : '';
-              const levelText = item.level ? ` · ${bmReportText('level')}: ${item.level}` : '';
-              return `<li>${item.name}${levelText}${scoreText}</li>`;
-            }).join('')
-          : `<li>${bmReportText('noCancerTypeList')}</li>`}
-      </ul>
+      <ul class="report-bullet-list">${cancerRows}</ul>
+    </section>
+
+    <section class="report-section">
+      <h3>${bmReportText('treatmentPlan')}</h3>
+      <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
+      ${treatmentRows}
     </section>
 
     <section class="report-section">
@@ -2118,12 +2273,20 @@ function bmRenderPersonalizedReport() {
   `;
 }
 
-function bmOpenPersonalizedReport() {
-  bmRenderPersonalizedReport();
+async function bmOpenPersonalizedReport() {
+  const root = document.getElementById('body-map-root');
+  root.classList.add('report-mode');
+  const content = document.getElementById('bmReportContent');
+  if (content) {
+    content.innerHTML = '<div class="report-loading"><div class="report-loading-dots"><span></span><span></span><span></span></div>Building your personalized report...</div>';
+  }
+
   const params = new URLSearchParams(window.location.search);
   params.set('report', '1');
   history.pushState({ report: true }, '', `${window.location.pathname}?${params.toString()}`);
-  document.getElementById('body-map-root').classList.add('report-mode');
+
+  _bmCachedReportData = await bmFetchReportData();
+  bmRenderPersonalizedReport(_bmCachedReportData);
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2137,7 +2300,9 @@ function bmClosePersonalizedReport() {
 }
 
 function bmDownloadPersonalizedReport() {
+  document.body.classList.add('bm-print-report');
   window.print();
+  document.body.classList.remove('bm-print-report');
 }
 
 // ─── SEARCH ────────────────────────────────────────────────────────────────
@@ -2210,12 +2375,10 @@ function bmSwitchGender(g) {
   document.getElementById('bm-svg-container-male').style.display   = g === 'male'   ? '' : 'none';
   document.getElementById('bm-btn-female').classList.toggle('active', g === 'female');
   document.getElementById('bm-btn-male').classList.toggle('active',   g === 'male');
-  // Hotspots use CSS %, so no repositioning needed
   if (bmActiveId) bmActivateHotspot(bmActiveId);
 }
 
 // ─── HOTSPOT RENDERING ─────────────────────────────────────────────────────
-// Uses CSS percentage positioning — no getBoundingClientRect, no timing issues
 function bmBuildHotspots() {
   const layer = document.getElementById('bmHotspotLayer');
   layer.innerHTML = '';
@@ -2268,8 +2431,7 @@ function bmActivateHotspot(id) {
       <button class="share-btn" onclick="bmShareRegion('${hs.id}')">Share this region</button>
     </div>
     <div class="panel-body">
-
-      ${cancers.map(({ cid, cancer: c },i) => `
+      ${cancers.map(({ cid, cancer: c }, i) => `
         <div class="cancer-item" data-idx="${i}">
           <div class="cancer-row">
             <a href="${c.link}" target="_blank" class="cancer-name-link">${c.name}</a>
@@ -2278,7 +2440,7 @@ function bmActivateHotspot(id) {
               <span class="cancer-arrow">→</span>
             </span>
           </div>
-          <div class="cancer-tags">${c.tags.map(t=>`<span class="ctag">${t}</span>`).join('')}</div>
+          <div class="cancer-tags">${c.tags.map(t => `<span class="ctag">${t}</span>`).join('')}</div>
           <div class="cancer-desc">${c.desc}</div>
         </div>`).join('')}
     </div>`;
