@@ -1403,7 +1403,7 @@ document.addEventListener('DOMContentLoaded', () => {
   background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
   color: rgba(255,255,255,0.9); border-radius: 999px; cursor: pointer;
   font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
-  ext-transform: uppercase; padding: 5px 9px;
+  text-transform: uppercase; padding: 5px 9px;
 }
 .rcc-notes-btn:hover { background: rgba(255,255,255,0.22); }
 .rcc-close-btn {
