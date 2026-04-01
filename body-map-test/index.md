@@ -2704,6 +2704,20 @@ function bmAddQuestionFromReport() {
 
 window.bmAddQuestionFromReport = bmAddQuestionFromReport;
 
+function bmBindReportQuestionForm() {
+  const input = document.getElementById('bmReportQuestionInput');
+  const button = document.getElementById('bmReportQuestionAddBtn');
+  if (!input || !button) return;
+
+  button.onclick = () => bmAddQuestionFromReport();
+  input.onkeydown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  };
+}
+
 function bmExtractRiskCalculatorCancers(riskData, elevatedRegions = []) {
   const extracted = [];
   const seen = new Set();
@@ -2907,8 +2921,8 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section report-section-questions">
       <h3 class="report-section-icon">Questions for Your Doctor</h3>
       <div class="report-question-form">
-        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.bmAddQuestionFromReport();}"></textarea>
-        <button class="report-question-add" type="button" onclick="window.bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
+        <button class="report-question-add" id="bmReportQuestionAddBtn" type="button">${bmReportText('addQuestionBtn')}</button>
       </div>
       <div id="bmReportQuestionsList">${questionHtml}</div>
     </section>`);
@@ -2954,6 +2968,7 @@ function bmRenderPersonalizedReport(reportData) {
     </section>`);
 
   content.innerHTML = sections.join('');
+  bmBindReportQuestionForm();
 }
 
 async function bmOpenPersonalizedReport() {
