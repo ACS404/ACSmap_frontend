@@ -1328,6 +1328,14 @@ const PALETTE = ['#e07a6a','#c4a882','#8aaa8c','#6b9ecf',
 const CANCER_BOOKMARKS_KEY = 'acsCancerBookmarks';
 const PROFILE_NOTES_KEY = 'acsProfileNotes';
 const USER_QUESTIONS_KEY = 'acsUserQuestions';
+const BOOKMARK_DESCRIPTION_FALLBACKS = {
+  small_intestine: 'A rare cancer with several subtypes including adenocarcinoma, carcinoid tumors, lymphoma, and sarcoma. Crampy abdominal pain, unexplained weight loss, and blood in the stool are main warning signs. Treatment depends on subtype and stage but often starts with surgery.',
+  anal: 'A cancer of the anal canal often linked to HPV infection. Rectal bleeding, anal pain or pressure, and a lump near the anus are common warning signs. Treatment is usually radiation plus chemotherapy.',
+  colorectal: 'One of the most common cancers in the US. Blood in stool, persistent bowel habit changes, and abdominal cramping are key warning signs. Colonoscopy can detect or prevent it early by removing polyps.',
+  'small intestine cancer': 'A rare cancer with several subtypes including adenocarcinoma, carcinoid tumors, lymphoma, and sarcoma. Crampy abdominal pain, unexplained weight loss, and blood in the stool are main warning signs. Treatment depends on subtype and stage but often starts with surgery.',
+  'anal cancer': 'A cancer of the anal canal often linked to HPV infection. Rectal bleeding, anal pain or pressure, and a lump near the anus are common warning signs. Treatment is usually radiation plus chemotherapy.',
+  'colorectal cancer': 'One of the most common cancers in the US. Blood in stool, persistent bowel habit changes, and abdominal cramping are key warning signs. Colonoscopy can detect or prevent it early by removing polyps.'
+};
 
 /* ─── State ─────────────────────────────────────────────── */
 let treatments   = [];          // active treatments for this user
@@ -1391,6 +1399,23 @@ function readCancerBookmarks() {
   }
 }
 
+function txNormalizeBookmarkLookup(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, ' ');
+}
+
+function txBookmarkDescription(item) {
+  const desc = String(item?.description || '').trim();
+  if (desc) return desc;
+  const byId = BOOKMARK_DESCRIPTION_FALLBACKS[txNormalizeBookmarkLookup(item?.id)];
+  if (byId) return byId;
+  const byName = BOOKMARK_DESCRIPTION_FALLBACKS[txNormalizeBookmarkLookup(item?.name)];
+  if (byName) return byName;
+  return 'Description unavailable for this saved item. Re-save from Body Map to include full details.';
+}
+
 function loadCancerBookmarks() {
   const list = document.getElementById('txBmkList');
   const count = document.getElementById('txBmkCount');
@@ -1409,10 +1434,7 @@ function loadCancerBookmarks() {
 
   list.innerHTML = bookmarks.map(item => {
     const name = esc(item.name || item.id || 'Cancer type');
-    const desc = String(item.description || '').trim();
-    const tip = desc
-      ? esc(desc)
-      : 'Description unavailable for this saved item. Re-save from Body Map to include full details.';
+    const tip = esc(txBookmarkDescription(item));
     return `
       <div class="tx-bmk-mini-item-wrap">
         <div class="tx-bmk-mini-item" tabindex="0">${name}</div>
