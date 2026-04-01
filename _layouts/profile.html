@@ -1139,17 +1139,6 @@ title: Treatment Tracker
         <div class="cal-grid" id="calGrid"></div>
       </div>
 
-      <!-- Medications list card -->
-      <div class="tx-card">
-        <div class="meds-header">
-          <div class="tx-section-title">My Medications</div>
-          <span class="meds-count" id="medsCount" style="display:none;"></span>
-        </div>
-        <div id="medsList">
-          <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
-        </div>
-      </div>
-
     </div><!-- /left -->
 
     <!-- ── Right column — Schedule + Notes tabs ── -->
@@ -1168,6 +1157,15 @@ title: Treatment Tracker
 
       <!-- Schedule pane -->
       <div class="tx-tab-pane active" id="paneSchedule" style="padding:20px;">
+        <div class="tx-card" style="margin-bottom:14px;">
+          <div class="meds-header">
+            <div class="tx-section-title">My Medications</div>
+            <span class="meds-count" id="medsCount" style="display:none;"></span>
+          </div>
+          <div id="medsList">
+            <div class="tx-empty"><div class="tx-empty-icon"></div>Loading…</div>
+          </div>
+        </div>
         <div class="checklist-day-header">
           <div class="tx-section-title" id="chkDayTitle">Today's Schedule</div>
         </div>
