@@ -1850,6 +1850,8 @@ const BM_REPORT_I18N = {
     patientSignature: 'Patient Signature',
     providerSignature: 'Provider Signature',
     signatureDate: 'Date',
+    notebookNotes: 'Digital Notebook Notes',
+    noNotebookNotes: 'No saved chatbot notes yet. Save assistant answers using the + button in the risk chatbot.',
   },
   es: {
     reportTitle: 'Informe personalizado de riesgo de cáncer',
@@ -1907,6 +1909,8 @@ const BM_REPORT_I18N = {
     patientSignature: 'Firma del paciente',
     providerSignature: 'Firma del proveedor',
     signatureDate: 'Fecha',
+    notebookNotes: 'Notas del cuaderno digital',
+    noNotebookNotes: 'Aún no hay notas guardadas del chatbot. Guarde respuestas del asistente con el botón + en el chatbot de riesgo.',
   },
 };
 
@@ -2024,6 +2028,19 @@ function bmReadUserQuestions() {
       .map(item => typeof item === 'string' ? { text: item, at: '' } : item)
       .filter(item => item && typeof item.text === 'string' && item.text.trim())
       .slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+function bmReadProfileNotes() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem('acsProfileNotes') || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(item => typeof item === 'string' ? { text: item, at: '' } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .slice(0, 20);
   } catch {
     return [];
   }
@@ -2380,6 +2397,7 @@ async function bmFetchReportData() {
   const questionnaireResponses = bmBuildQuestionnaireResponses(riskSource?.profile || {});
   const bookmarks = bmGetBookmarks();
   const userQuestions = bmReadUserQuestions();
+  const profileNotes = bmReadProfileNotes();
   const adherenceSummary = await bmComputeAdherenceSummary(pyURI, fetchOpts, apiTreatments);
 
   return {
@@ -2396,6 +2414,7 @@ async function bmFetchReportData() {
     screeningRecommendations,
     bookmarks,
     userQuestions,
+    profileNotes,
     adherenceSummary,
     apiTreatments: Array.isArray(apiTreatments) ? apiTreatments : [],
     overallRR: riskSource?.overall_relative_risk ?? null,
@@ -2578,6 +2597,10 @@ function bmRenderPersonalizedReport(reportData) {
     ? reportData.userQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')
     : `<li>${bmReportText('noQuestions')}</li>`;
 
+  const profileNoteRows = (reportData.profileNotes || []).length
+    ? reportData.profileNotes.map(n => `<li>${esc(n.text)}</li>`).join('')
+    : `<li>${bmReportText('noNotebookNotes')}</li>`;
+
   const sections = [];
   sections.push(`
     <section class="report-section">
@@ -2627,6 +2650,12 @@ function bmRenderPersonalizedReport(reportData) {
         <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
       <ul class="report-bullet-list">${questionRows}</ul>
+    </section>`);
+
+  sections.push(`
+    <section class="report-section">
+      <h3>${bmReportText('notebookNotes')}</h3>
+      <ul class="report-bullet-list">${profileNoteRows}</ul>
     </section>`);
 
   sections.push(`

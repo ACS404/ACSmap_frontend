@@ -138,6 +138,154 @@ title: Treatment Tracker
   color: var(--text-muted);
 }
 
+.tx-notes-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.tx-notes-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.tx-notes-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tx-notes-tools {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.tx-notes-search {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 9px 11px;
+  font-family: var(--sans);
+  font-size: 13px;
+}
+
+.tx-notes-filter-row {
+  display: flex;
+  gap: 8px;
+}
+
+.tx-notes-filter-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tx-notes-filter-btn.active {
+  border-color: var(--rose-light);
+  color: var(--rose);
+  background: var(--rose-pale);
+}
+
+.tx-note-item {
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.tx-note-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.tx-note-time {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+
+.tx-note-remove {
+  border: 1px solid var(--rose-light);
+  background: #fff;
+  color: var(--rose);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-remove:hover {
+  color: var(--terracotta);
+  border-color: var(--rose);
+}
+
+.tx-note-pin {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-pin.pinned {
+  border-color: rgba(138,170,140,0.7);
+  background: rgba(138,170,140,0.15);
+  color: #426744;
+}
+
+.tx-note-toq {
+  border: 1px solid rgba(107,158,207,0.55);
+  background: rgba(107,158,207,0.12);
+  color: #3f6791;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.tx-note-toq:hover {
+  background: rgba(107,158,207,0.2);
+}
+
+.tx-note-toq.added {
+  border-color: rgba(138,170,140,0.7);
+  background: rgba(138,170,140,0.2);
+  color: #426744;
+}
+
+.tx-note-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-main);
+  white-space: pre-wrap;
+}
+
 /* ── Two-column grid ── */
 .tx-grid {
   display: grid;
@@ -874,6 +1022,33 @@ title: Treatment Tracker
         </div>
       </div>
 
+      <div class="tx-card" id="txNotebookCard" style="margin-top:22px;">
+        <div class="tx-notes-head">
+          <div class="tx-section-title">Digital Notebook</div>
+          <span class="tx-notes-count" id="txNotesCount">0 saved</span>
+        </div>
+        <div class="tx-notes-tools">
+          <input
+            class="tx-notes-search"
+            id="txNotesSearch"
+            type="text"
+            placeholder="Search saved notes..."
+            oninput="window.txNotebookSetSearch(this.value)"
+          >
+          <div class="tx-notes-filter-row">
+            <button class="tx-notes-filter-btn active" id="txNotesFilterAll" onclick="window.txNotebookSetFilter('all')">All</button>
+            <button class="tx-notes-filter-btn" id="txNotesFilterPinned" onclick="window.txNotebookSetFilter('pinned')">Pinned</button>
+          </div>
+        </div>
+        <div class="tx-notes-list" id="txNotesList">
+          <div class="tx-empty">
+            <div class="tx-empty-icon"></div>
+            No notebook notes yet.<br>
+            Save assistant replies with the + button in the Cancer Risk chatbot.
+          </div>
+        </div>
+      </div>
+
     </div><!-- /left -->
 
     <!-- ── Right column — Schedule + Notes tabs ── -->
@@ -1050,6 +1225,8 @@ const DOW_ABR = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 const PALETTE = ['#e07a6a','#c4a882','#8aaa8c','#6b9ecf',
                  '#c987b8','#e8b86d','#937468','#b8ceb9'];
 const CANCER_BOOKMARKS_KEY = 'acsCancerBookmarks';
+const PROFILE_NOTES_KEY = 'acsProfileNotes';
+const USER_QUESTIONS_KEY = 'acsUserQuestions';
 
 /* ─── State ─────────────────────────────────────────────── */
 let treatments   = [];          // active treatments for this user
@@ -1061,6 +1238,8 @@ let editingId    = null;        // null = add mode, number = edit mode
 let chosenTimes  = [];          // time strings in the modal
 let chosenColor  = PALETTE[0];  // hex in the modal
 let lookupTimer  = null;
+let txNotebookSearch = '';
+let txNotebookFilter = 'all';
 
 
 /* ─── Boot ──────────────────────────────────────────────── */
@@ -1068,6 +1247,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUser();
   await loadTreatments();
   loadCancerBookmarks();
+  loadProfileNotebook();
   renderCalendar();
   await renderChecklist(selectedDate);
   buildSwatches();
@@ -1081,6 +1261,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Keep bookmarks list in sync if changed in another tab/page
   window.addEventListener('storage', (e) => {
     if (e.key === CANCER_BOOKMARKS_KEY) loadCancerBookmarks();
+    if (e.key === PROFILE_NOTES_KEY) loadProfileNotebook();
   });
 });
 
@@ -1129,6 +1310,132 @@ function loadCancerBookmarks() {
       </div>`;
   }).join('');
 }
+
+function readProfileNotebookNotes() {
+  const raw = localStorage.getItem(PROFILE_NOTES_KEY);
+  try {
+    const parsed = JSON.parse(raw || '[]');
+    const arr = Array.isArray(parsed) ? parsed : [];
+    return arr
+      .map(item => typeof item === 'string' ? { id: Date.now() + Math.random(), text: item, at: '', pinned: false } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .map(item => ({
+        id: Number(item.id) || Date.now() + Math.random(),
+        text: String(item.text || '').trim(),
+        at: item.at || '',
+        pinned: !!item.pinned,
+      }));
+  } catch {
+    return [];
+  }
+}
+
+function writeProfileNotebookNotes(notes) {
+  localStorage.setItem(PROFILE_NOTES_KEY, JSON.stringify(notes));
+}
+
+window.txNotebookSetSearch = function(value) {
+  txNotebookSearch = String(value || '').trim().toLowerCase();
+  loadProfileNotebook();
+};
+
+window.txNotebookSetFilter = function(filter) {
+  txNotebookFilter = filter === 'pinned' ? 'pinned' : 'all';
+  document.getElementById('txNotesFilterAll')?.classList.toggle('active', txNotebookFilter === 'all');
+  document.getElementById('txNotesFilterPinned')?.classList.toggle('active', txNotebookFilter === 'pinned');
+  loadProfileNotebook();
+};
+
+function loadProfileNotebook() {
+  const list = document.getElementById('txNotesList');
+  const count = document.getElementById('txNotesCount');
+  if (!list || !count) return;
+
+  const notes = readProfileNotebookNotes().sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+    return new Date(b.at || 0).getTime() - new Date(a.at || 0).getTime();
+  });
+  const filtered = notes.filter(n => {
+    if (txNotebookFilter === 'pinned' && !n.pinned) return false;
+    if (txNotebookSearch && !n.text.toLowerCase().includes(txNotebookSearch)) return false;
+    return true;
+  });
+  count.textContent = `${notes.length} saved`;
+
+  if (!notes.length) {
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No notebook notes yet.<br>
+        Save assistant replies with the + button in the Cancer Risk chatbot.
+      </div>`;
+    return;
+  }
+
+  if (!filtered.length) {
+    list.innerHTML = `
+      <div class="tx-empty">
+        <div class="tx-empty-icon"></div>
+        No notes match your search/filter.
+      </div>`;
+    return;
+  }
+
+  list.innerHTML = filtered.map(n => {
+    const id = Number(n.id) || Date.now();
+    const ts = n.at ? new Date(n.at).toLocaleString('en-US') : 'Saved note';
+    return `
+      <div class="tx-note-item">
+        <div class="tx-note-item-top">
+          <div class="tx-note-time">${esc(ts)}</div>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            <button class="tx-note-pin ${n.pinned ? 'pinned' : ''}" onclick="window.txToggleNotebookPin(${id})">${n.pinned ? 'Pinned' : 'Pin'}</button>
+            <button class="tx-note-toq" onclick="window.txAddNotebookToQuestions(${id}, this)">Add to Doctor Questions</button>
+            <button class="tx-note-remove" onclick="window.txRemoveNotebookNote(${id})">Remove</button>
+          </div>
+        </div>
+        <div class="tx-note-text">${esc(n.text || '')}</div>
+      </div>`;
+  }).join('');
+}
+
+window.txToggleNotebookPin = function(noteId) {
+  const id = Number(noteId);
+  const notes = readProfileNotebookNotes().map(n => Number(n.id) === id ? { ...n, pinned: !n.pinned } : n);
+  writeProfileNotebookNotes(notes);
+  loadProfileNotebook();
+};
+
+window.txAddNotebookToQuestions = function(noteId, btn) {
+  const id = Number(noteId);
+  const note = readProfileNotebookNotes().find(n => Number(n.id) === id);
+  if (!note || !note.text) return;
+
+  let existing = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(USER_QUESTIONS_KEY) || '[]');
+    existing = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    existing = [];
+  }
+
+  const next = [{ text: note.text, at: new Date().toISOString() }, ...existing]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => String(other.text || '').toLowerCase() === String(item.text || '').toLowerCase()))
+    .slice(0, 20);
+  localStorage.setItem(USER_QUESTIONS_KEY, JSON.stringify(next));
+
+  if (btn) {
+    btn.classList.add('added');
+    btn.textContent = 'Added';
+  }
+};
+
+window.txRemoveNotebookNote = function(noteId) {
+  const id = Number(noteId);
+  const notes = readProfileNotebookNotes().filter(n => Number(n.id) !== id);
+  writeProfileNotebookNotes(notes);
+  loadProfileNotebook();
+};
 
 /* ─── User info ─────────────────────────────────────────── */
 async function loadUser() {

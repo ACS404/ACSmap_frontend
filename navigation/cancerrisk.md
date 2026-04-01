@@ -1398,6 +1398,14 @@ document.addEventListener('DOMContentLoaded', () => {
 .rcc-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--sage); flex-shrink: 0; }
 .rcc-header-title { font-family: var(--serif); font-size: 16px; font-weight: 600; color: white; line-height: 1.2; }
 .rcc-header-sub { font-size: 10px; color: rgba(255,255,255,0.5); letter-spacing: 0.08em; text-transform: uppercase; }
+.rcc-header-actions { display: flex; align-items: center; gap: 7px; }
+.rcc-notes-btn {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.9); border-radius: 999px; cursor: pointer;
+  font-family: var(--sans); font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; padding: 5px 9px;
+}
+.rcc-notes-btn:hover { background: rgba(255,255,255,0.22); }
 .rcc-close-btn {
   background: rgba(255,255,255,0.12); border: none; color: rgba(255,255,255,0.7);
   width: 26px; height: 26px; border-radius: 50%; cursor: pointer;
@@ -1438,9 +1446,40 @@ document.addEventListener('DOMContentLoaded', () => {
   background: var(--cream); border: 1px solid var(--border-bright);
   color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 4px;
 }
+.rcc-bubble-ai-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
 .rcc-bubble-ai b {
   display: block; font-size: 10px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--rose); margin-bottom: 4px; font-weight: 700;
+  text-transform: uppercase; color: var(--rose); margin-bottom: 0; font-weight: 700;
+}
+.rcc-note-add-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(138,170,140,0.55);
+  background: rgba(138,170,140,0.15);
+  color: #456846;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.rcc-note-add-btn:hover {
+  background: rgba(138,170,140,0.28);
+  border-color: rgba(138,170,140,0.8);
+}
+.rcc-note-add-btn.saved {
+  background: rgba(138,170,140,0.35);
+  color: #2f5431;
 }
 
 /* ── Suggestion chips ── */
@@ -1456,6 +1495,59 @@ document.addEventListener('DOMContentLoaded', () => {
   transition: background 0.15s, border-color 0.15s;
 }
 .rcc-chip:hover { background: var(--tan-light); border-color: var(--tan); }
+
+/* ── Notes library panel ── */
+.rcc-notes-panel {
+  display: none;
+  flex: 1;
+  min-height: 0;
+  padding: 12px 13px;
+  background: #fff;
+  overflow-y: auto;
+}
+.rcc-notes-panel.open { display: block; }
+.rcc-note-card {
+  border: 1px solid var(--border-bright);
+  border-radius: 10px;
+  background: var(--cream);
+  padding: 10px 11px;
+  margin-bottom: 8px;
+}
+.rcc-note-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+.rcc-note-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-main);
+  white-space: pre-wrap;
+}
+.rcc-note-delete {
+  border: 1px solid var(--rose-light);
+  background: #fff;
+  color: var(--rose);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.rcc-note-delete:hover { color: var(--terracotta); border-color: var(--rose); }
+.rcc-notes-empty {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding: 6px 2px;
+}
 
 /* ── Thinking indicator ── */
 .rcc-thinking {
@@ -1513,7 +1605,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="rcc-header-sub">Personalized to your profile</div>
       </div>
     </div>
-    <button class="rcc-close-btn" onclick="rccToggle()"></button>
+    <div class="rcc-header-actions">
+      <button class="rcc-notes-btn" id="rccNotesBtn" onclick="rccToggleNotes()">Notebook</button>
+      <button class="rcc-close-btn" onclick="rccToggle()"></button>
+    </div>
   </div>
 
   <div class="rcc-context-bar" id="rccContextBar">
@@ -1521,6 +1616,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div class="rcc-messages" id="rccMessages"></div>
+  <div class="rcc-notes-panel" id="rccNotesPanel"></div>
 
   <div class="rcc-chips-row" id="rccChips"></div>
 
@@ -1545,6 +1641,102 @@ let _rccOpen       = false;
 let _rccInited     = false;
 let _rccProfile    = null;
 let _rccResults    = null;
+let _rccMode       = 'chat';
+
+const RCC_PROFILE_NOTES_KEY = 'acsProfileNotes';
+
+function rccReadProfileNotes() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(RCC_PROFILE_NOTES_KEY) || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function rccWriteProfileNotes(notes) {
+  localStorage.setItem(RCC_PROFILE_NOTES_KEY, JSON.stringify(notes));
+}
+
+function rccSaveProfileNote(noteText) {
+  const text = String(noteText || '').trim();
+  if (!text) return;
+
+  const notes = rccReadProfileNotes();
+  const next = [{ id: Date.now(), text, at: new Date().toISOString() }, ...notes]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => (other.text || '').toLowerCase() === (item.text || '').toLowerCase()))
+    .slice(0, 40);
+  rccWriteProfileNotes(next);
+  rccRenderNotesLibrary();
+}
+
+window.rccDeleteProfileNote = function(noteId) {
+  const id = Number(noteId);
+  const notes = rccReadProfileNotes().filter(n => Number(n.id) !== id);
+  rccWriteProfileNotes(notes);
+  rccRenderNotesLibrary();
+};
+
+function rccRenderNotesLibrary() {
+  const panel = document.getElementById('rccNotesPanel');
+  if (!panel) return;
+  const notes = rccReadProfileNotes();
+
+  if (!notes.length) {
+    panel.innerHTML = '<div class="rcc-notes-empty">No saved notes yet. Tap the + button on any assistant message to add it to your digital notebook.</div>';
+    return;
+  }
+
+  panel.innerHTML = notes.map(note => {
+    const dateStr = new Date(note.at || Date.now()).toLocaleString();
+    const text = String(note.text || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+    return `
+      <div class="rcc-note-card">
+        <div class="rcc-note-meta">
+          <span>Saved ${dateStr}</span>
+          <button class="rcc-note-delete" onclick="rccDeleteProfileNote(${Number(note.id)})">Remove</button>
+        </div>
+        <div class="rcc-note-text">${text}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.rccToggleNotes = function() {
+  _rccMode = _rccMode === 'notes' ? 'chat' : 'notes';
+  const notesPanel = document.getElementById('rccNotesPanel');
+  const msgPanel = document.getElementById('rccMessages');
+  const chips = document.getElementById('rccChips');
+  const thinking = document.getElementById('rccThinking');
+  const inputRow = document.querySelector('.rcc-input-row');
+  const btn = document.getElementById('rccNotesBtn');
+
+  const notesMode = _rccMode === 'notes';
+  notesPanel.classList.toggle('open', notesMode);
+  msgPanel.style.display = notesMode ? 'none' : 'flex';
+  chips.style.display = notesMode ? 'none' : '';
+  thinking.style.display = notesMode ? 'none' : '';
+  inputRow.style.display = notesMode ? 'none' : 'flex';
+  if (btn) btn.textContent = notesMode ? 'Back' : 'Notebook';
+
+  if (notesMode) rccRenderNotesLibrary();
+};
+
+window.rccSaveBubbleNote = function(btn) {
+  const bubble = btn.closest('.rcc-bubble-ai');
+  const textNode = bubble?.querySelector('.rcc-bubble-ai-text');
+  const noteText = (textNode?.innerText || textNode?.textContent || '').trim();
+  if (!noteText) return;
+
+  rccSaveProfileNote(noteText);
+  btn.classList.add('saved');
+  btn.textContent = '✓';
+  btn.title = 'Saved to digital notebook';
+};
 
 // ── 1. Read all calculator fields from the DOM ─────────────────────────────
 function rccReadProfile() {
@@ -1753,7 +1945,18 @@ function rccAddBubble(type, text) {
   const el = document.createElement('div');
   el.className = `rcc-bubble rcc-bubble-${type}`;
   if (type === 'ai') {
-    el.innerHTML = `<b> ACS Assistant</b>${text}`;
+    el.innerHTML = `
+      <div class="rcc-bubble-ai-top">
+        <b> ACS Assistant</b>
+        <button
+          class="rcc-note-add-btn"
+          onclick="rccSaveBubbleNote(this)"
+          title="Add to digital notebook"
+          aria-label="Add to digital notebook"
+        >+</button>
+      </div>
+      <div class="rcc-bubble-ai-text">${text}</div>
+    `;
   } else {
     el.textContent = text;
   }
@@ -1768,6 +1971,19 @@ function rccToggle() {
   document.getElementById('rccPanel').classList.toggle('open', _rccOpen);
 
   if (!_rccOpen) return;
+
+  _rccMode = 'chat';
+  const notesPanel = document.getElementById('rccNotesPanel');
+  const msgPanel = document.getElementById('rccMessages');
+  const chips = document.getElementById('rccChips');
+  const inputRow = document.querySelector('.rcc-input-row');
+  const btn = document.getElementById('rccNotesBtn');
+  notesPanel.classList.remove('open');
+  msgPanel.style.display = 'flex';
+  chips.style.display = '';
+  inputRow.style.display = 'flex';
+  if (btn) btn.textContent = 'Notebook';
+  rccRenderNotesLibrary();
 
   // Snapshot at open time
   _rccProfile = rccReadProfile();
