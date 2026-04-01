@@ -2891,6 +2891,31 @@ function bmRenderPersonalizedReport(reportData) {
 
   const sections = [];
 
+  // Patient Summary Section (top)
+  sections.push(`
+    <section class="report-section report-section-summary">
+      <h3 class="report-section-icon">Patient Summary</h3>
+      <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
+      <div class="report-kv">
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('firstName')}</div>
+          <div class="report-kv-value">${esc(translatedFirstName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('lastName')}</div>
+          <div class="report-kv-value">${esc(translatedLastName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('age')}</div>
+          <div class="report-kv-value">${esc(String(reportData.age))}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('gender')}</div>
+          <div class="report-kv-value">${esc(translatedGender)}</div>
+        </div>
+      </div>
+    </section>`);
+
   // Clinical Risk Profile Section
   sections.push(`
     <section class="report-section report-section-risk">
@@ -2932,31 +2957,6 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section report-section-notes">
       <h3 class="report-section-icon">Clinical Notes</h3>
       ${profileNoteHtml}
-    </section>`);
-
-  // Patient Summary Section (moved lower per layout request)
-  sections.push(`
-    <section class="report-section report-section-summary">
-      <h3 class="report-section-icon">Patient Summary</h3>
-      <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
-      <div class="report-kv">
-        <div class="report-kv-item">
-          <div class="report-kv-label">${bmReportText('firstName')}</div>
-          <div class="report-kv-value">${esc(translatedFirstName)}</div>
-        </div>
-        <div class="report-kv-item">
-          <div class="report-kv-label">${bmReportText('lastName')}</div>
-          <div class="report-kv-value">${esc(translatedLastName)}</div>
-        </div>
-        <div class="report-kv-item">
-          <div class="report-kv-label">${bmReportText('age')}</div>
-          <div class="report-kv-value">${esc(String(reportData.age))}</div>
-        </div>
-        <div class="report-kv-item">
-          <div class="report-kv-label">${bmReportText('gender')}</div>
-          <div class="report-kv-value">${esc(translatedGender)}</div>
-        </div>
-      </div>
     </section>`);
 
   // Treatment Plan Section (moved lower per layout request)
