@@ -100,8 +100,9 @@ title: Treatment Tracker
 .tx-head-actions {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .tx-header-right {
@@ -113,22 +114,22 @@ title: Treatment Tracker
 
 .tx-bookmarks-btn {
   background: var(--cream);
-  color: var(--text-main);
+  color: var(--rose);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  line-height: 1;
 }
 .tx-bookmarks-btn:hover {
   background: var(--tan-light);
-  border-color: var(--tan);
+  border-color: var(--rose-light);
   transform: translateY(-1px);
 }
 
@@ -395,6 +396,7 @@ title: Treatment Tracker
 @media (max-width: 820px) {
   .tx-grid { grid-template-columns: 1fr; }
   .tx-header-right { width: 100%; align-items: stretch; }
+  .tx-head-actions { flex-wrap: wrap; }
   .tx-bmk-mini { width: 100%; }
 }
 
@@ -1104,11 +1106,10 @@ title: Treatment Tracker
     </div>
     <div class="tx-header-right">
       <div class="tx-head-actions">
-        <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()">
-          <span class="tx-bookmark-dot"></span>
-          Cancer Bookmarks
-        </button>
         <button class="tx-add-btn" onclick="txOpenAdd()">+ Add Medication</button>
+        <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()" title="Cancer Bookmarks" aria-label="Cancer Bookmarks">
+          ⛊
+        </button>
       </div>
       <div class="tx-bmk-mini" id="txBookmarksCard">
         <div class="tx-bmk-head" style="margin-bottom:8px;">

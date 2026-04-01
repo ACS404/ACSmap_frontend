@@ -300,7 +300,16 @@ show_reading_time: false
   cursor: pointer;
   font-size: 12px;
   line-height: 1;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(4px);
   transition: all 0.15s;
+}
+#body-map-root .bookmark-icon-btn::before {
+  content: '☆';
+  font-size: 13px;
+  line-height: 1;
 }
 #body-map-root .bookmark-icon-btn:hover {
   border-color: var(--rose-light);
@@ -310,6 +319,18 @@ show_reading_time: false
   color: #fff;
   border-color: var(--rose);
   background: var(--rose);
+}
+#body-map-root .bookmark-icon-btn.active::before {
+  content: '★';
+}
+#body-map-root .cancer-item:hover .bookmark-icon-btn,
+#body-map-root .cancer-item:focus-within .bookmark-icon-btn,
+#body-map-root .cancer-item.open .bookmark-icon-btn,
+#body-map-root .bookmark-icon-btn.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 #body-map-root .cancer-tags {
   display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px;
@@ -520,16 +541,18 @@ show_reading_time: false
   color: var(--rose);
 }
 #body-map-root .bookmarks-count {
-  min-width: 18px;
-  height: 18px;
-  border-radius: 9px;
-  background: var(--rose-pale);
   color: var(--terra);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
-  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 0;
+}
+#body-map-root .bookmarks-count::before {
+  content: '★';
+  margin-right: 4px;
+  color: var(--rose);
 }
 
 /* ── BOOKMARKS DRAWER ───────────────────────────────────── */
@@ -1138,7 +1161,7 @@ show_reading_time: false
     <div class="gender-actions">
       <button class="bookmarks-trigger" type="button" onclick="bmOpenBookmarks()">
         My Bookmarks
-        <span class="bookmarks-count" id="bmBookmarksCount">0</span>
+        <span class="bookmarks-count" id="bmBookmarksCount" aria-label="Bookmark count">0</span>
       </button>
       <div class="gender-toggle">
         <button class="gender-btn active" id="bm-btn-female" onclick="bmSwitchGender('female')"> Female</button>
