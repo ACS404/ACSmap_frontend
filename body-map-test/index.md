@@ -1279,6 +1279,24 @@ const ACS_DEFAULT_PROMPTS = [
   "How is cancer staging determined?",
 ];
 
+const ACS_USER_QUESTIONS_KEY = 'acsUserQuestions';
+
+function acsSaveUserQuestion(question) {
+  const q = String(question || '').trim();
+  if (!q) return;
+  let existing = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ACS_USER_QUESTIONS_KEY) || '[]');
+    existing = Array.isArray(parsed) ? parsed : [];
+  } catch {
+    existing = [];
+  }
+  const next = [{ text: q, at: new Date().toISOString() }, ...existing]
+    .filter((item, idx, arr) => idx === arr.findIndex(other => (other.text || '').toLowerCase() === (item.text || '').toLowerCase()))
+    .slice(0, 20);
+  localStorage.setItem(ACS_USER_QUESTIONS_KEY, JSON.stringify(next));
+}
+
 function acsRenderPrompts(query) {
   const grid = document.getElementById('acsPromptsGrid');
   if (!grid) return;
@@ -1312,6 +1330,8 @@ async function acsChatSend() {
   const input = document.getElementById('acsChatInput');
   const message = input.value.trim();
   if (!message) return;
+
+  acsSaveUserQuestion(message);
 
   const sendBtn = document.getElementById('acsSendBtn');
   const statusEl = document.getElementById('acsChatStatus');
@@ -1705,6 +1725,16 @@ const BM_REPORT_I18N = {
     noTreatments: 'No medications found in your Treatment Tracker.',
     started: 'Started',
     ends: 'Ends',
+    visitPacket: 'Prepared Visit Packet',
+    bookmarkedConcerns: 'Bookmarked Cancer Concerns',
+    noBookmarks: 'No bookmarked cancer concerns yet.',
+    userQuestions: 'Your Questions for the Visit',
+    noQuestions: 'No saved questions yet. Ask the ACS assistant to build this list.',
+    adherenceSummary: 'Treatment Adherence Summary (Last 7 Days)',
+    adherenceRate: 'Adherence Rate',
+    dosesTaken: 'Doses Taken',
+    expectedDoses: 'Expected Doses',
+    noAdherenceData: 'No adherence data available yet for the last 7 days.',
     backToMap: 'Back to Body Map',
     downloadPdf: 'Download PDF',
     reportLanguage: 'Report language',
@@ -1738,6 +1768,16 @@ const BM_REPORT_I18N = {
     noTreatments: 'No se encontraron medicamentos en su Seguimiento de Tratamiento.',
     started: 'Inicio',
     ends: 'Fin',
+    visitPacket: 'Paquete Preparado para la Consulta',
+    bookmarkedConcerns: 'Preocupaciones de cáncer marcadas',
+    noBookmarks: 'Aún no hay preocupaciones de cáncer guardadas.',
+    userQuestions: 'Sus preguntas para la consulta',
+    noQuestions: 'Aún no hay preguntas guardadas. Use el asistente ACS para crear esta lista.',
+    adherenceSummary: 'Resumen de adherencia al tratamiento (últimos 7 días)',
+    adherenceRate: 'Tasa de adherencia',
+    dosesTaken: 'Dosis tomadas',
+    expectedDoses: 'Dosis esperadas',
+    noAdherenceData: 'Aún no hay datos de adherencia para los últimos 7 días.',
     backToMap: 'Volver al Mapa Corporal',
     downloadPdf: 'Descargar PDF',
     reportLanguage: 'Idioma del informe',
@@ -1848,6 +1888,72 @@ function bmHasMeaningfulData(value) {
     return keys.some(key => bmHasMeaningfulData(value[key]));
   }
   return false;
+}
+
+function bmReadUserQuestions() {
+  try {
+    const parsed = JSON.parse(localStorage.getItem(ACS_USER_QUESTIONS_KEY) || '[]');
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map(item => typeof item === 'string' ? { text: item, at: '' } : item)
+      .filter(item => item && typeof item.text === 'string' && item.text.trim())
+      .slice(0, 10);
+  } catch {
+    return [];
+  }
+}
+
+function bmExpectedDosesForDate(treatments, dt) {
+  const ms = dt.getTime();
+  let total = 0;
+  (treatments || []).forEach(t => {
+    const s = t.start_date ? new Date(t.start_date + 'T00:00:00').getTime() : 0;
+    const e = t.end_date   ? new Date(t.end_date   + 'T00:00:00').getTime() : Infinity;
+    if (ms < s || ms > e) return;
+
+    if (t.frequency === 'as_needed') return;
+    if (t.frequency === 'weekly') {
+      if (!t.start_date) return;
+      const startDow = new Date(t.start_date + 'T00:00:00').getDay();
+      if (dt.getDay() !== startDow) return;
+    }
+
+    const perDay = (Array.isArray(t.times) && t.times.length > 0) ? t.times.length : 1;
+    total += perDay;
+  });
+  return total;
+}
+
+async function bmComputeAdherenceSummary(pyURI, fetchOpts, treatments) {
+  if (!pyURI || !Array.isArray(treatments) || treatments.length === 0) {
+    return { expected: 0, taken: 0, pct: null };
+  }
+
+  let expected = 0;
+  let taken = 0;
+
+  const today = new Date();
+  for (let i = 0; i < 7; i++) {
+    const dt = new Date(today);
+    dt.setDate(today.getDate() - i);
+    const ds = dt.toISOString().slice(0, 10);
+    expected += bmExpectedDosesForDate(treatments, dt);
+
+    try {
+      const r = await fetch(`${pyURI}/api/treatment/log?date=${ds}`, fetchOpts);
+      if (!r.ok) continue;
+      const logs = await r.json();
+      if (!Array.isArray(logs)) continue;
+      taken += logs.filter(l => l && l.taken).length;
+    } catch {}
+  }
+
+  if (expected <= 0) return { expected: 0, taken: 0, pct: null };
+  return {
+    expected,
+    taken: Math.min(taken, expected),
+    pct: Math.round((Math.min(taken, expected) / expected) * 100)
+  };
 }
 
 function bmLooksLoggedInFromNav() {
@@ -2080,6 +2186,9 @@ async function bmFetchReportData() {
   const riskFactorNotes = bmDeriveRiskFactorNotes(riskProfile, riskSource);
   const screeningRecommendations = bmGetRecommendedScreenings({ ...riskProfile, age, gender: genderLabel }, elevatedRegions);
   const calculatorCancers = bmExtractRiskCalculatorCancers(riskSource, elevatedRegions);
+  const bookmarks = bmGetBookmarks();
+  const userQuestions = bmReadUserQuestions();
+  const adherenceSummary = await bmComputeAdherenceSummary(pyURI, fetchOpts, apiTreatments);
 
   return {
     fullName,
@@ -2091,6 +2200,9 @@ async function bmFetchReportData() {
     calculatorCancers,
     riskFactorNotes,
     screeningRecommendations,
+    bookmarks,
+    userQuestions,
+    adherenceSummary,
     apiTreatments: Array.isArray(apiTreatments) ? apiTreatments : [],
     overallRR: riskSource?.overall_relative_risk ?? null,
     cancerTypeRisks: riskSource?.cancer_type_risks ?? null,
@@ -2204,7 +2316,7 @@ function bmRenderPersonalizedReport(reportData) {
 
   meta.innerHTML = `
     <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
-    <div><strong>${bmReportText('document')}:</strong> ACS-RISK-REPORT</div>
+    <div><strong>${bmReportText('document')}:</strong> ${bmReportText('visitPacket')}</div>
     <div><strong>${bmReportText('preparedFor')}:</strong> ${esc(translatedName)}</div>
   `;
 
@@ -2238,6 +2350,29 @@ function bmRenderPersonalizedReport(reportData) {
       }).join('')
     : `<li>${bmReportText('noCancerTypeList')}</li>`;
 
+  const adh = reportData.adherenceSummary || { expected: 0, taken: 0, pct: null };
+  const adherenceBlock = adh.pct == null
+    ? `<p class="report-sec-note">${bmReportText('noAdherenceData')}</p>`
+    : `
+      <div class="report-kv">
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('adherenceRate')}</div><div class="report-kv-value">${adh.pct}%</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('dosesTaken')}</div><div class="report-kv-value">${adh.taken}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('expectedDoses')}</div><div class="report-kv-value">${adh.expected}</div></div>
+      </div>`;
+
+  const bookmarkRows = (reportData.bookmarks || []).length
+    ? reportData.bookmarks.map(item => {
+        const target = item.regionId
+          ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
+          : (item.link || '#');
+        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a>${item.regionLabel ? ` · ${esc(item.regionLabel)}` : ''}</li>`;
+      }).join('')
+    : `<li>${bmReportText('noBookmarks')}</li>`;
+
+  const questionRows = (reportData.userQuestions || []).length
+    ? reportData.userQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')
+    : `<li>${bmReportText('noQuestions')}</li>`;
+
   content.innerHTML = `
     <section class="report-section">
       <h3>${bmReportText('patientSummary')}</h3>
@@ -2256,9 +2391,24 @@ function bmRenderPersonalizedReport(reportData) {
     </section>
 
     <section class="report-section">
+      <h3>${bmReportText('adherenceSummary')}</h3>
+      ${adherenceBlock}
+    </section>
+
+    <section class="report-section">
       <h3>${bmReportText('treatmentPlan')}</h3>
       <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
       ${treatmentRows}
+    </section>
+
+    <section class="report-section">
+      <h3>${bmReportText('bookmarkedConcerns')}</h3>
+      <ul class="report-bullet-list">${bookmarkRows}</ul>
+    </section>
+
+    <section class="report-section">
+      <h3>${bmReportText('userQuestions')}</h3>
+      <ul class="report-bullet-list">${questionRows}</ul>
     </section>
 
     <section class="report-section">
