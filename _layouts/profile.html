@@ -791,7 +791,7 @@ title: Treatment Tracker
            Schedule
         </button>
         <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
-          𓂃 Notes
+          ✎𓂃 Notes
           <span class="tx-tab-badge" id="tnBadge"></span>
         </button>
       </div>
@@ -872,7 +872,7 @@ title: Treatment Tracker
                onkeydown="if(event.key==='Enter')txLookupNow()">
         <button type="button" class="time-add-btn" onclick="txLookupNow()"
                 title="Look up medication info" style="white-space:nowrap;">
-          ︎ Look Up
+          🔍︎ Look Up
         </button>
       </div>
       <div class="ai-loading" id="aiLoading">
@@ -1035,8 +1035,8 @@ function renderMedsList() {
         </div>
       </div>
       <div class="med-actions">
-        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})"></button>
-        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})"></button>
+        <button class="med-btn"     title="Edit"   onclick="window.txOpenEdit(${m.id})">🖋</button>
+        <button class="med-btn del" title="Remove" onclick="window.txDelete(${m.id})">🗑</button>
       </div>
     </div>`).join('');
 }
