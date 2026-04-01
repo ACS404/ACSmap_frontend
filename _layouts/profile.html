@@ -195,6 +195,10 @@ title: Treatment Tracker
   gap: 6px;
 }
 
+.tx-bmk-mini-item-wrap {
+  position: relative;
+}
+
 .tx-bmk-mini-item {
   font-size: 13px;
   color: var(--text-main);
@@ -204,6 +208,34 @@ title: Treatment Tracker
 }
 
 .tx-bmk-mini-item:last-child { border-bottom: 0; }
+
+.tx-bmk-mini-tip {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  width: min(380px, calc(100vw - 80px));
+  background: #fffdf8;
+  border: 1px solid var(--tan-light);
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(61,44,36,0.14);
+  padding: 10px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--text-main);
+  z-index: 20;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.14s ease, transform 0.14s ease;
+  pointer-events: none;
+}
+
+.tx-bmk-mini-item-wrap:hover .tx-bmk-mini-tip,
+.tx-bmk-mini-item-wrap:focus-within .tx-bmk-mini-tip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
 
 .tx-notes-head {
   display: flex;
@@ -1375,7 +1407,17 @@ function loadCancerBookmarks() {
   }
 
   list.innerHTML = bookmarks.map(item => {
-    return `<div class="tx-bmk-mini-item">${esc(item.name || item.id || 'Cancer type')}</div>`;
+    const name = esc(item.name || item.id || 'Cancer type');
+    const desc = String(item.description || '').trim();
+    const tip = desc
+      ? esc(desc)
+      : 'Description unavailable for this saved item. Re-save from Body Map to include full details.';
+    return `
+      <div class="tx-bmk-mini-item-wrap">
+        <div class="tx-bmk-mini-item" tabindex="0">${name}</div>
+        <div class="tx-bmk-mini-tip">${tip}</div>
+      </div>
+    `;
   }).join('');
 }
 

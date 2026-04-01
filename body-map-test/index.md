@@ -1731,6 +1731,7 @@ function bmBookmarkPayload(cancerId) {
     id: cancerId,
     name: cancer.name,
     link: cancer.link,
+    description: cancer.desc || '',
     regionId: hs ? hs.id : null,
     regionLabel: hs ? hs.label : 'Body Map Region',
     savedAt: Date.now(),
