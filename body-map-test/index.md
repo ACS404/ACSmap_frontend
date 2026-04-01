@@ -2673,7 +2673,7 @@ function bmSaveQuestionFromReport(questionText) {
   localStorage.setItem(ACS_USER_QUESTIONS_KEY, JSON.stringify(next));
 }
 
-window.bmAddQuestionFromReport = function() {
+function bmAddQuestionFromReport() {
   const input = document.getElementById('bmReportQuestionInput');
   if (!input) return;
   const question = input.value.trim();
@@ -2700,7 +2700,9 @@ window.bmAddQuestionFromReport = function() {
   if (_bmCachedReportData) {
     _bmCachedReportData.userQuestions = savedQuestions;
   }
-};
+}
+
+window.bmAddQuestionFromReport = bmAddQuestionFromReport;
 
 function bmExtractRiskCalculatorCancers(riskData, elevatedRegions = []) {
   const extracted = [];
@@ -2905,8 +2907,8 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section report-section-questions">
       <h3 class="report-section-icon">Questions for Your Doctor</h3>
       <div class="report-question-form">
-        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); bmAddQuestionFromReport();}"></textarea>
-        <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); window.bmAddQuestionFromReport();}"></textarea>
+        <button class="report-question-add" type="button" onclick="window.bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
       <div id="bmReportQuestionsList">${questionHtml}</div>
     </section>`);
