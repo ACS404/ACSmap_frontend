@@ -1027,6 +1027,226 @@ show_reading_time: false
   color: var(--terra);
 }
 
+/* ═══════════════════════════════════════════════════════════
+   PROFESSIONAL REPORT REDESIGN
+═══════════════════════════════════════════════════════════ */
+
+/* Section Headers with Icons */
+#body-map-root .report-section-icon {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  margin-bottom: 14px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #000 !important;
+}
+
+/* Professional Section Styles */
+#body-map-root .report-section-summary {
+  background: linear-gradient(135deg, #f8fafc 0%, #fbfdff 100%);
+  border-color: #dbe7f0;
+}
+
+#body-map-root .report-section-risk {
+  border-top: 4px solid #e07a6a;
+  background: #fef9f7;
+}
+
+#body-map-root .report-section-treatment {
+  border-top: 4px solid #8aaa8c;
+  background: #f7fbf9;
+}
+
+#body-map-root .report-section-assessment {
+  border-top: 4px solid #c4a882;
+  background: #fef9f5;
+}
+
+#body-map-root .report-section-factors {
+  border-top: 4px solid #6b9ecf;
+  background: #f7fafd;
+}
+
+#body-map-root .report-section-screening {
+  border-top: 4px solid #c45e4a;
+  background: #fef8f7;
+}
+
+#body-map-root .report-section-bookmarks {
+  border-top: 4px solid #c4a882;
+  background: #fef9f5;
+}
+
+#body-map-root .report-section-questions {
+  border-top: 4px solid #6b9ecf;
+  background: #f7fafd;
+}
+
+#body-map-root .report-section-notes {
+  border-top: 4px solid #8aaa8c;
+  background: #f7fbf9;
+}
+
+/* Professional Table */
+#body-map-root .report-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid #d9e2eb;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+#body-map-root .report-table thead {
+  background: #f5f9fc;
+  border-bottom: 2px solid #d9e2eb;
+}
+
+#body-map-root .report-table th {
+  padding: 12px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+#body-map-root .report-table td {
+  padding: 12px;
+  font-size: 13px;
+  color: #000;
+  border-top: 1px solid #e9ecf1;
+}
+
+#body-map-root .report-table tbody tr:hover {
+  background: #f9fbfd;
+}
+
+/* Styled Lists */
+#body-map-root .report-styled-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#body-map-root .report-styled-list li {
+  padding: 10px 0;
+  padding-left: 24px;
+  position: relative;
+  font-size: 13px;
+  color: #000;
+  line-height: 1.6;
+  border-bottom: 1px solid rgba(196,168,130,0.15);
+}
+
+#body-map-root .report-styled-list li:last-child {
+  border-bottom: none;
+}
+
+#body-map-root .report-styled-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #8aaa8c;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+/* Badge Grid */
+#body-map-root .report-badge-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+#body-map-root .report-badge-alert {
+  display: inline-block;
+  background: linear-gradient(135deg, #fce9e6 0%, #faf0ed 100%);
+  color: #c45e4a;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #f5d5ce;
+}
+
+#body-map-root .report-badge-link {
+  display: inline-block;
+  background: linear-gradient(135deg, #e8f0f8 0%, #f0f5fb 100%);
+  color: #2f6ea6;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #d5e3f0;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+#body-map-root .report-badge-link:hover {
+  background: linear-gradient(135deg, #dae8f2 0%, #e8eef8 100%);
+  border-color: #c1d8e8;
+}
+
+/* Empty State */
+#body-map-root .report-empty-state {
+  padding: 16px;
+  text-align: center;
+  background: rgba(196,168,130,0.05);
+  border-radius: 8px;
+  color: #937468;
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* QA Section */
+#body-map-root .report-qa-section {
+  margin-bottom: 16px;
+}
+
+#body-map-root .report-qa-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #000;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #d9e2eb;
+}
+
+#body-map-root .report-qa-table {
+  display: grid;
+  gap: 10px;
+}
+
+#body-map-root .report-qa-row {
+  background: #f9fbfd;
+  border: 1px solid #d9e2eb;
+  border-radius: 6px;
+  padding: 10px 12px;
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px;
+}
+
+#body-map-root .report-qa-row-label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #5f7285;
+}
+
+#body-map-root .report-qa-row-value {
+  font-size: 13px;
+  color: #000;
+  font-weight: 600;
+}
+
 /* ── Loading state ─── */
 #body-map-root .report-loading {
   padding: 48px 20px; text-align: center;
@@ -2662,128 +2882,166 @@ function bmRenderPersonalizedReport(reportData) {
     <div><strong>${bmReportText('preparedFor')}:</strong> ${esc(translatedName)}</div>
   `;
 
-  const treatmentRows = (reportData.apiTreatments || []).length
-    ? reportData.apiTreatments.map(tx => `
-      <div class="report-tx-row">
-        <div class="report-tx-dot" style="background:${esc(tx.color || '#c4a882')}"></div>
-        <div class="report-tx-info">
-          <div class="report-tx-name">${esc(tx.medication_name)}</div>
-          <div class="report-tx-detail">${esc(tx.dosage || '')} ${esc(tx.frequency || '')}</div>
-        </div>
-      </div>`).join('')
-    : `<p class="report-sec-note">${bmReportText('noTreatments')}</p>`;
+  // Build treatment table
+  const treatmentTable = (reportData.apiTreatments || []).length
+    ? `<table class="report-table">
+        <thead>
+          <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Dosage</th><th style="text-align:left;">Frequency</th></tr>
+        </thead>
+        <tbody>
+          ${reportData.apiTreatments.map(tx => `
+            <tr>
+              <td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${esc(tx.color || '#c4a882')};margin-right:8px;vertical-align:middle;"></span>${esc(tx.medication_name)}</td>
+              <td>${esc(tx.dosage || '—')}</td>
+              <td>${esc(tx.frequency || '—')}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>`
+    : `<div class="report-empty-state">No medications tracked yet.</div>`;
 
-  const highRiskRows = (reportData.highRiskCancers || []).length
-    ? reportData.highRiskCancers.map(name => `<li>${esc(name)}</li>`).join('')
-    : `<li>${bmReportText('noHighRiskCancers')}</li>`;
+  // Build high-risk cancers as professional badges
+  const highRiskHtml = (reportData.highRiskCancers || []).length
+    ? `<div class="report-badge-grid">${reportData.highRiskCancers.map(name => `<span class="report-badge-alert">${esc(name)}</span>`).join('')}</div>`
+    : `<div class="report-empty-state">No high-risk cancers identified based on current assessment.</div>`;
 
-  const questionnaireRows = (reportData.questionnaireResponses || []).length
+  // Build questionnaire responses as styled cards
+  const questionnaireHtml = (reportData.questionnaireResponses || []).length
     ? reportData.questionnaireResponses.map(group => `
-      <div class="report-qa-group">
-        <div class="report-qa-group-title">${esc(group.title)}</div>
-        <div class="report-qa-grid">
+      <div class="report-qa-section">
+        <div class="report-qa-section-title">${esc(group.title)}</div>
+        <div class="report-qa-table">
           ${group.rows.map(row => `
-            <div class="report-qa-item">
-              <div class="report-qa-label">${esc(row.label)}</div>
-              <div class="report-qa-value">${esc(row.value)}</div>
+            <div class="report-qa-row">
+              <div class="report-qa-row-label">${esc(row.label)}</div>
+              <div class="report-qa-row-value">${esc(row.value)}</div>
             </div>
           `).join('')}
         </div>
       </div>
     `).join('')
-    : `<p class="report-sec-note">${bmReportText('notAssessed')}</p>`;
+    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
 
-  const bookmarkRows = (reportData.bookmarks || []).length
-    ? reportData.bookmarks.map(item => {
+  // Build bookmarks as badges
+  const bookmarkHtml = (reportData.bookmarks || []).length
+    ? `<div class="report-badge-grid">${reportData.bookmarks.map(item => {
         const target = item.regionId
           ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
           : (item.link || '#');
-        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a></li>`;
-      }).join('')
-    : `<li>${bmReportText('noBookmarks')}</li>`;
+        return `<a href="${esc(target)}" class="report-badge-link">${esc(item.name || item.id)}</a>`;
+      }).join('')}</div>`
+    : `<div class="report-empty-state">No cancer bookmarks yet.</div>`;
 
-  const questionRows = (reportData.userQuestions || []).length
-    ? reportData.userQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')
-    : `<li>${bmReportText('noQuestions')}</li>`;
+  // Build risk factors as styled list
+  const riskFactorHtml = (reportData.riskFactorNotes || []).length
+    ? `<ul class="report-styled-list">${reportData.riskFactorNotes.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
 
-  const profileNoteRows = (reportData.profileNotes || []).length
-    ? reportData.profileNotes.map(n => `<li>${esc(n.text)}</li>`).join('')
-    : `<li>${bmReportText('noNotebookNotes')}</li>`;
+  // Build screening recommendations as styled list
+  const screeningHtml = (reportData.screeningRecommendations || []).length
+    ? `<ul class="report-styled-list">${reportData.screeningRecommendations.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">${bmReportText('notAssessed')}</div>`;
 
-  const riskFactorRows = (reportData.riskFactorNotes || []).length
-    ? reportData.riskFactorNotes.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')
-    : `<li>${bmReportText('notAssessed')}</li>`;
+  // Build questions list
+  const questionHtml = (reportData.userQuestions || []).length
+    ? `<ul class="report-styled-list">${reportData.userQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">No questions added yet.</div>`;
 
-  const screeningRows = (reportData.screeningRecommendations || []).length
-    ? reportData.screeningRecommendations.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')
-    : `<li>${bmReportText('notAssessed')}</li>`;
+  // Build notes list
+  const profileNoteHtml = (reportData.profileNotes || []).length
+    ? `<ul class="report-styled-list">${reportData.profileNotes.map(n => `<li>${esc(n.text)}</li>`).join('')}</ul>`
+    : `<div class="report-empty-state">No notebook notes yet.</div>`;
 
   const sections = [];
+
+  // Patient Summary Section
   sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('patientSummary')}</h3>
+    <section class="report-section report-section-summary">
+      <h3 class="report-section-icon">👤 ${bmReportText('patientSummary')}</h3>
       <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
       <div class="report-kv">
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('firstName')}</div><div class="report-kv-value">${esc(translatedFirstName)}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('lastName')}</div><div class="report-kv-value">${esc(translatedLastName)}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('age')}</div><div class="report-kv-value">${esc(String(reportData.age))}</div></div>
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('gender')}</div><div class="report-kv-value">${esc(translatedGender)}</div></div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('firstName')}</div>
+          <div class="report-kv-value">${esc(translatedFirstName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('lastName')}</div>
+          <div class="report-kv-value">${esc(translatedLastName)}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('age')}</div>
+          <div class="report-kv-value">${esc(String(reportData.age))}</div>
+        </div>
+        <div class="report-kv-item">
+          <div class="report-kv-label">${bmReportText('gender')}</div>
+          <div class="report-kv-value">${esc(translatedGender)}</div>
+        </div>
       </div>
     </section>`);
 
+  // Risk Assessment Section
   sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('questionnaireResponses')}</h3>
-      ${questionnaireRows}
+    <section class="report-section report-section-risk">
+      <h3 class="report-section-icon">⚠️ ${bmReportText('highRiskCancers')}</h3>
+      ${highRiskHtml}
     </section>`);
 
+  // Treatment Plan Section
   sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('highRiskCancers')}</h3>
-      <ul class="report-bullet-list">${highRiskRows}</ul>
-    </section>`);
-
-  sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('treatmentPlan')}</h3>
+    <section class="report-section report-section-treatment">
+      <h3 class="report-section-icon">💊 ${bmReportText('treatmentPlan')}</h3>
       <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
-      ${treatmentRows}
+      ${treatmentTable}
     </section>`);
 
-  sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('riskFactorNotes')}</h3>
-      <ul class="report-bullet-list">${riskFactorRows}</ul>
-    </section>`);
-
-  sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('screeningPoints')}</h3>
-      <ul class="report-bullet-list">${screeningRows}</ul>
-    </section>`);
-
-  if ((reportData.bookmarks || []).length) {
+  // Questionnaire Section
+  if ((reportData.questionnaireResponses || []).length) {
     sections.push(`
-      <section class="report-section">
-        <h3>${bmReportText('bookmarkedConcerns')}</h3>
-        <ul class="report-bullet-list">${bookmarkRows}</ul>
+      <section class="report-section report-section-assessment">
+        <h3 class="report-section-icon">📋 ${bmReportText('questionnaireResponses')}</h3>
+        ${questionnaireHtml}
       </section>`);
   }
 
+  // Risk Factors Section
   sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('userQuestions')}</h3>
+    <section class="report-section report-section-factors">
+      <h3 class="report-section-icon">🔍 ${bmReportText('riskFactorNotes')}</h3>
+      ${riskFactorHtml}
+    </section>`);
+
+  // Screening Recommendations Section
+  sections.push(`
+    <section class="report-section report-section-screening">
+      <h3 class="report-section-icon">📅 ${bmReportText('screeningPoints')}</h3>
+      ${screeningHtml}
+    </section>`);
+
+  // Bookmarked Concerns Section
+  if ((reportData.bookmarks || []).length) {
+    sections.push(`
+      <section class="report-section report-section-bookmarks">
+        <h3 class="report-section-icon">📌 ${bmReportText('bookmarkedConcerns')}</h3>
+        ${bookmarkHtml}
+      </section>`);
+  }
+
+  // Questions Section
+  sections.push(`
+    <section class="report-section report-section-questions">
+      <h3 class="report-section-icon">❓ ${bmReportText('userQuestions')}</h3>
       <div class="report-question-form">
         <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
         <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
-      <ul class="report-bullet-list">${questionRows}</ul>
+      ${questionHtml}
     </section>`);
 
+  // Notes Section
   sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('notebookNotes')}</h3>
-      <ul class="report-bullet-list">${profileNoteRows}</ul>
+    <section class="report-section report-section-notes">
+      <h3 class="report-section-icon">📝 ${bmReportText('notebookNotes')}</h3>
+      ${profileNoteHtml}
     </section>`);
 
   content.innerHTML = sections.join('');
