@@ -1839,6 +1839,8 @@ const BM_REPORT_I18N = {
     preparedFor: 'Prepared for',
     patientSummary: 'Patient Summary',
     name: 'Name',
+    firstName: 'First Name',
+    lastName: 'Last Name',
     age: 'Age',
     gender: 'Gender',
     elevatedRiskRegions: 'Body Map Elevated Risk Regions',
@@ -1874,7 +1876,7 @@ const BM_REPORT_I18N = {
     backToMap: 'Back to Body Map',
     downloadPdf: 'Download PDF',
     reportLanguage: 'Report language',
-    questionnaireResponses: 'Cancer Risk Questionnaire Responses',
+    questionnaireResponses: 'Clinical Risk Profile',
     highRiskCancers: 'High-Risk Cancer Results',
     noHighRiskCancers: 'No high-risk cancer categories were identified from your latest risk run.',
     addQuestionPrompt: 'Type a question to include in your printed report',
@@ -1903,6 +1905,8 @@ const BM_REPORT_I18N = {
     preparedFor: 'Preparado para',
     patientSummary: 'Resumen del Paciente',
     name: 'Nombre',
+    firstName: 'Nombre',
+    lastName: 'Apellido',
     age: 'Edad',
     gender: 'Género',
     elevatedRiskRegions: 'Regiones con riesgo elevado en el mapa corporal',
@@ -1938,7 +1942,7 @@ const BM_REPORT_I18N = {
     backToMap: 'Volver al Mapa Corporal',
     downloadPdf: 'Descargar PDF',
     reportLanguage: 'Idioma del informe',
-    questionnaireResponses: 'Respuestas del cuestionario de riesgo de cáncer',
+    questionnaireResponses: 'Perfil clínico de riesgo',
     highRiskCancers: 'Resultados de cáncer con riesgo alto',
     noHighRiskCancers: 'No se identificaron categorías de cáncer de alto riesgo en su cálculo más reciente.',
     addQuestionPrompt: 'Escriba una pregunta para incluirla en su informe impreso',
@@ -2442,6 +2446,9 @@ async function bmFetchReportData() {
   // ── 3. Resolve identity fields ──────────────────────────────────────────
   const fullName = apiProfile.name
     || bmPickFirstDefined(profileStorageSource, ['fullName', 'name', 'displayName'], 'ACS Patient');
+  const nameParts = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] || 'ACS';
+  const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : 'Patient';
   const ageRaw = riskSource?.profile?.age || apiProfile.age
     || bmPickFirstDefined(profileStorageSource, ['age'], 'Not provided');
   const age = ageRaw || 'Not provided';
@@ -2464,6 +2471,8 @@ async function bmFetchReportData() {
 
   return {
     fullName,
+    firstName,
+    lastName,
     age,
     gender: genderLabel,
     dateISO: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
@@ -2619,6 +2628,8 @@ function bmRenderPersonalizedReport(reportData) {
 
   const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const translatedName = bmTranslateReportSentence(reportData.fullName);
+  const translatedFirstName = bmTranslateReportSentence(reportData.firstName);
+  const translatedLastName = bmTranslateReportSentence(reportData.lastName);
   const translatedGender = bmTranslateReportSentence(reportData.gender);
 
   meta.innerHTML = `
@@ -2675,13 +2686,22 @@ function bmRenderPersonalizedReport(reportData) {
     ? reportData.profileNotes.map(n => `<li>${esc(n.text)}</li>`).join('')
     : `<li>${bmReportText('noNotebookNotes')}</li>`;
 
+  const riskFactorRows = (reportData.riskFactorNotes || []).length
+    ? reportData.riskFactorNotes.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')
+    : `<li>${bmReportText('notAssessed')}</li>`;
+
+  const screeningRows = (reportData.screeningRecommendations || []).length
+    ? reportData.screeningRecommendations.map(note => `<li>${esc(bmTranslateReportSentence(note))}</li>`).join('')
+    : `<li>${bmReportText('notAssessed')}</li>`;
+
   const sections = [];
   sections.push(`
     <section class="report-section">
       <h3>${bmReportText('patientSummary')}</h3>
       <div class="report-clinical-note">${bmReportText('clinicalUseNote')}</div>
       <div class="report-kv">
-        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('name')}</div><div class="report-kv-value">${esc(translatedName)}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('firstName')}</div><div class="report-kv-value">${esc(translatedFirstName)}</div></div>
+        <div class="report-kv-item"><div class="report-kv-label">${bmReportText('lastName')}</div><div class="report-kv-value">${esc(translatedLastName)}</div></div>
         <div class="report-kv-item"><div class="report-kv-label">${bmReportText('age')}</div><div class="report-kv-value">${esc(String(reportData.age))}</div></div>
         <div class="report-kv-item"><div class="report-kv-label">${bmReportText('gender')}</div><div class="report-kv-value">${esc(translatedGender)}</div></div>
       </div>
@@ -2699,14 +2719,24 @@ function bmRenderPersonalizedReport(reportData) {
       <ul class="report-bullet-list">${highRiskRows}</ul>
     </section>`);
 
-  if ((reportData.apiTreatments || []).length) {
-    sections.push(`
-      <section class="report-section">
-        <h3>${bmReportText('treatmentPlan')}</h3>
-        <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
-        ${treatmentRows}
-      </section>`);
-  }
+  sections.push(`
+    <section class="report-section">
+      <h3>${bmReportText('treatmentPlan')}</h3>
+      <p class="report-sec-sub">${bmReportText('treatmentTrackerNote')}</p>
+      ${treatmentRows}
+    </section>`);
+
+  sections.push(`
+    <section class="report-section">
+      <h3>${bmReportText('riskFactorNotes')}</h3>
+      <ul class="report-bullet-list">${riskFactorRows}</ul>
+    </section>`);
+
+  sections.push(`
+    <section class="report-section">
+      <h3>${bmReportText('screeningPoints')}</h3>
+      <ul class="report-bullet-list">${screeningRows}</ul>
+    </section>`);
 
   if ((reportData.bookmarks || []).length) {
     sections.push(`
