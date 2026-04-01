@@ -836,21 +836,42 @@ async function viewPost(post) {
     const d       = await apiReplies(post.id);
     const replies = d.replies || [];
     const rl      = document.getElementById('replyList');
-    rl.innerHTML  = replies.length === 0
-      ? '<div class="f-empty" style="padding:20px"><div class="f-empty-sub">No replies yet — be the first to respond.</div></div>'
-      : replies.map(r => `
-          <div class="f-reply fade-in">
-            <div class="f-reply-meta">
-              <span class="f-reply-author">${esc(r.userName || 'Member')}</span>
-              <span>${ago(r.timestamp)}</span>
-            </div>
-            <div class="f-reply-body">${esc(r.content)}</div>
-          </div>`).join('');
-  } catch {
+// Replace the replies.map(...) block inside viewPost with this:
+    rl.innerHTML = replies.length === 0
+        ? '<div class="f-empty" style="padding:20px"><div class="f-empty-sub">No replies yet — be the first to respond.</div></div>'
+        : replies.map(r => {
+            const myName = fUser?.name || fUser?.uid || fUser?._uid || '';
+            const canDel = fUser && (myName === r.userName || fIsAdmin);
+            return `
+              <div class="f-reply fade-in" data-rid="${r.id}">
+                <div class="f-reply-meta">
+                  <span class="f-reply-author">${esc(r.userName || 'Member')}</span>
+                  <span>${ago(r.timestamp)}</span>
+                  ${canDel ? `<button class="f-btn-danger reply-del-btn" style="padding:2px 8px;font-size:10px;margin-left:auto" data-rid="${r.id}">Delete</button>` : ''}
+                </div>
+                <div class="f-reply-body">${esc(r.content)}</div>
+              </div>`;
+        }).join('');
+   } catch {
     document.getElementById('replyList').innerHTML =
       '<div class="f-empty"><div class="f-empty-sub">Could not load replies.</div></div>';
   }
 
+// Bind delete buttons after rendering
+document.querySelectorAll('.reply-del-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        doDeleteReply(post.id, Number(btn.dataset.rid));
+    });
+});
+
+// Bind delete buttons after rendering
+document.querySelectorAll('.reply-del-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+        e.stopPropagation();
+        doDeleteReply(post.id, Number(btn.dataset.rid));
+    });
+});
   // Reply form — login prompt if not authenticated
   const fw = document.getElementById('replyFormWrap');
   if (!fUser) {
@@ -884,6 +905,20 @@ async function doDelete(postId) {
   if (!confirm('Delete this post? This cannot be undone.')) return;
   try { await apiDelete(postId); loadFeed(); }
   catch (e) { alert('Delete failed: ' + e.message); }
+}
+
+async function doDeleteReply(postId, replyId) {
+    if (!confirm('Delete this reply?')) return;
+    try {
+        const r = await fetch(`${uri()}/api/microblog/reply`, {
+            method: 'DELETE', ...opts(),
+            body: JSON.stringify({ postId, replyId })
+        });
+        if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e?.message || `Error ${r.status}`); }
+        viewPost(fCurPost); // refresh the detail view
+    } catch (e) {
+        alert('Delete failed: ' + e.message);
+    }
 }
 
 async function doReply(postId, catPath) {
