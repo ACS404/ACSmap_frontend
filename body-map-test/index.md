@@ -805,6 +805,32 @@ show_reading_time: false
 #body-map-root .report-bullet-list li + li {
   margin-top: 6px;
 }
+#body-map-root .report-qa-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#body-map-root .report-qa-item {
+  background: #f9fbfd;
+  border: 1px solid #d9e2eb;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+#body-map-root .report-qa-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #607387;
+  font-weight: 700;
+}
+#body-map-root .report-qa-value {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2b3c;
+  line-height: 1.45;
+  word-break: break-word;
+}
 #body-map-root .report-cancer-list a {
   color: #285f95;
   font-weight: 700;
@@ -1028,6 +1054,7 @@ show_reading_time: false
   #body-map-root .report-actions { padding-left: 20px; padding-right: 20px; }
   #body-map-root .report-meta,
   #body-map-root .report-meta-wrap { text-align: left; align-items: flex-start; }
+  #body-map-root .report-qa-grid { grid-template-columns: 1fr; }
   #body-map-root .report-notes-grid,
   #body-map-root .report-signature-grid { grid-template-columns: 1fr; }
   #body-map-root .categories-section { padding: 40px 24px 60px; }
@@ -1152,7 +1179,7 @@ show_reading_time: false
   <div class="report-card" id="bmReportCard">
     <div class="report-header">
       <div>
-        <div class="report-brand">American Cancer Society · Prototype</div>
+        <div class="report-brand">American Cancer Society</div>
         <div class="report-title" id="bmReportTitle">Personalized Cancer Risk Report</div>
       </div>
       <div class="report-meta-wrap">
@@ -2581,8 +2608,13 @@ function bmRenderPersonalizedReport(reportData) {
     : `<li>${bmReportText('noHighRiskCancers')}</li>`;
 
   const questionnaireRows = (reportData.questionnaireResponses || []).length
-    ? reportData.questionnaireResponses.map(row => `<li><strong>${esc(row.label)}:</strong> ${esc(row.value)}</li>`).join('')
-    : `<li>${bmReportText('notAssessed')}</li>`;
+    ? reportData.questionnaireResponses.map(row => `
+      <div class="report-qa-item">
+        <div class="report-qa-label">${esc(row.label)}</div>
+        <div class="report-qa-value">${esc(row.value)}</div>
+      </div>
+    `).join('')
+    : `<p class="report-sec-note">${bmReportText('notAssessed')}</p>`;
 
   const bookmarkRows = (reportData.bookmarks || []).length
     ? reportData.bookmarks.map(item => {
@@ -2616,7 +2648,7 @@ function bmRenderPersonalizedReport(reportData) {
   sections.push(`
     <section class="report-section">
       <h3>${bmReportText('questionnaireResponses')}</h3>
-      <ul class="report-bullet-list">${questionnaireRows}</ul>
+      <div class="report-qa-grid">${questionnaireRows}</div>
     </section>`);
 
   sections.push(`
@@ -2656,27 +2688,6 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section">
       <h3>${bmReportText('notebookNotes')}</h3>
       <ul class="report-bullet-list">${profileNoteRows}</ul>
-    </section>`);
-
-  sections.push(`
-    <section class="report-section">
-      <h3>${bmReportText('providerNotes')}</h3>
-      <div class="report-notes-grid">
-        <div class="report-note-box">
-          <div class="report-note-box-title">${bmReportText('patientPriorities')}</div>
-        </div>
-        <div class="report-note-box">
-          <div class="report-note-box-title">${bmReportText('clinicianPlan')}</div>
-        </div>
-      </div>
-      <div class="report-signature-grid">
-        <div class="report-signature-line">${bmReportText('patientSignature')}</div>
-        <div class="report-signature-line">${bmReportText('providerSignature')}</div>
-      </div>
-      <div class="report-signature-grid" style="margin-top:10px">
-        <div class="report-signature-line">${bmReportText('signatureDate')}</div>
-        <div class="report-signature-line">${bmReportText('signatureDate')}</div>
-      </div>
     </section>`);
 
   content.innerHTML = sections.join('');
