@@ -2682,9 +2682,23 @@ window.bmAddQuestionFromReport = function() {
   bmSaveQuestionFromReport(question);
   input.value = '';
 
+  const savedQuestions = bmReadUserQuestions();
+  const listWrap = document.getElementById('bmReportQuestionsList');
+
+  if (listWrap) {
+    const esc = (s) => String(s || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+
+    listWrap.innerHTML = savedQuestions.length
+      ? `<ul class="report-styled-list">${savedQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')}</ul>`
+      : `<div class="report-empty-state">${bmReportText('noQuestions')}</div>`;
+  }
+
   if (_bmCachedReportData) {
-    _bmCachedReportData.userQuestions = bmReadUserQuestions();
-    bmRenderPersonalizedReport(_bmCachedReportData);
+    _bmCachedReportData.userQuestions = savedQuestions;
   }
 };
 
@@ -2894,7 +2908,7 @@ function bmRenderPersonalizedReport(reportData) {
         <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}" onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); bmAddQuestionFromReport();}"></textarea>
         <button class="report-question-add" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
-      ${questionHtml}
+      <div id="bmReportQuestionsList">${questionHtml}</div>
     </section>`);
 
   // Notes Section
