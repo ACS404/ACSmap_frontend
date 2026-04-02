@@ -1069,6 +1069,17 @@ show_reading_time: false
   max-height: 320px;
   background: #fff;
 }
+#body-map-root .report-table-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#body-map-root .report-table-card {
+  border: 1px solid #d1d4d0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
 #body-map-root .report-table {
   width: 100%;
   border-collapse: collapse;
@@ -1180,6 +1191,10 @@ show_reading_time: false
 }
 
 #body-map-root .report-qa-table {
+  display: grid;
+  gap: 10px;
+}
+#body-map-root .report-qa-columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
@@ -1366,6 +1381,8 @@ show_reading_time: false
   #body-map-root .report-meta,
   #body-map-root .report-meta-wrap { text-align: left; align-items: flex-start; }
   #body-map-root .report-qa-grid { grid-template-columns: 1fr; }
+  #body-map-root .report-table-columns,
+  #body-map-root .report-qa-columns,
   #body-map-root .report-qa-table { grid-template-columns: 1fr; }
   #body-map-root .report-notes-grid,
   #body-map-root .report-signature-grid { grid-template-columns: 1fr; }
@@ -3106,6 +3123,10 @@ function bmRenderPersonalizedReport(reportData) {
   const translatedFirstName = bmTranslateReportSentence(reportData.firstName);
   const translatedLastName = bmTranslateReportSentence(reportData.lastName);
   const translatedGender = bmTranslateReportSentence(reportData.gender);
+  const chunkIntoTwo = (arr = []) => {
+    const mid = Math.ceil(arr.length / 2);
+    return [arr.slice(0, mid), arr.slice(mid)];
+  };
 
   meta.innerHTML = `
     <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
@@ -3115,29 +3136,34 @@ function bmRenderPersonalizedReport(reportData) {
 
   // Build treatment table
   const treatmentTable = (reportData.apiTreatments || []).length
-    ? `<div class="report-table-wrap">
-        <table class="report-table">
-          <thead>
-            <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Schedule</th></tr>
-          </thead>
-          <tbody>
-            ${reportData.apiTreatments.map(tx => `
-              <tr>
-                <td>
-                  <span class="report-med-name">
-                    <span class="report-med-dot" style="background:${bmEscapeHtml(tx.color || '#c4a882')};"></span>
-                    ${bmEscapeHtml(tx.medication_name)}
-                  </span>
-                </td>
-                <td>
-                  <span class="report-schedule-line"><span class="report-schedule-label">Dosage</span>${bmEscapeHtml(tx.dosage || '—')}</span>
-                  <span class="report-schedule-line"><span class="report-schedule-label">Frequency</span>${bmEscapeHtml(tx.frequency || '—')}</span>
-                </td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>`
+    ? (() => {
+      const [leftTx, rightTx] = chunkIntoTwo(reportData.apiTreatments);
+      const renderTxTable = (rows) => rows.length
+        ? `<div class="report-table-card"><div class="report-table-wrap"><table class="report-table">
+            <thead>
+              <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Schedule</th></tr>
+            </thead>
+            <tbody>
+              ${rows.map(tx => `
+                <tr>
+                  <td>
+                    <span class="report-med-name">
+                      <span class="report-med-dot" style="background:${bmEscapeHtml(tx.color || '#c4a882')};"></span>
+                      ${bmEscapeHtml(tx.medication_name)}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="report-schedule-line"><span class="report-schedule-label">Dosage</span>${bmEscapeHtml(tx.dosage || '—')}</span>
+                    <span class="report-schedule-line"><span class="report-schedule-label">Frequency</span>${bmEscapeHtml(tx.frequency || '—')}</span>
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table></div></div>`
+        : '';
+
+      return `<div class="report-table-columns">${renderTxTable(leftTx)}${renderTxTable(rightTx)}</div>`;
+    })()
     : `<div class="report-empty-state">No medications tracked yet.</div>`;
 
   // Build high-risk cancers
@@ -3152,13 +3178,21 @@ function bmRenderPersonalizedReport(reportData) {
     ? reportData.questionnaireResponses.map(group => `
       <div class="report-qa-section">
         <div class="report-qa-section-title">${bmEscapeHtml(group.title)}</div>
-        <div class="report-qa-table">
-          ${group.rows.map(row => `
-            <div class="report-qa-row">
-              <div class="report-qa-row-label">${bmEscapeHtml(row.label)}</div>
-              <div class="report-qa-row-value">${bmRenderEditableField({ editKey: row.editKey || `profile.${row.label}`, value: row.value })}</div>
-            </div>
-          `).join('')}
+        <div class="report-qa-columns">
+          ${(() => {
+            const [leftRows, rightRows] = chunkIntoTwo(group.rows || []);
+            const renderRows = (rows) => `
+              <div class="report-qa-table">
+                ${rows.map(row => `
+                  <div class="report-qa-row">
+                    <div class="report-qa-row-label">${bmEscapeHtml(row.label)}</div>
+                    <div class="report-qa-row-value">${bmRenderEditableField({ editKey: row.editKey || `profile.${row.label}`, value: row.value })}</div>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+            return `${renderRows(leftRows)}${renderRows(rightRows)}`;
+          })()}
         </div>
       </div>
     `).join('')
