@@ -9,25 +9,6 @@ title: Treatment Tracker
    All colours reference the CSS variables from theme.scss
 ═══════════════════════════════════════════════════════════ */
 
-/* Manual hard reset: keep profile text black */
-html,
-body,
-main,
-.wrapper,
-.post-content,
-.tx-app,
-.tx-app * {
-  color: #000000 !important;
-  -webkit-text-fill-color: #000000 !important;
-}
-
-a,
-a:visited,
-a:hover,
-a:active {
-  color: #000000 !important;
-}
-
 /* ── Page wrapper ── */
 .tx-app {
   /* Lock profile to original warm palette regardless of global theme state */
@@ -49,26 +30,6 @@ a:active {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 72px;
-}
-
-/* Hard override to prevent global theme CSS from tinting profile text blue */
-.tx-app,
-.tx-app * {
-  color: #111111 !important;
-}
-
-/* Keep primary filled buttons legible */
-.tx-add-btn,
-.tn-save-btn,
-.time-add-btn,
-.f-submit {
-  color: #ffffff !important;
-}
-
-/* Keep bookmark icon/button in original accent red */
-.tx-bookmarks-btn,
-.tx-bookmarks-btn * {
-  color: var(--rose) !important;
 }
 
 /* ── Page header ── */
