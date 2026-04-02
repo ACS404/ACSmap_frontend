@@ -2899,14 +2899,8 @@ function bmAddQuestionFromReport() {
   const listWrap = document.getElementById('bmReportQuestionsList');
 
   if (listWrap) {
-    const esc = (s) => String(s || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-
     listWrap.innerHTML = savedQuestions.length
-      ? `<ul class="report-styled-list">${savedQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')}</ul>`
+      ? `<ul class="report-styled-list">${savedQuestions.map(q => `<li>${bmEscapeHtml(q.text)}</li>`).join('')}</ul>`
       : `<div class="report-empty-state">${bmReportText('noQuestions')}</div>`;
   }
 
@@ -2930,6 +2924,31 @@ function bmBindReportQuestionForm() {
     }
   };
 }
+
+function bmBindReportQuestionDelegates() {
+  if (window._bmQuestionDelegatesBound) return;
+  window._bmQuestionDelegatesBound = true;
+
+  document.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.id === 'bmReportQuestionAddBtn') {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.id === 'bmReportQuestionInput' && event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      bmAddQuestionFromReport();
+    }
+  });
+}
+
+bmBindReportQuestionDelegates();
 
 function bmExtractRiskCalculatorCancers(riskData, elevatedRegions = []) {
   const extracted = [];
@@ -3161,7 +3180,7 @@ function bmRenderPersonalizedReport(reportData) {
       <h3 class="report-section-icon">Questions for Your Doctor</h3>
       <div class="report-question-form">
         <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${bmEscapeHtml(bmReportText('addQuestionPrompt'))}"></textarea>
-        <button class="report-question-add" id="bmReportQuestionAddBtn" type="button">${bmReportText('addQuestionBtn')}</button>
+        <button class="report-question-add" id="bmReportQuestionAddBtn" type="button" onclick="bmAddQuestionFromReport()">${bmReportText('addQuestionBtn')}</button>
       </div>
       <div id="bmReportQuestionsList">${questionHtml}</div>
     </section>`);
