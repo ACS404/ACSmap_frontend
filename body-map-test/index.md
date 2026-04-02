@@ -1165,6 +1165,88 @@ show_reading_time: false
   font-weight: 500;
 }
 
+/* ── Inline editable report fields ─── */
+#body-map-root .bm-editable-field {
+  position: relative;
+  padding-right: 48px;
+}
+#body-map-root .bm-edit-display {
+  display: block;
+  min-height: 1.2em;
+}
+#body-map-root .bm-edit-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 1px solid #b9beb7;
+  background: #fff;
+  color: #3d433a;
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+#body-map-root .bm-editable-field:hover .bm-edit-btn,
+#body-map-root .bm-editable-field:focus-within .bm-edit-btn {
+  opacity: 1;
+}
+#body-map-root .bm-edit-form {
+  display: none;
+  gap: 6px;
+}
+#body-map-root .bm-edit-input {
+  width: 100%;
+  border: 1px solid #b5bbb3;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  color: #1f231e;
+  background: #fff;
+  font-family: var(--sans);
+}
+#body-map-root .bm-edit-input:focus {
+  outline: none;
+  border-color: #5b6358;
+}
+#body-map-root textarea.bm-edit-input {
+  min-height: 68px;
+  resize: vertical;
+  line-height: 1.45;
+}
+#body-map-root .bm-edit-actions {
+  display: flex;
+  gap: 6px;
+}
+#body-map-root .bm-edit-save,
+#body-map-root .bm-edit-cancel {
+  border: 1px solid #aeb3ac;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: #fff;
+  color: #2a2f28;
+}
+#body-map-root .bm-edit-save {
+  background: #464d43;
+  border-color: #464d43;
+  color: #fff;
+}
+#body-map-root .bm-edit-save:hover {
+  background: #3a4037;
+}
+#body-map-root .bm-edit-cancel:hover {
+  border-color: #7d8479;
+}
+
 /* ── Loading state ─── */
 #body-map-root .report-loading {
   padding: 48px 20px; text-align: center;
@@ -1191,6 +1273,8 @@ show_reading_time: false
   }
   #body-map-root .report-actions { display: none !important; }
   #body-map-root .report-question-form { display: none !important; }
+  #body-map-root .bm-edit-btn,
+  #body-map-root .bm-edit-form { display: none !important; }
   #body-map-root .report-view {
     display: block !important;
     padding: 0 !important;
@@ -1992,6 +2076,7 @@ const BM_RISK_SOURCE_KEYS = [
 ];
 
 const BM_REPORT_LANGUAGE_KEY = 'acsReportLanguage';
+const BM_REPORT_EDIT_STORAGE_KEY = 'acsReportInlineEdits';
 let bmReportLanguage = (() => {
   const saved = localStorage.getItem(BM_REPORT_LANGUAGE_KEY);
   return saved === 'es' ? 'es' : 'en';
@@ -2063,6 +2148,10 @@ const BM_REPORT_I18N = {
     categoryMedicalRisks: 'Medical Risk Factors',
     categoryEnvironmental: 'Environmental Exposure',
     categoryCancerInterests: 'Cancer Interests',
+    edit: 'Edit',
+    save: 'Save',
+    cancel: 'Cancel',
+    emptyValue: 'Not provided',
   },
   es: {
     reportTitle: 'Informe personalizado de riesgo de cáncer',
@@ -2129,6 +2218,10 @@ const BM_REPORT_I18N = {
     categoryMedicalRisks: 'Factores de riesgo médicos',
     categoryEnvironmental: 'Exposición ambiental',
     categoryCancerInterests: 'Intereses de cáncer',
+    edit: 'Editar',
+    save: 'Guardar',
+    cancel: 'Cancelar',
+    emptyValue: 'No proporcionado',
   },
 };
 
@@ -2176,6 +2269,121 @@ function bmUpdateReportLanguageUI() {
 }
 
 let _bmCachedReportData = null;
+let _bmReportInlineEdits = bmReadReportInlineEdits();
+
+function bmReadReportInlineEdits() {
+  try {
+    const raw = localStorage.getItem(BM_REPORT_EDIT_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : {};
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+function bmWriteReportInlineEdits() {
+  localStorage.setItem(BM_REPORT_EDIT_STORAGE_KEY, JSON.stringify(_bmReportInlineEdits));
+}
+
+function bmGetInlineEditedValue(editKey, fallback) {
+  const key = String(editKey || '');
+  if (!key) return fallback;
+  if (Object.prototype.hasOwnProperty.call(_bmReportInlineEdits, key)) {
+    return String(_bmReportInlineEdits[key] ?? '');
+  }
+  return fallback;
+}
+
+function bmEscapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function bmRenderEditableField({ editKey, value, multiline = false }) {
+  const resolved = String(bmGetInlineEditedValue(editKey, value) || '').trim();
+  const display = resolved || bmReportText('emptyValue');
+  const inputHtml = multiline
+    ? `<textarea class="bm-edit-input">${bmEscapeHtml(resolved)}</textarea>`
+    : `<input class="bm-edit-input" type="text" value="${bmEscapeHtml(resolved)}" />`;
+
+  return `
+    <div class="bm-editable-field" data-edit-key="${bmEscapeHtml(editKey)}" data-edit-multiline="${multiline ? '1' : '0'}">
+      <span class="bm-edit-display">${bmEscapeHtml(display)}</span>
+      <button type="button" class="bm-edit-btn">${bmReportText('edit')}</button>
+      <div class="bm-edit-form">
+        ${inputHtml}
+        <div class="bm-edit-actions">
+          <button type="button" class="bm-edit-save">${bmReportText('save')}</button>
+          <button type="button" class="bm-edit-cancel">${bmReportText('cancel')}</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function bmBindReportEditableFields() {
+  const wrappers = document.querySelectorAll('#body-map-root .bm-editable-field');
+  wrappers.forEach((wrap) => {
+    const editBtn = wrap.querySelector('.bm-edit-btn');
+    const form = wrap.querySelector('.bm-edit-form');
+    const display = wrap.querySelector('.bm-edit-display');
+    const input = wrap.querySelector('.bm-edit-input');
+    const saveBtn = wrap.querySelector('.bm-edit-save');
+    const cancelBtn = wrap.querySelector('.bm-edit-cancel');
+    const editKey = wrap.getAttribute('data-edit-key') || '';
+
+    if (!editBtn || !form || !display || !input || !saveBtn || !cancelBtn || !editKey) return;
+
+    const beginEdit = () => {
+      const isTextarea = input.tagName.toLowerCase() === 'textarea';
+      const current = bmGetInlineEditedValue(editKey, display.textContent || '');
+      if (isTextarea) {
+        input.value = current;
+      } else {
+        input.value = current;
+      }
+      display.style.display = 'none';
+      editBtn.style.display = 'none';
+      form.style.display = 'grid';
+      input.focus();
+      if (typeof input.select === 'function') input.select();
+    };
+
+    const endEdit = () => {
+      form.style.display = 'none';
+      display.style.display = '';
+      editBtn.style.display = '';
+    };
+
+    editBtn.addEventListener('click', beginEdit);
+
+    saveBtn.addEventListener('click', () => {
+      const next = String(input.value || '').trim();
+      _bmReportInlineEdits[editKey] = next;
+      bmWriteReportInlineEdits();
+      display.textContent = next || bmReportText('emptyValue');
+      endEdit();
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      endEdit();
+    });
+
+    input.addEventListener('keydown', (event) => {
+      if (input.tagName.toLowerCase() !== 'textarea' && event.key === 'Enter') {
+        event.preventDefault();
+        saveBtn.click();
+      }
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        cancelBtn.click();
+      }
+    });
+  });
+}
 
 function bmSetReportLanguage(lang) {
   const normalized = lang === 'es' ? 'es' : 'en';
@@ -2414,7 +2622,7 @@ function bmBuildQuestionnaireResponses(profile) {
     if (!formatted) return;
     seen.add(label);
     if (!rowsByCategory.has(categoryKey)) rowsByCategory.set(categoryKey, []);
-    rowsByCategory.get(categoryKey).push({ label, value: formatted });
+    rowsByCategory.get(categoryKey).push({ label, value: formatted, editKey: `profile.${key}` });
   });
 
   const orderedCategories = [
@@ -2822,7 +3030,6 @@ function bmRenderPersonalizedReport(reportData) {
   if (backBtn) backBtn.textContent = bmReportText('backToMap');
   if (downloadBtn) downloadBtn.textContent = bmReportText('downloadPdf');
 
-  const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const translatedName = bmTranslateReportSentence(reportData.fullName);
   const translatedFirstName = bmTranslateReportSentence(reportData.firstName);
   const translatedLastName = bmTranslateReportSentence(reportData.lastName);
@@ -2831,7 +3038,7 @@ function bmRenderPersonalizedReport(reportData) {
   meta.innerHTML = `
     <div><strong>${bmReportText('generated')}:</strong> ${reportData.dateISO}</div>
     <div><strong>${bmReportText('document')}:</strong> ${bmReportText('visitPacket')}</div>
-    <div><strong>${bmReportText('preparedFor')}:</strong> ${esc(translatedName)}</div>
+    <div><strong>${bmReportText('preparedFor')}:</strong> ${bmEscapeHtml(translatedName)}</div>
   `;
 
   // Build treatment table
@@ -2843,9 +3050,9 @@ function bmRenderPersonalizedReport(reportData) {
         <tbody>
           ${reportData.apiTreatments.map(tx => `
             <tr>
-              <td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${esc(tx.color || '#c4a882')};margin-right:8px;vertical-align:middle;"></span>${esc(tx.medication_name)}</td>
-              <td>${esc(tx.dosage || '—')}</td>
-              <td>${esc(tx.frequency || '—')}</td>
+              <td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${bmEscapeHtml(tx.color || '#c4a882')};margin-right:8px;vertical-align:middle;"></span>${bmEscapeHtml(tx.medication_name)}</td>
+              <td>${bmEscapeHtml(tx.dosage || '—')}</td>
+              <td>${bmEscapeHtml(tx.frequency || '—')}</td>
             </tr>
           `).join('')}
         </tbody>
@@ -2854,19 +3061,21 @@ function bmRenderPersonalizedReport(reportData) {
 
   // Build high-risk cancers
   const highRiskHtml = (reportData.highRiskCancers || []).length
-    ? `<ul class="report-bullet-list">${reportData.highRiskCancers.map(name => `<li>${esc(name)}</li>`).join('')}</ul>`
+    ? `<ul class="report-bullet-list">${reportData.highRiskCancers.map((name, idx) => `
+      <li>${bmRenderEditableField({ editKey: `risk.highRisk.${idx}`, value: name })}</li>
+    `).join('')}</ul>`
     : `<div class="report-empty-state">No high-risk cancers identified based on current assessment.</div>`;
 
   // Build questionnaire responses as styled cards
   const questionnaireHtml = (reportData.questionnaireResponses || []).length
     ? reportData.questionnaireResponses.map(group => `
       <div class="report-qa-section">
-        <div class="report-qa-section-title">${esc(group.title)}</div>
+        <div class="report-qa-section-title">${bmEscapeHtml(group.title)}</div>
         <div class="report-qa-table">
           ${group.rows.map(row => `
             <div class="report-qa-row">
-              <div class="report-qa-row-label">${esc(row.label)}</div>
-              <div class="report-qa-row-value">${esc(row.value)}</div>
+              <div class="report-qa-row-label">${bmEscapeHtml(row.label)}</div>
+              <div class="report-qa-row-value">${bmRenderEditableField({ editKey: row.editKey || `profile.${row.label}`, value: row.value })}</div>
             </div>
           `).join('')}
         </div>
@@ -2880,18 +3089,18 @@ function bmRenderPersonalizedReport(reportData) {
         const target = item.regionId
           ? `${window.location.pathname}?region=${encodeURIComponent(item.regionId)}`
           : (item.link || '#');
-        return `<li><a href="${esc(target)}">${esc(item.name || item.id)}</a></li>`;
+        return `<li><a href="${bmEscapeHtml(target)}">${bmEscapeHtml(item.name || item.id)}</a></li>`;
       }).join('')}</ul>`
     : `<div class="report-empty-state">No cancer bookmarks yet.</div>`;
 
   // Build questions list
   const questionHtml = (reportData.userQuestions || []).length
-    ? `<ul class="report-styled-list">${reportData.userQuestions.map(q => `<li>${esc(q.text)}</li>`).join('')}</ul>`
+    ? `<ul class="report-styled-list">${reportData.userQuestions.map(q => `<li>${bmEscapeHtml(q.text)}</li>`).join('')}</ul>`
     : `<div class="report-empty-state">No questions added yet.</div>`;
 
   // Build notes list
   const profileNoteHtml = (reportData.profileNotes || []).length
-    ? `<ul class="report-styled-list">${reportData.profileNotes.map(n => `<li>${esc(n.text)}</li>`).join('')}</ul>`
+    ? `<ul class="report-styled-list">${reportData.profileNotes.map(n => `<li>${bmEscapeHtml(n.text)}</li>`).join('')}</ul>`
     : `<div class="report-empty-state">No notebook notes yet.</div>`;
 
   const sections = [];
@@ -2904,19 +3113,19 @@ function bmRenderPersonalizedReport(reportData) {
       <div class="report-kv">
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('firstName')}</div>
-          <div class="report-kv-value">${esc(translatedFirstName)}</div>
+          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.firstName', value: translatedFirstName })}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('lastName')}</div>
-          <div class="report-kv-value">${esc(translatedLastName)}</div>
+          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.lastName', value: translatedLastName })}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('age')}</div>
-          <div class="report-kv-value">${esc(String(reportData.age))}</div>
+          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.age', value: String(reportData.age) })}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('gender')}</div>
-          <div class="report-kv-value">${esc(translatedGender)}</div>
+          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.gender', value: translatedGender })}</div>
         </div>
       </div>
     </section>`);
@@ -2951,7 +3160,7 @@ function bmRenderPersonalizedReport(reportData) {
     <section class="report-section report-section-questions">
       <h3 class="report-section-icon">Questions for Your Doctor</h3>
       <div class="report-question-form">
-        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${esc(bmReportText('addQuestionPrompt'))}"></textarea>
+        <textarea id="bmReportQuestionInput" class="report-question-input" placeholder="${bmEscapeHtml(bmReportText('addQuestionPrompt'))}"></textarea>
         <button class="report-question-add" id="bmReportQuestionAddBtn" type="button">${bmReportText('addQuestionBtn')}</button>
       </div>
       <div id="bmReportQuestionsList">${questionHtml}</div>
@@ -2974,6 +3183,7 @@ function bmRenderPersonalizedReport(reportData) {
 
   content.innerHTML = sections.join('');
   bmBindReportQuestionForm();
+  bmBindReportEditableFields();
 }
 
 async function bmOpenPersonalizedReport() {
