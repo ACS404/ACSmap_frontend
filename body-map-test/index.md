@@ -671,6 +671,7 @@ show_reading_time: false
   max-width: 980px;
   margin: 0 auto;
   padding: 42px 48px 72px;
+  color: #000;
 }
 #body-map-root.report-mode .main-section,
 #body-map-root.report-mode .categories-section,
@@ -688,7 +689,7 @@ show_reading_time: false
   overflow: hidden;
 }
 #body-map-root .report-header {
-  background: linear-gradient(180deg, #fbfcfa 0%, #f5f6f2 100%);
+  background: #fff;
   border-bottom: 1px solid #d3d7d1;
   border-top: 4px solid #5b6358;
   padding: 28px 30px 24px;
@@ -702,7 +703,7 @@ show_reading_time: false
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #4f564b;
+  color: #000;
   margin-bottom: 8px;
 }
 #body-map-root .report-title {
@@ -710,11 +711,11 @@ show_reading_time: false
   font-size: clamp(25px, 3.1vw, 34px);
   line-height: 1.2;
   letter-spacing: 0.01em;
-  color: #161816;
+  color: #000;
 }
 #body-map-root .report-meta {
   font-size: 12px;
-  color: #1f211e;
+  color: #000;
   line-height: 1.6;
   text-align: right;
 }
@@ -735,7 +736,7 @@ show_reading_time: false
 #body-map-root .report-lang-btn {
   border: none;
   background: transparent;
-  color: #5f665b;
+  color: #000;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -746,7 +747,7 @@ show_reading_time: false
 }
 #body-map-root .report-lang-btn.active {
   background: #fff;
-  color: #1f231e;
+  color: #000;
   box-shadow: 0 2px 5px rgba(20, 24, 28, 0.12);
 }
 #body-map-root .report-content {
@@ -766,7 +767,7 @@ show_reading_time: false
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 10px;
-  color: #1e221d;
+  color: #000;
 }
 #body-map-root .report-clinical-note {
   border: 1px solid #d2d7cf;
@@ -814,7 +815,7 @@ show_reading_time: false
 }
 #body-map-root .report-region-title {
   font-weight: 800;
-  color: #2b2f29;
+  color: #000;
   margin-bottom: 8px;
   font-size: 15px;
 }
@@ -888,7 +889,7 @@ show_reading_time: false
   border-radius: 8px;
   border: 1px solid #a9aea7;
   background: #fff;
-  color: #232722;
+  color: #000;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -896,12 +897,12 @@ show_reading_time: false
   cursor: pointer;
 }
 #body-map-root .report-btn.primary {
-  background: #3f463d;
-  border-color: #3f463d;
-  color: #fff;
+  background: #fff;
+  border-color: #7f847d;
+  color: #000;
 }
 #body-map-root .report-btn.primary:hover {
-  background: #343a32;
+  background: #f6f7f5;
 }
 #body-map-root .report-btn:hover {
   border-color: #81877e;
@@ -1055,45 +1056,87 @@ show_reading_time: false
 #body-map-root .report-section-bookmarks,
 #body-map-root .report-section-questions,
 #body-map-root .report-section-notes {
-  background: #fdfdfc;
+  background: #fff;
   border: 1px solid #d4d7d3;
   border-radius: 8px;
 }
 
 /* Clinical table */
+#body-map-root .report-table-wrap {
+  border: 1px solid #d1d4d0;
+  border-radius: 6px;
+  overflow: auto;
+  max-height: 320px;
+  background: #fff;
+}
 #body-map-root .report-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border: 1px solid #d1d4d0;
-  border-radius: 6px;
-  overflow: hidden;
+  table-layout: fixed;
 }
 
 #body-map-root .report-table thead {
-  background: #f2f3f1;
+  background: #fff;
   border-bottom: 1px solid #d1d4d0;
 }
 
 #body-map-root .report-table th {
-  padding: 10px 12px;
+  padding: 8px 10px;
   text-align: left;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: #000;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 #body-map-root .report-table td {
-  padding: 10px 12px;
-  font-size: 13px;
+  padding: 8px 10px;
+  font-size: 12px;
   color: #000;
   border-top: 1px solid #e2e4e1;
+  vertical-align: top;
+  line-height: 1.45;
 }
 
 #body-map-root .report-table tbody tr:hover {
   background: #f6f7f5;
+}
+
+#body-map-root .report-med-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: #000;
+}
+
+#body-map-root .report-med-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+#body-map-root .report-schedule-line {
+  display: block;
+}
+
+#body-map-root .report-schedule-line + .report-schedule-line {
+  margin-top: 2px;
+}
+
+#body-map-root .report-schedule-label {
+  color: #000;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-right: 4px;
 }
 
 /* Clinical lists */
@@ -1115,7 +1158,7 @@ show_reading_time: false
   padding: 10px 12px;
   border: 1px dashed #ccd0ca;
   background: #fafbf9;
-  color: #585f56;
+  color: #000;
   font-size: 12px;
   font-style: normal;
 }
@@ -1138,6 +1181,7 @@ show_reading_time: false
 
 #body-map-root .report-qa-table {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -1147,8 +1191,8 @@ show_reading_time: false
   border-radius: 6px;
   padding: 9px 10px;
   display: grid;
-  grid-template-columns: 140px 1fr;
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 5px;
 }
 
 #body-map-root .report-qa-row-label {
@@ -1156,11 +1200,11 @@ show_reading_time: false
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #555d53;
+  color: #000;
 }
 
 #body-map-root .report-qa-row-value {
-  font-size: 13px;
+  font-size: 12px;
   color: #000;
   font-weight: 500;
 }
@@ -1180,7 +1224,7 @@ show_reading_time: false
   right: 0;
   border: 1px solid #b9beb7;
   background: #fff;
-  color: #3d433a;
+  color: #000;
   border-radius: 6px;
   padding: 2px 8px;
   font-size: 10px;
@@ -1205,7 +1249,7 @@ show_reading_time: false
   border-radius: 6px;
   padding: 6px 8px;
   font-size: 13px;
-  color: #1f231e;
+  color: #000;
   background: #fff;
   font-family: var(--sans);
 }
@@ -1233,15 +1277,21 @@ show_reading_time: false
   text-transform: uppercase;
   cursor: pointer;
   background: #fff;
-  color: #2a2f28;
+  color: #000;
 }
 #body-map-root .bm-edit-save {
-  background: #464d43;
-  border-color: #464d43;
-  color: #fff;
+  background: #fff;
+  border-color: #7f847d;
+  color: #000;
 }
 #body-map-root .bm-edit-save:hover {
-  background: #3a4037;
+  background: #f6f7f5;
+}
+
+/* Force black typography across the report body for print-like clarity */
+#body-map-root .report-view .report-card,
+#body-map-root .report-view .report-card * {
+  color: #000;
 }
 #body-map-root .bm-edit-cancel:hover {
   border-color: #7d8479;
@@ -1273,6 +1323,7 @@ show_reading_time: false
   }
   #body-map-root .report-actions { display: none !important; }
   #body-map-root .report-question-form { display: none !important; }
+  #body-map-root .report-table-wrap { max-height: none !important; overflow: visible !important; }
   #body-map-root .bm-edit-btn,
   #body-map-root .bm-edit-form { display: none !important; }
   #body-map-root .report-view {
@@ -1315,8 +1366,10 @@ show_reading_time: false
   #body-map-root .report-meta,
   #body-map-root .report-meta-wrap { text-align: left; align-items: flex-start; }
   #body-map-root .report-qa-grid { grid-template-columns: 1fr; }
+  #body-map-root .report-qa-table { grid-template-columns: 1fr; }
   #body-map-root .report-notes-grid,
   #body-map-root .report-signature-grid { grid-template-columns: 1fr; }
+  #body-map-root .report-table-wrap { max-height: none; }
   #body-map-root .categories-section { padding: 40px 24px 60px; }
 }
 
@@ -3062,20 +3115,29 @@ function bmRenderPersonalizedReport(reportData) {
 
   // Build treatment table
   const treatmentTable = (reportData.apiTreatments || []).length
-    ? `<table class="report-table">
-        <thead>
-          <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Dosage</th><th style="text-align:left;">Frequency</th></tr>
-        </thead>
-        <tbody>
-          ${reportData.apiTreatments.map(tx => `
-            <tr>
-              <td><span style="display:inline-block;width:12px;height:12px;border-radius:3px;background:${bmEscapeHtml(tx.color || '#c4a882')};margin-right:8px;vertical-align:middle;"></span>${bmEscapeHtml(tx.medication_name)}</td>
-              <td>${bmEscapeHtml(tx.dosage || '—')}</td>
-              <td>${bmEscapeHtml(tx.frequency || '—')}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>`
+    ? `<div class="report-table-wrap">
+        <table class="report-table">
+          <thead>
+            <tr><th style="text-align:left;">Medication</th><th style="text-align:left;">Schedule</th></tr>
+          </thead>
+          <tbody>
+            ${reportData.apiTreatments.map(tx => `
+              <tr>
+                <td>
+                  <span class="report-med-name">
+                    <span class="report-med-dot" style="background:${bmEscapeHtml(tx.color || '#c4a882')};"></span>
+                    ${bmEscapeHtml(tx.medication_name)}
+                  </span>
+                </td>
+                <td>
+                  <span class="report-schedule-line"><span class="report-schedule-label">Dosage</span>${bmEscapeHtml(tx.dosage || '—')}</span>
+                  <span class="report-schedule-line"><span class="report-schedule-label">Frequency</span>${bmEscapeHtml(tx.frequency || '—')}</span>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>`
     : `<div class="report-empty-state">No medications tracked yet.</div>`;
 
   // Build high-risk cancers
