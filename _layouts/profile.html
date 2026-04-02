@@ -77,7 +77,7 @@ title: Treatment Tracker
 
 /* Site theme switcher */
 .tx-theme-settings {
-  margin-top: 12px;
+  margin-top: 0;
   position: relative;
   display: inline-block;
 }
@@ -101,7 +101,7 @@ title: Treatment Tracker
   display: none;
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
+  right: 0;
   min-width: 250px;
   border: 1px solid var(--border);
   background: var(--warm-white);
@@ -111,6 +111,33 @@ title: Treatment Tracker
   z-index: 25;
 }
 .tx-theme-panel.open { display: block; }
+.tx-theme-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.tx-theme-opt-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text-main);
+  border-radius: 8px;
+  padding: 7px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.tx-theme-opt-btn:hover {
+  border-color: var(--tan);
+  background: var(--tan-light);
+}
+.tx-theme-opt-btn.active {
+  background: var(--rose-pale);
+  border-color: var(--rose-light);
+  color: var(--terracotta);
+}
 .tx-theme-panel-title {
   font-size: 11px;
   font-weight: 700;
@@ -1174,20 +1201,6 @@ title: Treatment Tracker
     <div class="tx-header-left">
       <h1 class="tx-page-title">  Treatment Tracker</h1>
       <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
-      <div class="tx-theme-settings" id="txThemeSettings" aria-label="Site theme settings">
-        <button class="tx-theme-gear" id="txThemeGear" type="button" onclick="window.txToggleThemePanel()" aria-label="Theme settings">⚙︎</button>
-        <div class="tx-theme-panel" id="txThemePanel">
-          <div class="tx-theme-panel-title">Theme Settings</div>
-          <div class="tx-theme-toggle-row">
-            <span class="tx-theme-toggle-label">Blue + Beige Theme</span>
-            <label class="tx-theme-switch" for="txThemeNavyToggle">
-              <input id="txThemeNavyToggle" type="checkbox" onchange="window.txOnThemeSwitchChange(this)">
-              <span class="tx-theme-slider"></span>
-            </label>
-          </div>
-          <div class="tx-theme-mode-value" id="txThemeModeValue">Current: Default Warm</div>
-        </div>
-      </div>
     </div>
     <div class="tx-header-right">
       <div class="tx-head-actions">
@@ -1195,6 +1208,24 @@ title: Treatment Tracker
         <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()" title="Cancer Bookmarks" aria-label="Cancer Bookmarks">
           ⛊
         </button>
+        <div class="tx-theme-settings" id="txThemeSettings" aria-label="Site theme settings">
+          <button class="tx-theme-gear" id="txThemeGear" type="button" onclick="window.txToggleThemePanel()" aria-label="Theme settings">⚙︎</button>
+          <div class="tx-theme-panel" id="txThemePanel">
+            <div class="tx-theme-panel-title">Theme Settings</div>
+            <div class="tx-theme-options">
+              <button class="tx-theme-opt-btn" id="txThemeDefaultBtn" type="button" onclick="window.txSetSiteTheme('default')">Default</button>
+              <button class="tx-theme-opt-btn" id="txThemeBlueBtn" type="button" onclick="window.txSetSiteTheme('navy_beige')">Blue + Beige</button>
+            </div>
+            <div class="tx-theme-toggle-row">
+              <span class="tx-theme-toggle-label">Blue + Beige Theme</span>
+              <label class="tx-theme-switch" for="txThemeNavyToggle">
+                <input id="txThemeNavyToggle" type="checkbox" onchange="window.txOnThemeSwitchChange(this)">
+                <span class="tx-theme-slider"></span>
+              </label>
+            </div>
+            <div class="tx-theme-mode-value" id="txThemeModeValue">Current: Default Warm</div>
+          </div>
+        </div>
       </div>
       <div class="tx-bmk-mini" id="txBookmarksCard">
         <div class="tx-bmk-head" style="margin-bottom:8px;">
@@ -1463,10 +1494,14 @@ function txSyncThemeToggle(activeTheme) {
   const isNavy = activeTheme === 'navy_beige';
   const toggle = document.getElementById('txThemeNavyToggle');
   const label = document.getElementById('txThemeModeValue');
+  const defaultBtn = document.getElementById('txThemeDefaultBtn');
+  const blueBtn = document.getElementById('txThemeBlueBtn');
   if (toggle) {
     toggle.checked = isNavy;
     toggle.setAttribute('aria-checked', isNavy ? 'true' : 'false');
   }
+  if (defaultBtn) defaultBtn.classList.toggle('active', !isNavy);
+  if (blueBtn) blueBtn.classList.toggle('active', isNavy);
   if (label) {
     label.textContent = `Current: ${isNavy ? 'Navy + Beige' : 'Default Warm'}`;
   }
