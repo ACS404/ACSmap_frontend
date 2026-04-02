@@ -71,6 +71,47 @@
     },
   };
 
+  const ACS_THEME_STORAGE_KEY = 'acsSiteTheme';
+  const ACS_THEMES = {
+    default: {
+      name: 'Default Warm',
+      vars: {},
+    },
+    navy_beige: {
+      name: 'Navy + Beige',
+      vars: {
+        '--background': '#efe4d3',
+        '--bg-0': '#efe4d3',
+        '--bg-1': '#f6eee1',
+        '--bg-2': '#e8dbc7',
+        '--bg-3': '#dccab0',
+        '--cream': '#efe4d3',
+        '--warm-white': '#f8f1e5',
+        '--panel': '#f8f1e5',
+        '--surface': '#ecdecb',
+        '--rose': '#1f3f66',
+        '--rose-light': '#4f7099',
+        '--rose-pale': '#dfe8f2',
+        '--terracotta': '#17324f',
+        '--accent': '#1f3f66',
+        '--accent-700': '#17324f',
+        '--accent-700-hover': '#10273d',
+        '--blue': '#1f3f66',
+        '--blue1': '#1f3f66',
+        '--tan': '#b89e7b',
+        '--tan-light': '#ddd0bc',
+        '--sage': '#5f7f97',
+        '--sage-light': '#8fa8ba',
+        '--sage-pale': '#e8eef2',
+        '--brown': '#2f2a25',
+        '--text': '#27231f',
+        '--text-main': '#27231f',
+        '--text-muted': '#6a6054',
+        '--white1': '#27231f',
+      },
+    },
+  };
+
   const storageKey = 'sitePreferences';
 
   function hexToRgb(hex) {
@@ -589,6 +630,32 @@
     props.forEach((name) => root.style.removeProperty(name));
   }
 
+  function applyAcsTheme(themeKey) {
+    const key = ACS_THEMES[themeKey] ? themeKey : 'default';
+    const root = document.documentElement;
+
+    // Remove previous ACS theme overrides first.
+    Object.values(ACS_THEMES).forEach((theme) => {
+      Object.keys(theme.vars || {}).forEach((varName) => {
+        root.style.removeProperty(varName);
+      });
+    });
+
+    const vars = ACS_THEMES[key].vars || {};
+    Object.entries(vars).forEach(([varName, value]) => {
+      root.style.setProperty(varName, value);
+    });
+
+    localStorage.setItem(ACS_THEME_STORAGE_KEY, key);
+    root.setAttribute('data-acs-theme', key);
+    return key;
+  }
+
+  function loadAcsTheme() {
+    const stored = localStorage.getItem(ACS_THEME_STORAGE_KEY) || 'default';
+    return applyAcsTheme(stored);
+  }
+
   function loadStoredPreferences() {
     try {
       const raw = window.localStorage.getItem(storageKey);
@@ -606,6 +673,7 @@
     if (prefs) {
       applyPreferences(prefs);
     }
+    loadAcsTheme();
   }
 
   // Expose helpers for dashboard.html to reuse
@@ -615,6 +683,9 @@
     applyLanguage,
     PRESETS,
     LANGUAGES,
+    ACS_THEMES,
+    applyAcsTheme,
+    loadAcsTheme,
     // TTS functions
     speak,
     speakSelection,

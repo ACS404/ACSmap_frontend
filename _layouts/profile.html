@@ -74,6 +74,45 @@ title: Treatment Tracker
 }
 
 .tx-notebook-top.open { display: block; }
+
+/* Site theme switcher */
+.tx-theme-row {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tx-theme-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.tx-theme-btn {
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  color: var(--text-main);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tx-theme-btn:hover {
+  border-color: var(--tan);
+  background: var(--tan-light);
+}
+.tx-theme-btn.active {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+}
 .tx-add-btn {
   background: var(--rose);
   color: white;
@@ -1075,6 +1114,11 @@ title: Treatment Tracker
     <div class="tx-header-left">
       <h1 class="tx-page-title">  Treatment Tracker</h1>
       <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
+      <div class="tx-theme-row" aria-label="Site color theme">
+        <span class="tx-theme-label">Site Theme</span>
+        <button class="tx-theme-btn" data-site-theme="default" type="button" onclick="window.txSetSiteTheme('default')">Default Warm</button>
+        <button class="tx-theme-btn" data-site-theme="navy_beige" type="button" onclick="window.txSetSiteTheme('navy_beige')">Navy + Beige</button>
+      </div>
       <button class="tx-notebook-toggle" id="txNotebookToggle" onclick="window.txToggleNotebook()">
         Open Digital Notebook
       </button>
@@ -1343,9 +1387,30 @@ let lookupTimer  = null;
 let txNotebookSearch = '';
 let txNotebookFilter = 'all';
 
+function txSyncThemeButtons(activeTheme) {
+  document.querySelectorAll('.tx-theme-btn[data-site-theme]').forEach((btn) => {
+    const key = btn.getAttribute('data-site-theme');
+    btn.classList.toggle('active', key === activeTheme);
+    btn.setAttribute('aria-pressed', key === activeTheme ? 'true' : 'false');
+  });
+}
+
+window.txSetSiteTheme = function(themeKey) {
+  const api = window.SitePreferences;
+  if (!api || typeof api.applyAcsTheme !== 'function') return;
+  const selected = api.applyAcsTheme(themeKey);
+  txSyncThemeButtons(selected);
+};
+
+function txInitThemeSwitcher() {
+  const current = localStorage.getItem('acsSiteTheme') || 'default';
+  txSyncThemeButtons(current);
+}
+
 
 /* ─── Boot ──────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
+  txInitThemeSwitcher();
   await loadUser();
   await loadTreatments();
   loadCancerBookmarks();
