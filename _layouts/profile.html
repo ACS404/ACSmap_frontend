@@ -1188,35 +1188,6 @@ title: Treatment Tracker
           <div class="tx-theme-mode-value" id="txThemeModeValue">Current: Default Warm</div>
         </div>
       </div>
-      <button class="tx-notebook-toggle" id="txNotebookToggle" onclick="window.txToggleNotebook()">
-        Open Digital Notebook
-      </button>
-      <div class="tx-notebook-top" id="txNotebookCard">
-        <div class="tx-notes-head">
-          <div class="tx-section-title">Digital Notebook</div>
-          <span class="tx-notes-count" id="txNotesCount">0 saved</span>
-        </div>
-        <div class="tx-notes-tools">
-          <input
-            class="tx-notes-search"
-            id="txNotesSearch"
-            type="text"
-            placeholder="Search saved notes..."
-            oninput="window.txNotebookSetSearch(this.value)"
-          >
-          <div class="tx-notes-filter-row">
-            <button class="tx-notes-filter-btn active" id="txNotesFilterAll" onclick="window.txNotebookSetFilter('all')">All</button>
-            <button class="tx-notes-filter-btn" id="txNotesFilterPinned" onclick="window.txNotebookSetFilter('pinned')">Pinned</button>
-          </div>
-        </div>
-        <div class="tx-notes-list" id="txNotesList">
-          <div class="tx-empty">
-            <div class="tx-empty-icon"></div>
-            No notebook notes yet.<br>
-            Save assistant replies with the + button in the Cancer Risk chatbot.
-          </div>
-        </div>
-      </div>
     </div>
     <div class="tx-header-right">
       <div class="tx-head-actions">
@@ -1255,7 +1226,7 @@ title: Treatment Tracker
 
     </div><!-- /left -->
 
-    <!-- ── Right column — Schedule + Notes tabs ── -->
+    <!-- ── Right column — Schedule + Notes + Notebook tabs ── -->
     <div class="tx-card" style="padding:0;overflow:hidden;">
 
       <!-- Tab bar -->
@@ -1266,6 +1237,9 @@ title: Treatment Tracker
         <button class="tx-tab-btn" id="tabNotesBtn" onclick="tnSwitchTab('notes')">
           ✎𓂃 Notes
           <span class="tx-tab-badge" id="tnBadge"></span>
+        </button>
+        <button class="tx-tab-btn" id="tabNotebookBtn" onclick="tnSwitchTab('notebook')">
+          Digital Notebook
         </button>
       </div>
 
@@ -1327,6 +1301,34 @@ title: Treatment Tracker
         </div>
 
       </div><!-- /paneNotes -->
+
+      <!-- Digital Notebook pane -->
+      <div class="tx-tab-pane" id="paneNotebook" style="padding:20px;">
+        <div class="tx-notes-head">
+          <div class="tx-section-title">Digital Notebook</div>
+          <span class="tx-notes-count" id="txNotesCount">0 saved</span>
+        </div>
+        <div class="tx-notes-tools">
+          <input
+            class="tx-notes-search"
+            id="txNotesSearch"
+            type="text"
+            placeholder="Search saved notes..."
+            oninput="window.txNotebookSetSearch(this.value)"
+          >
+          <div class="tx-notes-filter-row">
+            <button class="tx-notes-filter-btn active" id="txNotesFilterAll" onclick="window.txNotebookSetFilter('all')">All</button>
+            <button class="tx-notes-filter-btn" id="txNotesFilterPinned" onclick="window.txNotebookSetFilter('pinned')">Pinned</button>
+          </div>
+        </div>
+        <div class="tx-notes-list" id="txNotesList">
+          <div class="tx-empty">
+            <div class="tx-empty-icon"></div>
+            No notebook notes yet.<br>
+            Save assistant replies with the + button in the Cancer Risk chatbot.
+          </div>
+        </div>
+      </div><!-- /paneNotebook -->
 
     </div><!-- /right -->
 
@@ -1537,15 +1539,6 @@ window.txJumpToBookmarks = function() {
   const card = document.getElementById('txBookmarksCard');
   if (!card) return;
   card.classList.toggle('open');
-};
-
-window.txToggleNotebook = function() {
-  const card = document.getElementById('txNotebookCard');
-  const btn = document.getElementById('txNotebookToggle');
-  if (!card) return;
-  const willOpen = !card.classList.contains('open');
-  card.classList.toggle('open', willOpen);
-  if (btn) btn.textContent = willOpen ? 'Hide Digital Notebook' : 'Open Digital Notebook';
 };
 
 function readCancerBookmarks() {
@@ -2206,9 +2199,11 @@ let _tnInited  = false;
 /* ── Tab switching ── */
 window.tnSwitchTab = function(tab) {
   document.getElementById('tabScheduleBtn').classList.toggle('active', tab === 'schedule');
-  document.getElementById('tabNotesBtn').classList.toggle('active',   tab === 'notes');
-  document.getElementById('paneSchedule').classList.toggle('active',  tab === 'schedule');
-  document.getElementById('paneNotes').classList.toggle('active',     tab === 'notes');
+  document.getElementById('tabNotesBtn').classList.toggle('active', tab === 'notes');
+  document.getElementById('tabNotebookBtn').classList.toggle('active', tab === 'notebook');
+  document.getElementById('paneSchedule').classList.toggle('active', tab === 'schedule');
+  document.getElementById('paneNotes').classList.toggle('active', tab === 'notes');
+  document.getElementById('paneNotebook').classList.toggle('active', tab === 'notebook');
 
   if (tab === 'notes') {
     _tnInited = true;
@@ -2216,6 +2211,10 @@ window.tnSwitchTab = function(tab) {
     _tnBuildCats();
     _tnBuildFilters();
     _tnLoad();
+  }
+
+  if (tab === 'notebook') {
+    loadProfileNotebook();
   }
 };
 
