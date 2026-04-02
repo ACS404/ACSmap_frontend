@@ -25,6 +25,8 @@ show_reading_time: false
   --brown:      #6b4c3b;
   --text:       #3d2c24;
   --muted:      #937468;
+  --hero-title-color: #fff;
+  --hero-label-color: rgba(255,255,255,0.4);
   --border:     rgba(196,168,130,0.3);
   --serif:      'Cormorant Garamond', Georgia, serif;
   --sans:       'Nunito', system-ui, sans-serif;
@@ -66,13 +68,13 @@ show_reading_time: false
 #body-map-root .hero-title {
   font-family: var(--serif);
   font-size: clamp(32px, 4.5vw, 58px);
-  font-weight: 700; line-height: 1.08; color: #fff;
+  font-weight: 700; line-height: 1.08; color: var(--hero-title-color);
   letter-spacing: -0.3px;
 }
 #body-map-root .hero-title em { font-style: italic; color: var(--rose-light); }
 #body-map-root .hero-sub {
   margin-top: 14px; font-size: 15px;
-  color: rgba(255,255,255,0.55); line-height: 1.7;
+  color: #000; line-height: 1.7;
   max-width: 500px;
 }
 #body-map-root .hero-stats {
@@ -84,7 +86,7 @@ show_reading_time: false
 }
 #body-map-root .hstat-label {
   font-size: 10px; font-weight: 600; letter-spacing: 0.1em;
-  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  text-transform: uppercase; color: var(--hero-label-color);
   margin-top: 3px;
 }
 #body-map-root .hero-cta {
@@ -3228,19 +3230,19 @@ function bmRenderPersonalizedReport(reportData) {
       <div class="report-kv">
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('firstName')}</div>
-          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.firstName', value: translatedFirstName })}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedFirstName)}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('lastName')}</div>
-          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.lastName', value: translatedLastName })}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedLastName)}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('age')}</div>
-          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.age', value: String(reportData.age) })}</div>
+          <div class="report-kv-value">${bmEscapeHtml(String(reportData.age))}</div>
         </div>
         <div class="report-kv-item">
           <div class="report-kv-label">${bmReportText('gender')}</div>
-          <div class="report-kv-value">${bmRenderEditableField({ editKey: 'profile.gender', value: translatedGender })}</div>
+          <div class="report-kv-value">${bmEscapeHtml(translatedGender)}</div>
         </div>
       </div>
     </section>`);
@@ -3387,6 +3389,7 @@ function bmShareRegion(hotspotId) {
 
 // ─── DEEP LINK on load ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  bmApplySiteThemeToBodyMap();
   bmUpdateReportLanguageUI();
   const params = new URLSearchParams(window.location.search);
   const region = params.get('region');
@@ -3394,6 +3397,47 @@ document.addEventListener('DOMContentLoaded', () => {
   if (params.get('report') === '1') {
     setTimeout(() => bmOpenPersonalizedReport(), 300);
   }
+});
+
+function bmApplySiteThemeToBodyMap() {
+  const root = document.getElementById('body-map-root');
+  if (!root) return;
+
+  const theme = localStorage.getItem('acsSiteTheme') || 'default';
+  const navyVars = {
+    '--cream': '#efe4d3',
+    '--warm-white': '#f8f1e5',
+    '--rose': '#1f3f66',
+    '--rose-light': '#4f7099',
+    '--rose-pale': '#dfe8f2',
+    '--terra': '#17324f',
+    '--sage': '#5f7f97',
+    '--sage-pale': '#e8eef2',
+    '--tan': '#b89e7b',
+    '--tan-light': '#ddd0bc',
+    '--brown': '#d7c4a8',
+    '--text': '#27231f',
+    '--muted': '#6a6054',
+    '--hero-title-color': '#1f2a33',
+    '--hero-label-color': '#1f2a33',
+    '--border': 'rgba(122, 101, 71, 0.28)'
+  };
+
+  const warmVars = [
+    '--cream', '--warm-white', '--rose', '--rose-light', '--rose-pale', '--terra',
+    '--sage', '--sage-pale', '--tan', '--tan-light', '--brown', '--text', '--muted',
+    '--hero-title-color', '--hero-label-color', '--border'
+  ];
+
+  if (theme === 'navy_beige') {
+    Object.entries(navyVars).forEach(([k, v]) => root.style.setProperty(k, v));
+  } else {
+    warmVars.forEach((k) => root.style.removeProperty(k));
+  }
+}
+
+window.addEventListener('storage', (event) => {
+  if (event.key === 'acsSiteTheme') bmApplySiteThemeToBodyMap();
 });
 
 function bmSwitchGender(g) {
