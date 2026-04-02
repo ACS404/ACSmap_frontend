@@ -11,54 +11,9 @@ title: Treatment Tracker
 
 /* ── Page wrapper ── */
 .tx-app {
-  /* Keep profile readable even when a global alt theme is active */
-  --cream: #fdf6ee;
-  --warm-white: #fff9f3;
-  --rose: #e07a6a;
-  --rose-light: #f2b5ab;
-  --rose-pale: #fce9e6;
-  --terracotta: #c45e4a;
-  --tan: #c4a882;
-  --tan-light: #e7d7be;
-  --sage: #7a9e7e;
-  --sage-pale: #eef6ef;
-  --text-main: #111111;
-  --text-muted: #4f4f4f;
-  --border: rgba(196, 168, 130, 0.25);
-  --border-bright: rgba(196, 168, 130, 0.5);
-
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px 72px;
-}
-
-/* Hard text override: keep all profile copy readable */
-.tx-app,
-.tx-app h1,
-.tx-app h2,
-.tx-app h3,
-.tx-app h4,
-.tx-app h5,
-.tx-app h6,
-.tx-app p,
-.tx-app span,
-.tx-app div,
-.tx-app li,
-.tx-app label,
-.tx-app a,
-.tx-app button,
-.tx-app input,
-.tx-app select,
-.tx-app textarea {
-  color: var(--text-main) !important;
-}
-
-/* Keep filled action buttons legible */
-.tx-add-btn,
-.time-add-btn,
-.f-submit,
-.tn-save-btn {
-  color: var(--cream) !important;
 }
 
 /* ── Page header ── */
@@ -119,6 +74,105 @@ title: Treatment Tracker
 }
 
 .tx-notebook-top.open { display: block; }
+
+/* Site theme switcher */
+.tx-theme-settings {
+  margin-top: 12px;
+  position: relative;
+  display: inline-block;
+}
+.tx-theme-gear {
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  color: var(--text-main);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.tx-theme-gear:hover {
+  background: var(--tan-light);
+  border-color: var(--tan);
+}
+.tx-theme-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 250px;
+  border: 1px solid var(--border);
+  background: var(--warm-white);
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 10px 22px rgba(61,44,36,0.12);
+  z-index: 25;
+}
+.tx-theme-panel.open { display: block; }
+.tx-theme-panel-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.tx-theme-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.tx-theme-toggle-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.tx-theme-switch {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  display: inline-block;
+}
+.tx-theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.tx-theme-slider {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #d6d9d4;
+  border: 1px solid #c4c8c2;
+  transition: all 0.15s;
+}
+.tx-theme-slider::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  transition: transform 0.15s;
+}
+.tx-theme-switch input:checked + .tx-theme-slider {
+  background: #1f3f66;
+  border-color: #17324f;
+}
+.tx-theme-switch input:checked + .tx-theme-slider::before {
+  transform: translateX(20px);
+}
+.tx-theme-mode-value {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
 .tx-add-btn {
   background: var(--rose);
   color: white;
@@ -1120,6 +1174,20 @@ title: Treatment Tracker
     <div class="tx-header-left">
       <h1 class="tx-page-title">  Treatment Tracker</h1>
       <div class="tx-page-sub" id="txUserLine">Loading your plan…</div>
+      <div class="tx-theme-settings" id="txThemeSettings" aria-label="Site theme settings">
+        <button class="tx-theme-gear" id="txThemeGear" type="button" onclick="window.txToggleThemePanel()" aria-label="Theme settings">⚙︎</button>
+        <div class="tx-theme-panel" id="txThemePanel">
+          <div class="tx-theme-panel-title">Theme Settings</div>
+          <div class="tx-theme-toggle-row">
+            <span class="tx-theme-toggle-label">Blue + Beige Theme</span>
+            <label class="tx-theme-switch" for="txThemeNavyToggle">
+              <input id="txThemeNavyToggle" type="checkbox" onchange="window.txOnThemeSwitchChange(this)">
+              <span class="tx-theme-slider"></span>
+            </label>
+          </div>
+          <div class="tx-theme-mode-value" id="txThemeModeValue">Current: Default Warm</div>
+        </div>
+      </div>
     </div>
     <div class="tx-header-right">
       <div class="tx-head-actions">
@@ -1389,10 +1457,63 @@ let chosenColor  = PALETTE[0];  // hex in the modal
 let lookupTimer  = null;
 let txNotebookSearch = '';
 let txNotebookFilter = 'all';
+let txThemePanelBound = false;
+
+function txSyncThemeToggle(activeTheme) {
+  const isNavy = activeTheme === 'navy_beige';
+  const toggle = document.getElementById('txThemeNavyToggle');
+  const label = document.getElementById('txThemeModeValue');
+  if (toggle) {
+    toggle.checked = isNavy;
+    toggle.setAttribute('aria-checked', isNavy ? 'true' : 'false');
+  }
+  if (label) {
+    label.textContent = `Current: ${isNavy ? 'Navy + Beige' : 'Default Warm'}`;
+  }
+}
+
+window.txSetSiteTheme = function(themeKey) {
+  const api = window.SitePreferences;
+  const next = themeKey === 'navy_beige' ? 'navy_beige' : 'default';
+  if (api && typeof api.applyAcsTheme === 'function') {
+    const selected = api.applyAcsTheme(next);
+    txSyncThemeToggle(selected);
+    return;
+  }
+  localStorage.setItem('acsSiteTheme', next);
+  txSyncThemeToggle(next);
+};
+
+window.txOnThemeSwitchChange = function(el) {
+  const checked = !!(el && el.checked);
+  window.txSetSiteTheme(checked ? 'navy_beige' : 'default');
+};
+
+window.txToggleThemePanel = function() {
+  const panel = document.getElementById('txThemePanel');
+  if (!panel) return;
+  panel.classList.toggle('open');
+};
+
+function txInitThemeSwitcher() {
+  const current = localStorage.getItem('acsSiteTheme') || 'default';
+  txSyncThemeToggle(current);
+
+  if (!txThemePanelBound) {
+    txThemePanelBound = true;
+    document.addEventListener('click', (event) => {
+      const settings = document.getElementById('txThemeSettings');
+      const panel = document.getElementById('txThemePanel');
+      if (!settings || !panel) return;
+      if (!settings.contains(event.target)) panel.classList.remove('open');
+    });
+  }
+}
 
 
 /* ─── Boot ──────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
+  txInitThemeSwitcher();
   await loadUser();
   await loadTreatments();
   loadCancerBookmarks();

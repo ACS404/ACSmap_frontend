@@ -635,7 +635,7 @@
   }
 
   function applyAcsTheme(themeKey) {
-    const key = 'default';
+    const key = ACS_THEMES[themeKey] ? themeKey : 'default';
     const root = document.documentElement;
 
     // Remove previous ACS theme overrides first.
@@ -701,8 +701,8 @@
   }
 
   function loadAcsTheme() {
-    localStorage.setItem(ACS_THEME_STORAGE_KEY, 'default');
-    return applyAcsTheme('default');
+    const stored = localStorage.getItem(ACS_THEME_STORAGE_KEY) || 'default';
+    return applyAcsTheme(stored);
   }
 
   function loadStoredPreferences() {
@@ -718,15 +718,10 @@
 
   function init() {
     if (typeof window === 'undefined') return;
-    // Theme customization disabled: always use the site's original warm palette.
-    resetPreferences();
-
-    // Preserve language preference if the user set one previously.
     const prefs = loadStoredPreferences();
-    if (prefs?.language) {
-      applyLanguage(prefs.language);
+    if (prefs) {
+      applyPreferences(prefs);
     }
-
     loadAcsTheme();
   }
 
