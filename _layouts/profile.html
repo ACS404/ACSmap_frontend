@@ -74,186 +74,6 @@ title: Treatment Tracker
 }
 
 .tx-notebook-top.open { display: block; }
-
-/* Site theme switcher */
-.tx-theme-settings {
-  margin-top: 0;
-  position: relative;
-  display: inline-block;
-}
-.tx-theme-gear {
-  border: 1px solid var(--border);
-  background: var(--warm-white);
-  color: var(--text-main);
-  border-radius: 10px;
-  padding: 8px 10px;
-  font-family: var(--sans);
-  font-size: 14px;
-  line-height: 1;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-}
-.tx-theme-gear:hover {
-  background: var(--tan-light);
-  border-color: var(--tan);
-}
-.tx-theme-panel {
-  display: none;
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 250px;
-  border: 1px solid var(--border);
-  background: var(--warm-white);
-  border-radius: 12px;
-  padding: 10px 12px;
-  box-shadow: 0 10px 22px rgba(61,44,36,0.12);
-  z-index: 25;
-}
-.tx-theme-panel.open { display: block; }
-.tx-theme-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-.tx-theme-opt-btn {
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--text-main);
-  border-radius: 8px;
-  padding: 7px 8px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.tx-theme-opt-btn:hover {
-  border-color: var(--tan);
-  background: var(--tan-light);
-}
-.tx-theme-opt-btn.active {
-  background: var(--rose-pale);
-  border-color: var(--rose-light);
-  color: var(--terracotta);
-}
-.tx-theme-panel-title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-}
-.tx-theme-toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-.tx-theme-toggle-label {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--text-main);
-}
-.tx-theme-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  display: inline-block;
-}
-.tx-theme-switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-.tx-theme-slider {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: #d6d9d4;
-  border: 1px solid #c4c8c2;
-  transition: all 0.15s;
-}
-.tx-theme-slider::before {
-  content: '';
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  left: 2px;
-  top: 2px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-  transition: transform 0.15s;
-}
-.tx-theme-switch input:checked + .tx-theme-slider {
-  background: #1f3f66;
-  border-color: #17324f;
-}
-.tx-theme-switch input:checked + .tx-theme-slider::before {
-  transform: translateX(20px);
-}
-.tx-theme-mode-value {
-  margin-top: 8px;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-.tx-settings-section {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid var(--border);
-}
-.tx-settings-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 6px;
-}
-.tx-settings-input,
-.tx-settings-select {
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--text-main);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 12px;
-  font-family: var(--sans);
-}
-.tx-settings-input:focus,
-.tx-settings-select:focus {
-  outline: none;
-  border-color: var(--rose);
-}
-.tx-settings-save {
-  margin-top: 8px;
-  width: 100%;
-  border: 1px solid var(--rose-light);
-  background: #fff;
-  color: var(--terracotta);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.tx-settings-save:hover {
-  border-color: var(--rose);
-  background: var(--rose-pale);
-}
-.tx-settings-status {
-  margin-top: 6px;
-  font-size: 11px;
-  color: var(--text-muted);
-  min-height: 1.2em;
-}
 .tx-add-btn {
   background: var(--rose);
   color: white;
@@ -1262,40 +1082,6 @@ title: Treatment Tracker
         <button class="tx-bookmarks-btn" onclick="window.txJumpToBookmarks()" title="Cancer Bookmarks" aria-label="Cancer Bookmarks">
           ⛊
         </button>
-        <div class="tx-theme-settings" id="txThemeSettings" aria-label="Site theme settings">
-          <button class="tx-theme-gear" id="txThemeGear" type="button" onclick="window.txToggleThemePanel()" aria-label="Theme settings">⚙︎</button>
-          <div class="tx-theme-panel" id="txThemePanel">
-            <div class="tx-theme-panel-title">Theme Settings</div>
-
-            <div class="tx-settings-section" style="margin-top:0;padding-top:0;border-top:0;">
-              <div class="tx-settings-label">Display Name</div>
-              <input id="txDisplayNameInput" class="tx-settings-input" type="text" placeholder="Enter display name" />
-              <button class="tx-settings-save" type="button" onclick="window.txSaveDisplayName()">Save Display Name</button>
-            </div>
-
-            <div class="tx-settings-section">
-              <div class="tx-settings-label">Language Preference</div>
-              <select id="txLanguageSelect" class="tx-settings-select" onchange="window.txSetLanguagePreference(this.value)"></select>
-            </div>
-
-            <div class="tx-settings-section">
-              <div class="tx-settings-label">Appearance</div>
-            <div class="tx-theme-options">
-              <button class="tx-theme-opt-btn" id="txThemeDefaultBtn" type="button" onclick="window.txSetSiteTheme('default')">Default</button>
-              <button class="tx-theme-opt-btn" id="txThemeBlueBtn" type="button" onclick="window.txSetSiteTheme('navy_beige')">Blue + Beige</button>
-            </div>
-            <div class="tx-theme-toggle-row">
-              <span class="tx-theme-toggle-label">Blue + Beige Theme</span>
-              <label class="tx-theme-switch" for="txThemeNavyToggle">
-                <input id="txThemeNavyToggle" type="checkbox" onchange="window.txOnThemeSwitchChange(this)">
-                <span class="tx-theme-slider"></span>
-              </label>
-            </div>
-            <div class="tx-theme-mode-value" id="txThemeModeValue">Current: Default Warm</div>
-          </div>
-
-          <div class="tx-settings-status" id="txSettingsStatus"></div>
-        </div>
       </div>
       <div class="tx-bmk-mini" id="txBookmarksCard">
         <div class="tx-bmk-head" style="margin-bottom:8px;">
@@ -1537,8 +1323,6 @@ const PALETTE = ['#e07a6a','#c4a882','#8aaa8c','#6b9ecf',
 const CANCER_BOOKMARKS_KEY = 'acsCancerBookmarks';
 const PROFILE_NOTES_KEY = 'acsProfileNotes';
 const USER_QUESTIONS_KEY = 'acsUserQuestions';
-const TX_DISPLAY_NAME_KEY = 'txDisplayName';
-const TX_PREFS_KEY = 'sitePreferences';
 const BOOKMARK_DESCRIPTION_FALLBACKS = {
   small_intestine: 'A rare cancer with several subtypes including adenocarcinoma, carcinoid tumors, lymphoma, and sarcoma. Crampy abdominal pain, unexplained weight loss, and blood in the stool are main warning signs. Treatment depends on subtype and stage but often starts with surgery.',
   anal: 'A cancer of the anal canal often linked to HPV infection. Rectal bleeding, anal pain or pressure, and a lump near the anus are common warning signs. Treatment is usually radiation plus chemotherapy.',
@@ -1560,146 +1344,10 @@ let chosenColor  = PALETTE[0];  // hex in the modal
 let lookupTimer  = null;
 let txNotebookSearch = '';
 let txNotebookFilter = 'all';
-let txThemePanelBound = false;
-let txUserServerName = 'Patient';
-
-function txSetSettingsStatus(text) {
-  const el = document.getElementById('txSettingsStatus');
-  if (!el) return;
-  el.textContent = text || '';
-}
-
-function txGetDisplayName() {
-  const local = String(localStorage.getItem(TX_DISPLAY_NAME_KEY) || '').trim();
-  if (local) return local;
-  if (txUserServerName) return txUserServerName;
-  return 'Patient';
-}
-
-function txRefreshUserLine() {
-  const line = document.getElementById('txUserLine');
-  if (!line) return;
-  line.textContent = `${txGetDisplayName()}'s personal treatment plan`;
-}
-
-function txReadPrefs() {
-  try {
-    const raw = localStorage.getItem(TX_PREFS_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function txWritePrefs(nextPrefs) {
-  localStorage.setItem(TX_PREFS_KEY, JSON.stringify(nextPrefs));
-}
-
-function txInitLanguageSelect() {
-  const select = document.getElementById('txLanguageSelect');
-  const api = window.SitePreferences;
-  if (!select || !api || !api.LANGUAGES) return;
-
-  const options = Object.entries(api.LANGUAGES).map(([code, info]) => {
-    const label = info?.name || code || 'Default';
-    const safeLabel = esc(label);
-    return `<option value="${esc(code)}">${safeLabel}</option>`;
-  });
-  select.innerHTML = options.join('');
-
-  const prefs = txReadPrefs();
-  select.value = prefs.language || '';
-}
-
-function txSyncThemeToggle(activeTheme) {
-  const isNavy = activeTheme === 'navy_beige';
-  const toggle = document.getElementById('txThemeNavyToggle');
-  const label = document.getElementById('txThemeModeValue');
-  const defaultBtn = document.getElementById('txThemeDefaultBtn');
-  const blueBtn = document.getElementById('txThemeBlueBtn');
-  if (toggle) {
-    toggle.checked = isNavy;
-    toggle.setAttribute('aria-checked', isNavy ? 'true' : 'false');
-  }
-  if (defaultBtn) defaultBtn.classList.toggle('active', !isNavy);
-  if (blueBtn) blueBtn.classList.toggle('active', isNavy);
-  if (label) {
-    label.textContent = `Current: ${isNavy ? 'Navy + Beige' : 'Default Warm'}`;
-  }
-}
-
-window.txSetSiteTheme = function(themeKey) {
-  const api = window.SitePreferences;
-  const next = themeKey === 'navy_beige' ? 'navy_beige' : 'default';
-  if (api && typeof api.applyAcsTheme === 'function') {
-    const selected = api.applyAcsTheme(next);
-    txSyncThemeToggle(selected);
-    return;
-  }
-  localStorage.setItem('acsSiteTheme', next);
-  txSyncThemeToggle(next);
-  txSetSettingsStatus('Appearance updated.');
-};
-
-window.txSetLanguagePreference = function(langCode) {
-  const api = window.SitePreferences;
-  const prefs = txReadPrefs();
-  prefs.language = langCode || '';
-  txWritePrefs(prefs);
-
-  if (api && typeof api.applyLanguage === 'function') {
-    api.applyLanguage(prefs.language);
-  }
-  txSetSettingsStatus('Language preference saved.');
-};
-
-window.txSaveDisplayName = function() {
-  const input = document.getElementById('txDisplayNameInput');
-  if (!input) return;
-  const next = String(input.value || '').trim();
-  if (!next) {
-    txSetSettingsStatus('Enter a display name first.');
-    return;
-  }
-  localStorage.setItem(TX_DISPLAY_NAME_KEY, next);
-  txRefreshUserLine();
-  txSetSettingsStatus('Display name saved.');
-};
-
-window.txOnThemeSwitchChange = function(el) {
-  const checked = !!(el && el.checked);
-  window.txSetSiteTheme(checked ? 'navy_beige' : 'default');
-};
-
-window.txToggleThemePanel = function() {
-  const panel = document.getElementById('txThemePanel');
-  if (!panel) return;
-  panel.classList.toggle('open');
-};
-
-function txInitThemeSwitcher() {
-  const current = localStorage.getItem('acsSiteTheme') || 'default';
-  txSyncThemeToggle(current);
-  const nameInput = document.getElementById('txDisplayNameInput');
-  if (nameInput) nameInput.value = txGetDisplayName();
-  txInitLanguageSelect();
-
-  if (!txThemePanelBound) {
-    txThemePanelBound = true;
-    document.addEventListener('click', (event) => {
-      const settings = document.getElementById('txThemeSettings');
-      const panel = document.getElementById('txThemePanel');
-      if (!settings || !panel) return;
-      if (!settings.contains(event.target)) panel.classList.remove('open');
-    });
-  }
-}
 
 
 /* ─── Boot ──────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  txInitThemeSwitcher();
   await loadUser();
   await loadTreatments();
   loadCancerBookmarks();
@@ -1914,10 +1562,10 @@ async function loadUser() {
     const r = await fetch(`${pythonURI}/api/id`, fetchOptions);
     if (r.ok) {
       const d = await r.json();
-      txUserServerName = String(d.name || '').trim() || txUserServerName;
+      document.getElementById('txUserLine').textContent =
+        `${d.name}'s personal treatment plan`;
     }
   } catch (_) {}
-  txRefreshUserLine();
 }
 
 /* ─── Treatments ────────────────────────────────────────── */
