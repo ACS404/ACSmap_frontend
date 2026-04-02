@@ -682,15 +682,15 @@ show_reading_time: false
 }
 #body-map-root .report-card {
   background: #fff;
-  border: 1px solid #d6dde5;
+  border: 1px solid #d6d9d4;
   border-radius: 12px;
-  box-shadow: 0 10px 28px rgba(12, 36, 63, 0.08);
+  box-shadow: 0 10px 24px rgba(27, 32, 26, 0.07);
   overflow: hidden;
 }
 #body-map-root .report-header {
-  background: #f8fbff;
-  border-bottom: 1px solid #d6dde5;
-  border-top: 4px solid #2f6ea6;
+  background: linear-gradient(180deg, #fbfcfa 0%, #f5f6f2 100%);
+  border-bottom: 1px solid #d3d7d1;
+  border-top: 4px solid #5b6358;
   padding: 28px 30px 24px;
   display: flex;
   justify-content: space-between;
@@ -702,18 +702,19 @@ show_reading_time: false
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #2f6ea6;
+  color: #4f564b;
   margin-bottom: 8px;
 }
 #body-map-root .report-title {
-  font-family: var(--serif);
-  font-size: clamp(28px, 3.2vw, 40px);
-  line-height: 1.15;
-  color: #162739;
+  font-family: var(--sans);
+  font-size: clamp(25px, 3.1vw, 34px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: #161816;
 }
 #body-map-root .report-meta {
   font-size: 12px;
-  color: #000;
+  color: #1f211e;
   line-height: 1.6;
   text-align: right;
 }
@@ -725,8 +726,8 @@ show_reading_time: false
 }
 #body-map-root .report-lang-switch {
   display: inline-flex;
-  background: #eef3f8;
-  border: 1px solid #c9d4df;
+  background: #e9ece6;
+  border: 1px solid #c9cdc6;
   border-radius: 999px;
   padding: 3px;
   gap: 3px;
@@ -734,7 +735,7 @@ show_reading_time: false
 #body-map-root .report-lang-btn {
   border: none;
   background: transparent;
-  color: #6a7a8a;
+  color: #5f665b;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -745,8 +746,8 @@ show_reading_time: false
 }
 #body-map-root .report-lang-btn.active {
   background: #fff;
-  color: #162739;
-  box-shadow: 0 1px 6px rgba(10, 25, 41, 0.12);
+  color: #1f231e;
+  box-shadow: 0 2px 5px rgba(20, 24, 28, 0.12);
 }
 #body-map-root .report-content {
   padding: 26px 30px 30px;
@@ -754,24 +755,24 @@ show_reading_time: false
   gap: 14px;
 }
 #body-map-root .report-section {
-  border: 1px solid #d7e0e9;
-  border-radius: 10px;
+  border: 1px solid #d5d8d4;
+  border-radius: 9px;
   padding: 16px 18px;
   background: #fff;
 }
 #body-map-root .report-section h3 {
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 15px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   margin-bottom: 10px;
-  color: #000;
+  color: #1e221d;
 }
 #body-map-root .report-clinical-note {
-  border: 1px solid #cfe0f1;
-  background: #f4f8fc;
-  border-left: 4px solid #2f6ea6;
-  border-radius: 8px;
+  border: 1px solid #d2d7cf;
+  background: #f7f8f6;
+  border-left: 4px solid #6f756a;
+  border-radius: 7px;
   padding: 10px 12px;
   font-size: 12px;
   color: #000;
@@ -783,9 +784,9 @@ show_reading_time: false
   gap: 12px;
 }
 #body-map-root .report-kv-item {
-  background: #f9fbfd;
-  border: 1px solid #d9e2eb;
-  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #d8dbd6;
+  border-radius: 7px;
   padding: 10px 12px;
 }
 #body-map-root .report-kv-label {
@@ -813,7 +814,7 @@ show_reading_time: false
 }
 #body-map-root .report-region-title {
   font-weight: 800;
-  color: var(--brown);
+  color: #2b2f29;
   margin-bottom: 8px;
   font-size: 15px;
 }
@@ -845,9 +846,9 @@ show_reading_time: false
   margin-bottom: 8px;
 }
 #body-map-root .report-qa-item {
-  background: #f9fbfd;
-  border: 1px solid #d9e2eb;
-  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #d8dbd6;
+  border-radius: 7px;
   padding: 10px 12px;
 }
 #body-map-root .report-qa-label {
@@ -885,9 +886,9 @@ show_reading_time: false
 #body-map-root .report-btn {
   padding: 11px 18px;
   border-radius: 8px;
-  border: 1px solid var(--border);
+  border: 1px solid #a9aea7;
   background: #fff;
-  color: var(--text);
+  color: #232722;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -895,15 +896,15 @@ show_reading_time: false
   cursor: pointer;
 }
 #body-map-root .report-btn.primary {
-  background: #2f6ea6;
-  border-color: #2f6ea6;
+  background: #3f463d;
+  border-color: #3f463d;
   color: #fff;
 }
 #body-map-root .report-btn.primary:hover {
-  background: #255986;
+  background: #343a32;
 }
 #body-map-root .report-btn:hover {
-  border-color: #7ea4c8;
+  border-color: #81877e;
 }
 
 /* ── Overall Risk Hero ─── */
@@ -922,31 +923,31 @@ show_reading_time: false
   display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.07em;
   text-transform: uppercase; padding: 5px 18px; border-radius: 20px;
 }
-#body-map-root .report-rr-badge-high     { background: #fce9e6; color: #c45e4a; }
-#body-map-root .report-rr-badge-mod      { background: #fff3e0; color: #9b6a00; }
-#body-map-root .report-rr-badge-low      { background: #eaf1ea; color: #4a7a4c; }
+#body-map-root .report-rr-badge-high     { background: #f2e3de; color: #7d4636; }
+#body-map-root .report-rr-badge-mod      { background: #f3ecdd; color: #7f6030; }
+#body-map-root .report-rr-badge-low      { background: #eaf0e6; color: #425c42; }
 
 /* ── Cancer Type Breakdown ─── */
 #body-map-root .report-ct-grid { display: grid; gap: 10px; margin-top: 4px; }
-#body-map-root .report-ct-row { padding: 10px 0; border-top: 1px dashed rgba(196,168,130,0.3); }
+#body-map-root .report-ct-row { padding: 10px 0; border-top: 1px dashed rgba(122, 124, 120, 0.35); }
 #body-map-root .report-ct-row:first-child { border-top: 0; }
 #body-map-root .report-ct-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 #body-map-root .report-ct-stats { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
 #body-map-root .report-ct-stats strong { color: var(--text); }
 #body-map-root .report-ct-badge { font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; }
-#body-map-root .report-ct-badge-high { background: #fce9e6; color: #c45e4a; }
-#body-map-root .report-ct-badge-mod  { background: #fff3e0; color: #9b6a00; }
-#body-map-root .report-ct-badge-low  { background: #eaf1ea; color: #4a7a4c; }
-#body-map-root .report-ct-bar-track { height: 5px; background: rgba(196,168,130,0.2); border-radius: 3px; overflow: hidden; }
+#body-map-root .report-ct-badge-high { background: #f2e3de; color: #7d4636; }
+#body-map-root .report-ct-badge-mod  { background: #f3ecdd; color: #7f6030; }
+#body-map-root .report-ct-badge-low  { background: #eaf0e6; color: #425c42; }
+#body-map-root .report-ct-bar-track { height: 5px; background: rgba(122, 124, 120, 0.2); border-radius: 3px; overflow: hidden; }
 #body-map-root .report-ct-bar-fill  { height: 100%; border-radius: 3px; }
-#body-map-root .report-ct-bar-high     { background: #c45e4a; }
-#body-map-root .report-ct-bar-moderate { background: #d9a566; }
-#body-map-root .report-ct-bar-low      { background: #8aaa8c; }
+#body-map-root .report-ct-bar-high     { background: #8e5544; }
+#body-map-root .report-ct-bar-moderate { background: #9e7a45; }
+#body-map-root .report-ct-bar-low      { background: #5f785f; }
 
 /* ── Treatment Tracker Rows ─── */
 #body-map-root .report-tx-row {
   display: flex; align-items: flex-start; gap: 12px;
-  padding: 10px 0; border-top: 1px dashed rgba(196,168,130,0.3);
+  padding: 10px 0; border-top: 1px dashed rgba(122, 124, 120, 0.35);
 }
 #body-map-root .report-tx-row:first-of-type { border-top: 0; }
 #body-map-root .report-tx-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
@@ -963,9 +964,9 @@ show_reading_time: false
   gap: 12px;
 }
 #body-map-root .report-note-box {
-  border: 1px solid #d7e0e9;
+  border: 1px solid #d6d9d5;
   border-radius: 8px;
-  background: #fbfdff;
+  background: #fcfcfb;
   min-height: 110px;
   padding: 10px;
 }
@@ -973,7 +974,7 @@ show_reading_time: false
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #5f7285;
+  color: #5b6157;
   margin-bottom: 8px;
   font-weight: 700;
 }
@@ -984,10 +985,10 @@ show_reading_time: false
   margin-top: 8px;
 }
 #body-map-root .report-signature-line {
-  border-top: 1px solid #9fb0c1;
+  border-top: 1px solid #a2a8a0;
   padding-top: 6px;
   font-size: 11px;
-  color: #4f6478;
+  color: #4d5449;
 }
 
 /* ── Report question input ─── */
@@ -1002,8 +1003,8 @@ show_reading_time: false
   resize: vertical;
   padding: 10px 12px;
   border-radius: 8px;
-  border: 1.5px solid rgba(196,168,130,0.4);
-  background: var(--cream);
+  border: 1.5px solid rgba(122, 124, 120, 0.38);
+  background: #f7f8f6;
   color: var(--text);
   font-family: var(--sans);
   font-size: 13px;
@@ -1012,11 +1013,11 @@ show_reading_time: false
 }
 #body-map-root .report-question-input:focus {
   outline: none;
-  border-color: var(--rose);
+  border-color: #6f756a;
 }
 #body-map-root .report-question-add {
   justify-self: start;
-  border: 1px solid var(--rose-light);
+  border: 1px solid #b2b8ad;
   border-radius: 8px;
   padding: 8px 12px;
   font-family: var(--sans);
@@ -1026,11 +1027,11 @@ show_reading_time: false
   text-transform: uppercase;
   cursor: pointer;
   background: #fff;
-  color: var(--rose);
+  color: #4f564b;
 }
 #body-map-root .report-question-add:hover {
-  border-color: var(--rose);
-  color: var(--terra);
+  border-color: #6f756a;
+  color: #3e443b;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1054,9 +1055,9 @@ show_reading_time: false
 #body-map-root .report-section-bookmarks,
 #body-map-root .report-section-questions,
 #body-map-root .report-section-notes {
-  background: #fff;
-  border: 1px solid #d6dce3;
-  border-radius: 6px;
+  background: #fdfdfc;
+  border: 1px solid #d4d7d3;
+  border-radius: 8px;
 }
 
 /* Clinical table */
@@ -1064,14 +1065,14 @@ show_reading_time: false
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border: 1px solid #cfd6de;
-  border-radius: 4px;
+  border: 1px solid #d1d4d0;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 #body-map-root .report-table thead {
-  background: #f3f5f7;
-  border-bottom: 1px solid #cfd6de;
+  background: #f2f3f1;
+  border-bottom: 1px solid #d1d4d0;
 }
 
 #body-map-root .report-table th {
@@ -1088,11 +1089,11 @@ show_reading_time: false
   padding: 10px 12px;
   font-size: 13px;
   color: #000;
-  border-top: 1px solid #e1e6eb;
+  border-top: 1px solid #e2e4e1;
 }
 
 #body-map-root .report-table tbody tr:hover {
-  background: #f8fafb;
+  background: #f6f7f5;
 }
 
 /* Clinical lists */
@@ -1112,9 +1113,9 @@ show_reading_time: false
 /* Empty states */
 #body-map-root .report-empty-state {
   padding: 10px 12px;
-  border: 1px dashed #cfd6de;
-  background: #fbfcfd;
-  color: #5d6975;
+  border: 1px dashed #ccd0ca;
+  background: #fafbf9;
+  color: #585f56;
   font-size: 12px;
   font-style: normal;
 }
@@ -1132,7 +1133,7 @@ show_reading_time: false
   color: #000;
   margin-bottom: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid #d6dce3;
+  border-bottom: 1px solid #d2d5d0;
 }
 
 #body-map-root .report-qa-table {
@@ -1141,9 +1142,9 @@ show_reading_time: false
 }
 
 #body-map-root .report-qa-row {
-  background: #fff;
-  border: 1px solid #d6dce3;
-  border-radius: 4px;
+  background: #fcfcfb;
+  border: 1px solid #d2d5d0;
+  border-radius: 6px;
   padding: 9px 10px;
   display: grid;
   grid-template-columns: 140px 1fr;
@@ -1155,7 +1156,7 @@ show_reading_time: false
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #4e5964;
+  color: #555d53;
 }
 
 #body-map-root .report-qa-row-value {
@@ -1172,7 +1173,7 @@ show_reading_time: false
 }
 #body-map-root .report-loading-dots span {
   display: inline-block; width: 7px; height: 7px;
-  border-radius: 50%; background: var(--rose);
+  border-radius: 50%; background: #70756e;
   animation: bm-dot-pulse 1.2s ease-in-out infinite;
 }
 #body-map-root .report-loading-dots span:nth-child(2) { animation-delay: .2s; }
@@ -1194,8 +1195,12 @@ show_reading_time: false
     display: block !important;
     padding: 0 !important;
   }
-  #body-map-root .report-card { box-shadow: none; border: 0; }
-  #body-map-root .report-header { border-top: 2px solid #2f6ea6; }
+  #body-map-root .report-card { box-shadow: none; border: 0; border-radius: 0; }
+  #body-map-root .report-header {
+    background: #fff !important;
+    border-top: 2px solid #5b6358;
+    border-bottom: 1px solid #8b9189;
+  }
   /* Hide site nav/footer when printing from the report page */
   .bm-print-report header,
   .bm-print-report footer,
