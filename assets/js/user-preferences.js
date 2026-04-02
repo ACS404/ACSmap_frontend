@@ -108,6 +108,10 @@
         '--text-main': '#27231f',
         '--text-muted': '#6a6054',
         '--white1': '#27231f',
+        '--border': '#cdbda5',
+        '--border-bright': '#d9cab5',
+        '--ui-border': '#cdbda5',
+        '--theme': 'base',
       },
     },
   };
@@ -646,9 +650,54 @@
       root.style.setProperty(varName, value);
     });
 
+    injectAcsThemeCss(key);
+
     localStorage.setItem(ACS_THEME_STORAGE_KEY, key);
     root.setAttribute('data-acs-theme', key);
     return key;
+  }
+
+  function injectAcsThemeCss(themeKey) {
+    const styleId = 'acs-theme-override-css';
+    let style = document.getElementById(styleId);
+    if (!style) {
+      style = document.createElement('style');
+      style.id = styleId;
+      document.head.appendChild(style);
+    }
+
+    if (themeKey !== 'navy_beige') {
+      style.textContent = '';
+      return;
+    }
+
+    style.textContent = `
+      html[data-acs-theme="navy_beige"],
+      html[data-acs-theme="navy_beige"] body {
+        background: #efe4d3 !important;
+        color: #27231f !important;
+      }
+
+      html[data-acs-theme="navy_beige"] a {
+        color: #1f3f66 !important;
+      }
+
+      html[data-acs-theme="navy_beige"] .btn-primary,
+      html[data-acs-theme="navy_beige"] .hero-cta,
+      html[data-acs-theme="navy_beige"] .tx-add-btn,
+      html[data-acs-theme="navy_beige"] .report-btn.primary {
+        background: #1f3f66 !important;
+        border-color: #17324f !important;
+        color: #fff !important;
+      }
+
+      html[data-acs-theme="navy_beige"] .hero-cta-secondary,
+      html[data-acs-theme="navy_beige"] .tx-bookmarks-btn,
+      html[data-acs-theme="navy_beige"] .report-btn {
+        color: #1f3f66 !important;
+        border-color: #1f3f66 !important;
+      }
+    `;
   }
 
   function loadAcsTheme() {
