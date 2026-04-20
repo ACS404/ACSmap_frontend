@@ -1,6 +1,6 @@
 ---
 layout: opencs
-permalink: /blogs/
+permalink: /blog/
 title: Community Forum
 ---
 
