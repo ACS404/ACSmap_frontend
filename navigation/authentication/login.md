@@ -129,57 +129,6 @@ show_reading_time: false
     -webkit-box-shadow: 0 0 0 1000px var(--cream) inset !important;
   }
 
-  /* ── Toggle (kasm) ── */
-  .switch {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-    padding: 10px 14px;
-    background: var(--cream);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-  }
-
-  .toggle {
-    position: relative;
-    display: inline-block;
-    width: 44px;
-    height: 24px;
-    flex-shrink: 0;
-  }
-
-  .toggle input { opacity: 0; width: 0; height: 0; }
-
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: var(--tan-light) !important;
-    border-radius: 34px;
-    transition: 0.25s;
-  }
-
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 18px; width: 18px;
-    left: 3px; bottom: 3px;
-    background: white;
-    border-radius: 50%;
-    transition: 0.25s;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-  }
-
-  input:checked + .slider { background: var(--rose) !important; }
-  input:checked + .slider:before { transform: translateX(20px); }
-
-  .label-text {
-    color: var(--text-main);
-    font-size: 13px;
-    font-weight: 500;
-  }
-
   /* ── Submit button ── */
   button[type="submit"] {
     width: 100%;
@@ -254,8 +203,8 @@ show_reading_time: false
     <hr>
     <form id="pythonForm" onsubmit="pythonLogin(event); return false;">
       <div class="form-group">
-        <label for="uid">GitHub ID</label>
-        <input type="text" id="uid" placeholder="your-github-id" required>
+        <label for="uid">User ID</label>
+        <input type="text" id="uid" placeholder="your-user-id" required>
       </div>
       <div class="form-group">
         <label for="password">Password</label>
@@ -278,28 +227,13 @@ show_reading_time: false
         <input type="text" id="name" placeholder="Your name" required>
       </div>
       <div class="form-group">
-        <label for="signupUid">GitHub ID</label>
-        <input type="text" id="signupUid" placeholder="your-github-id" required>
-      </div>
-      <div class="form-group">
-        <label for="signupSid">Student ID</label>
-        <input type="text" id="signupSid" placeholder="Student ID" required>
-      </div>
-      <div class="form-group">
-        <label for="signupEmail">Email</label>
-        <input type="email" id="signupEmail" placeholder="you@example.com" required>
+        <label for="signupUid">User ID</label>
+        <input type="text" id="signupUid" placeholder="your-user-id" required>
       </div>
       <div class="form-group">
         <label for="signupPassword">Password</label>
         <input type="password" id="signupPassword" placeholder="8+ characters" required>
       </div>
-      <label class="switch">
-        <span class="toggle">
-          <input type="checkbox" name="kasmNeeded" id="kasmNeeded">
-          <span class="slider"></span>
-        </span>
-        <span class="label-text">Kasm Server Needed</span>
-      </label>
       <button type="submit">Create Account →</button>
       <p id="signupMessage" style="display:none;"></p>
     </form>
@@ -373,20 +307,16 @@ show_reading_time: false
         messageEl.className = '';
         const name = document.getElementById("name").value.trim();
         const uid = document.getElementById("signupUid").value.trim();
-        const sid = document.getElementById("signupSid").value.trim();
-        const email = document.getElementById("signupEmail").value.trim();
         const password = document.getElementById("signupPassword").value;
-        const kasmNeeded = document.getElementById("kasmNeeded").checked;
         if (!name || name.length < 2) { messageEl.textContent = "Name must be at least 2 characters"; messageEl.className = 'error'; messageEl.style.display = 'block'; return false; }
-        if (!uid || uid.length < 2) { messageEl.textContent = "GitHub ID must be at least 2 characters"; messageEl.className = 'error'; messageEl.style.display = 'block'; return false; }
+        if (!uid || uid.length < 2) { messageEl.textContent = "User ID must be at least 2 characters"; messageEl.className = 'error'; messageEl.style.display = 'block'; return false; }
         if (!password || password.length < 8) { messageEl.textContent = "Password must be at least 8 characters"; messageEl.className = 'error'; messageEl.style.display = 'block'; return false; }
-        if (!email || !email.includes('@')) { messageEl.textContent = "Please enter a valid email address"; messageEl.className = 'error'; messageEl.style.display = 'block'; return false; }
         signupButton.disabled = true; signupButton.textContent = 'Creating account…';
         try {
             const response = await fetch(`${pythonURI}/api/user`, {
                 method: "POST", mode: 'cors', credentials: "include",
                 headers: { "Content-Type": "application/json", "X-Origin": "client" },
-                body: JSON.stringify({ name, uid, sid, email, password, kasm_server_needed: kasmNeeded })
+                body: JSON.stringify({ name, uid, password })
             });
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ message: `HTTP ${response.status}` }));
