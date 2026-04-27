@@ -42,6 +42,14 @@ permalink: /student
       <p>View all slack announcements in one place.</p>
     </div>
   </a>
+
+  <a href="{{site.baseurl}}/student/ip-ethics-sim" class="toolkit-button" data-description="AP CSP review lesson on intellectual property, copyright, plagiarism, open source, privacy, algorithmic bias, and the digital divide.">
+    <img src="{{site.baseurl}}/images/toolkit-nav-buttons/media.png" alt="IP Ethics Review" />
+    <span class="button-name">IP Ethics Review</span>
+    <div class="description">
+      <p>Use a focused 5-minute review format with terms, legal-versus-ethical analysis, and AP-style prompt practice.</p>
+    </div>
+  </a>
 </div>
 
 <style>
