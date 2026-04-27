@@ -1,3 +1,10 @@
+---
+layout: opencs
+title: IP & Ethics Review
+description: AP CSP legal and ethical computing review
+permalink: /student/ip-ethics-review/
+---
+
 # IP & Ethics Review
 
 ## **Intellectual Property (IP)**
